@@ -937,6 +937,8 @@
                              (let [op (render-mem (addr-operand lhs))]
                                (emit "  movaps %xmm2, %xmm0")
                                (store-op ty op)))
+          (rdi-addr? lhs)
+          (do (store-op ty (render-mem (addr-operand lhs))))
           :else (do (emit "  movq %rax, %rsi")
                     (let [op (render-mem (addr-operand lhs))]
                       (case (int (t/type-size ty))
@@ -1404,6 +1406,9 @@
       (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs) (store-src rhs sz))
       (let [o (store-src rhs sz) m (addr-operand lhs)]
         (emitf "  mov" (sfx-of sz) " " o ", " (render-mem m)))
+      ;; store through an address needing only %rdi
+      (and int? (not= :var (:op lhs)) (rdi-addr? lhs))
+      (do (gen-expr rhs) (store-op ty (render-mem (addr-operand lhs))))
       ;; store through a pure address of a computed integer value
       (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs))
       (do (gen-expr rhs)
@@ -2089,10 +2094,38 @@
         (emitf label ":")
         (emitf "  .zero " (max sz 1))))))
 
+(defn thread-jumps
+  "Retarget jumps whose target label is followed by an unconditional jmp."
+  [lines]
+  (let [n (count lines)
+        label? (fn [^String l] (and (str/ends-with? l ":") (not (str/starts-with? l " "))))
+        alias (loop [i 0 m {}]
+                (if (>= i n) m
+                    (let [l (lines i)]
+                      (if (label? l)
+                        (let [j (loop [j (inc i)] (if (and (< j n) (label? (lines j))) (recur (inc j)) j))
+                              nx (when (< j n) (lines j))]
+                          (recur (inc i)
+                                 (if (and nx (str/starts-with? nx "  jmp ") (not (str/starts-with? nx "  jmp *")))
+                                   (assoc m (subs l 0 (dec (count l))) (subs nx 6))
+                                   m)))
+                        (recur (inc i) m)))))
+        resolve (fn [t] (loop [t t seen #{}]
+                          (if-let [u (alias t)]
+                            (if (contains? seen u) t (recur u (conj seen t)))
+                            t)))]
+    (if (empty? alias)
+      lines
+      (mapv (fn [^String l]
+              (if-let [[_ ins t] (re-matches #"  (j[a-z]+) (\S+)" l)]
+                (if (= ins "jmp*") l (str "  " ins " " (resolve t)))
+                l))
+            lines))))
+
 (defn peephole
   "Simple cleanups on the emitted lines."
   [^String text]
-  (let [lines (vec (str/split-lines text))
+  (let [lines (thread-jumps (vec (str/split-lines text)))
         n (count lines)
         out (java.util.ArrayList.)]
     (loop [i 0]
