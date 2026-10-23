@@ -11,10 +11,12 @@
 
 (def puncts
   ;; longest first
-  ["<<=" ">>=" "..." "->" "++" "--" "<<" ">>" "<=" ">=" "==" "!=" "&&" "||"
+  ["%:%:" "<<=" ">>=" "..." "->" "<:" ":>" "<%" "%>" "%:" "++" "--" "<<" ">>" "<=" ">=" "==" "!=" "&&" "||"
    "+=" "-=" "*=" "/=" "%=" "&=" "|=" "^=" "##"
    "[" "]" "(" ")" "{" "}" "." "&" "*" "+" "-" "~" "!" "/" "%" "<" ">" "^" "|"
    "?" ":" ";" "=" "," "#"])
+
+(def digraphs {"<:" "[" ":>" "]" "<%" "{" "%>" "}" "%:" "#" "%:%:" "##"})
 
 (defn- ident-start? [c] (or (Character/isLetter (char c)) (= c \_) (= c \$)))
 (defn- ident-char? [c] (or (Character/isLetterOrDigit (char c)) (= c \_) (= c \$)))
@@ -133,7 +135,7 @@
             :else
             (let [p (some (fn [p] (when (.startsWith src ^String p (int i)) p)) puncts)]
               (if p
-                (do (conj! out {:kind :punct :text p :line line :file file :bol bol :space space})
+                (do (conj! out {:kind :punct :text (get digraphs p p) :line line :file file :bol bol :space space})
                     (recur (+ i (count p)) line false false))
                 (do (conj! out {:kind :punct :text (str c) :line line :file file :bol bol :space space :stray true})
                     (recur (inc i) line false false))))))))))
