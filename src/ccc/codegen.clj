@@ -582,6 +582,10 @@
 
 (defn gen-binary-int* [n oty]
   (let [{:keys [op lhs rhs]} n
+        w0 (if (= 8 (t/type-size oty)) 8 4)
+        [lhs rhs] (if (and (#{:add :mul :bitand :bitor :bitxor} op)
+                           (int-operand lhs w0) (not (int-operand rhs w0)))
+                    [rhs lhs] [lhs rhs])
         w (if (= 8 (t/type-size oty)) 8 4)
         ax (if (= w 8) "%rax" "%eax") sfx (if (= w 8) "q" "l")
         u (or (t/unsigned? oty) (t/ptr? oty))]
@@ -826,6 +830,21 @@
             (recur (rest as) (inc gp) fp stack (conj out {:node a :mode :gp}))
             (recur (rest as) gp fp (inc stack) (conj out {:node a :mode :stack :words 1}))))))))
 
+(defn rax-only?
+  "Expressions whose code uses no register but %rax."
+  [n]
+  (let [ty (:type n)]
+    (and (t/integer? ty)
+         (case (:op n)
+           :num (not (:fval n))
+           :var (boolean (or (vreg (:var n)) (var-mem-op (:var n))))
+           :cast (and (t/integer? (:type (:expr n))) (rax-only? (:expr n)))
+           (:add :sub :bitand :bitor :bitxor :mul)
+           (let [w (if (= 8 (t/type-size ty)) 8 4)]
+             (and (rax-only? (:lhs n)) (boolean (int-operand (:rhs n) w))))
+           (:neg :bitnot) (rax-only? (:expr n))
+           false))))
+
 (defn push-struct! [ty]
   (let [sz (align-to (t/type-size ty) 8)]
     (emitf "  subq $" sz ", %rsp")
@@ -922,6 +941,13 @@
                    (if (= :gp (:mode a))
                      (emitf "  movq %rax, " (nth argreg64 (:reg a)))
                      (when-not (zero? (:reg a)) (emitf "  movaps %xmm0, %xmm" (:reg a)))))]
+      (if (and fast (every? #(and (= :gp (:mode %)) (rax-only? (:node %))) complex))
+        ;; every complex arg is computed in %rax alone: right to left, straight to registers
+        (do (doseq [a (reverse complex)]
+              (gen-expr (:node a))
+              (to-reg a))
+            (doseq [a simple] (load-simple a))
+            (when ret-mem (local-addr (:ret-buf n) "%rdi")))
       (if fast
         ;; complex args right to left; the leftmost one goes straight to its register
         (do (doseq [a (reverse (rest complex))] (push-arg! a))
@@ -937,7 +963,7 @@
               (gen-expr fnode)
               (emit "  movq %rax, %r10"))
             (when ret-mem
-              (local-addr (:ret-buf n) "%rdi"))))
+              (local-addr (:ret-buf n) "%rdi")))))
       (let [[gp fp] (reduce (fn [[gp fp] a]
                               (case (:mode a)
                                 :gp (do (pop! (nth argreg64 gp)) [(inc gp) fp])
@@ -1064,11 +1090,63 @@
         (emit "  addq $8, 8(%rcx)")
         (emitf l-end ":")))))
 
-(defn gen-discard
-  "Evaluate n for its side effects."
+(defn gen-expr-pop
+  "Evaluate n, dropping a long double result from the x87 stack."
   [n]
   (gen-expr n)
   (when (t/ldouble? (:type n)) (emit "  fstp %st(0)")))
+
+(defn sfx-of [sz] (case (int sz) 1 "b" 2 "w" 4 "l" 8 "q"))
+
+(defn store-src
+  "Immediate or register operand usable as the source of a store of size sz."
+  [rhs sz]
+  (let [o (int-operand rhs (if (= sz 8) 8 4))]
+    (when (and o (not (str/includes? o "(")))
+      (cond
+        (str/starts-with? o "$") (when (or (>= sz 4) (= :num (:op rhs))) o)
+        (>= sz 4) o
+        :else nil))))
+
+(defn gen-assign-nv
+  "Assignment whose value is not used."
+  [n]
+  (let [{:keys [lhs rhs]} n
+        ty (:type lhs)
+        int? (or (t/integer? ty) (t/ptr? ty))
+        sz (t/type-size ty)]
+    (cond
+      (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz) (int-operand rhs sz))
+      (let [r (vreg (:var lhs)) o (int-operand rhs sz) rr (if (= sz 8) (r 0) (r 1))]
+        (if (= o "$0")
+          (emitf "  xorl " (r 1) ", " (r 1))
+          (when-not (= o rr) (emitf "  mov" (sfx-of sz) " " o ", " rr))))
+      (and int? (scalar-var? lhs) (var-mem-op (:var lhs)) (store-src rhs sz))
+      (emitf "  mov" (sfx-of sz) " " (store-src rhs sz) ", " (var-mem-op (:var lhs)))
+      (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs) (store-src rhs sz))
+      (let [o (store-src rhs sz) m (addr-operand lhs)]
+        (emitf "  mov" (sfx-of sz) " " o ", " (render-mem m)))
+      :else (gen-expr-pop n))))
+
+(defn gen-incdec-nv [n]
+  (let [e (:expr n) ty (:type n) sz (t/type-size ty) d (:delta n)]
+    (cond
+      (and (= :var (:op e)) (vreg (:var e)) (#{4 8} sz))
+      (let [r (vreg (:var e))] (emitf "  add" (sfx-of sz) " $" d ", " (if (= sz 8) (r 0) (r 1))))
+      (and (= :var (:op e)) (var-mem-op (:var e)))
+      (emitf "  add" (sfx-of sz) " $" d ", " (var-mem-op (:var e)))
+      (and (simple-lvalue-op? e) (pure? e) (not= :var (:op e)))
+      (emitf "  add" (sfx-of sz) " $" d ", " (render-mem (addr-operand e)))
+      :else (gen-expr-pop n))))
+
+(defn gen-discard
+  "Evaluate n for its side effects."
+  [n]
+  (case (:op n)
+    :assign (gen-assign-nv n)
+    :incdec (gen-incdec-nv n)
+    :comma (do (gen-discard (:lhs n)) (gen-discard (:rhs n)))
+    (gen-expr-pop n)))
 
 (defn gen-expr [n]
   (case (:op n)
