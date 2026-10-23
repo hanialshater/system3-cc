@@ -2,7 +2,7 @@
   "Recursive-descent C parser producing a typed AST."
   (:refer-clojure :exclude [integer?])
   (:require [ccc.types :as t :refer [ty-void ty-bool ty-char ty-uchar ty-short ty-ushort
-                                     ty-int ty-uint ty-long ty-ulong ty-float ty-double
+                                     ty-int ty-uint ty-long ty-ulong ty-float ty-double ty-ldouble
                                      ptr-to array-of func-type]]
             [ccc.lexer :as lx]
             [clojure.string :as str]))
@@ -298,7 +298,56 @@
 ;; Node constructors with typing
 
 (defn num-node [v ty] {:op :num :type ty :val (wrap v ty)})
-(defn fnum-node [d ty] {:op :num :type ty :fval (if (= :float (:kind ty)) (double (unchecked-float d)) (double d))})
+(defn double->x87
+  "Exact 80-bit extended representation of a double: [mantissa64 sign+exponent16]."
+  [d]
+  (let [d (double d)
+        bits (Double/doubleToRawLongBits d)
+        sign (if (neg? bits) 0x8000 0)
+        e (bit-and (unsigned-bit-shift-right bits 52) 0x7ff)
+        f (bit-and bits 0xfffffffffffff)]
+    (cond
+      (and (zero? e) (zero? f)) [0 sign]
+      (= e 0x7ff) [(if (zero? f) Long/MIN_VALUE (bit-or Long/MIN_VALUE (bit-shift-left f 11))) (bit-or sign 0x7fff)]
+      (zero? e) ;; subnormal: normalize
+      (let [nlz (Long/numberOfLeadingZeros f)
+            m (bit-shift-left f nlz)]
+        [m (bit-or sign (+ (- 63 nlz 1074) 16383))])
+      :else [(bit-or Long/MIN_VALUE (bit-shift-left f 11)) (bit-or sign (+ (- e 1023) 16383))])))
+
+(defn decimal->x87
+  "Correctly rounded 80-bit value of a decimal floating literal (no suffix)."
+  [^String text]
+  (let [bd (try (java.math.BigDecimal. text) (catch Exception _ nil))]
+    (if (or (nil? bd) (zero? (.signum bd)))
+      (double->x87 (if bd 0.0 (Double/parseDouble text)))
+      (let [neg (neg? (.signum bd))
+            bd (.abs bd)
+            sc (.scale bd)
+            n0 (.unscaledValue bd)
+            [num den] (if (neg? sc)
+                        [(.multiply n0 (.pow java.math.BigInteger/TEN (- sc))) java.math.BigInteger/ONE]
+                        [n0 (.pow java.math.BigInteger/TEN sc)])
+            k (- (.bitLength num) (.bitLength den))
+            s (- 64 k)
+            scaled (fn [s] (if (neg? s) [num (.shiftLeft den (- s))] [(.shiftLeft num s) den]))
+            [a b] (scaled s)
+            q (.divide a b)
+            [s q] (if (>= (.bitLength q) 65) [(dec s) (.divide (first (scaled (dec s))) (second (scaled (dec s))))]
+                      (if (< (.bitLength q) 64) [(inc s) (.divide (first (scaled (inc s))) (second (scaled (inc s))))] [s q]))
+            [a b] (scaled s)
+            r (.subtract a (.multiply q b))
+            twice (.compareTo (.shiftLeft r 1) b)
+            q (if (or (pos? twice) (and (zero? twice) (.testBit q 0))) (.add q java.math.BigInteger/ONE) q)
+            [s q] (if (>= (.bitLength q) 65) [(dec s) (.shiftRight q 1)] [s q])
+            exp (+ (- 63 s) 16383)]
+        (if (or (>= exp 0x7fff) (<= exp 0))
+          (double->x87 (Double/parseDouble text))
+          [(.longValue q) (bit-or (if neg 0x8000 0) exp)])))))
+
+(defn fnum-node [d ty]
+  (cond-> {:op :num :type ty :fval (if (= :float (:kind ty)) (double (unchecked-float d)) (double d))}
+    (= :ldouble (:kind ty)) (assoc :lbits (double->x87 d))))
 
 (defn decay [ty]
   (case (:kind ty)
@@ -320,6 +369,10 @@
       (and (= :ptr (:kind ty)) (= :ptr (:kind nt))) (assoc n :type ty)
       (and (= :num (:op n)) (not (:fval n)) (t/integer? ty)) (num-node (:val n) ty)
       (and (= :num (:op n)) (not (:fval n)) (= :ptr (:kind ty))) (assoc n :type ty)
+      (and (= :num (:op n)) (t/ldouble? ty) (not (:fval n)))
+      (assoc (fnum-node (eval-double n) ty)
+             :lbits (decimal->x87 (if (ulong-type? nt) (Long/toUnsignedString (:val n)) (str (:val n)))))
+      (and (= :num (:op n)) (t/ldouble? ty) (:lbits n)) (assoc n :type ty)
       (and (= :num (:op n)) (t/flonum? ty))
       (fnum-node (if (:fval n) (:fval n) (eval-double n)) ty)
       (and (= :num (:op n)) (:fval n) (t/integer? ty) (not= :bool (:kind ty)))
@@ -337,7 +390,8 @@
               (:neg :bitnot :not) [(:expr n)]
               nil)
         ty (:type n)]
-    (if (and ops (every? num? ops) (or (t/integer? ty) (t/flonum? ty)))
+    (if (and ops (every? num? ops) (or (t/integer? ty) (t/flonum? ty))
+             (not (t/ldouble? ty)) (not-any? #(t/ldouble? (:type %)) ops))
       (try
         (if (t/flonum? ty)
           (let [vals (mapv eval-double ops)]
@@ -465,7 +519,9 @@
       (if (and (= :num (:op c)) (not (:fval c)))
         (num-node (unchecked-negate (:val c)) pt)
         (if (and (= :num (:op c)) (:fval c))
-          (fnum-node (- (:fval c)) pt)
+          (if-let [[m e] (:lbits c)]
+            (assoc (fnum-node (- (:fval c)) pt) :lbits [m (bit-xor e 0x8000)])
+            (fnum-node (- (:fval c)) pt))
           {:op :neg :type pt :expr c})))))
 
 (defn new-bitnot [e]
@@ -649,11 +705,13 @@
                    (or (str/includes? lower ".") (str/includes? lower "e")))]
     (if float?
       (let [[body ty] (cond (str/ends-with? lower "f") [(subs text 0 (dec (count text))) ty-float]
-                            (str/ends-with? lower "l") [(subs text 0 (dec (count text))) ty-double]
+                            (str/ends-with? lower "l") [(subs text 0 (dec (count text))) ty-ldouble]
                             :else [text ty-double])
             d (try (Double/parseDouble (if (and hex? (not (re-find #"[pP]" body))) (str body "p0") body))
                    (catch Exception _ (err-tok tk "invalid floating constant")))]
-        (fnum-node d ty))
+        (if (t/ldouble? ty)
+          (assoc (fnum-node d ty) :lbits (if hex? (double->x87 d) (decimal->x87 body)))
+          (fnum-node d ty)))
       (let [m (re-matches #"(?i)(0x[0-9a-f]+|0b[01]+|[0-9]+)(u|ul|lu|ull|llu|l|ll|uL|Lu)?" text)
             _ (when-not m (err-tok tk "invalid number"))
             digits (nth m 1)
@@ -739,7 +797,7 @@
       (pos? (c "void")) ty-void
       (pos? (c "_Bool")) ty-bool
       (pos? (c "float")) ty-float
-      (pos? (c "double")) ty-double
+      (pos? (c "double")) (if (pos? (c "long")) ty-ldouble ty-double)
       (pos? (c "char")) (cond u? ty-uchar (pos? (c "signed")) (assoc ty-char :schar true) :else ty-char)
       (pos? (c "short")) (if u? ty-ushort ty-short)
       (pos? (c "long")) (cond-> (if u? ty-ulong ty-long) (>= (c "long") 2) (assoc :llong true))
@@ -1442,8 +1500,12 @@
       (let [d (try (eval-double (new-cast (:expr m) ty))
                    (catch clojure.lang.ExceptionInfo e
                      (if (= :not-const (:type (ex-data e))) (err "initializer element is not constant") (throw e))))]
-        (if (= :float (:kind ty))
-          (write-int! buf off (Float/floatToRawIntBits (unchecked-float d)) 4)
+        (case (:kind ty)
+          :float (write-int! buf off (Float/floatToRawIntBits (unchecked-float d)) 4)
+          :ldouble (let [c (new-cast (:expr m) ty)
+                         [mm e] (if (and (= :num (:op c)) (:lbits c)) (:lbits c) (double->x87 d))]
+                     (write-int! buf off mm 8)
+                     (write-int! buf (+ off 8) e 2))
           (write-int! buf off (Double/doubleToRawLongBits d) 8))
         [])
 

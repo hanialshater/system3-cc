@@ -11,7 +11,8 @@
 (def ^:dynamic *defined* nil)   ; set of labels defined in this TU
 (def ^:dynamic *counter* nil)   ; volatile
 (def ^:dynamic *fninfo* nil)
-(def ^:dynamic *overaligned* #{}) ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
+(def ^:dynamic *overaligned* #{})
+(def ^:dynamic *ldconsts* nil)  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
 
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
 (defmacro emitf [& parts] `(emit (str ~@parts)))
@@ -50,11 +51,18 @@
               (range (max 0 (:len ty)))))
     (or (< offset lo) (<= hi offset) (t/flonum? ty))))
 
+(defn has-ldouble? [ty]
+  (case (:kind ty)
+    :ldouble true
+    (:struct :union) (some #(has-ldouble? (:type %)) (:members (t/struct-info ty)))
+    :array (has-ldouble? (:base ty))
+    false))
+
 (defn struct-classes
   "Vector of :sse / :int per eightbyte, or nil if passed in memory."
   [ty]
   (let [sz (t/type-size ty)]
-    (when (<= sz 16)
+    (when (and (<= sz 16) (not (has-ldouble? ty)))
       (vec (for [i (range (quot (+ sz 7) 8))]
              (if (has-flonum? ty (* 8 i) (* 8 (inc i)) 0) :sse :int))))))
 
@@ -66,6 +74,7 @@
     (:array :struct :union :func :vla) nil
     :float (emit "  movss (%rax), %xmm0")
     :double (emit "  movsd (%rax), %xmm0")
+    :ldouble (emit "  fldt (%rax)")
     (let [sz (t/type-size ty) u (t/unsigned? ty)]
       (case (int sz)
         1 (emit (if u "  movzbl (%rax), %eax" "  movsbl (%rax), %eax"))
@@ -93,6 +102,7 @@
     (:struct :union) (emit-copy "%rax" "%rdi" (t/type-size ty))
     :float (emit "  movss %xmm0, (%rdi)")
     :double (emit "  movsd %xmm0, (%rdi)")
+    :ldouble (do (emit "  fstpt (%rdi)") (emit "  fldt (%rdi)"))
     (case (int (t/type-size ty))
       1 (emit "  movb %al, (%rdi)")
       2 (emit "  movw %ax, (%rdi)")
@@ -104,6 +114,7 @@
 
 (defn tid [ty]
   (case (:kind ty)
+    :ldouble :f80
     :float :f32
     :double :f64
     (:ptr :array :func :vla) :u64
@@ -122,13 +133,66 @@
                (emit "  setne %al") (emit "  setp %dl") (emit "  orb %dl, %al") (emit "  testb %al, %al"))
     :double (do (emit "  xorpd %xmm1, %xmm1") (emit "  ucomisd %xmm1, %xmm0")
                 (emit "  setne %al") (emit "  setp %dl") (emit "  orb %dl, %al") (emit "  testb %al, %al"))
+    :ldouble (do (emit "  fldz") (emit "  fucomip %st(1), %st") (emit "  fstp %st(0)")
+                 (emit "  setne %al") (emit "  setp %dl") (emit "  orb %dl, %al") (emit "  testb %al, %al"))
     (if (and (t/integer? ty) (<= (t/type-size ty) 4))
       (emit "  cmpl $0, %eax")
       (emit "  cmpq $0, %rax"))))
 
+(defn gen-cast-ld
+  "Conversions to and from long double (value on the x87 stack)."
+  [from to]
+  (let [f (tid from) tt (tid to)]
+    (cond
+      (= f tt) nil
+      (= tt :f80)
+      (case f
+        :f32 (do (emit "  subq $8, %rsp") (emit "  movss %xmm0, (%rsp)") (emit "  flds (%rsp)") (emit "  addq $8, %rsp"))
+        :f64 (do (emit "  subq $8, %rsp") (emit "  movsd %xmm0, (%rsp)") (emit "  fldl (%rsp)") (emit "  addq $8, %rsp"))
+        (do (case f
+              (:i8 :i16 :i32) (emit "  movslq %eax, %rax")
+              (:u8 :u16 :u32) (emit "  movl %eax, %eax")
+              nil)
+            (emit "  subq $8, %rsp") (emit "  movq %rax, (%rsp)") (emit "  fildq (%rsp)")
+            (when (= f :u64)
+              (let [l (new-label)]
+                (emit "  testq %rax, %rax")
+                (emitf "  jns " l)
+                (emit "  movl $0x5f800000, (%rsp)")   ; 2^64 as float
+                (emit "  fadds (%rsp)")
+                (emitf l ":")))
+            (emit "  addq $8, %rsp")))
+      :else ; from :f80
+      (case tt
+        :f32 (do (emit "  subq $8, %rsp") (emit "  fstps (%rsp)") (emit "  movss (%rsp), %xmm0") (emit "  addq $8, %rsp"))
+        :f64 (do (emit "  subq $8, %rsp") (emit "  fstpl (%rsp)") (emit "  movsd (%rsp), %xmm0") (emit "  addq $8, %rsp"))
+        :u64 (let [l-small (new-label) l-done (new-label)]
+               (emit "  subq $8, %rsp")
+               (emit "  movl $0x5f000000, (%rsp)")    ; 2^63 as float
+               (emit "  flds (%rsp)")
+               (emit "  fucomip %st(1), %st")
+               (emitf "  ja " l-small)
+               (emit "  fsubs (%rsp)")
+               (emit "  fisttpq (%rsp)")
+               (emit "  movq (%rsp), %rax")
+               (emit "  btcq $63, %rax")
+               (emitf "  jmp " l-done)
+               (emitf l-small ":")
+               (emit "  fisttpq (%rsp)")
+               (emit "  movq (%rsp), %rax")
+               (emitf l-done ":")
+               (emit "  addq $8, %rsp"))
+        (do (emit "  subq $8, %rsp") (emit "  fisttpq (%rsp)") (emit "  movq (%rsp), %rax") (emit "  addq $8, %rsp")
+            (case tt
+              :i8 (emit "  movsbl %al, %eax") :u8 (emit "  movzbl %al, %eax")
+              :i16 (emit "  movswl %ax, %eax") :u16 (emit "  movzwl %ax, %eax")
+              nil))))))
+
 (defn gen-cast [from to]
   (cond
+    (and (= :void (:kind to)) (t/ldouble? from)) (emit "  fstp %st(0)")
     (= :void (:kind to)) nil
+    (and (or (t/ldouble? from) (t/ldouble? to)) (not= :bool (:kind to))) (gen-cast-ld from to)
     (= :bool (:kind to))
     (do (cmp-zero from) (emit "  setne %al") (emit "  movzbl %al, %eax"))
     (t/struct? to) nil
@@ -191,7 +255,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset)
+(declare gen-expr gen-stmt var-offset gen-discard)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -249,10 +313,36 @@
       (do (gen-expr lhs) (gen-simple-to-rdi rhs))
       (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")))))
 
+(defn gen-binary-ld [n]
+  ;; long double: lhs ends in st(0), rhs in st(1)
+  (let [{:keys [op lhs rhs]} n]
+    (gen-expr lhs)
+    (emit "  subq $16, %rsp") (emit "  fstpt (%rsp)") (vswap! *depth* + 2)
+    (gen-expr rhs)
+    (emit "  fldt (%rsp)") (emit "  addq $16, %rsp") (vswap! *depth* - 2)
+    (case op
+      :add (emit "  faddp")
+      :sub (emit "  fsubp")
+      :mul (emit "  fmulp")
+      :div (emit "  fdivp")
+      (:eq :ne :gt :ge :lt :le)
+      (do (when (#{:lt :le} op) (emit "  fxch %st(1)"))
+          (emit "  fucomip %st(1), %st")
+          (emit "  fstp %st(0)")
+          (case op
+            :eq (do (emit "  sete %al") (emit "  setnp %dl") (emit "  andb %dl, %al"))
+            :ne (do (emit "  setne %al") (emit "  setp %dl") (emit "  orb %dl, %al"))
+            (:gt :lt) (emit "  seta %al")
+            (:ge :le) (emit "  setae %al"))
+          (emit "  movzbl %al, %eax")))))
+
 (defn gen-binary [n]
   (let [{:keys [op lhs rhs]} n
         oty (if (#{:eq :ne :lt :le :gt :ge} op) (:type lhs) (:type n))
         oty (if (t/ptr-like? oty) t/ty-ulong oty)]
+    (if (t/ldouble? oty)
+      (gen-binary-ld n)
+    (do
     (gen-operands lhs rhs)
     (if (t/flonum? oty)
       (let [s (if (= :float (:kind oty)) "ss" "sd")
@@ -294,7 +384,7 @@
                                    :lt (if u "b" "l") :le (if u "be" "le")
                                    :gt (if u "a" "g") :ge (if u "ae" "ge"))
                      " %al")
-              (emit "  movzbl %al, %eax")))))))
+              (emit "  movzbl %al, %eax")))))))))
 
 (defn bf-unit
   "Type used to load/store a bit-field's storage: its declared type, or 8 bytes
@@ -352,7 +442,10 @@
                 words (quot (align-to (t/type-size ty) 8) 8)]
             (if (and cls (<= (+ gp ng) 6) (<= (+ fp nf) 8))
               (recur (rest as) (+ gp ng) (+ fp nf) stack (conj out {:node a :mode :struct-reg :classes cls}))
-              (recur (rest as) gp fp (+ stack words) (conj out {:node a :mode :stack :words words}))))
+              (recur (rest as) gp fp (+ stack words)
+                     (conj out {:node a :mode :stack :words words :align (if (>= (t/type-align ty) 16) 2 1)}))))
+          (t/ldouble? ty)
+          (recur (rest as) gp fp (+ stack 2) (conj out {:node a :mode :stack :words 2 :align 2}))
           (t/flonum? ty)
           (if (< fp 8)
             (recur (rest as) gp (inc fp) stack (conj out {:node a :mode :fp}))
@@ -396,11 +489,29 @@
   (let [fnode (:fn n)
         ret (:type n)
         ret-mem (and (t/struct? ret) (nil? (struct-classes ret)))
-        {:keys [args stack]} (classify-args (:args n) (if ret-mem 1 0))
+        {:keys [args]} (classify-args (:args n) (if ret-mem 1 0))
+        ;; lay out the stack argument area (8-byte words, 16-byte aligned where needed)
+        [args stack] (reduce (fn [[out off] a]
+                               (if (= :stack (:mode a))
+                                 (let [off (if (= 2 (:align a)) (align-to off 2) off)]
+                                   [(conj out (assoc a :off off)) (+ off (:words a))])
+                                 [(conj out a) off]))
+                             [[] 0] args)
         pad (odd? (+ @*depth* stack))]
     (when pad (emit "  subq $8, %rsp") (vswap! *depth* inc))
-    ;; stack args, reverse order
-    (doseq [a (reverse args)] (when (= :stack (:mode a)) (push-arg! a)))
+    (when (pos? stack)
+      (emitf "  subq $" (* 8 stack) ", %rsp")
+      (vswap! *depth* + stack))
+    ;; stack args: evaluate and store into their slots
+    (doseq [a args :when (= :stack (:mode a))]
+      (let [node (:node a) ty (:type node) off (* 8 (:off a))]
+        (gen-expr node)
+        (cond
+          (t/struct? ty) (do (emitf "  leaq " off "(%rsp), %rdi") (emit-copy "%rax" "%rdi" (t/type-size ty)))
+          (t/ldouble? ty) (emitf "  fstpt " off "(%rsp)")
+          (= :float (:kind ty)) (emitf "  movss %xmm0, " off "(%rsp)")
+          (t/flonum? ty) (emitf "  movsd %xmm0, " off "(%rsp)")
+          :else (emitf "  movq %rax, " off "(%rsp)"))))
     ;; register args, reverse order
     (doseq [a (reverse args)] (when (not= :stack (:mode a)) (push-arg! a)))
     (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))]
@@ -499,6 +610,12 @@
             (emit "  movq 8(%rcx), %rax")
             (emitf "  addq $" words ", 8(%rcx)")
             (emitf l-end ":"))))
+      (t/ldouble? ty)
+      (do (emit "  movq 8(%rcx), %rax")
+          (emit "  addq $15, %rax")
+          (emit "  andq $-16, %rax")
+          (emit "  leaq 16(%rax), %rdx")
+          (emit "  movq %rdx, 8(%rcx)"))
       (t/flonum? ty)
       (let [l-over (new-label) l-end (new-label)]
         (emit "  movl 4(%rcx), %edx")
@@ -526,6 +643,12 @@
         (emit "  addq $8, 8(%rcx)")
         (emitf l-end ":")))))
 
+(defn gen-discard
+  "Evaluate n for its side effects."
+  [n]
+  (gen-expr n)
+  (when (t/ldouble? (:type n)) (emit "  fstp %st(0)")))
+
 (defn gen-expr [n]
   (case (:op n)
     :num
@@ -537,6 +660,11 @@
         (= :double (:kind ty))
         (do (emitf "  movabsq $" (Double/doubleToRawLongBits (double (:fval n))) ", %rax")
             (emit "  movq %rax, %xmm0"))
+        (= :ldouble (:kind ty))
+        (let [[m e] (or (:lbits n) [0 0])
+              l (str ".L.ld." (vswap! *counter* inc))]
+          (vswap! *ldconsts* conj [l m e])
+          (emitf "  fldt " l "(%rip)"))
         :else
         (let [v (:val n)]
           (if (imm32? v)
@@ -565,7 +693,7 @@
                   2 (emit (if (t/unsigned? ty) "  movzwl %di, %eax" "  movswl %di, %eax"))
                   4 (emit "  movl %edi, %eax")
                   8 (emit "  movq %rdi, %rax"))))
-    :comma (do (gen-expr (:lhs n)) (gen-expr (:rhs n)))
+    :comma (do (gen-discard (:lhs n)) (gen-expr (:rhs n)))
     :cast (do (gen-expr (:expr n)) (gen-cast (:type (:expr n)) (:type n)))
     :memzero (let [v (:var n)]
                (local-addr v "%rdi")
@@ -577,6 +705,7 @@
            (case (:kind ty)
              :float (do (emit "  movl $0x80000000, %eax") (emit "  movd %eax, %xmm1") (emit "  xorps %xmm1, %xmm0"))
              :double (do (emit "  movabsq $0x8000000000000000, %rax") (emit "  movq %rax, %xmm1") (emit "  xorpd %xmm1, %xmm0"))
+             :ldouble (emit "  fchs")
              (if (= 8 (t/type-size ty)) (emit "  negq %rax") (emit "  negl %eax"))))
     :bitnot (do (gen-expr (:expr n))
                 (if (= 8 (t/type-size (:type n))) (emit "  notq %rax") (emit "  notl %eax")))
@@ -611,7 +740,10 @@
     (:add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr :eq :ne :lt :le :gt :ge)
     (gen-binary n)
     :call (gen-call n)
-    :stmt-expr (doseq [s (:body (:body n))] (gen-stmt s))
+    :stmt-expr (let [body (:body (:body n))]
+                 (doseq [s (butlast body)] (gen-stmt s))
+                 (when-let [l (last body)]
+                   (if (= :expr-stmt (:op l)) (gen-expr (:expr l)) (gen-stmt l))))
     :label-addr (emitf "  leaq " (:label n) "(%rip), %rax")
     :va-start (gen-va-start n)
     :va-arg (gen-va-arg n)
@@ -745,7 +877,7 @@
 (defn gen-stmt [s]
   (case (:op s)
     :block (doseq [x (:body s)] (gen-stmt x))
-    :expr-stmt (gen-expr (:expr s))
+    :expr-stmt (gen-discard (:expr s))
     :return (do (when-let [e (:expr s)] (gen-return-value e))
                 (emitf "  jmp .L.return." (:name *fn*)))
     :if (let [l-else (new-label) l-end (new-label)]
@@ -766,7 +898,7 @@
              (emitf "  je " (:brk s)))
            (gen-stmt (:body s))
            (emitf (:cont s) ":")
-           (when (:inc s) (gen-expr (:inc s)))
+           (when (:inc s) (gen-discard (:inc s)))
            (emitf "  jmp " l-begin)
            (emitf (:brk s) ":"))
     :do (let [l-begin (new-label)]
@@ -829,8 +961,12 @@
                       nf (count (filter #(= :sse %) cls))]
                   (if (and cls (<= (+ gp ng) 6) (<= (+ fp nf) 8))
                     (recur (rest ps) (+ gp ng) (+ fp nf) stack (conj out {:var p :mode :struct-reg :classes cls :gp gp :fp fp}))
-                    (recur (rest ps) gp fp (+ stack (align-to (t/type-size pty) 8))
-                           (conj out {:var p :mode :stack :off stack}))))
+                    (let [st (if (>= (t/type-align pty) 16) (+ 16 (align-to (- stack 16) 16)) stack)]
+                      (recur (rest ps) gp fp (+ st (align-to (t/type-size pty) 8))
+                             (conj out {:var p :mode :stack :off st})))))
+                (t/ldouble? pty)
+                (let [st (+ 16 (align-to (- stack 16) 16))]
+                  (recur (rest ps) gp fp (+ st 16) (conj out {:var p :mode :stack :off st})))
                 (t/flonum? pty)
                 (if (< fp 8)
                   (recur (rest ps) gp (inc fp) stack (conj out {:var p :mode :fp :reg fp}))
@@ -997,11 +1133,20 @@
                                   (map :name functions)))]
     (binding [*asm* sb
               *defined* defined
+              *ldconsts* (volatile! [])
               *counter* (volatile! 0)]
       (doseq [g globals]
         (when (and (not (:func g)) (or (:defined g) (:init g)))
           (emit-data g)))
       (doseq [f functions]
         (gen-function f))
+      (when (seq @*ldconsts*)
+        (emit "  .section .rodata")
+        (doseq [[l m e] @*ldconsts*]
+          (emit "  .align 16")
+          (emitf l ":")
+          (emitf "  .quad " m)
+          (emitf "  .short " e)
+          (emit "  .zero 6")))
       (emit "  .section .note.GNU-stack,\"\",@progbits"))
     (str sb)))

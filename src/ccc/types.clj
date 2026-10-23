@@ -18,6 +18,7 @@
 (def ty-ulong  {:kind :long :size 8 :align 8 :unsigned true})
 (def ty-float  {:kind :float :size 4 :align 4})
 (def ty-double {:kind :double :size 8 :align 8})
+(def ty-ldouble {:kind :ldouble :size 16 :align 16})
 
 (defn ptr-to [base] {:kind :ptr :size 8 :align 8 :base base})
 
@@ -56,7 +57,8 @@
     (:align t)))
 
 (defn integer? [t] (contains? #{:bool :char :short :int :long :enum} (:kind t)))
-(defn flonum? [t] (contains? #{:float :double} (:kind t)))
+(defn flonum? [t] (contains? #{:float :double :ldouble} (:kind t)))
+(defn ldouble? [t] (= :ldouble (:kind t)))
 (defn numeric? [t] (or (integer? t) (flonum? t)))
 (defn ptr? [t] (= :ptr (:kind t)))
 (defn array? [t] (contains? #{:array :vla} (:kind t)))
@@ -86,6 +88,7 @@
   "Usual arithmetic conversions for two numeric types."
   [a b]
   (cond
+    (or (= :ldouble (:kind a)) (= :ldouble (:kind b))) ty-ldouble
     (or (= :double (:kind a)) (= :double (:kind b))) ty-double
     (or (= :float (:kind a)) (= :float (:kind b))) ty-float
     :else
