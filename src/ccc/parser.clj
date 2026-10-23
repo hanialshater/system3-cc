@@ -1,7 +1,8 @@
 (ns ccc.parser
   "Recursive-descent C parser producing a typed AST."
-  (:refer-clojure :exclude [integer?])
-  (:require [ccc.types :as t :refer [ty-void ty-bool ty-char ty-uchar ty-short ty-ushort
+  (:refer-clojure :exclude [integer? case])
+  (:require [ccc.fastcase :refer [case]]
+            [ccc.types :as t :refer [ty-void ty-bool ty-char ty-uchar ty-short ty-ushort
                                      ty-int ty-uint ty-long ty-ulong ty-float ty-double ty-ldouble
                                      ptr-to array-of func-type]]
             [ccc.lexer :as lx]
@@ -742,7 +743,7 @@
                             (str/starts-with? (str/lower-case digits) "0b") [2 (subs digits 2)]
                             (and (> (count digits) 1) (= \0 (first digits))) [8 (subs digits 1)]
                             :else [10 digits])
-            big (try (BigInteger. ^String ds (int base)) (catch Exception _ (err-tok tk "invalid number")))
+            ^BigInteger big (try (BigInteger. ^String ds (int base)) (catch Exception _ (err-tok tk "invalid number")))
             u? (str/includes? suffix "u")
             l? (str/includes? suffix "l")
             fits-int (<= (.compareTo big (biginteger 0x7fffffff)) 0)

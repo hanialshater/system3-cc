@@ -2,7 +2,8 @@
   "C type representation. Types are plain maps with :kind.
    Struct/union bodies live in a per-compilation registry keyed by :id so that
    incomplete types can be completed later."
-  (:refer-clojure :exclude [integer?]))
+  (:refer-clojure :exclude [integer? case])
+  (:require [ccc.fastcase :refer [case]]))
 
 (def ^:dynamic *structs* nil) ; atom: id -> {:members [...] :size n :align n :complete bool}
 

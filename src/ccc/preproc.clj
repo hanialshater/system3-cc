@@ -1,11 +1,14 @@
 (ns ccc.preproc
   "C preprocessor operating on lexer tokens. Hideset-based macro expansion."
-  (:refer-clojure :exclude [ident?])
-  (:require [ccc.lexer :as lx]
+  (:refer-clojure :exclude [ident? case])
+  (:require [ccc.fastcase :refer [case]]
+            [ccc.lexer :as lx]
             [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.set])
-  (:import [java.util ArrayDeque]))
+  (:import [java.util ArrayDeque]
+           [java.util.concurrent ConcurrentHashMap]
+           [ccc.lexer Token]))
 
 (def predefined-src
   "#define __STDC__ 1
@@ -88,8 +91,28 @@
 
 (def eof-tok {:kind :eof :text "" :line 0 :file ""})
 
-(defn ident? [tk] (= :ident (:kind tk)))
-(defn is? [tk s] (and (#{:punct :ident} (:kind tk)) (= s (:text tk))))
+(defn ident? [tk] (identical? :ident (:kind tk)))
+(defn is? [tk ^String s]
+  (let [k (:kind tk)]
+    (and (or (identical? k :punct) (identical? k :ident)) (.equals s (:text tk)))))
+
+;; Batch-wide caches of pure functions of the file system (nothing is kept
+;; between runs of the compiler): canonical paths, and each file's tokens.
+(def ^:private ^ConcurrentHashMap canon-cache (ConcurrentHashMap.))
+(defn canonical-path [path]
+  (or (.get canon-cache path)
+      (let [c (.getCanonicalPath (io/file path))]
+        (.put canon-cache path c)
+        c)))
+
+(defn retag
+  "tk with the given hideset, line and file, not at the beginning of a line
+   (assoc of :hideset :line :file :bol, in one step for lexer tokens)."
+  [tk hideset line file]
+  (if (instance? Token tk)
+    (let [^Token t tk]
+      (Token. (.-kind t) (.-text t) line file false (.-space t) hideset (.-stray t) (meta t) (.-__extmap t)))
+    (assoc tk :hideset hideset :line line :file file :bol false)))
 
 ;; ---------------------------------------------------------------------------
 ;; Reading directive lines
@@ -258,9 +281,9 @@
           (if (nil? (:params m))
             ;; object-like
             (let [hs2 (conj hs name)
-                  raw (if (some #(is? % "##") (:body m)) (subst m {} tk) (:body m))
-                  body (mapv #(assoc % :hideset (into (or (:hideset %) #{}) hs2)
-                                     :line (:line tk) :file (:file tk) :bol false)
+                  raw (if (:paste m) (subst m {} tk) (:body m))
+                  line (:line tk) file (:file tk)
+                  body (mapv #(retag % (into (or (:hideset %) #{}) hs2) line file)
                              raw)
                   body (if (seq body) (assoc body 0 (assoc (body 0) :space (:space tk))) body)]
               (push-front! dq body)
@@ -272,8 +295,8 @@
                       argmap (bind-args m args tk)
                       hs2 (conj (clojure.set/intersection hs (or (:hideset rparen) #{})) name)
                       body (subst m argmap tk)
-                      body (mapv #(assoc % :hideset (into (or (:hideset %) #{}) hs2)
-                                         :line (:line tk) :file (:file tk) :bol false)
+                      line (:line tk) file (:file tk)
+                      body (mapv #(retag % (into (or (:hideset %) #{}) hs2) line file)
                                  body)
                       body (if (seq body) (assoc body 0 (assoc (body 0) :space (:space tk))) body)]
                   (push-front! dq body)
@@ -435,7 +458,7 @@
                       (recur (inc i) (conj params (:text t))))
                     :else (perr t "invalid macro parameter"))))]
           {:name (:text nm) :params params :variadic variadic :va-name va-name :body (vec body)})
-        {:name (:text nm) :params nil :body r}))))
+        {:name (:text nm) :params nil :body r :paste (boolean (some #(is? % "##") r))}))))
 
 (defn find-include [fname quoted cur-file]
   (let [cands (concat (when quoted
@@ -498,8 +521,8 @@
                       :else (perr d "#include expects \"FILENAME\" or <FILENAME>"))
                     path (find-include (str/trim fname) quoted (:file d))]
                 (when-not path (perr d (str "'" fname "' file not found")))
-                (when-not (contains? @*once* (.getCanonicalPath (io/file path)))
-                  (let [g (get @*guards* (.getCanonicalPath (io/file path)))]
+                (when-not (contains? @*once* (canonical-path path))
+                  (let [g (get @*guards* (canonical-path path))]
                     (when-not (and g (contains? @*macros* g))
                       (push-front! dq (include-file-tokens path))))))
               (= dname "if")
@@ -548,7 +571,7 @@
               (= dname "line") nil
               (= dname "pragma")
               (when (is? (first args) "once")
-                (swap! *once* conj (.getCanonicalPath (io/file (:file d)))))
+                (swap! *once* conj (canonical-path (:file d))))
               (= :pnum (:kind d)) nil ; # 123 "file"
               :else (perr d (str "invalid preprocessing directive #" dname)))
             (recur))
@@ -582,15 +605,22 @@
                              (recur (inc i) depth)))))]
             (when ok (:text (v 2)))))))))
 
+(def ^:private ^ConcurrentHashMap file-cache (ConcurrentHashMap.)) ; path -> [tokens-without-eof canonical-path guard]
+
 (defn include-file-tokens [path]
-  (let [src (slurp path :encoding "ISO-8859-1")
-        toks (lx/tokenize src path)
-        canon (.getCanonicalPath (io/file path))]
-    (when-let [g (detect-guard toks)]
+  (let [[toks canon g] (or (.get file-cache path)
+                           (let [src (slurp path :encoding "ISO-8859-1")
+                                 toks (lx/tokenize src path)
+                                 v [(pop toks) (canonical-path path) (detect-guard toks)]] ; drop :eof
+                             (.put file-cache path v)
+                             v))]
+    (when g
       (swap! *guards* assoc canon g))
-    (pop toks))) ; drop :eof
+    toks))
 
 (def ^:dynamic *cmdline-defines* [])
+
+(def ^:private ^ConcurrentHashMap predef-cache (ConcurrentHashMap.))
 
 (defn preprocess [src file include-dirs]
   (let [toks (lx/tokenize src file)]
@@ -602,13 +632,16 @@
                 *once* (atom #{})
                 *guards* (atom {})
                 *counter* (atom 0)]
-        ;; predefined
-        (let [dq (ArrayDeque.)]
-          (doseq [t (lx/tokenize (str predefined-src "\n"
-                                      (apply str (for [[n v] *cmdline-defines*] (str "#define " n " " v "\n"))))
-                                 "<built-in>")]
-            (.addLast dq t))
-          (preprocess-tokens dq))
+        ;; predefined (the macro table they produce is the same for every file of a run)
+        (if-let [m (.get predef-cache *cmdline-defines*)]
+          (reset! *macros* m)
+          (let [dq (ArrayDeque.)]
+            (doseq [t (lx/tokenize (str predefined-src "\n"
+                                        (apply str (for [[n v] *cmdline-defines*] (str "#define " n " " v "\n"))))
+                                   "<built-in>")]
+              (.addLast dq t))
+            (preprocess-tokens dq)
+            (.put predef-cache *cmdline-defines* @*macros*)))
         (let [dq (ArrayDeque.)]
           (doseq [t toks] (.addLast dq t))
           (preprocess-tokens dq))))))

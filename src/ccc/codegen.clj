@@ -1,7 +1,8 @@
 (ns ccc.codegen
   "x86-64 AT&T assembly generation from the typed AST (stack-machine style)."
-  (:refer-clojure :exclude [integer? pop! load])
-  (:require [ccc.types :as t]
+  (:refer-clojure :exclude [integer? pop! load case])
+  (:require [ccc.fastcase :refer [case]]
+            [ccc.types :as t]
             [clojure.string :as str]))
 
 (def ^:dynamic ^StringBuilder *asm* nil)
@@ -306,7 +307,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare capture rax-only? gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare capture rax-only? gen-sra-copy gen-expr gen-call-finish gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -1331,6 +1332,11 @@
               (emit "  movq %rax, %r10"))
             (when ret-mem
               (local-addr (:ret-buf n) "%rdi")))))
+      (gen-call-finish n args fast direct ret ret-mem stack pad fnode))))
+
+(defn gen-call-finish
+  "The end of gen-call: pop register arguments, call, clean up, normalize the result."
+  [n args fast direct ret ret-mem stack pad fnode]
       (let [[gp fp] (reduce (fn [[gp fp] a]
                               (case (:mode a)
                                 :gp (do (pop! (nth argreg64 gp)) [(inc gp) fp])
@@ -1367,7 +1373,7 @@
         (when (and (t/struct? ret) (not ret-mem))
           (local-addr (:ret-buf n) "%rdi")
           (store-ret-regs ret (struct-classes ret))
-          (emit "  movq %rdi, %rax"))))))
+          (emit "  movq %rdi, %rax"))))
 
 ;; varargs
 
@@ -1673,48 +1679,10 @@
     :cast (if (= :void (:kind (:type n))) (gen-discard (:expr n)) (gen-expr-pop n))
     (if (and (pure? n) (not (t/flonum? (:type n)))) nil (gen-expr-pop n))))
 
-(defn gen-expr [n]
+(defn gen-expr-rare
+  "gen-expr for the less common operators (apart, so that gen-expr stays small enough to JIT-compile)."
+  [n]
   (case (:op n)
-    :sra-copy (gen-sra-copy n)
-    :num
-    (let [ty (:type n)]
-      (cond
-        (= :float (:kind ty))
-        (do (emitf "  movl $" (Float/floatToRawIntBits (unchecked-float (:fval n))) ", %eax")
-            (emit "  movd %eax, %xmm0"))
-        (= :double (:kind ty))
-        (do (emitf "  movabsq $" (Double/doubleToRawLongBits (double (:fval n))) ", %rax")
-            (emit "  movq %rax, %xmm0"))
-        (= :ldouble (:kind ty))
-        (let [[m e] (or (:lbits n) [0 0])
-              l (str ".L.ld." (vswap! *counter* inc))]
-          (vswap! *ldconsts* conj [l m e])
-          (emitf "  fldt " l "(%rip)"))
-        :else
-        (let [v (:val n)]
-          (if (imm32? v)
-            (emitf "  movq $" v ", %rax")
-            (emitf "  movabsq $" v ", %rax")))))
-
-    :var (let [v (:var n) ty (:type n)]
-           (cond
-             (vreg v) (reg-load v)
-             (and (t/scalar? ty) (var-mem-op v)) (load-op ty (var-mem-op v))
-             :else (do (gen-addr n) (load ty))))
-    :member (cond
-              (:bitfield (:member n))
-              (let [m (addr-operand n)]
-                (load-op (bf-unit (:member n)) (render-mem m))
-                (gen-bitfield-load (:member n)))
-              (t/scalar? (:type n)) (load-op (:type n) (render-mem (addr-operand n)))
-              :else (gen-addr n))
-    :deref (if (t/scalar? (:type n))
-             (load-op (:type n) (render-mem (addr-operand n)))
-             (if (t/func? (:type n))
-               (gen-expr (:expr n))
-               (materialize (addr-operand n))))
-    :addr (gen-addr (:expr n))
-    :assign (gen-assign n)
     :incdec (if (and (= :var (:op (:expr n))) (vreg (:var (:expr n))))
               (let [v (:var (:expr n)) ty (:type n) sz (t/type-size ty) d (:delta n) r (vreg v)]
                 (if (>= sz 4)
@@ -1745,20 +1713,6 @@
                   2 (emit (if (t/unsigned? ty) "  movzwl %di, %eax" "  movswl %di, %eax"))
                   4 (emit "  movl %edi, %eax")
                   8 (emit "  movq %rdi, %rax")))))
-    :comma (do (gen-discard (:lhs n)) (gen-expr (:rhs n)))
-    :cast (let [from (:type (:expr n)) to (:type n)
-                o (when (and (t/integer? from) (= 4 (t/type-size from)) (or (t/integer? to) (t/ptr? to))
-                             (= 8 (t/type-size to)))
-                    (int-operand (:expr n) 4))]
-            (cond
-              (and o (not (str/starts-with? o "$")))
-              (emitf (if (t/unsigned? from) "  movl " "  movslq ") o (if (t/unsigned? from) ", %eax" ", %rax"))
-              ;; char/short register variables are kept extended to 32 bits
-              (and (t/integer? from) (#{1 2} (t/type-size from)) (= :var (:op (:expr n))) (vreg (:var (:expr n)))
-                   (or (t/integer? to) (t/ptr? to)) (#{4 8} (t/type-size to)) (not= :bool (:kind to)))
-              (let [r ((vreg (:var (:expr n))) 1)]
-                (if (= 8 (t/type-size to)) (emitf "  movslq " r ", %rax") (emitf "  movl " r ", %eax")))
-              :else (do (gen-expr (:expr n)) (gen-cast from to))))
     :memzero (let [v (:var n)]
                (if-let [r (vreg v)]
                  (emitf "  xorl " (r 1) ", " (r 1))
@@ -1776,33 +1730,6 @@
              (if (= 8 (t/type-size ty)) (emit "  negq %rax") (emit "  negl %eax"))))
     :bitnot (do (gen-expr (:expr n))
                 (if (= 8 (t/type-size (:type n))) (emit "  notq %rax") (emit "  notl %eax")))
-    :not (if (int-cmp-node? (:expr n))
-           (let [cc (gen-int-compare (:expr n))]
-             (emitf "  set" (cc-negate cc) " %al")
-             (emit "  movzbl %al, %eax"))
-           (do (gen-expr (:expr n))
-               (cmp-zero (:type (:expr n)))
-               (emit "  sete %al")
-               (emit "  movzbl %al, %eax")))
-    (:logand :logor)
-    (let [l-false (new-label) l-end (new-label)]
-      (gen-branch n l-false false)
-      (emit "  movl $1, %eax")
-      (emitf "  jmp " l-end)
-      (emitf l-false ":")
-      (emit "  xorl %eax, %eax")
-      (emitf l-end ":"))
-    :cond
-    (let [l-else (new-label) l-end (new-label)]
-      (gen-branch (:cond n) l-else false)
-      (gen-expr (:then n))
-      (emitf "  jmp " l-end)
-      (emitf l-else ":")
-      (gen-expr (:els n))
-      (emitf l-end ":"))
-    (:add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr :eq :ne :lt :le :gt :ge)
-    (gen-binary n)
-    :call (gen-call n)
     :stmt-expr (let [body (:body (:body n))]
                  (doseq [s (butlast body)] (gen-stmt s))
                  (when-let [l (last body)]
@@ -1900,6 +1827,91 @@
                   8 (emit "  movq %rax, (%rdi)"))
                 (emit "  movzbl %r10b, %eax"))
     (cerr (str "cannot generate expression " (:op n)))))
+
+(defn gen-expr [n]
+  (case (:op n)
+    :sra-copy (gen-sra-copy n)
+    :num
+    (let [ty (:type n)]
+      (cond
+        (= :float (:kind ty))
+        (do (emitf "  movl $" (Float/floatToRawIntBits (unchecked-float (:fval n))) ", %eax")
+            (emit "  movd %eax, %xmm0"))
+        (= :double (:kind ty))
+        (do (emitf "  movabsq $" (Double/doubleToRawLongBits (double (:fval n))) ", %rax")
+            (emit "  movq %rax, %xmm0"))
+        (= :ldouble (:kind ty))
+        (let [[m e] (or (:lbits n) [0 0])
+              l (str ".L.ld." (vswap! *counter* inc))]
+          (vswap! *ldconsts* conj [l m e])
+          (emitf "  fldt " l "(%rip)"))
+        :else
+        (let [v (:val n)]
+          (if (imm32? v)
+            (emitf "  movq $" v ", %rax")
+            (emitf "  movabsq $" v ", %rax")))))
+
+    :var (let [v (:var n) ty (:type n)]
+           (cond
+             (vreg v) (reg-load v)
+             (and (t/scalar? ty) (var-mem-op v)) (load-op ty (var-mem-op v))
+             :else (do (gen-addr n) (load ty))))
+    :member (cond
+              (:bitfield (:member n))
+              (let [m (addr-operand n)]
+                (load-op (bf-unit (:member n)) (render-mem m))
+                (gen-bitfield-load (:member n)))
+              (t/scalar? (:type n)) (load-op (:type n) (render-mem (addr-operand n)))
+              :else (gen-addr n))
+    :deref (if (t/scalar? (:type n))
+             (load-op (:type n) (render-mem (addr-operand n)))
+             (if (t/func? (:type n))
+               (gen-expr (:expr n))
+               (materialize (addr-operand n))))
+    :addr (gen-addr (:expr n))
+    :assign (gen-assign n)
+    :comma (do (gen-discard (:lhs n)) (gen-expr (:rhs n)))
+    :cast (let [from (:type (:expr n)) to (:type n)
+                o (when (and (t/integer? from) (= 4 (t/type-size from)) (or (t/integer? to) (t/ptr? to))
+                             (= 8 (t/type-size to)))
+                    (int-operand (:expr n) 4))]
+            (cond
+              (and o (not (str/starts-with? o "$")))
+              (emitf (if (t/unsigned? from) "  movl " "  movslq ") o (if (t/unsigned? from) ", %eax" ", %rax"))
+              ;; char/short register variables are kept extended to 32 bits
+              (and (t/integer? from) (#{1 2} (t/type-size from)) (= :var (:op (:expr n))) (vreg (:var (:expr n)))
+                   (or (t/integer? to) (t/ptr? to)) (#{4 8} (t/type-size to)) (not= :bool (:kind to)))
+              (let [r ((vreg (:var (:expr n))) 1)]
+                (if (= 8 (t/type-size to)) (emitf "  movslq " r ", %rax") (emitf "  movl " r ", %eax")))
+              :else (do (gen-expr (:expr n)) (gen-cast from to))))
+    :not (if (int-cmp-node? (:expr n))
+           (let [cc (gen-int-compare (:expr n))]
+             (emitf "  set" (cc-negate cc) " %al")
+             (emit "  movzbl %al, %eax"))
+           (do (gen-expr (:expr n))
+               (cmp-zero (:type (:expr n)))
+               (emit "  sete %al")
+               (emit "  movzbl %al, %eax")))
+    (:logand :logor)
+    (let [l-false (new-label) l-end (new-label)]
+      (gen-branch n l-false false)
+      (emit "  movl $1, %eax")
+      (emitf "  jmp " l-end)
+      (emitf l-false ":")
+      (emit "  xorl %eax, %eax")
+      (emitf l-end ":"))
+    :cond
+    (let [l-else (new-label) l-end (new-label)]
+      (gen-branch (:cond n) l-else false)
+      (gen-expr (:then n))
+      (emitf "  jmp " l-end)
+      (emitf l-else ":")
+      (gen-expr (:els n))
+      (emitf l-end ":"))
+    (:add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr :eq :ne :lt :le :gt :ge)
+    (gen-binary n)
+    :call (gen-call n)
+    (gen-expr-rare n)))
 
 ;; ---------------------------------------------------------------------------
 ;; Statements
