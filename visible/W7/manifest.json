@@ -1,0 +1,32 @@
+{
+ "closure.lua": {
+  "category": "language",
+  "gccO0Ms": 9,
+  "timeoutMs": 30000
+ },
+ "vararg.lua": {
+  "category": "language",
+  "gccO0Ms": 6,
+  "timeoutMs": 30000
+ },
+ "literals.lua": {
+  "category": "language",
+  "gccO0Ms": 15,
+  "timeoutMs": 30000
+ },
+ "nextvar.lua": {
+  "category": "libraries",
+  "gccO0Ms": 23,
+  "timeoutMs": 30000
+ },
+ "sort.lua": {
+  "category": "libraries",
+  "gccO0Ms": 479,
+  "timeoutMs": 30000
+ },
+ "bitwise.lua": {
+  "category": "libraries",
+  "gccO0Ms": 9,
+  "timeoutMs": 30000
+ }
+}
