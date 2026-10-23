@@ -22,7 +22,8 @@
 (def ^:dynamic *brk* nil)
 (def ^:dynamic *cont* nil)
 (def ^:dynamic *switch* nil)       ; volatile {:cases [] :default nil :type T}
-(def ^:dynamic *labels* nil)       ; volatile map user-label -> asm label
+(def ^:dynamic *labels* nil)
+(def ^:dynamic *strlits* nil)      ; volatile map: literal contents -> global       ; volatile map user-label -> asm label
 
 (defn tok [] (let [t (nth *toks* @*pos*)]
               (when (:stray t)
@@ -1509,7 +1510,12 @@
         esz (t/type-size ety)
         buf (byte-array (* n esz))]
     (doseq [i (range n)] (write-int! buf (* i esz) (nth vals i) esz))
-    (var-node (anon-global! ty {:bytes buf :relocs []}))))
+    ;; identical literals share storage, as with gcc
+    (let [k [(:kind ety) (:unsigned ety) vals]]
+      (var-node (or (get @*strlits* k)
+                    (let [g (add-global! (assoc (anon-global! ty {:bytes buf :relocs []}) :strlit true))]
+                      (vswap! *strlits* assoc k g)
+                      g))))))
 
 (defn declare-implicit-func! [name]
   (let [ty (func-type ty-int [] false false)
@@ -1966,6 +1972,7 @@
             *globals* (volatile! {})
             *global-order* (volatile! [])
             *functions* (volatile! [])
+            *strlits* (volatile! {})
             *counter* (volatile! 0)]
     (loop []
       (when-not (= :eof (:kind (tok)))

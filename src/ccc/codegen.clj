@@ -816,15 +816,29 @@
 (defn emit-data [g]
   (let [ty (:type g)
         sz (if (:init g) (alength ^bytes (:bytes (:init g))) (t/type-size ty))
-        al (max (or (:align g) (t/type-align ty)) (if (>= sz 16) 16 1))
+        base-al (or (:align g) (t/type-align ty))
+        agg (#{:array :struct :union} (:kind ty))
+        ;; gcc's x86-64 data alignment: aggregates >= 32 bytes get 32, >= 16 get 16;
+        ;; long string constants get 32
+        al (cond (:align g) base-al
+                 (:strlit g) (if (>= sz 32) (max base-al 32) base-al)
+                 (and agg (>= sz 32)) (max base-al 32)
+                 (and agg (>= sz 16)) (max base-al 16)
+                 :else base-al)
         label (:label g)
-        init (:init g)]
+        init (:init g)
+        init (when init
+               (if (and (not (:strlit g)) (empty? (:relocs init)) (every? zero? (:bytes init)))
+                 nil
+                 init))]
     (when-not (:static g) (emitf "  .globl " label))
     (if init
       (let [^bytes bs (:bytes init)
-            relocs (:relocs init)
-            ro (and (str/starts-with? label ".L.anon.") (empty? relocs) (= :array (:kind ty)))]
-        (emit (if ro "  .section .rodata" "  .data"))
+            relocs (:relocs init)]
+        (emit (cond (:strlit g) "  .section .rodata"
+                    (empty? relocs) "  .data"
+                    (every? #(contains? *defined* (:label %)) relocs) "  .section .data.rel.local,\"aw\""
+                    :else "  .section .data.rel,\"aw\""))
         (emitf "  .align " al)
         (when-not (str/starts-with? label ".L")
           (emitf "  .type " label ", @object")
