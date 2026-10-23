@@ -1,0 +1,132 @@
+{
+ "w2-0001": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0002": {
+  "category": "arrays",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0003": {
+  "category": "pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0006": {
+  "category": "strings",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0008": {
+  "category": "char",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0017": {
+  "category": "arrays",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0021": {
+  "category": "strings",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0022": {
+  "category": "pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0025": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0035": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0039": {
+  "category": "arrays",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0041": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0045": {
+  "category": "char",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0049": {
+  "category": "globals",
+  "exit": 1,
+  "timeoutMs": 3000
+ },
+ "w2-0053": {
+  "category": "pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0056": {
+  "category": "globals",
+  "exit": 1,
+  "timeoutMs": 3000
+ },
+ "w2-0062": {
+  "category": "char",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0065": {
+  "category": "arrays",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0066": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0069": {
+  "category": "char",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0077": {
+  "category": "strings",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0079": {
+  "category": "pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0083": {
+  "category": "char",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0085": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0088": {
+  "category": "arrays",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w2-0094": {
+  "category": "globals",
+  "exit": 0,
+  "timeoutMs": 3000
+ }
+}
