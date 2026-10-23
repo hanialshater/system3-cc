@@ -4,8 +4,8 @@
     :text original text, :line n, :file name,
     :bol true if first token on a line, :space true if preceded by whitespace}
    Numbers are kept as :pnum (preprocessing numbers) and converted by convert-number."
-  (:refer-clojure :exclude [case])
-  (:require [ccc.fastcase :refer [case]]
+  (:refer-clojure :exclude [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
+  (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [clojure.string :as str]))
 
 (defn error [file line msg]

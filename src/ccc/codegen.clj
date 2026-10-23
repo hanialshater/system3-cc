@@ -1,7 +1,7 @@
 (ns ccc.codegen
   "x86-64 AT&T assembly generation from the typed AST (stack-machine style)."
-  (:refer-clojure :exclude [integer? pop! load case])
-  (:require [ccc.fastcase :refer [case]]
+  (:refer-clojure :exclude [integer? pop! load case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
+  (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.types :as t]
             [clojure.string :as str]))
 

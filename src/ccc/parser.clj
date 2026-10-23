@@ -1,7 +1,7 @@
 (ns ccc.parser
   "Recursive-descent C parser producing a typed AST."
-  (:refer-clojure :exclude [integer? case])
-  (:require [ccc.fastcase :refer [case]]
+  (:refer-clojure :exclude [integer? case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
+  (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.types :as t :refer [ty-void ty-bool ty-char ty-uchar ty-short ty-ushort
                                      ty-int ty-uint ty-long ty-ulong ty-float ty-double ty-ldouble
                                      ptr-to array-of func-type]]

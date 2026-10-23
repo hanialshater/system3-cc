@@ -1,7 +1,7 @@
 (ns ccc.preproc
   "C preprocessor operating on lexer tokens. Hideset-based macro expansion."
-  (:refer-clojure :exclude [ident? case])
-  (:require [ccc.fastcase :refer [case]]
+  (:refer-clojure :exclude [ident? case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
+  (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.lexer :as lx]
             [clojure.java.io :as io]
             [clojure.string :as str]
