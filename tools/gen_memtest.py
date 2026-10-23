@@ -155,6 +155,14 @@ def main():
             lines_.append(f'    {l.code} = t1; }}')
             body.extend(lines_)
             state[k] = wrap(tv, l.ty)
+        elif kind < 0.905:
+            # whole-struct copies
+            dst, src = random.choice([('ls', 'gs'), ('gs', 'ls'), ('gs', '*ps')])
+            body.append(f'  {dst} = {src};')
+            sname = 'ls' if src == '*ps' else src
+            for f in ('c', 'i', 'l', 'us'):
+                state[(dst, f)] = state[(sname, f)]
+            continue
         elif kind < 0.92:
             idx = random.randrange(5)
             body.append(f'  idx = {idx};')

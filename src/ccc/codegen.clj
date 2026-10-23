@@ -303,7 +303,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi)
+(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -390,7 +390,23 @@
              (if-let [r (vreg v)]
                (if (= w 8) (r 0) (r 1))
                (var-mem-op v))))
+    :member (let [ty (:type n)]
+              (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty))
+                         (not (:bitfield (:member n))))
+                (fixed-mem-op n)))
     nil))
+
+(defn fixed-mem-op
+  "Memory operand string for a member chain on a memory variable, or nil."
+  [n]
+  (letfn [(go [n]
+            (case (:op n)
+              :var (let [v (:var n)]
+                     (when-let [op (var-mem-op v)]
+                       (if (:local v) {:disp (var-offset v) :base "%rbp"} {:sym (:label v) :base "%rip"})))
+              :member (when-let [m (go (:expr n))] (update m :disp (fnil + 0) (:offset (:member n))))
+              nil))]
+    (when-let [m (go n)] (render-mem m))))
 
 (defn gen-addr [n]
   (case (:op n)
@@ -894,6 +910,18 @@
       (do (gen-expr rhs) (reg-store (:var lhs)))
       (and (scalar-var? lhs) (var-mem-op (:var lhs)))
       (do (gen-expr rhs) (store-op (:type lhs) (var-mem-op (:var lhs))))
+      (and (= :var (:op lhs)) (t/struct? (:type lhs)) (:local (:var lhs)) (var-mem-op (:var lhs))
+           (#{:deref :member :var} (:op rhs)) (<= (t/type-size (:type lhs)) 64))
+      (let [off (var-offset (:var lhs)) sz (t/type-size (:type lhs))
+            m (addr-operand rhs)]
+        (loop [k 0]
+          (let [rem (- sz k)
+                [w r] (cond (>= rem 8) [8 "%rcx"] (>= rem 4) [4 "%ecx"] (>= rem 2) [2 "%cx"] (>= rem 1) [1 "%cl"] :else [0 nil])]
+            (when (pos? w)
+              (emitf "  mov" (sfx-of w) " " (render-mem (update m :disp (fnil + 0) k)) ", " r)
+              (emitf "  mov" (sfx-of w) " " r ", " (+ off k) "(%rbp)")
+              (recur (+ k w)))))
+        (emitf "  leaq " off "(%rbp), %rax"))
       (and (= :var (:op lhs)) (t/struct? (:type lhs)) (:local (:var lhs)) (var-mem-op (:var lhs)))
       (let [off (var-offset (:var lhs)) sz (t/type-size (:type lhs))]
         (gen-expr rhs)
@@ -1344,6 +1372,16 @@
                 m)]
         (gen-expr rhs)
         (store-op ty (render-mem m)))
+      ;; impure address, any pure value: park the address in a scratch register
+      (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (not (pure? lhs)) (pure? rhs)
+           *scratch-free* (seq @*scratch-free*))
+      (let [sr (first @*scratch-free*)
+            _ (vswap! *scratch-free* rest)
+            m (addr-operand lhs)]
+        (emitf "  leaq " (render-mem m) ", " sr)
+        (gen-expr rhs)
+        (store-op ty (str "(" sr ")"))
+        (vswap! *scratch-free* conj sr))
       ;; x = x op y with x in memory and y an immediate or register
       (and upd (var-mem-op (:var lhs)) (not (and (string? (second upd)) (str/includes? (second upd) "("))))
       (let [[ins o] upd
