@@ -614,6 +614,10 @@
                  (emit "  subq %rax, %rsp")
                  (emitf "  movq %rsp, " (var-offset v) "(%rbp)"))
     :trap (emit "  ud2")
+    :fabs (do (gen-expr (:expr n))
+              (if (= :float (:kind (:type n)))
+                (do (emit "  movl $0x7fffffff, %eax") (emit "  movd %eax, %xmm1") (emit "  andps %xmm1, %xmm0"))
+                (do (emit "  movabsq $0x7fffffffffffffff, %rax") (emit "  movq %rax, %xmm1") (emit "  andpd %xmm1, %xmm0"))))
     :save-sp (emitf "  movq %rsp, " (var-offset (:var n)) "(%rbp)")
     :restore-sp (emitf "  movq " (var-offset (:var n)) "(%rbp), %rsp")
     :alloca (let [d @*depth*]
@@ -786,7 +790,9 @@
               (gen-stmt (:body s))
               (emitf (:brk s) ":"))
     :label (do (emitf (:label s) ":") (gen-stmt (:body s)))
-    :goto (emitf "  jmp " (:label s))
+    :goto (do (when-let [slot (some-> (:restore s) deref)]
+                (emitf "  movq " (var-offset slot) "(%rbp), %rsp"))
+              (emitf "  jmp " (:label s)))
     :goto-ptr (do (gen-expr (:expr s)) (emit "  jmp *%rax"))
     (cerr (str "cannot generate statement " (:op s)))))
 
