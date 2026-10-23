@@ -21,7 +21,7 @@
 
 (defn ptr-to [base] {:kind :ptr :size 8 :align 8 :base base})
 
-(declare type-size type-align)
+(declare type-size type-align type-align*)
 
 (defn array-of [base len]
   {:kind :array :base base :len len})
@@ -43,6 +43,11 @@
     (:size t)))
 
 (defn type-align [t]
+  (if-let [x (:xalign t)]
+    x
+    (type-align* t)))
+
+(defn type-align* [t]
   (case (:kind t)
     :array (type-align (:base t))
     (:struct :union) (or (:align (struct-info t)) 1)

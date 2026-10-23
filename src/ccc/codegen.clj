@@ -10,7 +10,8 @@
 (def ^:dynamic *fn* nil)        ; current function map
 (def ^:dynamic *defined* nil)   ; set of labels defined in this TU
 (def ^:dynamic *counter* nil)   ; volatile
-(def ^:dynamic *fninfo* nil)    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
+(def ^:dynamic *fninfo* nil)
+(def ^:dynamic *overaligned* #{}) ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
 
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
 (defmacro emitf [& parts] `(emit (str ~@parts)))
@@ -190,7 +191,14 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt)
+(declare gen-expr gen-stmt var-offset)
+
+(defn local-addr
+  "Emit the address of local v into reg."
+  [v reg]
+  (if (or (:vla-ptr v) (contains? *overaligned* (:id v)))
+    (emitf "  movq " (var-offset v) "(%rbp), " reg)
+    (emitf "  leaq " (var-offset v) "(%rbp), " reg)))
 
 (defn var-offset [v]
   (or (get *offsets* (:id v)) (cerr (str "no offset for variable " (:name v)))))
@@ -199,9 +207,7 @@
   (case (:op n)
     :var (let [v (:var n)]
            (if (:local v)
-             (if (:vla-ptr v)
-               (emitf "  movq " (var-offset v) "(%rbp), %rax")
-               (emitf "  leaq " (var-offset v) "(%rbp), %rax"))
+             (local-addr v "%rax")
              (if (contains? *defined* (:label v))
                (emitf "  leaq " (:label v) "(%rip), %rax")
                (emitf "  movq " (:label v) "@GOTPCREL(%rip), %rax"))))
@@ -220,7 +226,8 @@
   [n]
   (case (:op n)
     :num (and (not (:fval n)) (imm32? (:val n)))
-    :var (and (:local (:var n)) (not (:vla-ptr (:var n))) (t/scalar? (:type n)) (t/integer? (:type n)))
+    :var (and (:local (:var n)) (not (:vla-ptr (:var n))) (not (contains? *overaligned* (:id (:var n))))
+              (t/scalar? (:type n)) (t/integer? (:type n)))
     false))
 
 (defn gen-simple-to-rdi [n]
@@ -391,7 +398,7 @@
         (gen-expr fnode)
         (emit "  movq %rax, %r10"))
       (when ret-mem
-        (emitf "  leaq " (var-offset (:ret-buf n)) "(%rbp), %rdi"))
+        (local-addr (:ret-buf n) "%rdi"))
       (let [[gp fp] (reduce (fn [[gp fp] a]
                               (case (:mode a)
                                 :gp (do (pop! (nth argreg64 gp)) [(inc gp) fp])
@@ -422,7 +429,7 @@
           :short (emit (if (t/unsigned? ret) "  movzwl %ax, %eax" "  movswl %ax, %eax"))
           nil)
         (when (and (t/struct? ret) (not ret-mem))
-          (emitf "  leaq " (var-offset (:ret-buf n)) "(%rbp), %rdi")
+          (local-addr (:ret-buf n) "%rdi")
           (store-ret-regs ret (struct-classes ret))
           (emit "  movq %rdi, %rax"))))))
 
@@ -515,7 +522,7 @@
     (let [ty (:type n)]
       (cond
         (= :float (:kind ty))
-        (do (emitf "  movl $" (Float/floatToRawIntBits (float (:fval n))) ", %eax")
+        (do (emitf "  movl $" (Float/floatToRawIntBits (unchecked-float (:fval n))) ", %eax")
             (emit "  movd %eax, %xmm0"))
         (= :double (:kind ty))
         (do (emitf "  movabsq $" (Double/doubleToRawLongBits (double (:fval n))) ", %rax")
@@ -551,7 +558,7 @@
     :comma (do (gen-expr (:lhs n)) (gen-expr (:rhs n)))
     :cast (do (gen-expr (:expr n)) (gen-cast (:type (:expr n)) (:type n)))
     :memzero (let [v (:var n)]
-               (emitf "  leaq " (var-offset v) "(%rbp), %rdi")
+               (local-addr v "%rdi")
                (emitf "  movq $" (t/type-size (:type v)) ", %rcx")
                (emit "  xorl %eax, %eax")
                (emit "  rep stosb"))
@@ -607,6 +614,8 @@
                  (emit "  subq %rax, %rsp")
                  (emitf "  movq %rsp, " (var-offset v) "(%rbp)"))
     :trap (emit "  ud2")
+    :save-sp (emitf "  movq %rsp, " (var-offset (:var n)) "(%rbp)")
+    :restore-sp (emitf "  movq " (var-offset (:var n)) "(%rbp), %rsp")
     :alloca (let [d @*depth*]
               (gen-expr (:expr n))
               (emit "  addq $15, %rax")
@@ -820,9 +829,11 @@
         (reduce (fn [[m bottom] v]
                   (if-let [o (stack-param-ids (:id v))]
                     [(assoc m (:id v) o) bottom]
-                    (let [sz (if (t/scalar? (:type v)) (max 1 (t/type-size (:type v)))
-                               (align-to (max 1 (t/type-size (:type v))) 8))
-                          al (max (or (:align v) (t/type-align (:type v))) 1)
+                    (let [over (> (or (:align v) (t/type-align (:type v))) 16)
+                          sz (cond over 8
+                                   (t/scalar? (:type v)) (max 1 (t/type-size (:type v)))
+                                   :else (align-to (max 1 (t/type-size (:type v))) 8))
+                          al (if over 8 (max (or (:align v) (t/type-align (:type v))) 1))
                           al (if (and (t/array? (:type v)) (>= (t/type-size (:type v)) 16)) (max al 16) al)
                           bottom (align-to (+ bottom sz) al)]
                       [(assoc m (:id v) (- bottom)) bottom])))
@@ -830,7 +841,11 @@
         bottom (if ret-mem (+ bottom 8) bottom)
         ret-ptr-off (when ret-mem (- bottom))
         frame (align-to bottom 16)]
-    [offsets frame {:gp gp :fp fp :stack-bytes (- stack 16) :ret-ptr-off ret-ptr-off} pinfo]))
+    [offsets frame {:gp gp :fp fp :stack-bytes (- stack 16) :ret-ptr-off ret-ptr-off
+                    :overaligned (vec (filter #(and (not (stack-param-ids (:id %)))
+                                                    (> (or (:align %) (t/type-align (:type %))) 16))
+                                              (:locals f)))}
+     pinfo]))
 
 (defn store-param [pi off]
   (let [v (:var pi) ty (:type v)]
@@ -860,6 +875,7 @@
     (binding [*offsets* offsets
               *fn* f
               *fninfo* info
+              *overaligned* (set (map :id (:overaligned info)))
               *depth* (volatile! 0)]
       (when-not (:static f) (emitf "  .globl " name))
       (emit "  .text")
@@ -868,6 +884,11 @@
       (emit "  pushq %rbp")
       (emit "  movq %rsp, %rbp")
       (when (pos? frame) (emitf "  subq $" frame ", %rsp"))
+      (doseq [v (:overaligned info)]
+        (let [al (or (:align v) (t/type-align (:type v)))]
+          (emitf "  subq $" (align-to (max 1 (t/type-size (:type v))) 16) ", %rsp")
+          (emitf "  andq $" (- al) ", %rsp")
+          (emitf "  movq %rsp, " (offsets (:id v)) "(%rbp)")))
       (when (:ret-ptr-off info)
         (emitf "  movq %rdi, " (:ret-ptr-off info) "(%rbp)"))
       (when-let [va (:va-area f)]

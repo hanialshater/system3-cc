@@ -23,7 +23,10 @@
 (def ^:dynamic *cont* nil)
 (def ^:dynamic *switch* nil)       ; volatile {:cases [] :default nil :type T}
 (def ^:dynamic *labels* nil)
-(def ^:dynamic *strlits* nil)      ; volatile map: literal contents -> global       ; volatile map user-label -> asm label
+(def ^:dynamic *strlits* nil)
+(def ^:dynamic *vla-blocks* nil)   ; volatile vector of volatiles: saved-sp slot per open block
+(def ^:dynamic *brk-depth* 0)      ; (count @*vla-blocks*) where the break target was opened
+(def ^:dynamic *cont-depth* 0)      ; volatile map: literal contents -> global       ; volatile map user-label -> asm label
 
 (defn tok [] (let [t (nth *toks* @*pos*)]
               (when (:stray t)
@@ -231,6 +234,7 @@
                     (if (>= (t/type-size ty) 8) [l v] (not-const))
                     [nil (wrap v ty)]))))
       :addr (eval-addr (:expr n))
+      :label-addr [(:label n) 0]
       :var (if (and (or (t/array? ty) (t/func? ty)) (not (:local (:var n))))
              [(:label (:var n)) 0]
              (not-const))
@@ -256,7 +260,7 @@
                 (eval-double (:then n)) (eval-double (:els n)))
         :comma (eval-double (:rhs n))
         :cast (let [inner (:expr n) d (eval-double inner)]
-                (if (= :float (:kind ty)) (double (float d)) d))
+                (if (= :float (:kind ty)) (double (unchecked-float d)) d))
         (not-const)))))
 
 (defn try-eval [n]
@@ -268,7 +272,7 @@
 ;; Node constructors with typing
 
 (defn num-node [v ty] {:op :num :type ty :val (wrap v ty)})
-(defn fnum-node [d ty] {:op :num :type ty :fval (if (= :float (:kind ty)) (double (float d)) (double d))})
+(defn fnum-node [d ty] {:op :num :type ty :fval (if (= :float (:kind ty)) (double (unchecked-float d)) (double d))})
 
 (defn decay [ty]
   (case (:kind ty)
@@ -823,8 +827,8 @@
 (defn declarator
   "Returns {:type :name :name-tok}. Name may be nil (abstract)."
   [ty]
-  (let [ty (pointers ty)]
-    (skip-attributes!)
+  (let [ty (pointers ty)
+        a0 (skip-attributes!)]
     (cond
       (and (is? "(") (nested-declarator?))
       (let [start @*pos*]
@@ -837,19 +841,19 @@
           (let [res (declarator ty2)]
             (expect! ")")
             (vreset! *pos* end)
-            res)))
+            (update res :attrs merge a0 (skip-attributes!)))))
 
       (and (= :ident (:kind (tok))) (not (contains? keywords (:text (tok)))))
       (let [name-tok (tok)]
         (advance!)
-        (let [ty (type-suffix ty)]
-          (skip-attributes!)
-          {:type ty :name (:text name-tok) :name-tok name-tok}))
+        (let [ty (type-suffix ty)
+              a1 (skip-attributes!)]
+          {:type ty :name (:text name-tok) :name-tok name-tok :attrs (merge a0 a1)}))
 
       :else
-      (let [ty (type-suffix ty)]
-        (skip-attributes!)
-        {:type ty :name nil :name-tok (tok)}))))
+      (let [ty (type-suffix ty)
+            a1 (skip-attributes!)]
+        {:type ty :name nil :name-tok (tok) :attrs (merge a0 a1)}))))
 
 (defn abstract-declarator [ty]
   (:type (declarator ty)))
@@ -865,7 +869,7 @@
 (defn layout-struct [kind members packed align-attr]
   (if (= kind :union)
     (let [members (mapv #(assoc % :offset 0 :bit-offset 0) members)
-          al (reduce max 1 (map #(if packed 1 (or (:align %) (t/type-align (:type %)))) members))
+          al (reduce max 1 (map #(or (:align %) (if packed 1 (t/type-align (:type %)))) members))
           al (max al (or align-attr 1))
           sz (reduce max 0 (map #(t/type-size (:type %)) members))]
       {:members members :size (align-to sz al) :align al})
@@ -876,7 +880,7 @@
         (let [m (first ms)
               mty (:type m)
               sz (t/type-size mty)
-              malign (if packed 1 (or (:align m) (t/type-align mty)))]
+              malign (or (:align m) (if packed 1 (t/type-align mty)))]
           (cond
             (and (:bitfield m) (zero? (:bit-width m)))
             (recur (rest ms) (align-to bits (* 8 sz)) al out)
@@ -909,8 +913,9 @@
                      (if (consume! ";")
                        ms
                        (do (when-not first? (expect! ","))
-                           (let [{:keys [type name]} (if (is? ":") {:type base :name nil} (declarator base))
-                                 m {:name name :type type :align (:align attr)}
+                           (let [{:keys [type name attrs]} (if (is? ":") {:type base :name nil} (declarator base))
+                                 m {:name name :type type :align (or (:aligned attrs) (:align attr))}
+                                 m (if (and (:packed attrs) (not (:aligned attrs))) (assoc m :align 1) m)
                                  m (if (consume! ":")
                                      (assoc m :bitfield true :bit-width (const-expr))
                                      m)
@@ -1342,7 +1347,7 @@
                    (catch clojure.lang.ExceptionInfo e
                      (if (= :not-const (:type (ex-data e))) (err "initializer element is not constant") (throw e))))]
         (if (= :float (:kind ty))
-          (write-int! buf off (Float/floatToRawIntBits (float d)) 4)
+          (write-int! buf off (Float/floatToRawIntBits (unchecked-float d)) 4)
           (write-int! buf off (Double/doubleToRawLongBits d) 8))
         [])
 
@@ -1768,6 +1773,8 @@
 ;; ---------------------------------------------------------------------------
 ;; Statements
 
+(declare vla-exit-stmts)
+
 (defn user-label [nm]
   (or (@*labels* nm)
       (let [l (new-label)] (vswap! *labels* assoc nm l) l)))
@@ -1811,7 +1818,7 @@
               (expect! ")")
               (let [sw (volatile! {:cases [] :default nil :type (:type c)})
                     brk (new-label)
-                    body (binding [*switch* sw *brk* brk] (stmt))]
+                    body (binding [*switch* sw *brk* brk *brk-depth* (count @*vla-blocks*)] (stmt))]
                 {:op :switch :cond c :body body :cases (:cases @sw) :default (:default @sw) :brk brk})))
         "case"
         (do (advance!)
@@ -1844,7 +1851,7 @@
                   inc (when-not (is? ")") (expr))
                   _ (expect! ")")
                   brk (new-label) cont (new-label)
-                  body (binding [*brk* brk *cont* cont] (stmt))]
+                  body (binding [*brk* brk *cont* cont *brk-depth* (count @*vla-blocks*) *cont-depth* (count @*vla-blocks*)] (stmt))]
               (leave-scope!)
               {:op :for :init init :cond c :inc inc :body body :brk brk :cont cont}))
         "while"
@@ -1852,12 +1859,12 @@
             (let [c (check-scalar (expr))]
               (expect! ")")
               (let [brk (new-label) cont (new-label)
-                    body (binding [*brk* brk *cont* cont] (stmt))]
+                    body (binding [*brk* brk *cont* cont *brk-depth* (count @*vla-blocks*) *cont-depth* (count @*vla-blocks*)] (stmt))]
                 {:op :for :cond c :body body :brk brk :cont cont})))
         "do"
         (do (advance!)
             (let [brk (new-label) cont (new-label)
-                  body (binding [*brk* brk *cont* cont] (stmt))]
+                  body (binding [*brk* brk *cont* cont *brk-depth* (count @*vla-blocks*) *cont-depth* (count @*vla-blocks*)] (stmt))]
               (when-not (consume! "while") (err "expected 'while'"))
               (expect! "(")
               (let [c (check-scalar (expr))]
@@ -1873,11 +1880,11 @@
         "break"
         (do (advance!) (expect! ";")
             (when-not *brk* (err "break statement not within loop or switch"))
-            {:op :goto :label *brk*})
+            {:op :block :body (conj (vla-exit-stmts *brk-depth*) {:op :goto :label *brk*})})
         "continue"
         (do (advance!) (expect! ";")
             (when-not *cont* (err "continue statement not within a loop"))
-            {:op :goto :label *cont*})
+            {:op :block :body (conj (vla-exit-stmts *cont-depth*) {:op :goto :label *cont*})})
         ("asm" "__asm__" "__asm")
         (do (advance!)
             (loop [] (when (#{"volatile" "__volatile__" "goto"} (:text (tok))) (advance!) (recur)))
@@ -1902,11 +1909,13 @@
           out
           (do
             (when-not first? (expect! ","))
-            (let [{:keys [type name name-tok]} (declarator base)]
+            (let [{:keys [type name name-tok attrs]} (declarator base)
+                  attr (if (:aligned attrs) (assoc attr :align (max (:aligned attrs) (get attr :align 0))) attr)]
               (when-not name (err "declarator name expected"))
               (cond
                 (:typedef attr)
-                (do (push-ident! name {:typedef type}) (recur out false))
+                (do (push-ident! name {:typedef (if (:align attr) (assoc type :xalign (:align attr)) type)})
+                    (recur out false))
 
                 (t/func? type)
                 (let [g (declare-function! name type attr)]
@@ -1948,8 +1957,13 @@
                       v2 (assoc v :type vty :vla-ptr true)]
                   (push-ident! name {:var v2})
                   (vswap! *locals* (fn [ls] (mapv #(if (= (:id %) (:id v)) v2 %) ls)))
-                  (let [alloc {:op :vla-alloc :type ty-void :var v2 :size (var-node (:size-var vty))}]
-                    (recur (conj (into out (map expr-stmt-node @sizes)) (expr-stmt-node alloc)) false)))
+                  (let [alloc {:op :vla-alloc :type ty-void :var v2 :size (var-node (:size-var vty))}
+                        blk (when (seq @*vla-blocks*) (peek @*vla-blocks*))
+                        save (when (and blk (nil? @blk))
+                               (let [slot (new-temp! ty-ulong)]
+                                 (vreset! blk slot)
+                                 [(expr-stmt-node {:op :save-sp :type ty-void :var slot})]))]
+                    (recur (conj (into (into out save) (map expr-stmt-node @sizes)) (expr-stmt-node alloc)) false)))
 
                 :else
                 (let [v (new-lvar! name type)
@@ -1969,19 +1983,47 @@
                       (recur (conj out (expr-stmt-node (lvar-initializer v2 init))) false))
                     (recur out false)))))))))))
 
+(defn restore-sp-stmt [slot] (expr-stmt-node {:op :restore-sp :type ty-void :var slot}))
+
+(defn vla-exit-stmts
+  "Statements releasing VLA space of blocks opened at index >= depth."
+  [depth]
+  (let [blocks @*vla-blocks*
+        slot (some (fn [b] @b) (drop depth blocks))]
+    (if slot [(restore-sp-stmt slot)] [])))
+
 (defn compound-stmt
   "After '{'."
   []
   (enter-scope!)
-  (let [items (loop [acc []]
+  (let [blk (volatile! nil)
+        _ (vswap! *vla-blocks* conj blk)
+        saved-labels (volatile! {})
+        items (loop [acc []]
                 (cond
                   (consume! "}") acc
+                  ;; GNU local labels: fresh asm labels for this block
+                  (is? "__label__")
+                  (do (advance!)
+                      (loop []
+                        (let [nm (:text (tok))]
+                          (advance!)
+                          (when-not (contains? @saved-labels nm)
+                            (vswap! saved-labels assoc nm (get @*labels* nm ::none)))
+                          (vswap! *labels* assoc nm (new-label))
+                          (when (consume! ",") (recur))))
+                      (expect! ";")
+                      (recur acc))
                   (is? "_Static_assert")
                   (do (advance!) (expect! "(") (const-expr)
                       (when (consume! ",") (advance!)) (expect! ")") (expect! ";") (recur acc))
                   (and (typename?) (not (is-tok? (peek-tok 1) ":")))
                   (recur (into acc (declaration)))
-                  :else (recur (conj acc (stmt)))))]
+                  :else (recur (conj acc (stmt)))))
+        _ (vswap! *vla-blocks* pop)
+        _ (doseq [[nm old] @saved-labels]
+            (if (= old ::none) (vswap! *labels* dissoc nm) (vswap! *labels* assoc nm old)))
+        items (if @blk (conj items (restore-sp-stmt @blk)) items)]
     (leave-scope!)
     {:op :block :body items}))
 
@@ -2035,6 +2077,7 @@
         g (add-global! (assoc g :defined true))]
     (push-ident! name {:var g})
     (binding [*locals* (volatile! [])
+              *vla-blocks* (volatile! [])
               *cur-fn* {:name name :type ty}
               *labels* (volatile! {})]
       (enter-scope!)
@@ -2107,11 +2150,12 @@
       nil
       (loop [first? true]
         (when-not first? (expect! ","))
-        (let [{:keys [type name]} (declarator base)]
+        (let [{:keys [type name attrs]} (declarator base)
+              attr (if (:aligned attrs) (assoc attr :align (max (:aligned attrs) (get attr :align 0))) attr)]
           (when-not name (err "declarator name expected"))
           (cond
             (:typedef attr)
-            (do (push-ident! name {:typedef type})
+            (do (push-ident! name {:typedef (if (:align attr) (assoc type :xalign (:align attr)) type)})
                 (when-not (consume! ";") (recur false)))
 
             (t/func? type)

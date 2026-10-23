@@ -84,6 +84,7 @@
 (def ^:dynamic *includes* nil)  ; vector of include dirs
 (def ^:dynamic *once* nil)      ; atom set of files with #pragma once
 (def ^:dynamic *guards* nil)    ; atom file -> guard macro name
+(def ^:dynamic *counter* nil)   ; atom for __COUNTER__
 
 (def eof-tok {:kind :eof :text "" :line 0 :file ""})
 
@@ -245,6 +246,8 @@
     (let [name (:text tk)
           hs (or (:hideset tk) #{})]
       (cond
+        (= name "__COUNTER__")
+        (do (.addFirst dq (assoc tk :kind :pnum :text (str (dec (swap! *counter* inc))) :hideset hs)) true)
         (= name "__LINE__")
         (do (.addFirst dq (assoc tk :kind :pnum :text (str (:line tk)) :hideset hs)) true)
         (= name "__FILE__")
@@ -595,7 +598,8 @@
       (binding [*macros* (atom {})
                 *includes* (vec include-dirs)
                 *once* (atom #{})
-                *guards* (atom {})]
+                *guards* (atom {})
+                *counter* (atom 0)]
         ;; predefined
         (let [dq (ArrayDeque.)]
           (doseq [t (lx/tokenize predefined-src "<built-in>")] (.addLast dq t))
