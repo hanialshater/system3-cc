@@ -131,15 +131,15 @@
         8 (emit "  movq (%rax), %rax")))))
 
 (defn emit-copy
-  "Copy size bytes from (src) to (dst); clobbers %r8."
+  "Copy size bytes from (src) to (dst); clobbers %rdx."
   [src dst size]
   (loop [off 0]
     (let [rem (- size off)]
       (cond
-        (>= rem 8) (do (emitf "  movq " off "(" src "), %r8") (emitf "  movq %r8, " off "(" dst ")") (recur (+ off 8)))
-        (>= rem 4) (do (emitf "  movl " off "(" src "), %r8d") (emitf "  movl %r8d, " off "(" dst ")") (recur (+ off 4)))
-        (>= rem 2) (do (emitf "  movw " off "(" src "), %r8w") (emitf "  movw %r8w, " off "(" dst ")") (recur (+ off 2)))
-        (>= rem 1) (do (emitf "  movb " off "(" src "), %r8b") (emitf "  movb %r8b, " off "(" dst ")") (recur (+ off 1)))
+        (>= rem 8) (do (emitf "  movq " off "(" src "), %rdx") (emitf "  movq %rdx, " off "(" dst ")") (recur (+ off 8)))
+        (>= rem 4) (do (emitf "  movl " off "(" src "), %edx") (emitf "  movl %edx, " off "(" dst ")") (recur (+ off 4)))
+        (>= rem 2) (do (emitf "  movw " off "(" src "), %dx") (emitf "  movw %dx, " off "(" dst ")") (recur (+ off 2)))
+        (>= rem 1) (do (emitf "  movb " off "(" src "), %dl") (emitf "  movb %dl, " off "(" dst ")") (recur (+ off 1)))
         :else nil))))
 
 (defn store
@@ -792,7 +792,8 @@
       (let [o (gen-int-operands lhs rhs 4)
             ins (if (= op :shl) "shl" (if u "shr" "sar"))]
         (if (str/starts-with? o "$")
-          (emitf "  " ins sfx " $" (bit-and (parse-long (subs o 1)) 255) ", " ax)
+          (let [c (bit-and (parse-long (subs o 1)) 255)]
+            (when-not (zero? c) (emitf "  " ins sfx " $" c ", " ax)))
           (do (emitf "  movl " o ", %ecx") (emitf "  " ins sfx " %cl, " ax))))
       (:div :mod)
       (if-let [k (when (= :num (:op rhs))
@@ -1584,7 +1585,7 @@
     :incdec (gen-incdec-nv n)
     :comma (do (gen-discard (:lhs n)) (gen-discard (:rhs n)))
     :sra-copy (gen-sra-copy n)
-    (gen-expr-pop n)))
+    (if (and (pure? n) (not (t/flonum? (:type n)))) nil (gen-expr-pop n))))
 
 (defn gen-expr [n]
   (case (:op n)
@@ -2050,8 +2051,7 @@
                 (map? x)
                 (when-let [op (:op x)]
                   (when (or (#{:call :overflow :va-arg :va-start :va-copy :alloca :vla-alloc :goto-ptr} op)
-                            (and (= op :assign) (or (t/struct? (:type x))
-                                                    (and (= :member (:op (:lhs x))) (:bitfield (:member (:lhs x))))))
+                            (and (= op :assign) (= :member (:op (:lhs x))) (:bitfield (:member (:lhs x))))
                             (and (= op :return) (:expr x) (t/struct? (:type (:expr x)))))
                     (vswap! unsafe into @path))
                   (when (:scope-id x) (vswap! path conj (:scope-id x)) (vswap! seen conj (:scope-id x)))
@@ -2487,6 +2487,14 @@
             ;; sign extension right after a sign-extending 32->64 load
             (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
             (do (.add out l) (recur (+ i 2)))
+            ;; zero extension of a value just written by a 32-bit operation
+            (and (= l "  movl %eax, %eax")
+                 (let [k (loop [k (dec (.size out))]
+                           (if (and (>= k 0) (re-matches #"  (cmp|test)[lq] .*" (.get out k))) (recur (dec k)) k))]
+                   (and (>= k 0)
+                        (re-matches #"  (movl|andl|addl|subl|shrl|sarl|shll|xorl|orl|imull|leal|movzbl|movzwl|movsbl|movswl) [^,]*(, [^,]*)?, %eax"
+                                    (.get out k)))))
+            (recur (inc i))
             ;; sign extension of a zero-extended byte/word
             (and nx (re-matches #"  movz[bw]l .*, %e(ax|cx|dx|si|di)" l)
                  (= nx (str "  movslq %e" (subs l (- (count l) 2)) ", %r" (subs l (- (count l) 2)))))
