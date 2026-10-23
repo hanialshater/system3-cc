@@ -2519,7 +2519,7 @@
     (if (empty? alias)
       lines
       (mapv (fn [^String l]
-              (if-let [[_ ins t] (re-matches #"  (j[a-z]+) (\S+)" l)]
+              (if-let [[_ ins t] (and (.startsWith l "  j") (re-matches #"  (j[a-z]+) (\S+)" l))]
                 (if (= ins "jmp*") l (str "  " ins " " (resolve t)))
                 l))
             lines))))
@@ -2561,7 +2561,7 @@
                   args (if sp (str/split (subs t (inc sp)) #", ") [])
                   dst (last args)
                   fam (reg-family dst)
-                  kill (fn [known f] (into {} (remove (fn [[k v]] (or (= k f) (= v f))) known)))]
+                  kill (fn [known f] (if (empty? known) {} (into {} (remove (fn [[k v]] (or (= k f) (= v f))) known))))]
               (cond
                 (and (= op "movslq") (= 2 (count args)) fam (reg-family (first args)))
                 (let [src (reg-family (first args))]
@@ -2617,7 +2617,7 @@
         out (java.util.ArrayList.)]
     (loop [i 0]
       (when (< i n)
-        (let [l (lines i)
+        (let [^String l (lines i)
               nx (when (< (inc i) n) (lines (inc i)))]
           (cond
             ;; jump to the very next label
@@ -2627,7 +2627,7 @@
             (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
             (do (.add out l) (recur (+ i 2)))
             ;; address computed only to be loaded through
-            (and nx (re-matches #"  leaq (-?\d*)\((%r(?:[bcd]x|si|di|bp|8|9|1[0-5]))\), %rax" l)
+            (and nx (.startsWith l "  leaq ") (re-matches #"  leaq (-?\d*)\((%r(?:[bcd]x|si|di|bp|8|9|1[0-5]))\), %rax" l)
                  (re-matches #"  (mov[lqwb]|movslq|movz[bw][lq]|movs[bw][lq]) (-?\d*)\(%rax\), %(rax|eax|ax|al)" nx))
             (let [[_ d r] (re-matches #"  leaq (-?\d*)\((%r(?:[bcd]x|si|di|bp|8|9|1[0-5]))\), %rax" l)
                   [_ op d2 dst] (re-matches #"  (mov[lqwb]|movslq|movz[bw][lq]|movs[bw][lq]) (-?\d*)\(%rax\), %(rax|eax|ax|al)" nx)
@@ -2642,7 +2642,7 @@
                        (re-matches #"  movz[bw]l .*, %eax" prev))))
             (recur (inc i))
             ;; multiplication by a power of two
-            (re-matches #"  imulq \$(2|4|8|16|32|64|128|256|512|1024|2048|4096), (%r[a-z0-9]+), \2" l)
+            (and (.startsWith l "  imulq $") (re-matches #"  imulq \$(2|4|8|16|32|64|128|256|512|1024|2048|4096), (%r[a-z0-9]+), \2" l))
             (let [[_ c r] (re-matches #"  imulq \$(\d+), (%r[a-z0-9]+), \2" l)]
               (.add out (str "  shlq $" (Long/numberOfTrailingZeros (parse-long c)) ", " r))
               (recur (inc i)))
@@ -2662,7 +2662,7 @@
                                     (.get out k)))))
             (recur (inc i))
             ;; sign extension of a zero-extended byte/word
-            (and nx (re-matches #"  movz[bw]l .*, %e(ax|cx|dx|si|di)" l)
+            (and nx (.startsWith l "  movz") (re-matches #"  movz[bw]l .*, %e(ax|cx|dx|si|di)" l)
                  (= nx (str "  movslq %e" (subs l (- (count l) 2)) ", %r" (subs l (- (count l) 2)))))
             (do (.add out l) (recur (+ i 2)))
             ;; push/pop pair
