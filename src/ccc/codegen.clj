@@ -2548,6 +2548,34 @@
                 (#{"idivq" "idivl" "divq" "divl"} op) (do (.add out l) (recur (next ls) (-> known (kill "rax") (kill "rdx"))))
                 :else (do (.add out l) (recur (next ls) {}))))))))))
 
+(defn rdi-dead-after?
+  "True when %rdi is overwritten (without being read) by the lines following
+   index i, before any control transfer."
+  [lines i]
+  (let [n (count lines)]
+    (loop [j (inc i) steps 0]
+      (if (or (>= j n) (> steps 24))
+        false
+        (let [^String l (lines j)]
+          (cond
+            (not (str/starts-with? l "  ")) false
+            (re-find #"^  (j|call|ret|leave|push|pop|rep|cqto|cltd|idiv|div|stos|movs)" l) false
+            :else
+            (let [t (str/trim l)
+                  sp (str/index-of t " ")
+                  args (if sp (subs t (inc sp)) "")
+                  parts (str/split args #", ")
+                  dst (last parts)
+                  srcs (str/join ", " (butlast parts))
+                  op (if sp (subs t 0 sp) t)
+                  reads-rdi? (fn [x] (boolean (re-find #"%(rdi|edi|di|dil)\b" x)))]
+              (cond
+                (and (re-matches #"(mov[lq]|movslq|movz[bw]l|movs[bw]l|movs[bw]q|leaq|leal|movabsq)" op)
+                     (#{"%rdi" "%edi"} dst) (not (reads-rdi? srcs)))
+                true
+                (reads-rdi? args) false
+                :else (recur (inc j) (inc steps))))))))))
+
 (defn peephole
   "Simple cleanups on the emitted lines."
   [^String text]
@@ -2565,6 +2593,25 @@
             ;; sign extension right after a sign-extending 32->64 load
             (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
             (do (.add out l) (recur (+ i 2)))
+            ;; sign extension of a value known non-negative
+            (and (= l "  movslq %eax, %rax") (pos? (.size out))
+                 (let [prev (.get out (dec (.size out)))]
+                   (or (when-let [[_ c] (re-matches #"  andl \$(\d+), %eax" prev)] (< (parse-long c) 2147483648))
+                       (when-let [[_ c] (re-matches #"  shrl \$(\d+), %eax" prev)] (pos? (parse-long c)))
+                       (re-matches #"  movz[bw]l .*, %eax" prev))))
+            (recur (inc i))
+            ;; multiplication by a power of two
+            (re-matches #"  imulq \$(2|4|8|16|32|64|128|256|512|1024|2048|4096), (%r[a-z0-9]+), \2" l)
+            (let [[_ c r] (re-matches #"  imulq \$(\d+), (%r[a-z0-9]+), \2" l)]
+              (.add out (str "  shlq $" (Long/numberOfTrailingZeros (parse-long c)) ", " r))
+              (recur (inc i)))
+            ;; index moved to %rdi only to be added to a base
+            (and nx (= l "  movq %rax, %rdi") (re-matches #"  leaq \((%r[a-z0-9]+),%rdi,1\), %rax" nx)
+                 (not (str/starts-with? nx "  leaq (%rax")) (not (str/starts-with? nx "  leaq (%rdi"))
+                 (rdi-dead-after? lines (inc i)))
+            (let [[_ b] (re-matches #"  leaq \((%r[a-z0-9]+),%rdi,1\), %rax" nx)]
+              (.add out (str "  addq " b ", %rax"))
+              (recur (+ i 2)))
             ;; zero extension of a value just written by a 32-bit operation
             (and (= l "  movl %eax, %eax")
                  (let [k (loop [k (dec (.size out))]
