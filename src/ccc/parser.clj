@@ -218,10 +218,12 @@
                      :bitand (bit-and a b)
                      :bitor (bit-or a b)
                      :bitxor (bit-xor a b)
-                     :shl (bit-shift-left a (bit-and b 63))
-                     :shr (if (t/unsigned? ty)
-                            (unsigned-bit-shift-right a (bit-and b 63))
-                            (bit-shift-right a (bit-and b 63))))
+                     :shl (if (>= b (* 8 (t/type-size ty))) 0 (bit-shift-left a (bit-and b 63)))
+                     :shr (cond
+                            (>= b (* 8 (t/type-size ty)))
+                            (if (and (not (t/unsigned? ty)) (neg? a)) -1 0)
+                            (t/unsigned? ty) (unsigned-bit-shift-right a (bit-and b 63))
+                            :else (bit-shift-right a (bit-and b 63))))
                    ty)])
       (:eq :ne :lt :le :gt :ge)
       (let [lt (:type (:lhs n))]
@@ -278,7 +280,7 @@
         :add (canon-nan (+ (eval-double (:lhs n)) (eval-double (:rhs n))))
         :sub (canon-nan (- (eval-double (:lhs n)) (eval-double (:rhs n))))
         :mul (canon-nan (* (eval-double (:lhs n)) (eval-double (:rhs n))))
-        :div (canon-nan (/ (eval-double (:lhs n)) (eval-double (:rhs n))))
+        :div (canon-nan (let [a (double (eval-double (:lhs n))) b (double (eval-double (:rhs n)))] (/ a b)))
         :neg (- (eval-double (:expr n)))
         :cond (if (not (zero? (if (t/flonum? (:type (:cond n))) (eval-double (:cond n)) (eval-int (:cond n)))))
                 (eval-double (:then n)) (eval-double (:els n)))
@@ -324,6 +326,32 @@
       (num-node (double->long (:fval n) ty) ty)
       :else {:op :cast :type ty :expr n})))
 
+(defn fold
+  "Constant-fold n when all its operands are constants, following gcc's
+   folder: float division by zero and overflow to infinity stay at run time."
+  [n]
+  (let [num? #(= :num (:op %))
+        ops (case (:op n)
+              (:add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr
+               :eq :ne :lt :le :gt :ge :logand :logor) [(:lhs n) (:rhs n)]
+              (:neg :bitnot :not) [(:expr n)]
+              nil)
+        ty (:type n)]
+    (if (and ops (every? num? ops) (or (t/integer? ty) (t/flonum? ty)))
+      (try
+        (if (t/flonum? ty)
+          (let [vals (mapv eval-double ops)]
+            (if (and (= :div (:op n)) (zero? (double (peek vals))))
+              n
+              (let [d (eval-double n)]
+                (if (and (Double/isInfinite d) (not-any? #(Double/isInfinite %) vals))
+                  n
+                  (fnum-node d ty)))))
+          (num-node (eval-int n) ty))
+        (catch clojure.lang.ExceptionInfo e
+          (if (= :not-const (:type (ex-data e))) n (throw e))))
+      n)))
+
 (defn check-scalar [n]
   (let [ty (:type n)]
     (when-not (or (t/scalar? ty) (t/array? ty) (t/func? ty))
@@ -335,7 +363,7 @@
     (when-not (and (t/numeric? lt) (t/numeric? rt))
       (err (str "invalid operands to binary operator (" (t/type-str lt) ", " (t/type-str rt) ")")))
     (let [ct (t/common-type lt rt)]
-      {:op op :type ct :lhs (new-cast lhs ct) :rhs (new-cast rhs ct)})))
+      (fold {:op op :type ct :lhs (new-cast lhs ct) :rhs (new-cast rhs ct)}))))
 
 (defn int-conv [op lhs rhs]
   (when-not (and (t/integer? (:type lhs)) (t/integer? (:type rhs)))
@@ -418,16 +446,17 @@
   (when-not (and (t/integer? (:type lhs)) (t/integer? (:type rhs)))
     (err "invalid operands to shift"))
   (let [pt (t/promote (:type lhs))]
-    {:op op :type pt :lhs (new-cast lhs pt) :rhs (new-cast rhs ty-int)}))
+    (fold {:op op :type pt :lhs (new-cast lhs pt) :rhs (new-cast rhs ty-int)})))
 
 (defn new-compare [op lhs rhs]
   (let [lt (:type lhs) rt (:type rhs)]
     (if (and (t/numeric? lt) (t/numeric? rt))
-      (assoc (arith-conv op lhs rhs) :type ty-int)
+      (let [ct (t/common-type lt rt)]
+        (fold {:op op :type ty-int :lhs (new-cast lhs ct) :rhs (new-cast rhs ct)}))
       (do (check-scalar lhs) (check-scalar rhs)
-          {:op op :type ty-int :lhs (new-cast lhs ty-ulong) :rhs (new-cast rhs ty-ulong)}))))
+          (fold {:op op :type ty-int :lhs (new-cast lhs ty-ulong) :rhs (new-cast rhs ty-ulong)})))))
 
-(defn new-not [e] (check-scalar e) {:op :not :type ty-int :expr e})
+(defn new-not [e] (check-scalar e) (fold {:op :not :type ty-int :expr e}))
 
 (defn new-neg [e]
   (when-not (t/numeric? (:type e)) (err "invalid operand to unary -"))
@@ -442,11 +471,11 @@
 (defn new-bitnot [e]
   (when-not (t/integer? (:type e)) (err "invalid operand to ~"))
   (let [pt (t/promote (:type e))]
-    {:op :bitnot :type pt :expr (new-cast e pt)}))
+    (fold {:op :bitnot :type pt :expr (new-cast e pt)})))
 
 (defn new-logical [op l r]
   (check-scalar l) (check-scalar r)
-  {:op op :type ty-int :lhs l :rhs r})
+  (fold {:op op :type ty-int :lhs l :rhs r}))
 
 (defn new-comma [l r] {:op :comma :type (:type r) :lhs l :rhs r})
 
