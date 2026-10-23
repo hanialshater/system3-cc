@@ -23,6 +23,7 @@
 (def ^:dynamic *cont* nil)
 (def ^:dynamic *switch* nil)       ; volatile {:cases [] :default nil :type T}
 (def ^:dynamic *labels* nil)
+(def ^:dynamic *block-path* nil)   ; volatile vector of enclosing scope ids (per function)
 (def ^:dynamic *strlits* nil)
 (def ^:dynamic *vla-blocks* nil)   ; volatile vector: save-sp slot of each live VLA, in declaration order
 (def ^:dynamic *gotos* nil)        ; volatile vector of {:label :live :restore atom}
@@ -58,8 +59,12 @@
 ;; ---------------------------------------------------------------------------
 ;; Scopes
 
-(defn enter-scope! [] (vswap! *scope* conj {:vars {} :tags {}}))
-(defn leave-scope! [] (vswap! *scope* pop))
+(defn enter-scope! []
+  (vswap! *scope* conj {:vars {} :tags {}})
+  (when *block-path* (vswap! *block-path* conj (vswap! *counter* inc))))
+(defn leave-scope! []
+  (vswap! *scope* pop)
+  (when (and *block-path* (seq @*block-path*)) (vswap! *block-path* pop)))
 
 (defn find-ident [name]
   (some #(get-in % [:vars name]) @*scope*))
@@ -106,13 +111,15 @@
 ;; Vars
 
 (defn new-lvar! [name ty]
-  (let [v {:name name :type ty :id (next-id!) :local true}]
+  (let [v (cond-> {:name name :type ty :id (next-id!) :local true}
+            *block-path* (assoc :block @*block-path*))]
     (vswap! *locals* conj v)
     (when name (push-ident! name {:var v}))
     v))
 
 (defn new-temp! [ty]
-  (let [v {:name nil :type ty :id (next-id!) :local true}]
+  (let [v (cond-> {:name nil :type ty :id (next-id!) :local true}
+            *block-path* (assoc :block @*block-path*))]
     (vswap! *locals* conj v)
     v))
 
@@ -2326,6 +2333,7 @@
         g (add-global! (assoc g :defined true))]
     (push-ident! name {:var g})
     (binding [*locals* (volatile! [])
+              *block-path* (volatile! [])
               *vla-blocks* (volatile! [])
               *gotos* (volatile! [])
               *label-live* (volatile! {})

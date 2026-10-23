@@ -1697,23 +1697,36 @@
                      (not (contains? addr (:id v)))
                      (not (contains? pinned (:id v)))
                      (pos? (get weights (:id v) 0)))))
-        cands (->> (:locals f) (filter ok?) (sort-by #(- (get weights (:id %) 0))) (take (count callee-regs)))]
-    (into {} (map-indexed (fn [i v] [(:id v) i]) cands))))
+        cands (->> (:locals f) (filter ok?) (sort-by #(- (get weights (:id %) 0))))
+        ;; variables of disjoint scopes may share a register
+        prefix? (fn [a b] (and (<= (count a) (count b)) (= a (subvec b 0 (count a)))))
+        conflict? (fn [a b] (let [pa (vec (or (:block a) [])) pb (vec (or (:block b) []))]
+                              (or (prefix? pa pb) (prefix? pb pa))))
+        nregs (count callee-regs)]
+    (loop [cs cands assigned [] out {}]
+      (if (empty? cs)
+        out
+        (let [v (first cs)
+              taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
+              r (first (remove taken (range nregs)))]
+          (if r
+            (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
+            (recur (rest cs) assigned out)))))))
 
 (defn gen-function [f]
   (let [[offsets frame info pinfo] (assign-offsets f)
         name (:name f)
         regvars (choose-regvars f)
-        nregvars (count (set (vals regvars)))
+        regset (set (vals regvars))
         outer *asm*
         body-sb (StringBuilder.)
-        used (volatile! (set (range nregvars)))]
+        used (volatile! regset)]
     (binding [*offsets* offsets
               *fn* f
               *fninfo* info
               *overaligned* (set (map :id (:overaligned info)))
               *regvars* regvars
-              *temp-free* (volatile! (vec (reverse (range nregvars (count callee-regs)))))
+              *temp-free* (volatile! (vec (reverse (remove regset (range (count callee-regs))))))
               *temp-used* used
               *scratch-free* (volatile! (list "%r11" "%r10" "%r9" "%r8"))
               *asm* body-sb
