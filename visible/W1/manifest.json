@@ -1,0 +1,107 @@
+{
+ "w1-0001": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0003": {
+  "category": "control",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0006": {
+  "category": "expressions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0009": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0015": {
+  "category": "control",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0016": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0023": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0028": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0032": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0037": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0039": {
+  "category": "expressions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0041": {
+  "category": "control",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0044": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0050": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0056": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0060": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0061": {
+  "category": "control",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0065": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0071": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0075": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w1-0081": {
+  "category": "functions",
+  "exit": 0,
+  "timeoutMs": 3000
+ }
+}
