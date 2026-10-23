@@ -296,6 +296,16 @@
                      " %al")
               (emit "  movzbl %al, %eax")))))))
 
+(defn bf-unit
+  "Type used to load/store a bit-field's storage: its declared type, or 8 bytes
+   when a packed field straddles the declared unit."
+  [m]
+  (if (> (+ (:bit-offset m) (:bit-width m)) (* 8 (t/type-size (:type m))))
+    t/ty-ulong
+    (:type m)))
+
+(defn low-mask [w] (if (>= w 64) -1 (dec (bit-shift-left 1 w))))
+
 (defn gen-bitfield-load [m]
   (let [w (:bit-width m) off (:bit-offset m)]
     (emitf "  shlq $" (- 64 w off) ", %rax")
@@ -308,18 +318,18 @@
     (gen-expr rhs)
     (if (and (= :member (:op lhs)) (:bitfield (:member lhs)))
       (let [m (:member lhs) w (:bit-width m) off (:bit-offset m)
-            mask (bit-shift-left (dec (bit-shift-left 1 w)) off)]
+            mask (bit-shift-left (low-mask w) off)]
         (emit "  movq %rax, %r8")
         (emit "  movq %rax, %rdi")
-        (emitf "  movabsq $" (dec (bit-shift-left 1 w)) ", %r9")
+        (emitf "  movabsq $" (low-mask w) ", %r9")
         (emit "  andq %r9, %rdi")
         (emitf "  shlq $" off ", %rdi")
         (emit "  movq (%rsp), %rax")
-        (load (:type m))
+        (load (bf-unit m))
         (emitf "  movabsq $" (bit-not mask) ", %r9")
         (emit "  andq %r9, %rax")
         (emit "  orq %rdi, %rax")
-        (store (:type m))
+        (store (bf-unit m))
         (emit "  movq %r8, %rax")
         (emitf "  shlq $" (- 64 w) ", %rax")
         (emitf (if (t/unsigned? (:type m)) "  shrq $" "  sarq $") (- 64 w) ", %rax"))
@@ -534,7 +544,7 @@
             (emitf "  movabsq $" v ", %rax")))))
 
     :var (do (gen-addr n) (load (:type n)))
-    :member (do (gen-addr n) (load (if (:bitfield (:member n)) (:type (:member n)) (:type n)))
+    :member (do (gen-addr n) (load (if (:bitfield (:member n)) (bf-unit (:member n)) (:type n)))
                 (when (:bitfield (:member n)) (gen-bitfield-load (:member n))))
     :deref (do (gen-expr (:expr n)) (load (:type n)))
     :addr (gen-addr (:expr n))

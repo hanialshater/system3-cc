@@ -248,19 +248,24 @@
       :deref (if (or (t/array? ty) (t/func? ty)) (eval-reloc (:expr n)) (not-const))
       (not-const))))
 
+(defn canon-nan
+  "gcc folds NaN-producing operations to the positive quiet NaN."
+  [d]
+  (if (Double/isNaN d) Double/NaN d))
+
 (defn eval-double [n]
   (let [ty (:type n)]
     (if (t/integer? ty)
       (let [v (eval-int n)]
         (if (ulong-type? ty)
-          (if (neg? v) (+ (double (unsigned-bit-shift-right v 1)) (double (unsigned-bit-shift-right v 1)) (double (bit-and v 1))) (double v))
+          (if (neg? v) (Double/parseDouble (Long/toUnsignedString v)) (double v))
           (double v)))
       (case (:op n)
         :num (double (:fval n))
-        :add (+ (eval-double (:lhs n)) (eval-double (:rhs n)))
-        :sub (- (eval-double (:lhs n)) (eval-double (:rhs n)))
-        :mul (* (eval-double (:lhs n)) (eval-double (:rhs n)))
-        :div (/ (eval-double (:lhs n)) (eval-double (:rhs n)))
+        :add (canon-nan (+ (eval-double (:lhs n)) (eval-double (:rhs n))))
+        :sub (canon-nan (- (eval-double (:lhs n)) (eval-double (:rhs n))))
+        :mul (canon-nan (* (eval-double (:lhs n)) (eval-double (:rhs n))))
+        :div (canon-nan (/ (eval-double (:lhs n)) (eval-double (:rhs n))))
         :neg (- (eval-double (:expr n)))
         :cond (if (not (zero? (if (t/flonum? (:type (:cond n))) (eval-double (:cond n)) (eval-int (:cond n)))))
                 (eval-double (:then n)) (eval-double (:els n)))
@@ -972,7 +977,7 @@
               members (vec (map-indexed (fn [i m] (assoc m :idx i)) members))
               ;; flexible array member
               members (if (and (seq members) (= :array (:kind (:type (peek members))))
-                               (neg? (:len (:type (peek members)))))
+                               (<= (:len (:type (peek members))) 0))
                         (update members (dec (count members)) #(assoc % :type (assoc (:type %) :len 0) :flex true))
                         members)
               lay (layout-struct kind members (:packed attrs) (:aligned attrs))]
@@ -980,8 +985,8 @@
           ty)))))
 
 (defn enum-decl []
-  (skip-attributes!)
-  (let [tag (when (= :ident (:kind (tok))) (let [s (:text (tok))] (advance!) s))]
+  (let [a1 (skip-attributes!)
+        tag (when (= :ident (:kind (tok))) (let [s (:text (tok))] (advance!) s))]
     (if (and tag (not (is? "{")))
       (or (find-tag tag) ty-uint)
       (do
@@ -1003,8 +1008,15 @@
               ety (if (neg? lo)
                     (if (and (>= lo -2147483648) (<= hi 2147483647)) ty-int ty-long)
                     (if (<= hi 0xffffffff) ty-uint ty-ulong))
+              a2 (skip-attributes!)
+              ety (if (:packed (merge a1 a2))
+                    (cond (and (>= lo -128) (<= hi 127)) ty-char
+                          (and (>= lo 0) (<= hi 255)) ty-uchar
+                          (and (>= lo -32768) (<= hi 32767)) ty-short
+                          (and (>= lo 0) (<= hi 65535)) ty-ushort
+                          :else ety)
+                    ety)
               ety (assoc ety :enum true)]
-          (skip-attributes!)
           (when tag (push-tag! tag ety))
           ety)))))
 
@@ -1250,6 +1262,9 @@
             (do (vreset! *pos* start)
                 (union-initializer! init)))))
 
+      (and (is? "{") (is-tok? (peek-tok 1) "}"))
+      (do (advance!) (advance!))
+
       (is? "{")
       (do (advance!)
           (initializer2 init)
@@ -1338,7 +1353,7 @@
                                bo (:bit-offset mem)
                                nbytes (quot (+ bo w 7) 8)
                                old (read-int buf o nbytes)
-                               mask (bit-shift-left (dec (bit-shift-left 1 w)) bo)
+                               mask (bit-shift-left (if (>= w 64) -1 (dec (bit-shift-left 1 w))) bo)
                                nv (bit-or (bit-and old (bit-not mask)) (bit-and (bit-shift-left v bo) mask))]
                            (write-int! buf o nv nbytes)
                            nil))
@@ -2074,6 +2089,7 @@
                           (when (consume! ",") (recur))))
                       (expect! ";")
                       (recur acc))
+                  (is? "__extension__") (do (advance!) (recur acc))
                   (is? "_Static_assert")
                   (do (advance!) (expect! "(") (const-expr)
                       (when (consume! ",") (advance!)) (expect! ")") (expect! ";") (recur acc))
