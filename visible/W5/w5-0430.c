@@ -1,0 +1,45 @@
+void abort(void);
+/* PR middle-end/31448, this used to ICE during expand because
+   reduce_to_bit_field_precision was not ready to handle constants. */
+
+typedef struct _st {
+    long int iIndex : 24;
+    long int iIndex1 : 24;
+} st;
+st *next;
+void g(void)
+{
+    st *next = 0;
+    int nIndx;
+    const static int constreg[] = { 0,};
+    nIndx = 0;
+    next->iIndex = constreg[nIndx];
+}
+void f(void)
+{
+    int nIndx;
+    const static long int constreg[] = { 0xFEFEFEFE,};
+    nIndx = 0;
+    next->iIndex = constreg[nIndx];
+    next->iIndex1 = constreg[nIndx];
+}
+int b8_main(void)
+{
+  st a;
+  next = &a;
+  f();
+  if (next->iIndex != 0xFFFEFEFE)
+    abort ();
+  if (next->iIndex1 != 0xFFFEFEFE)
+    abort ();
+  return 0;
+  return 0;
+}
+
+int printf(const char *fmt, ...);
+int main(void) {
+  printf("b8: start\n");
+  int r = b8_main();
+  printf("b8: end\n");
+  return r;
+}

@@ -1,0 +1,1397 @@
+{
+ "w5-0001": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0002": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0003": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0006": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0009": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0011": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0014": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0015": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0017": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0022": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0026": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0035": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0036": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0039": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0046": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0048": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0057": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0058": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0061": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0065": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0075": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0078": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0079": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0082": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0084": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0093": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0095": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0096": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0100": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0102": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0112": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0113": {
+  "category": "function-pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0115": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0117": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0119": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0120": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0129": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0131": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0135": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0138": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0144": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0150": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0152": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0155": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0156": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0159": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0163": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0171": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0174": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0178": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0179": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0183": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0195": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0197": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0200": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0209": {
+  "category": "vla",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0211": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0216": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0220": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0221": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0225": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0227": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0230": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0232": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0233": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0242": {
+  "category": "gnu",
+  "exit": 1,
+  "timeoutMs": 3000
+ },
+ "w5-0246": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0255": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0256": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0262": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0265": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0267": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0274": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0275": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0280": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0282": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0286": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0299": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0302": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0303": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0309": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0310": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0314": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0319": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0326": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0327": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0328": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0329": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0339": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0341": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0349": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0350": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0357": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0361": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0362": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0370": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0371": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0372": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0374": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0389": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0390": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0392": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0394": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0397": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0399": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0404": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0413": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0415": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0418": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0420": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0430": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0433": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0436": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0438": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0448": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0451": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0452": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0457": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0458": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0461": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0466": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0473": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0474": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0477": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0484": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0486": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0487": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0492": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0500": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0501": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0512": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0515": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0517": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0524": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0525": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0526": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0527": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0530": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0536": {
+  "category": "function-pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0544": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0545": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0551": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0558": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0560": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0563": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0567": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0569": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0572": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0579": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0582": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0587": {
+  "category": "vla",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0597": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0600": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0601": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0602": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0604": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0612": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0618": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0620": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0621": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0626": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0627": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0629": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0637": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0640": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0641": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0650": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0658": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0662": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0664": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0667": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0669": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0672": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0673": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0677": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0683": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0692": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0695": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0697": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0700": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0702": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0706": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0715": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0721": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0725": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0726": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0728": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0730": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0736": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0743": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0745": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0747": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0752": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0759": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0766": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0768": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0769": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0770": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0777": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0784": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0793": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0796": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0797": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0802": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0808": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0813": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0818": {
+  "category": "function-pointers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0820": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0822": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0826": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0829": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0836": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0837": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0839": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0844": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0846": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0851": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0854": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0858": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0862": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0865": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0866": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0878": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0879": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0882": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0886": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0888": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0896": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0900": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0903": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0905": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0906": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0907": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0915": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0916": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0928": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0933": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0938": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0943": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0945": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0948": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0951": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0955": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0963": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0968": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0977": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0978": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0979": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0980": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0981": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0986": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0990": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-0999": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1002": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1007": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1010": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1011": {
+  "category": "vla",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1014": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1017": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1023": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1026": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1031": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1035": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1040": {
+  "category": "goto",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1043": {
+  "category": "floating",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1047": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1049": {
+  "category": "switch",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1051": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1054": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1056": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1058": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1071": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1078": {
+  "category": "misc",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1079": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1081": {
+  "category": "gnu",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1084": {
+  "category": "casts",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1086": {
+  "category": "storage",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1093": {
+  "category": "integer-types",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w5-1097": {
+  "category": "bitwise",
+  "exit": 0,
+  "timeoutMs": 3000
+ }
+}

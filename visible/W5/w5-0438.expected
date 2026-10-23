@@ -1,0 +1,5 @@
+b8: start
+calling DUPFFexgcd on degrees 1 and 2
+DUPFFexgcd called on degrees 1 and 2
+DUPFFexgcd called on degrees 2 and 1
+b8: end

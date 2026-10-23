@@ -1,0 +1,44 @@
+/* PR middle-end/51323 */
+
+extern void abort (void);
+struct S { int a, b, c; };
+int v;
+
+ void
+foo (int x, int y, int z)
+{
+  if (x != v || y != 0 || z != 9)
+    abort ();
+}
+
+static inline int
+baz (const struct S *p)
+{
+  return p->b;
+}
+
+ void
+bar (int x, struct S y)
+{
+  foo (baz (&y), 0, x);
+}
+
+int
+b8_main ()
+{
+  struct S s;
+  v = 3; s.a = v - 1; s.b = v; s.c = v + 1;
+  bar (9, s);
+  v = 17; s.a = v - 1; s.b = v; s.c = v + 1;
+  bar (9, s);
+  return 0;
+  return 0;
+}
+
+int printf(const char *fmt, ...);
+int main(void) {
+  printf("b8: start\n");
+  int r = b8_main();
+  printf("b8: end\n");
+  return r;
+}
