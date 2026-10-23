@@ -335,6 +335,12 @@
 
 (declare vla-type?)
 
+(defn runtime-sized? [ty]
+  (case (:kind ty)
+    :vla true
+    :array (runtime-sized? (:base ty))
+    false))
+
 (defn vla-size-expr
   "Node computing sizeof(ty) at run time (ty may contain VLA dimensions)."
   [ty]
@@ -342,11 +348,11 @@
     (and (= :vla (:kind ty)) (:size-var ty)) (var-node (:size-var ty))
     (= :vla (:kind ty))
     {:op :mul :type ty-ulong
-     :lhs (if (:len-expr ty) (new-cast (:len-expr ty) ty-ulong) (num-node 0 ty-ulong))
+     :lhs (cond (:len-var ty) (var-node (:len-var ty))
+                (:len-expr ty) (new-cast (:len-expr ty) ty-ulong)
+                :else (num-node 0 ty-ulong))
      :rhs (vla-size-expr (:base ty))}
-    (and (= :array (:kind ty)) (#{:vla :array} (:kind (:base ty))) (not= (t/type-size ty) (* (max 0 (:len ty)) (t/type-size (:base ty)))))
-    {:op :mul :type ty-ulong :lhs (num-node (:len ty) ty-ulong) :rhs (vla-size-expr (:base ty))}
-    (and (= :array (:kind ty)) (= :vla (:kind (:base ty))))
+    (and (= :array (:kind ty)) (runtime-sized? (:base ty)))
     {:op :mul :type ty-ulong :lhs (num-node (max 0 (:len ty)) ty-ulong) :rhs (vla-size-expr (:base ty))}
     :else (num-node (t/type-size ty) ty-ulong)))
 
@@ -1515,12 +1521,6 @@
   (when (= :vla (:kind ty)) (err "sizeof VLA unsupported here"))
   (num-node (t/type-size ty) ty-ulong))
 
-(defn runtime-sized? [ty]
-  (case (:kind ty)
-    :vla true
-    :array (runtime-sized? (:base ty))
-    false))
-
 (defn vla-size-node [ty]
   ;; returns node computing sizeof(ty) at runtime
   (if (runtime-sized? ty)
@@ -2018,29 +2018,29 @@
                   (push-ident! name {:var g})
                   (recur out false))
 
-                (= :vla (:kind type))
+                (runtime-sized? type)
                 ;; VLA: compute sizes at runtime
-                (let [sizes (atom [])
-                      fix (fn fix [ty]
-                            (if (= :vla (:kind ty))
-                              (let [inner (fix (:base ty))
-                                    sv (new-temp! ty-ulong)
-                                    len (new-cast (:len-expr ty) ty-ulong)
-                                    isz (if (= :vla (:kind inner)) (var-node (:size-var inner)) (num-node (t/type-size inner) ty-ulong))]
-                                (swap! sizes conj (new-assign (var-node sv) {:op :mul :type ty-ulong :lhs len :rhs isz}))
-                                {:kind :vla :base inner :size-var sv})
-                              ty))
-                      vty (fix type)
+                (let [[vty size-stmts] (vla-inner-type type)
+                      sizes (atom (mapv :expr size-stmts))
                       v (new-lvar! name (ptr-to (:base vty)))
                       ;; v holds pointer to storage; type for expressions is the vla
                       v2 (assoc v :type vty :vla-ptr true)]
                   (push-ident! name {:var v2})
                   (vswap! *locals* (fn [ls] (mapv #(if (= (:id %) (:id v)) v2 %) ls)))
-                  (let [alloc {:op :vla-alloc :type ty-void :var v2 :size (var-node (:size-var vty))}
+                  (let [alloc {:op :vla-alloc :type ty-void :var v2 :size (vla-size-expr vty)}
                         slot (new-temp! ty-ulong)
                         save [(expr-stmt-node {:op :save-sp :type ty-void :var slot})]]
                     (vswap! *vla-blocks* conj slot)
                     (recur (conj (into (into out save) (map expr-stmt-node @sizes)) (expr-stmt-node alloc)) false)))
+
+                (vla-type? type)
+                ;; pointer to VLA: fix the dimensions now
+                (let [[ty st] (vla-inner-type type)
+                      v (new-lvar! name ty)]
+                  (if (consume! "=")
+                    (let [[init _] (parse-initializer ty)]
+                      (recur (conj (into out st) (expr-stmt-node (lvar-initializer v init))) false))
+                    (recur (into out st) false)))
 
                 :else
                 (let [v (new-lvar! name type)
@@ -2132,17 +2132,35 @@
     false))
 
 (defn vla-inner-type
-  "Give inner VLA dimensions runtime size variables. Returns [type stmts]."
+  "Fix every VLA dimension in ty: length expressions are evaluated once, in
+   order (outermost first), then sizes computed. Returns [type stmts]."
   [ty]
-  (case (:kind ty)
-    :vla (let [[inner st] (vla-inner-type (:base ty))
-               sv (new-temp! ty-ulong)
-               isz (if (= :vla (:kind inner)) (var-node (:size-var inner)) (num-node (t/type-size inner) ty-ulong))
-               len (if (:len-expr ty) (new-cast (:len-expr ty) ty-ulong) (num-node 0 ty-ulong))]
-           [{:kind :vla :base inner :size-var sv}
-            (conj st (expr-stmt-node (new-assign (var-node sv) {:op :mul :type ty-ulong :lhs len :rhs isz})))])
-    :ptr (let [[inner st] (vla-inner-type (:base ty))] [(ptr-to inner) st])
-    [ty []]))
+  (let [lens (atom [])
+        sizes (atom [])
+        walk1 (fn walk1 [ty]
+                (case (:kind ty)
+                  :vla (if (:size-var ty)
+                         ty
+                         (let [lv (when (:len-expr ty) (new-temp! ty-ulong))]
+                         (when lv
+                           (swap! lens conj (expr-stmt-node (new-assign (var-node lv) (new-cast (:len-expr ty) ty-ulong)))))
+                         (assoc ty :len-var lv :base (walk1 (:base ty)))))
+                  (:array :ptr) (assoc ty :base (walk1 (:base ty)))
+                  ty))
+        walk2 (fn walk2 [ty]
+                (case (:kind ty)
+                  :vla (if (:size-var ty) ty
+                       (let [inner (walk2 (:base ty))
+                             sv (new-temp! ty-ulong)
+                             len (if (:len-var ty) (var-node (:len-var ty)) (num-node 0 ty-ulong))]
+                         (swap! sizes conj (expr-stmt-node (new-assign (var-node sv)
+                                                                       {:op :mul :type ty-ulong :lhs len :rhs (vla-size-expr inner)})))
+                         {:kind :vla :base inner :size-var sv}))
+                  :array (assoc ty :base (walk2 (:base ty)))
+                  :ptr (ptr-to (walk2 (:base ty)))
+                  ty))
+        t2 (walk2 (walk1 ty))]
+    [t2 (into @lens @sizes)]))
 
 (defn param-vla-type
   "Declared parameter type -> [adjusted type, entry statements]."
