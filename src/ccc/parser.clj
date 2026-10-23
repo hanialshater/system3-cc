@@ -148,11 +148,24 @@
 
 (defn ulong-type? [ty] (and (t/unsigned? ty) (= 8 (t/type-size ty))))
 
-(defn double->long [d ty]
-  (let [d (double d)]
-    (if (and (t/unsigned? ty) (= 8 (t/type-size ty)) (>= d 9.223372036854775807E18))
-      (unchecked-add (long (- d 9.223372036854775807E18)) Long/MIN_VALUE)
-      (long d))))
+(defn double->long
+  "Constant conversion of a floating value to integer type ty, saturating
+   out-of-range values like gcc's folder (NaN -> 0)."
+  [d ty]
+  (let [d (double d)
+        bits (* 8 (t/type-size ty))
+        u (t/unsigned? ty)]
+    (cond
+      (= :bool (:kind ty)) (if (zero? d) 0 1)
+      (Double/isNaN d) 0
+      u (cond (<= d 0.0) 0
+              (>= d (Math/pow 2.0 bits)) (if (= bits 64) -1 (dec (bit-shift-left 1 bits)))
+              (>= d 9.223372036854775807E18) (unchecked-add (long (- d 9.223372036854775808E18)) Long/MIN_VALUE)
+              :else (long d))
+      :else (let [lo (- (Math/pow 2.0 (dec bits))) hi (Math/pow 2.0 (dec bits))]
+              (cond (<= d lo) (if (= bits 64) Long/MIN_VALUE (- (bit-shift-left 1 (dec bits))))
+                    (>= d hi) (if (= bits 64) Long/MAX_VALUE (dec (bit-shift-left 1 (dec bits))))
+                    :else (long d))))))
 
 (defn eval-addr [n]
   (case (:op n)
