@@ -1579,8 +1579,25 @@
                       (vswap! *strlits* assoc k g)
                       g))))))
 
+(def libc-protos
+  "Prototypes gcc knows as builtins for the libc functions of the provided headers."
+  (let [vp (ptr-to ty-void) cp (ptr-to ty-char) ul ty-ulong
+        cmpfn (ptr-to (func-type ty-int [vp vp] false true))]
+    {"printf" [ty-int [cp] true] "sprintf" [ty-int [cp cp] true] "snprintf" [ty-int [cp ul cp] true]
+     "vprintf" [ty-int [cp vp] false] "vsprintf" [ty-int [cp cp vp] false] "vsnprintf" [ty-int [cp ul cp vp] false]
+     "puts" [ty-int [cp] false] "putchar" [ty-int [ty-int] false]
+     "malloc" [vp [ul] false] "calloc" [vp [ul ul] false] "realloc" [vp [vp ul] false] "free" [ty-void [vp] false]
+     "exit" [ty-void [ty-int] false] "abort" [ty-void [] false] "atoi" [ty-int [cp] false] "atol" [ty-long [cp] false]
+     "abs" [ty-int [ty-int] false] "labs" [ty-long [ty-long] false] "llabs" [ty-long [ty-long] false]
+     "qsort" [ty-void [vp ul ul cmpfn] false]
+     "strlen" [ul [cp] false] "strcmp" [ty-int [cp cp] false] "strncmp" [ty-int [cp cp ul] false]
+     "strcpy" [cp [cp cp] false] "strncpy" [cp [cp cp ul] false] "strcat" [cp [cp cp] false]
+     "strncat" [cp [cp cp ul] false] "strchr" [cp [cp ty-int] false] "strrchr" [cp [cp ty-int] false]
+     "strstr" [cp [cp cp] false] "memcpy" [vp [vp vp ul] false] "memmove" [vp [vp vp ul] false]
+     "memset" [vp [vp ty-int ul] false] "memcmp" [ty-int [vp vp ul] false] "memchr" [vp [vp ty-int ul] false]}))
+
 (defn declare-implicit-func! [name]
-  (let [ty (func-type ty-int [] false false)
+  (let [ty (if-let [[r plist v] (libc-protos name)] (func-type r plist v true) (func-type ty-int [] false false))
         g (or (@*globals* name)
               (add-global! {:name name :label name :type ty :global true :func true}))]
     (vswap! *scope* (fn [sc] (let [v (vec sc)
