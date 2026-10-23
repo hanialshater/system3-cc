@@ -740,12 +740,17 @@
       (pos? (c "_Bool")) ty-bool
       (pos? (c "float")) ty-float
       (pos? (c "double")) ty-double
-      (pos? (c "char")) (if u? ty-uchar ty-char)
+      (pos? (c "char")) (cond u? ty-uchar (pos? (c "signed")) (assoc ty-char :schar true) :else ty-char)
       (pos? (c "short")) (if u? ty-ushort ty-short)
-      (pos? (c "long")) (if u? ty-ulong ty-long)
+      (pos? (c "long")) (cond-> (if u? ty-ulong ty-long) (>= (c "long") 2) (assoc :llong true))
       :else (if u? ty-uint ty-int))))
 
 (declare typeof-spec)
+
+(defn qualify [ty attr]
+  (cond-> ty
+    (:const attr) (assoc :const true)
+    (:volatile attr) (assoc :volatile true)))
 
 (defn declspec
   "Parses declaration specifiers. Returns [type attrs]."
@@ -753,14 +758,17 @@
   (loop [counts {} other nil attr {} seen false]
     (let [tk (tok) s (:text tk)]
       (if-not (= :ident (:kind tk))
-        [(or other (build-base-type counts tk)) attr]
+        [(qualify (or other (build-base-type counts tk)) attr) attr]
         (cond
           (#{"typedef" "static" "extern" "inline" "__inline" "__inline__" "_Noreturn" "auto"
              "register" "_Thread_local" "__thread"} s)
           (do (advance!)
               (recur counts other (assoc attr (keyword (str/replace s #"^_+" "")) true) seen))
 
-          (#{"const" "volatile" "restrict" "__restrict" "__restrict__" "__const" "__volatile__"
+          (#{"const" "volatile"} s)
+          (do (advance!) (recur counts other (assoc attr (keyword s) true) seen))
+
+          (#{"restrict" "__restrict" "__restrict__" "__const" "__volatile__"
              "__volatile" "_Atomic" "__extension__"} s)
           (do (advance!) (recur counts other attr seen))
 
@@ -791,7 +799,7 @@
           (and (not seen) (typedef-type s))
           (do (advance!) (recur counts (typedef-type s) attr true))
 
-          :else [(or other (build-base-type counts tk)) attr])))))
+          :else [(qualify (or other (build-base-type counts tk)) attr) attr])))))
 
 (defn typeof-spec []
   (expect! "(")
@@ -805,7 +813,9 @@
       (consume! "*")
       (recur (loop [ty (ptr-to ty)]
                (cond
-                 (#{"const" "volatile" "restrict" "__restrict" "__restrict__" "__const" "_Atomic" "__volatile__" "__volatile"} (:text (tok)))
+                 (#{"const" "volatile"} (:text (tok)))
+                 (let [q (keyword (:text (tok)))] (advance!) (recur (assoc ty q true)))
+                 (#{"restrict" "__restrict" "__restrict__" "__const" "_Atomic" "__volatile__" "__volatile"} (:text (tok)))
                  (do (advance!) (recur ty))
                  (is? "__attribute__") (do (parse-attribute!) (recur ty))
                  :else ty)))
@@ -1810,7 +1820,7 @@
       (do (expect! "(") (expect! ")") {:op :trap :type ty-void})
       "__builtin_types_compatible_p"
       (do (expect! "(") (let [a (typename)] (expect! ",") (let [b (typename)] (expect! ")")
-                                                                 (num-node (if (t/same-type? (t/strip a) (t/strip b)) 1 0) ty-int))))
+                                                                 (num-node (if (t/compatible? a b true) 1 0) ty-int))))
       ("__builtin_choose_expr")
       (do (expect! "(")
           (let [c (const-expr) _ (expect! ",") a (assign-expr) _ (expect! ",") b (assign-expr)]

@@ -112,6 +112,25 @@
          :func (and (same-type? (:ret a) (:ret b)))
          true)))
 
+(defn compatible?
+  "gcc's __builtin_types_compatible_p: top-level qualifiers are ignored,
+   nested ones must match; char, signed char and unsigned char differ, as do
+   long and long long."
+  [a b top]
+  (and (= (:kind a) (:kind b))
+       (or top (and (= (boolean (:const a)) (boolean (:const b)))
+                    (= (boolean (:volatile a)) (boolean (:volatile b)))))
+       (case (:kind a)
+         :ptr (compatible? (:base a) (:base b) false)
+         :array (and (compatible? (:base a) (:base b) false)
+                     (or (neg? (or (:len a) -1)) (neg? (or (:len b) -1)) (= (:len a) (:len b))))
+         (:struct :union) (= (:id a) (:id b))
+         :char (and (= (unsigned? a) (unsigned? b)) (= (boolean (:schar a)) (boolean (:schar b))))
+         :long (and (= (unsigned? a) (unsigned? b)) (= (boolean (:llong a)) (boolean (:llong b))))
+         (:short :int :bool) (= (unsigned? a) (unsigned? b))
+         :func (compatible? (:ret a) (:ret b) false)
+         true)))
+
 (defn type-str [t]
   (case (:kind t)
     :ptr (str (type-str (:base t)) "*")
