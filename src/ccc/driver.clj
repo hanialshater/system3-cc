@@ -78,7 +78,7 @@
           :else (recur (rest as) (update opts :inputs conj a)))))))
 
 (defn- n-workers [njobs]
-  (max 1 (min njobs (if-let [w (System/getenv "CCC_WORKERS")] (parse-long w) 4) (.availableProcessors (Runtime/getRuntime)))))
+  (max 1 (min njobs 4 (.availableProcessors (Runtime/getRuntime)))))
 
 (defn run-jobs
   "jobs: vector of [in out]. Compiles them on worker threads; diagnostics go to

@@ -15,7 +15,10 @@
                     (fn []
                       (deliver p (try (doseq [d deps]
                                         (let [v @d] (when (instance? Throwable v) (throw v))))
-                                      (require ns-sym)
+                                      ;; direct linking: calls between the compiler's own
+                                      ;; functions (never redefined) compile to static calls
+                                      (binding [*compiler-options* (assoc *compiler-options* :direct-linking true)]
+                                        (require ns-sym))
                                       (when (System/getenv "CCC_TRACE")
                                         (binding [*out* *err*]
                                           (println (str (- (System/currentTimeMillis)
