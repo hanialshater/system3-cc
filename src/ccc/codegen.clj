@@ -798,7 +798,7 @@
 
 (defn emit-data [g]
   (let [ty (:type g)
-        sz (t/type-size ty)
+        sz (if (:init g) (alength ^bytes (:bytes (:init g))) (t/type-size ty))
         al (max (or (:align g) (t/type-align ty)) (if (>= sz 16) 16 1))
         label (:label g)
         init (:init g)]

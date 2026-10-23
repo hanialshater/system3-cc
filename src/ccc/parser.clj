@@ -926,7 +926,7 @@
     (atom (cond-> {:ty ty}
             (= :array (:kind ty)) (assoc :elems {} :count 0)
             (t/struct? ty) (assoc :fields
-                                  (mapv (fn [m] (new-init (:type m)))
+                                  (mapv (fn [m] (new-init (if (:flex m) (assoc (:type m) :len -1) (:type m))))
                                         (:members (t/struct-info ty))))))))
 
 (defn arr-len [ty] (let [l (:len ty)] (if (neg? l) Long/MAX_VALUE l)))
@@ -1005,9 +1005,9 @@
       (when-not path (err (str "no member named '" nm "'")))
       path)))
 
-(defn struct-initializer2! [init start-idx]
+(defn struct-initializer2! [init start-idx post-desig]
   (let [ms (members-of (:ty @init))]
-    (loop [idx start-idx first? true]
+    (loop [idx start-idx first? (not post-desig)]
       (when (and (< idx (count ms)) (not (is-end?)))
         (let [start @*pos*]
           (when-not first? (expect! ","))
@@ -1045,7 +1045,7 @@
             [parent m] (designate-path! init path)]
         (designation (nth (:fields @parent) (:idx m)))
         (when (= :struct (:kind (:ty @parent)))
-          (struct-initializer2! parent (inc (:idx m)))))
+          (struct-initializer2! parent (inc (:idx m)) true)))
 
       (is? ".") (err "field name not in record or union initializer")
 
@@ -1086,7 +1086,7 @@
             (if (identical? parent init)
               (recur (inc (:idx m)) false)
               (do (when (= :struct (:kind (:ty @parent)))
-                    (struct-initializer2! parent (inc (:idx m))))
+                    (struct-initializer2! parent (inc (:idx m)) true))
                   (recur (inc (:idx (first path))) false))))
           (do (if (< idx (count ms))
                 (initializer2 (nth (:fields @init) idx))
@@ -1128,7 +1128,7 @@
           (if (t/struct? (:type e))
             (swap! init assoc :expr e)
             (do (vreset! *pos* start)
-                (struct-initializer2! init 0)))))
+                (struct-initializer2! init 0 false)))))
 
       (= :union (:kind ty))
       (if (is? "{")
@@ -1272,8 +1272,20 @@
           [{:off off :label l :addend v}]
           (do (write-int! buf off v (t/type-size ty)) []))))))
 
+(defn init-object-size
+  "Size of the object, including statically initialized flexible array members."
+  [init ty]
+  (let [sz (t/type-size ty)]
+    (if (and (= :struct (:kind ty)) (nil? (:expr @init)))
+      (let [ms (members-of ty) m (peek ms)]
+        (if (and m (:flex m))
+          (let [c (:count @(peek (:fields @init)))]
+            (max sz (+ (:offset m) (* c (t/type-size (:base (:type m)))))))
+          sz))
+      sz)))
+
 (defn gvar-init-data [init ty]
-  (let [buf (byte-array (t/type-size ty))
+  (let [buf (byte-array (init-object-size init ty))
         relocs (write-gvar-data! init buf 0)]
     {:bytes buf :relocs (vec (sort-by :off relocs))}))
 
