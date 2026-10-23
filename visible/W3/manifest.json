@@ -1,0 +1,197 @@
+{
+ "w3-0001": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0002": {
+  "category": "enums",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0006": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0008": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0011": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0012": {
+  "category": "typedef",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0016": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0019": {
+  "category": "unions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0021": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0028": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0032": {
+  "category": "enums",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0035": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0040": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0046": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0047": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0054": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0057": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0063": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0069": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0072": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0076": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0077": {
+  "category": "unions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0078": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0080": {
+  "category": "typedef",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0089": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0095": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0096": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0103": {
+  "category": "typedef",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0104": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0107": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0111": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0118": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0122": {
+  "category": "unions",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0127": {
+  "category": "sizeof",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0130": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0132": {
+  "category": "typedef",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0136": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0140": {
+  "category": "structs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w3-0142": {
+  "category": "initializers",
+  "exit": 0,
+  "timeoutMs": 3000
+ }
+}
