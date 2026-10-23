@@ -481,14 +481,23 @@
                      [idx scale] (cond
                                    (and (= :mul (:op x)) (= :num (:op (:rhs x))) (#{1 2 4 8} (:val (:rhs x))))
                                    [(:lhs x) (:val (:rhs x))]
-                                   :else [x 1])]
+                                   :else [x 1])
+                     ;; i+c with signed int i: fold c*scale into the displacement
+                     [idx extra] (let [inner (when (and (= :cast (:op idx)) (t/integer? (:type (:expr idx)))
+                                                        (not (t/unsigned? (:type (:expr idx)))))
+                                               (:expr idx))]
+                                   (if (and inner (#{:add :sub} (:op inner)) (= :num (:op (:rhs inner)))
+                                            (imm32? (* scale (:val (:rhs inner)))))
+                                     [(assoc idx :expr (:lhs inner))
+                                      (* scale (if (= :add (:op inner)) (:val (:rhs inner)) (- (:val (:rhs inner)))))]
+                                     [idx 0]))]
                  (cond
                    (and (= :num (:op x)) (imm32? (:val x)))
                    (update (pointer-base p) :disp (fnil + 0) (if (= :sub (:op e)) (- (:val x)) (:val x)))
                    (= :sub (:op e)) (do (gen-expr e) {:base "%rax"})
                    (and (pure? p) (simple-base? p))
                    (do (index-into-rdi idx)
-                       (assoc (pointer-base p) :index "%rdi" :scale scale))
+                       (-> (pointer-base p) (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
                    (pure? p)
                    (let [b (pointer-base p)
                          b (if (or (:index b) (= "%rip" (:base b)))
@@ -497,10 +506,10 @@
                      (if (or (cheap-index? idx) (not= "%rax" (:base b)))
                        (index-into-rdi idx)
                        (do (push!) (index-into-rdi idx) (pop! "%rax")))
-                     (assoc b :index "%rdi" :scale scale))
+                     (-> b (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
                    :else
                    (do (gen-expr p) (push!) (index-into-rdi idx) (pop! "%rax")
-                       {:base "%rax" :index "%rdi" :scale scale})))
+                       {:base "%rax" :index "%rdi" :scale scale :disp extra})))
                (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
                {:base ((vreg (:var e)) 0)}
                (and (= :var (:op e)) (var-mem-op (:var e)) (t/ptr? (:type e)))
@@ -599,7 +608,7 @@
         imm? #(and % (str/starts-with? % "$"))]
     (if (and lo (not (imm? lo)) ro (or (reg? lo) (reg? ro) (imm? ro)))
       ;; compare in place
-      (if (and (= ro "$0") (reg? lo) (#{:eq :ne} op))
+      (if (and (= ro "$0") (reg? lo))
         (emitf "  test" (if (= w 8) "q " "l ") lo ", " lo)
         (emitf "  cmp" (if (= w 8) "q " "l ") ro ", " lo))
       (let [o (gen-int-operands lhs rhs w)]
@@ -1195,11 +1204,24 @@
         (if (= o "$0")
           (emitf "  xorl " (r 1) ", " (r 1))
           (when-not (= o rr) (emitf "  mov" (sfx-of sz) " " o ", " rr))))
+      ;; y = x +/- c with x, y in registers: lea
+      (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz)
+           (#{:add :sub} (:op rhs)) (= :var (:op (:lhs rhs))) (vreg (:var (:lhs rhs)))
+           (= sz (t/type-size (:type (:lhs rhs)))) (= :num (:op (:rhs rhs))) (imm32? (:val (:rhs rhs))))
+      (let [c (:val (:rhs rhs)) c (if (= :sub (:op rhs)) (- c) c)
+            src ((vreg (:var (:lhs rhs))) 0) dst (vreg (:var lhs))]
+        (emitf "  lea" (sfx-of sz) " " c "(" src "), " (if (= sz 8) (dst 0) (dst 1))))
       (and int? (scalar-var? lhs) (var-mem-op (:var lhs)) (store-src rhs sz))
       (emitf "  mov" (sfx-of sz) " " (store-src rhs sz) ", " (var-mem-op (:var lhs)))
       (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs) (store-src rhs sz))
       (let [o (store-src rhs sz) m (addr-operand lhs)]
         (emitf "  mov" (sfx-of sz) " " o ", " (render-mem m)))
+      ;; store through a pure address of a computed integer value
+      (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs))
+      (do (gen-expr rhs)
+          (emit "  movq %rax, %rsi")
+          (let [op (render-mem (addr-operand lhs))]
+            (emitf "  mov" (sfx-of sz) " " (case (int sz) 1 "%sil" 2 "%si" 4 "%esi" 8 "%rsi") ", " op)))
       :else (gen-expr-pop n))))
 
 (defn gen-incdec-nv [n]

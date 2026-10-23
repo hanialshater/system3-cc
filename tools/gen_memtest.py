@@ -73,7 +73,9 @@ def main():
         locs.append(Loc(f'*{pname}', ('P', name, pname, 0), t))
         locs.append(Loc(f'{pname}[1]', ('P', name, pname, 1), t))
         # variable index
-        locs.append(Loc(f'{name}[idx]', ('IDX', name), t))
+        locs.append(Loc(f'{name}[idx]', ('IDX', name, 0), t))
+        locs.append(Loc(f'{name}[idx + 1]', ('IDX', name, 1), t))
+        locs.append(Loc(f'{name}[idx - 1 + 1]', ('IDX', name, 0), t))
     # struct
     out.append('struct S { char c; int i; long l; unsigned short us; } gs = {1, 2, 3, 4};')
     body.append('  struct S ls = {5, 6, 7, 8};')
@@ -89,7 +91,7 @@ def main():
 
     def key_of(l):
         if isinstance(l.key, tuple) and l.key[0] == 'IDX':
-            return (l.key[1], idx)
+            return (l.key[1], idx + l.key[2])
         if isinstance(l.key, tuple) and l.key[0] == 'P':
             return (l.key[1], state[('PTR', l.key[2])] + l.key[3])
         return l.key
@@ -136,7 +138,7 @@ def main():
             body.append(f'  {op}({l.code});' if pre else f'  ({l.code}){op};')
             state[k] = wrap(state[k] + (1 if op == '++' else -1), l.ty)
         elif kind < 0.92:
-            idx = random.randrange(6)
+            idx = random.randrange(5)
             body.append(f'  idx = {idx};')
             continue
         else:
