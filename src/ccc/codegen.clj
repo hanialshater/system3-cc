@@ -749,7 +749,7 @@
                     (let [sz (if (t/scalar? (:type v)) (max 1 (t/type-size (:type v)))
                                (align-to (max 1 (t/type-size (:type v))) 8))
                           al (max (or (:align v) (t/type-align (:type v))) 1)
-                          al (if (> (t/type-size (:type v)) 16) (max al 16) al)
+                          al (if (and (t/array? (:type v)) (>= (t/type-size (:type v)) 16)) (max al 16) al)
                           bottom (align-to (+ bottom sz) al)]
                       [(assoc m (:id v) (- bottom)) bottom])))
                 [{} 0] (:locals f))
