@@ -532,6 +532,22 @@
     :deref (do (gen-expr (:expr n)) (load (:type n)))
     :addr (gen-addr (:expr n))
     :assign (gen-assign n)
+    :incdec (let [ty (:type n) sz (t/type-size ty) d (:delta n)]
+              (gen-addr (:expr n))
+              (emit "  movq %rax, %rdx")
+              (load ty)
+              (emitf "  leaq " d "(%rax), %rdi")
+              (case (int sz)
+                1 (emit "  movb %dil, (%rdx)")
+                2 (emit "  movw %di, (%rdx)")
+                4 (emit "  movl %edi, (%rdx)")
+                8 (emit "  movq %rdi, (%rdx)"))
+              (when (:pre n)
+                (case (int sz)
+                  1 (emit (if (t/unsigned? ty) "  movzbl %dil, %eax" "  movsbl %dil, %eax"))
+                  2 (emit (if (t/unsigned? ty) "  movzwl %di, %eax" "  movswl %di, %eax"))
+                  4 (emit "  movl %edi, %eax")
+                  8 (emit "  movq %rdi, %rax"))))
     :comma (do (gen-expr (:lhs n)) (gen-expr (:rhs n)))
     :cast (do (gen-expr (:expr n)) (gen-cast (:type (:expr n)) (:type n)))
     :memzero (let [v (:var n)]
@@ -730,7 +746,8 @@
         (reduce (fn [[m bottom] v]
                   (if-let [o (stack-param-ids (:id v))]
                     [(assoc m (:id v) o) bottom]
-                    (let [sz (align-to (max 1 (t/type-size (:type v))) 8)
+                    (let [sz (if (t/scalar? (:type v)) (max 1 (t/type-size (:type v)))
+                               (align-to (max 1 (t/type-size (:type v))) 8))
                           al (max (or (:align v) (t/type-align (:type v))) 1)
                           al (if (> (t/type-size (:type v)) 16) (max al 16) al)
                           bottom (align-to (+ bottom sz) al)]

@@ -134,7 +134,7 @@
 
 (defn not-const [] (throw (ex-info "not constant" {:type :not-const})))
 
-(declare eval-reloc eval-double)
+(declare eval-reloc eval-double eval-truth)
 
 (defn ulong-type? [ty] (and (t/unsigned? ty) (= 8 (t/type-size ty))))
 
@@ -156,6 +156,14 @@
   (let [[l v] (eval-reloc n)]
     (when l (not-const))
     v))
+
+(defn eval-truth
+  "Truth value of a constant scalar expression (addresses of objects are true)."
+  [n]
+  (if (t/flonum? (:type n))
+    (not (zero? (eval-double n)))
+    (let [[l v] (eval-reloc n)]
+      (boolean (or l (not (zero? v)))))))
 
 (defn eval-reloc
   "Evaluate constant expression. Returns [label-or-nil value]."
@@ -200,18 +208,12 @@
                 c (if (or (ulong-type? lt) (t/ptr? lt)) (Long/compareUnsigned a b) (compare a b))]
             [nil (if (case (:op n) :eq (zero? c) :ne (not (zero? c)) :lt (neg? c)
                            :le (<= c 0) :gt (pos? c) :ge (>= c 0)) 1 0)])))
-      :logand [nil (if (and (not (zero? (eval-int (:lhs n)))) (not (zero? (eval-int (:rhs n))))) 1 0)]
-      :logor [nil (if (or (not (zero? (eval-int (:lhs n)))) (not (zero? (eval-int (:rhs n))))) 1 0)]
-      :not (if (t/flonum? (:type (:expr n)))
-             [nil (if (zero? (eval-double (:expr n))) 1 0)]
-             (let [[l v] (eval-reloc (:expr n))]
-               (when l (not-const))
-               [nil (if (zero? v) 1 0)]))
+      :logand [nil (if (and (eval-truth (:lhs n)) (eval-truth (:rhs n))) 1 0)]
+      :logor [nil (if (or (eval-truth (:lhs n)) (eval-truth (:rhs n))) 1 0)]
+      :not [nil (if (eval-truth (:expr n)) 0 1)]
       :neg [nil (wrap (unchecked-negate (eval-int (:expr n))) ty)]
       :bitnot [nil (wrap (bit-not (eval-int (:expr n))) ty)]
-      :cond (let [c (:cond n)
-                  cv (if (t/flonum? (:type c)) (not (zero? (eval-double c))) (not (zero? (eval-int c))))]
-              (eval-reloc (if cv (:then n) (:els n))))
+      :cond (eval-reloc (if (eval-truth (:cond n)) (:then n) (:els n)))
       :comma (eval-reloc (:rhs n))
       :cast (let [inner (:expr n) it (:type inner)]
               (cond
@@ -485,14 +487,26 @@
 (defn compound-assign [op-fn lhs rhs]
   (with-lvalue-ref lhs (fn [lv] (new-assign lv (op-fn lv rhs)))))
 
+(defn direct-incdec
+  "Single-node increment/decrement for integer and pointer lvalues, or nil."
+  [lhs delta pre]
+  (let [ty (:type lhs)]
+    (when (and (or (and (t/integer? ty) (not= :bool (:kind ty)))
+                   (and (t/ptr? ty) (not= :vla (:kind (:base ty)))))
+               (not (and (= :member (:op lhs)) (:bitfield (:member lhs)))))
+      (let [d (if (t/ptr? ty) (* delta (ptr-base-size ty)) delta)]
+        (when (<= -2147483648 d 2147483647)
+          {:op :incdec :type (t/strip ty) :expr lhs :delta d :pre pre})))))
+
 (defn post-incdec [lhs delta]
   (check-scalar lhs)
-  (with-lvalue-ref lhs
+  (or (direct-incdec lhs delta false)
+   (with-lvalue-ref lhs
     (fn [lv]
       (let [old (new-temp! (t/strip (:type lv)))]
         (new-comma (new-assign (var-node old) lv)
                    (new-comma (new-assign lv (new-add (var-node old) (num-node delta ty-int)))
-                              (var-node old)))))))
+                              (var-node old))))))))
 
 (defn default-promote [n]
   (let [ty (:type n)]
@@ -946,7 +960,7 @@
         (and (is? ",") (is-tok? (peek-tok 1) "}")) (do (advance!) (advance!) true)
         :else false))
 
-(declare initializer2 designation)
+(declare initializer2 designation field-desig?)
 
 (defn skip-excess! []
   (if (consume! "{")
@@ -987,7 +1001,7 @@
       (if (and (< i len) (not (is-end?)))
         (let [start @*pos*]
           (when (> i 0) (expect! ","))
-          (if (or (is? "[") (is? "."))
+          (if (or (is? "[") (field-desig?))
             (do (vreset! *pos* start) i)
             (do (initializer2 (init-child init i))
                 (recur (inc i) false))))
@@ -995,12 +1009,18 @@
 
 (defn members-of [ty] (:members (t/struct-info ty)))
 
+(defn field-desig? []
+  (or (is? ".")
+      (and (= :ident (:kind (tok))) (is-tok? (peek-tok 1) ":"))))
+
 (defn struct-designator
-  "at '.'; returns [path-of-member-indices] resolving anonymous members"
+  "at '.' (or GNU 'name:'); returns [path-of-member-indices] resolving anonymous members"
   [ty]
-  (expect! ".")
-  (let [nm (:text (tok))]
+  (let [gnu (not (is? "."))
+        _ (when-not gnu (advance!))
+        nm (:text (tok))]
     (advance!)
+    (when gnu (expect! ":"))
     (let [path (find-member-path ty nm)]
       (when-not path (err (str "no member named '" nm "'")))
       path)))
@@ -1011,7 +1031,7 @@
       (when (and (< idx (count ms)) (not (is-end?)))
         (let [start @*pos*]
           (when-not first? (expect! ","))
-          (if (or (is? "[") (is? "."))
+          (if (or (is? "[") (field-desig?))
             (vreset! *pos* start)
             (do (initializer2 (nth (:fields @init) idx))
                 (recur (inc idx) false))))))))
@@ -1040,7 +1060,7 @@
               (designation (init-child init j)))
             (array-initializer2! init (inc e))))
 
-      (and (is? ".") (t/struct? ty))
+      (and (field-desig?) (t/struct? ty))
       (let [path (struct-designator ty)
             [parent m] (designate-path! init path)]
         (designation (nth (:fields @parent) (:idx m)))
@@ -1079,7 +1099,7 @@
     (loop [idx 0 first? true]
       (when-not (consume-end!)
         (when-not first? (expect! ","))
-        (if (is? ".")
+        (if (field-desig?)
           (let [path (struct-designator (:ty @init))
                 [parent m] (designate-path! init path)]
             (designation (nth (:fields @parent) (:idx m)))
@@ -1097,7 +1117,7 @@
   (let [ms (members-of (:ty @init))]
     (if (consume! "{")
       (do
-        (if (is? ".")
+        (if (field-desig?)
           (let [path (struct-designator (:ty @init))
                 [parent m] (designate-path! init path)]
             (designation (nth (:fields @parent) (:idx m))))
@@ -1405,8 +1425,8 @@
       (and (= k :punct) (= s "~")) (do (advance!) (new-bitnot (cast-expr)))
       (and (= k :punct) (= s "&")) (do (advance!) (new-addr (cast-expr)))
       (and (= k :punct) (= s "*")) (do (advance!) (new-deref (cast-expr)))
-      (and (= k :punct) (= s "++")) (do (advance!) (compound-assign new-add (unary) (num-node 1 ty-int)))
-      (and (= k :punct) (= s "--")) (do (advance!) (compound-assign new-sub (unary) (num-node 1 ty-int)))
+      (and (= k :punct) (= s "++")) (do (advance!) (let [e (unary)] (or (direct-incdec e 1 true) (compound-assign new-add e (num-node 1 ty-int)))))
+      (and (= k :punct) (= s "--")) (do (advance!) (let [e (unary)] (or (direct-incdec e -1 true) (compound-assign new-sub e (num-node 1 ty-int)))))
       (and (= k :punct) (= s "&&"))
       (do (advance!)
           (let [nm (:text (tok))]
