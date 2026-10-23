@@ -57,7 +57,10 @@
 
 (def callee-regs [["%rbx" "%ebx" "%bx" "%bl"] ["%r12" "%r12d" "%r12w" "%r12b"]
                   ["%r13" "%r13d" "%r13w" "%r13b"] ["%r14" "%r14d" "%r14w" "%r14b"]
-                  ["%r15" "%r15d" "%r15w" "%r15b"]])  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
+                  ["%r15" "%r15d" "%r15w" "%r15b"]
+                  ;; caller-saved, only for variables of scopes without calls
+                  ["%r8" "%r8d" "%r8w" "%r8b"] ["%r9" "%r9d" "%r9w" "%r9b"]])
+(def n-callee-saved 5)  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
 
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
 (defmacro emitf [& parts] `(emit (str ~@parts)))
@@ -451,6 +454,9 @@
       (and inner (= 4 (t/type-size ity)) (int-operand inner 4))
       (emitf (if (t/unsigned? ity) "  movl " "  movslq ") (int-operand inner 4) (if (t/unsigned? ity) ", %edi" ", %rdi"))
       (int-operand x 8) (emitf "  movq " (int-operand x 8) ", %rdi")
+      (and inner (= 4 (t/type-size ity)))
+      (do (gen-expr inner)
+          (emit (if (t/unsigned? ity) "  movl %eax, %edi" "  movslq %eax, %rdi")))
       :else (do (gen-expr x) (emit "  movq %rax, %rdi")))))
 
 (declare addr-operand fixed-addr?)
@@ -641,18 +647,32 @@
         (gen-expr lhs)
         (if-let [sr (when (and *scratch-free* (seq @*scratch-free*) (pure? rhs))
                       (let [r (first @*scratch-free*)] (vswap! *scratch-free* rest) r))]
-          (do (emitf "  movq %rax, " sr)
-              (gen-expr rhs)
-              (emit "  movq %rax, %rdi")
+          (if (and (#{:deref :member} (:op rhs)) (t/scalar? (:type rhs))
+                   (or (t/integer? (:type rhs)) (t/ptr? (:type rhs)))
+                   (= w (t/type-size (:type rhs)))
+                   (not (and (= :member (:op rhs)) (:bitfield (:member rhs)))))
+            ;; rhs is a load: use its memory operand directly
+            (let [_ (emitf "  movq %rax, " sr)
+                  m (addr-operand rhs)
+                  m (if (or (= "%rax" (:base m)) (= "%rax" (:index m)))
+                      (do (emitf "  leaq " (render-mem m) ", %rsi") {:base "%rsi"})
+                      m)]
               (emitf "  movq " sr ", %rax")
-              (vswap! *scratch-free* conj sr))
+              (vswap! *scratch-free* conj sr)
+              (render-mem m))
+            (do (emitf "  movq %rax, " sr)
+                (gen-expr rhs)
+                (emit "  movq %rax, %rdi")
+                (emitf "  movq " sr ", %rax")
+                (vswap! *scratch-free* conj sr)
+                (if (= w 8) "%rdi" "%edi")))
           (let [[h release] (alloc-holder!)]
             (emitf "  movq %rax, " h)
             (gen-expr rhs)
             (emit "  movq %rax, %rdi")
             (emitf "  movq " h ", %rax")
-            (release)))
-        (if (= w 8) "%rdi" "%edi")))))))
+            (release)
+            (if (= w 8) "%rdi" "%edi")))))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -1824,11 +1844,18 @@
   "Walk a function body: weighted use counts of variables, variables whose
    address is taken, and variables that must stay in memory."
   [body]
-  (let [weights (volatile! {}) addr (volatile! #{}) pinned (volatile! #{})]
+  (let [weights (volatile! {}) addr (volatile! #{}) pinned (volatile! #{})
+        unsafe (volatile! #{}) path (volatile! []) seen (volatile! #{})]
     (letfn [(walk [x depth]
               (cond
                 (map? x)
                 (when-let [op (:op x)]
+                  (when (or (#{:call :overflow :va-arg :va-start :va-copy :alloca :vla-alloc :goto-ptr} op)
+                            (and (= op :assign) (or (t/struct? (:type x))
+                                                    (and (= :member (:op (:lhs x))) (:bitfield (:member (:lhs x))))))
+                            (and (= op :return) (:expr x) (t/struct? (:type (:expr x)))))
+                    (vswap! unsafe into @path))
+                  (when (:scope-id x) (vswap! path conj (:scope-id x)) (vswap! seen conj (:scope-id x)))
                   (case op
                     :var (vswap! weights update (:id (:var x)) (fnil + 0) (long (Math/pow 8 (min depth 5))))
                     :addr (when (= :var (:op (:expr x))) (vswap! addr conj (:id (:var (:expr x)))))
@@ -1839,16 +1866,20 @@
                     (doseq [[k v] x]
                       (when-not (#{:var :type :member :restore :cases :fn-type :ret-buf :tmp} k)
                         (walk v (if (#{:cond :inc :body} k) inner depth))))
-                    (when (= op :call) (walk (:fn x) depth))))
+                    (when (= op :call) (walk (:fn x) depth)))
+                  (when (:scope-id x) (vswap! path pop)))
                 (vector? x) (doseq [y x] (walk y depth))
                 :else nil))]
       (walk body 0))
-    {:weights @weights :addr @addr :pinned @pinned}))
+    {:weights @weights :addr @addr :pinned @pinned :unsafe @unsafe :seen @seen}))
 
 (defn choose-regvars
   "Assign callee-saved registers to the most used eligible scalar locals."
   [f]
-  (let [{:keys [weights addr pinned]} (usage-info (:body f))
+  (let [{:keys [weights addr pinned unsafe seen]} (usage-info (:body f))
+        ;; variables declared in a call-free inner scope may use r8/r9
+        call-free? (fn [v] (let [b (:block v)]
+                             (and (seq b) (contains? seen (peek b)) (not (contains? unsafe (peek b))))))
         ok? (fn [v]
               (let [ty (:type v)]
                 (and (or (t/integer? ty) (t/ptr? ty))
@@ -1870,7 +1901,8 @@
         out
         (let [v (first cs)
               taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
-              r (first (remove taken (range nregs)))]
+              order (if (call-free? v) (concat [5 6] (range n-callee-saved)) (range n-callee-saved))
+              r (first (remove taken order))]
           (if r
             (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
             (recur (rest cs) assigned out)))))))
@@ -1889,13 +1921,13 @@
               *fninfo* info
               *overaligned* (set (map :id (:overaligned info)))
               *regvars* regvars
-              *temp-free* (volatile! (vec (reverse (remove regset (range (count callee-regs))))))
+              *temp-free* (volatile! (vec (reverse (remove regset (range n-callee-saved)))))
               *temp-used* used
               *loop-depth* (volatile! 0)
               *spill-free* (volatile! [])
               *spill-max* spill-max
               *spill-base* (+ frame 48)
-              *scratch-free* (volatile! (list "%r11" "%r10" "%r9" "%r8"))
+              *scratch-free* (volatile! (list "%r11" "%r10"))
               *asm* body-sb
               *depth* (volatile! 0)]
       (doseq [v (:overaligned info)]
@@ -1925,8 +1957,8 @@
       (gen-stmt (:body f))
       (when (= name "main") (emit "  movl $0, %eax")))
     ;; now the prologue, knowing which callee-saved registers were used
-    (let [saved (sort @used)
-          save-bytes (align-to (* 8 (count callee-regs)) 16)
+    (let [saved (sort (filter #(< % n-callee-saved) @used))
+          save-bytes (align-to (* 8 n-callee-saved) 16)
           slot (fn [i] (- (+ frame (* 8 (inc i)))))]
       (binding [*asm* outer]
         (when-not (:static f) (emitf "  .globl " name))

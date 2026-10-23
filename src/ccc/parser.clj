@@ -2087,6 +2087,7 @@
         "for"
         (do (advance!) (expect! "(")
             (enter-scope!)
+            (let [sid (when *block-path* (peek @*block-path*))]
             (let [init (cond (consume! ";") nil
                              (typename?) {:op :block :body (declaration)}
                              :else (let [e (expr)] (expect! ";") (expr-stmt-node e)))
@@ -2097,7 +2098,7 @@
                   brk (new-label) cont (new-label)
                   body (binding [*brk* brk *cont* cont *brk-depth* (count @*vla-blocks*) *cont-depth* (count @*vla-blocks*)] (stmt))]
               (leave-scope!)
-              {:op :for :init init :cond c :inc inc :body body :brk brk :cont cont}))
+              {:op :for :init init :cond c :inc inc :body body :brk brk :cont cont :scope-id sid})))
         "while"
         (do (advance!) (expect! "(")
             (let [c (check-scalar (expr))]
@@ -2241,6 +2242,7 @@
   "After '{'."
   []
   (enter-scope!)
+  (let [sid (when *block-path* (peek @*block-path*))]
   (let [n0 (count @*vla-blocks*)
         saved-labels (volatile! {})
         items (loop [acc []]
@@ -2271,7 +2273,7 @@
             (if (= old ::none) (vswap! *labels* dissoc nm) (vswap! *labels* assoc nm old)))
         items (if (> (count live) n0) (conj items (restore-sp-stmt (nth live n0))) items)]
     (leave-scope!)
-    {:op :block :body items}))
+    {:op :block :body items :scope-id sid})))
 
 ;; ---------------------------------------------------------------------------
 ;; Top level

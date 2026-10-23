@@ -77,6 +77,7 @@ def main():
         locs.append(Loc(f'{name}[idx + 1]', ('IDX', name, 1), t))
         locs.append(Loc(f'{name}[idx - 1 + 1]', ('IDX', name, 0), t))
     # struct
+    out.append('long churn(long x) { long a = x, b = 3, c = 5, d = 7; for (int i = 0; i < 4; i++) { a = a * 7 + b; b = a ^ c; c += d; d = b - a; } return x + (a - a); }')
     out.append('struct S { char c; int i; long l; unsigned short us; } gs = {1, 2, 3, 4};')
     body.append('  struct S ls = {5, 6, 7, 8};')
     body.append('  struct S *ps = &ls;')
@@ -137,6 +138,23 @@ def main():
             pre = random.random() < 0.5
             body.append(f'  {op}({l.code});' if pre else f'  ({l.code}){op};')
             state[k] = wrap(state[k] + (1 if op == '++' else -1), l.ty)
+        elif kind < 0.89:
+            # a nested scope with its own locals, a loop, maybe a call
+            code, v, t = rval()
+            code2, v2, t2 = rval()
+            call = random.random() < 0.5
+            tt = random.choice(['int', 'long', 'unsigned'])
+            tv = wrap(v, tt)
+            add = wrap(v2, tt)
+            lines_ = [f'  {{ {tt} t1 = {code}; {tt} t2 = {code2};']
+            for _ in range(3):
+                tv = wrap(tv + add, tt)
+            lines_.append('    for (int q = 0; q < 3; q++) t1 += t2;')
+            if call:
+                lines_.append('    t1 = churn(t1);')
+            lines_.append(f'    {l.code} = t1; }}')
+            body.extend(lines_)
+            state[k] = wrap(tv, l.ty)
         elif kind < 0.92:
             idx = random.randrange(5)
             body.append(f'  idx = {idx};')
