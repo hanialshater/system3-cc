@@ -13,7 +13,23 @@
 (def ^:dynamic *fninfo* nil)
 (def ^:dynamic *overaligned* #{})
 (def ^:dynamic *ldconsts* nil)
-(def ^:dynamic *regvars* {})    ; var id -> index into callee-regs (register-allocated locals)
+(def ^:dynamic *regvars* {})
+(def ^:dynamic *temp-free* nil)  ; volatile vector of free callee-saved register indices
+(def ^:dynamic *temp-used* nil)  ; volatile set of register indices used as temporaries
+
+(defn alloc-temp!
+  "A free callee-saved register for holding a value across code, or nil."
+  []
+  (when-let [fr *temp-free*]
+    (when-let [i (peek @fr)]
+      (vswap! fr pop)
+      (vswap! *temp-used* conj i)
+      i)))
+
+(defn free-temp! [i] (vswap! *temp-free* conj i))
+
+;; caller-saved registers that code for side-effect-free expressions never uses
+(def ^:dynamic *scratch-free* nil)   ; volatile list of free scratch registers    ; var id -> index into callee-regs (register-allocated locals)
 
 (def callee-regs [["%rbx" "%ebx" "%bx" "%bl"] ["%r12" "%r12d" "%r12w" "%r12b"]
                   ["%r13" "%r13d" "%r13w" "%r13b"] ["%r14" "%r14d" "%r14w" "%r14b"]
@@ -544,8 +560,26 @@
           (emit "  movq %rax, %rdi")
           (gen-expr lhs)
           (if (= w 8) "%rdi" "%edi"))
-      (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")
-          (if (= w 8) "%rdi" "%edi")))))
+      (if-let [sr (when (and *scratch-free* (seq @*scratch-free*) (pure? rhs))
+                    (let [r (first @*scratch-free*)] (vswap! *scratch-free* rest) r))]
+        (do (gen-expr lhs)
+            (emitf "  movq %rax, " sr)
+            (gen-expr rhs)
+            (emit "  movq %rax, %rdi")
+            (emitf "  movq " sr ", %rax")
+            (vswap! *scratch-free* conj sr)
+            (if (= w 8) "%rdi" "%edi"))
+      (if-let [ti (alloc-temp!)]
+        (let [tr ((nth callee-regs ti) 0)]
+          (gen-expr lhs)
+          (emitf "  movq %rax, " tr)
+          (gen-expr rhs)
+          (emit "  movq %rax, %rdi")
+          (emitf "  movq " tr ", %rax")
+          (free-temp! ti)
+          (if (= w 8) "%rdi" "%edi"))
+        (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")
+            (if (= w 8) "%rdi" "%edi")))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -950,12 +984,22 @@
             (when ret-mem (local-addr (:ret-buf n) "%rdi")))
       (if fast
         ;; complex args right to left; the leftmost one goes straight to its register
-        (do (doseq [a (reverse (rest complex))] (push-arg! a))
+        (let [held (doall
+                     (for [a (reverse (rest complex))]
+                       (let [ti (when (= :gp (:mode a)) (alloc-temp!))]
+                         (if ti
+                           (do (gen-expr (:node a))
+                               (emitf "  movq %rax, " ((nth callee-regs ti) 0))
+                               [a ti])
+                           (do (push-arg! a) [a nil])))))]
             (when-let [a0 (first complex)]
               (gen-expr (:node a0))
               (to-reg a0))
-            (doseq [a (rest complex)]
-              (if (= :gp (:mode a)) (pop! (nth argreg64 (:reg a))) (popf! (:reg a))))
+            (doseq [[a ti] (reverse held)]
+              (if ti
+                (do (emitf "  movq " ((nth callee-regs ti) 0) ", " (nth argreg64 (:reg a)))
+                    (free-temp! ti))
+                (if (= :gp (:mode a)) (pop! (nth argreg64 (:reg a))) (popf! (:reg a)))))
             (doseq [a simple] (load-simple a))
             (when ret-mem (local-addr (:ret-buf n) "%rdi")))
         (do (doseq [a (reverse args)] (when (not= :stack (:mode a)) (push-arg! a)))
@@ -1108,14 +1152,44 @@
         (>= sz 4) o
         :else nil))))
 
+(defn same-var? [a b]
+  (and (= :var (:op a)) (= :var (:op b))
+       (let [va (:var a) vb (:var b)]
+         (if (:local va)
+           (and (:local vb) (some? (:id va)) (= (:id va) (:id vb)))
+           (and (not (:local vb)) (some? (:label va)) (= (:label va) (:label vb)))))))
+
+(defn in-place-update
+  "For x = x OP y on an integer variable x: [instruction operand] or nil."
+  [lhs rhs sz]
+  (when (and (#{:add :sub :bitand :bitor :bitxor} (:op rhs))
+             (same-var? lhs (:lhs rhs))
+             (= sz (t/type-size (:type rhs))))
+    (let [ins (case (:op rhs) :add "add" :sub "sub" :bitand "and" :bitor "or" :bitxor "xor")]
+      (if-let [o (int-operand (:rhs rhs) sz)]
+        [ins o]
+        (when (pure? (:rhs rhs))
+          [ins :computed])))))
+
 (defn gen-assign-nv
   "Assignment whose value is not used."
   [n]
   (let [{:keys [lhs rhs]} n
         ty (:type lhs)
         int? (or (t/integer? ty) (t/ptr? ty))
-        sz (t/type-size ty)]
+        sz (t/type-size ty)
+        upd (when (and int? (#{4 8} sz)) (in-place-update lhs rhs sz))]
     (cond
+      ;; x = x op y with x in a register
+      (and upd (vreg (:var lhs)))
+      (let [r (vreg (:var lhs)) [ins o] upd
+            o (if (= o :computed) (do (gen-expr (:rhs rhs)) (if (= sz 8) "%rax" "%eax")) o)]
+        (emitf "  " ins (sfx-of sz) " " o ", " (if (= sz 8) (r 0) (r 1))))
+      ;; x = x op y with x in memory and y an immediate or register
+      (and upd (var-mem-op (:var lhs)) (not (and (string? (second upd)) (str/includes? (second upd) "("))))
+      (let [[ins o] upd
+            o (if (= o :computed) (do (gen-expr (:rhs rhs)) (if (= sz 8) "%rax" "%eax")) o)]
+        (emitf "  " ins (sfx-of sz) " " o ", " (var-mem-op (:var lhs))))
       (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz) (int-operand rhs sz))
       (let [r (vreg (:var lhs)) o (int-operand rhs sz) rr (if (= sz 8) (r 0) (r 1))]
         (if (= o "$0")
@@ -1630,25 +1704,20 @@
   (let [[offsets frame info pinfo] (assign-offsets f)
         name (:name f)
         regvars (choose-regvars f)
-        nsaved (count (set (vals regvars)))
-        saved (take nsaved callee-regs)
-        save-bytes (align-to (* 8 nsaved) 16)]
+        nregvars (count (set (vals regvars)))
+        outer *asm*
+        body-sb (StringBuilder.)
+        used (volatile! (set (range nregvars)))]
     (binding [*offsets* offsets
               *fn* f
               *fninfo* info
               *overaligned* (set (map :id (:overaligned info)))
               *regvars* regvars
+              *temp-free* (volatile! (vec (reverse (range nregvars (count callee-regs)))))
+              *temp-used* used
+              *scratch-free* (volatile! (list "%r11" "%r10" "%r9" "%r8"))
+              *asm* body-sb
               *depth* (volatile! 0)]
-      (when-not (:static f) (emitf "  .globl " name))
-      (emit "  .text")
-      (when-let [al (:align f)] (emitf "  .align " al))
-      (emitf "  .type " name ", @function")
-      (emitf name ":")
-      (emit "  pushq %rbp")
-      (emit "  movq %rsp, %rbp")
-      (when (pos? (+ frame save-bytes)) (emitf "  subq $" (+ frame save-bytes) ", %rsp"))
-      (doseq [[i r] (map-indexed vector saved)]
-        (emitf "  movq " (r 0) ", " (- (+ frame (* 8 (inc i)))) "(%rbp)"))
       (doseq [v (:overaligned info)]
         (let [al (or (:align v) (t/type-align (:type v)))]
           (emitf "  subq $" (align-to (max 1 (t/type-size (:type v))) 16) ", %rsp")
@@ -1674,13 +1743,30 @@
                          (reg-store (:var pi)))))
           (store-param pi (offsets (:id (:var pi))))))
       (gen-stmt (:body f))
-      (when (= name "main") (emit "  movl $0, %eax"))
-      (emitf ".L.return." name ":")
-      (doseq [[i r] (map-indexed vector saved)]
-        (emitf "  movq " (- (+ frame (* 8 (inc i)))) "(%rbp), " (r 0)))
-      (emit "  leave")
-      (emit "  ret")
-      (emitf "  .size " name ", .-" name))))
+      (when (= name "main") (emit "  movl $0, %eax")))
+    ;; now the prologue, knowing which callee-saved registers were used
+    (let [saved (sort @used)
+          save-bytes (align-to (* 8 (count callee-regs)) 16)
+          slot (fn [i] (- (+ frame (* 8 (inc i)))))]
+      (binding [*asm* outer]
+        (when-not (:static f) (emitf "  .globl " name))
+        (emit "  .text")
+        (when-let [al (:align f)] (emitf "  .align " al))
+        (emitf "  .type " name ", @function")
+        (emitf name ":")
+        (emit "  pushq %rbp")
+        (emit "  movq %rsp, %rbp")
+        (let [sz (+ frame (if (seq saved) save-bytes 0))]
+          (when (pos? sz) (emitf "  subq $" sz ", %rsp")))
+        (doseq [i saved]
+          (emitf "  movq " ((nth callee-regs i) 0) ", " (slot i) "(%rbp)"))
+        (.append outer body-sb)
+        (emitf ".L.return." name ":")
+        (doseq [i saved]
+          (emitf "  movq " (slot i) "(%rbp), " ((nth callee-regs i) 0)))
+        (emit "  leave")
+        (emit "  ret")
+        (emitf "  .size " name ", .-" name)))))
 
 ;; ---------------------------------------------------------------------------
 ;; Data
@@ -1765,6 +1851,9 @@
             ;; jump to the very next label
             (and nx (str/starts-with? l "  jmp ") (= (str (subs l 6) ":") nx))
             (recur (inc i))
+            ;; sign extension right after a sign-extending 32->64 load
+            (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
+            (do (.add out l) (recur (+ i 2)))
             ;; push/pop pair
             (and nx (= l "  pushq %rax") (str/starts-with? nx "  popq %"))
             (do (when (not= nx "  popq %rax") (.add out (str "  movq %rax, " (subs nx 7))))
