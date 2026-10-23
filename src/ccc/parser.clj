@@ -1776,6 +1776,32 @@
                   :else (err-tok tk (str "undeclared identifier '" nm "'")))))))
       (err "expected expression"))))
 
+(defn fold-bitop
+  "Constant-fold bit builtins with a constant argument, as gcc does."
+  [n]
+  (let [a (:expr n)]
+    (if (and (= :num (:op a)) (not (:fval a)))
+      (let [bits (* 8 (t/type-size (:type a)))
+            v (:val a)
+            mask (if (= bits 64) -1 (dec (bit-shift-left 1 bits)))
+            u (bit-and v mask)]
+        (if (= :bswap (:op n))
+          (num-node (reduce (fn [acc i] (bit-or (bit-shift-left acc 8) (bit-and (unsigned-bit-shift-right u (* 8 i)) 0xff)))
+                            0 (range (quot bits 8)))
+                    (:type n))
+          (case (:name n)
+            :popcount (num-node (Long/bitCount u) ty-int)
+            :parity (num-node (bit-and (Long/bitCount u) 1) ty-int)
+            :clz (if (zero? u) n (num-node (- (Long/numberOfLeadingZeros u) (- 64 bits)) ty-int))
+            :ctz (if (zero? u) n (num-node (Long/numberOfTrailingZeros u) ty-int))
+            :ffs (num-node (if (zero? u) 0 (inc (Long/numberOfTrailingZeros u))) ty-int)
+            :clrsb (let [sv (if (= bits 64) v (long (unchecked-int v)))
+                         x (bit-xor sv (bit-shift-right sv 63))
+                         x (if (= bits 64) x (bit-and x 0xffffffff))]
+                     (num-node (dec (- (Long/numberOfLeadingZeros x) (- 64 bits))) ty-int))
+            n)))
+      n)))
+
 (defn builtin-call []
   (let [tk (tok) nm (:text tk)]
     (advance!)
@@ -1817,7 +1843,10 @@
       "__builtin_expect"
       (do (expect! "(") (let [a (assign-expr)] (expect! ",") (assign-expr) (expect! ")") (new-cast a ty-long)))
       "__builtin_constant_p"
-      (do (expect! "(") (let [a (assign-expr)] (expect! ")") (num-node (if (try-eval a) 1 0) ty-int)))
+      (do (expect! "(") (let [a (assign-expr)] (expect! ")")
+                          (num-node (if (or (try-eval a) (and (= :var (:op a)) (:strlit (:var a)))
+                                            (and (= :num (:op a)) (:fval a)))
+                                      1 0) ty-int)))
       "__builtin_unreachable"
       (do (expect! "(") (expect! ")") {:op :cast :type ty-void :expr (num-node 0 ty-int)})
       "__builtin_trap"
@@ -1862,13 +1891,13 @@
                 at (if wide (if (#{"ffs" "clrsb"} base) ty-long ty-ulong)
                        (if (#{"ffs" "clrsb"} base) ty-int ty-uint))]
             (expect! ")")
-            {:op :bitop :name (keyword base) :type ty-int :expr (new-cast a at)}))
+            (fold-bitop {:op :bitop :name (keyword base) :type ty-int :expr (new-cast a at)})))
       ("__builtin_bswap16" "__builtin_bswap32" "__builtin_bswap64")
       (do (expect! "(")
           (let [a (assign-expr)
                 ty (case nm "__builtin_bswap16" ty-ushort "__builtin_bswap32" ty-uint ty-ulong)]
             (expect! ")")
-            {:op :bswap :type ty :expr (new-cast a ty)}))
+            (fold-bitop {:op :bswap :type ty :expr (new-cast a ty)})))
       ("__builtin_add_overflow" "__builtin_sub_overflow" "__builtin_mul_overflow"
        "__builtin_sadd_overflow" "__builtin_saddl_overflow" "__builtin_saddll_overflow"
        "__builtin_uadd_overflow" "__builtin_uaddl_overflow" "__builtin_uaddll_overflow"
