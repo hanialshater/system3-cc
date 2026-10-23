@@ -12,7 +12,12 @@
 (def ^:dynamic *counter* nil)   ; volatile
 (def ^:dynamic *fninfo* nil)
 (def ^:dynamic *overaligned* #{})
-(def ^:dynamic *ldconsts* nil)  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
+(def ^:dynamic *ldconsts* nil)
+(def ^:dynamic *regvars* {})    ; var id -> index into callee-regs (register-allocated locals)
+
+(def callee-regs [["%rbx" "%ebx" "%bx" "%bl"] ["%r12" "%r12d" "%r12w" "%r12b"]
+                  ["%r13" "%r13d" "%r13w" "%r13b"] ["%r14" "%r14d" "%r14w" "%r14b"]
+                  ["%r15" "%r15d" "%r15w" "%r15b"]])  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
 
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
 (defmacro emitf [& parts] `(emit (str ~@parts)))
@@ -255,7 +260,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset gen-discard)
+(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -267,9 +272,87 @@
 (defn var-offset [v]
   (or (get *offsets* (:id v)) (cerr (str "no offset for variable " (:name v)))))
 
+(defn vreg
+  "Register names of a register-allocated variable, or nil."
+  [v]
+  (when-let [i (get *regvars* (:id v))] (nth callee-regs i)))
+
+(defn var-mem-op
+  "Memory operand for a scalar variable that lives in memory, or nil."
+  [v]
+  (cond
+    (vreg v) nil
+    (:local v) (when-not (or (:vla-ptr v) (contains? *overaligned* (:id v)))
+                 (str (var-offset v) "(%rbp)"))
+    (contains? *defined* (:label v)) (str (:label v) "(%rip)")
+    :else nil))
+
+(defn load-op
+  "Load a value of type ty from memory operand op into %rax/%xmm0/st(0)."
+  [ty op]
+  (case (:kind ty)
+    :float (emitf "  movss " op ", %xmm0")
+    :double (emitf "  movsd " op ", %xmm0")
+    :ldouble (emitf "  fldt " op)
+    (let [sz (t/type-size ty) u (t/unsigned? ty)]
+      (case (int sz)
+        1 (emitf (if u "  movzbl " "  movsbl ") op ", %eax")
+        2 (emitf (if u "  movzwl " "  movswl ") op ", %eax")
+        4 (if u (emitf "  movl " op ", %eax") (emitf "  movslq " op ", %rax"))
+        8 (emitf "  movq " op ", %rax")))))
+
+(defn store-op
+  "Store the scalar value in %rax/%xmm0/st(0) to memory operand op."
+  [ty op]
+  (case (:kind ty)
+    :float (emitf "  movss %xmm0, " op)
+    :double (emitf "  movsd %xmm0, " op)
+    :ldouble (do (emitf "  fstpt " op) (emitf "  fldt " op))
+    (case (int (t/type-size ty))
+      1 (emitf "  movb %al, " op)
+      2 (emitf "  movw %ax, " op)
+      4 (emitf "  movl %eax, " op)
+      8 (emitf "  movq %rax, " op))))
+
+(defn reg-load
+  "Move register variable v into %rax."
+  [v]
+  (let [r (vreg v)]
+    (if (= 8 (t/type-size (:type v)))
+      (emitf "  movq " (r 0) ", %rax")
+      (emitf "  movl " (r 1) ", %eax"))))
+
+(defn reg-store
+  "Move %rax into register variable v (value already converted to v's type)."
+  [v]
+  (let [r (vreg v)]
+    (if (= 8 (t/type-size (:type v)))
+      (emitf "  movq %rax, " (r 0))
+      (emitf "  movl %eax, " (r 1)))))
+
+(defn scalar-var? [n]
+  (and (= :var (:op n)) (t/scalar? (:type n))))
+
+(defn int-operand
+  "An instruction operand (immediate, register or memory) for integer node n
+   used at operand width w (4 or 8), or nil if n needs computing."
+  [n w]
+  (case (:op n)
+    :num (when (and (not (:fval n)) (t/integer? (:type n)))
+           (let [v (:val n)]
+             (when (if (= w 8) (imm32? v) (<= -2147483648 v 4294967295))
+               (str "$" (if (= w 8) v (long (unchecked-int v)))))))
+    :var (let [v (:var n) ty (:type n)]
+           (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty)))
+             (if-let [r (vreg v)]
+               (if (= w 8) (r 0) (r 1))
+               (var-mem-op v))))
+    nil))
+
 (defn gen-addr [n]
   (case (:op n)
     :var (let [v (:var n)]
+           (when (vreg v) (cerr (str "internal: address of register variable " (:name v))))
            (if (:local v)
              (local-addr v "%rax")
              (if (contains? *defined* (:label v))
@@ -313,6 +396,108 @@
       (do (gen-expr lhs) (gen-simple-to-rdi rhs))
       (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")))))
 
+(defn gen-int-operands
+  "lhs -> %rax; returns an operand string for rhs (immediate, register or memory)."
+  [lhs rhs w]
+  (if-let [o (int-operand rhs w)]
+    (do (gen-expr lhs) o)
+    (if (int-operand lhs w)
+      ;; lhs has no side effects: compute rhs first, then load lhs
+      (do (gen-expr rhs)
+          (emit "  movq %rax, %rdi")
+          (gen-expr lhs)
+          (if (= w 8) "%rdi" "%edi"))
+      (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")
+          (if (= w 8) "%rdi" "%edi")))))
+
+(def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
+(def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
+(def cc-negate {"e" "ne" "ne" "e" "l" "ge" "ge" "l" "le" "g" "g" "le" "b" "ae" "ae" "b" "be" "a" "a" "be"})
+
+(defn gen-int-compare
+  "Emit a compare for an integer/pointer comparison node; returns the condition code."
+  [n]
+  (let [{:keys [op lhs rhs]} n
+        oty (:type lhs)
+        oty (if (t/ptr-like? oty) t/ty-ulong oty)
+        w (if (= 8 (t/type-size oty)) 8 4)
+        u (or (t/unsigned? oty) (t/ptr? oty))
+        o (gen-int-operands lhs rhs w)]
+    (if (and (= o "$0") (#{:eq :ne} op))
+      (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))
+      (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax")))
+    ((if u cc-unsigned cc-signed) op)))
+
+(defn gen-binary-int [n oty]
+  (let [{:keys [op lhs rhs]} n
+        w (if (= 8 (t/type-size oty)) 8 4)
+        ax (if (= w 8) "%rax" "%eax") sfx (if (= w 8) "q" "l")
+        u (or (t/unsigned? oty) (t/ptr? oty))]
+    (case op
+      (:eq :ne :lt :le :gt :ge)
+      (let [cc (gen-int-compare n)]
+        (emitf "  set" cc " %al")
+        (emit "  movzbl %al, %eax"))
+      (:shl :shr)
+      (let [o (gen-int-operands lhs rhs 4)
+            ins (if (= op :shl) "shl" (if u "shr" "sar"))]
+        (if (str/starts-with? o "$")
+          (emitf "  " ins sfx " $" (bit-and (parse-long (subs o 1)) 255) ", " ax)
+          (do (emitf "  movl " o ", %ecx") (emitf "  " ins sfx " %cl, " ax))))
+      (:div :mod)
+      (let [o (gen-int-operands lhs rhs w)
+            o (if (str/starts-with? o "$")
+                (do (emitf "  mov" sfx " " o ", " (if (= w 8) "%rcx" "%ecx")) (if (= w 8) "%rcx" "%ecx"))
+                o)]
+        (if u
+          (do (emit "  xorl %edx, %edx") (emitf "  div" sfx " " o))
+          (do (emit (if (= w 8) "  cqto" "  cltd")) (emitf "  idiv" sfx " " o)))
+        (when (= op :mod) (emitf "  mov" sfx " " (if (= w 8) "%rdx" "%edx") ", " ax)))
+      :mul (let [o (gen-int-operands lhs rhs w)]
+             (if (str/starts-with? o "$")
+               (emitf "  imul" sfx " " o ", " ax ", " ax)
+               (emitf "  imul" sfx " " o ", " ax)))
+      (let [o (gen-int-operands lhs rhs w)
+            ins (case op :add "add" :sub "sub" :bitand "and" :bitor "or" :bitxor "xor")]
+        (emitf "  " ins sfx " " o ", " ax)))))
+
+(defn int-cmp-node? [n]
+  (and (#{:eq :ne :lt :le :gt :ge} (:op n))
+       (let [t (:type (:lhs n))] (or (t/integer? t) (t/ptr-like? t)))))
+
+(defn gen-branch
+  "Jump to label when the truth of n equals jump-if; otherwise fall through."
+  [n label jump-if]
+  (case (:op n)
+    :not (gen-branch (:expr n) label (not jump-if))
+    :logand (if jump-if
+              (let [skip (new-label)]
+                (gen-branch (:lhs n) skip false)
+                (gen-branch (:rhs n) label true)
+                (emitf skip ":"))
+              (do (gen-branch (:lhs n) label false)
+                  (gen-branch (:rhs n) label false)))
+    :logor (if jump-if
+             (do (gen-branch (:lhs n) label true)
+                 (gen-branch (:rhs n) label true))
+             (let [skip (new-label)]
+               (gen-branch (:lhs n) skip true)
+               (gen-branch (:rhs n) label false)
+               (emitf skip ":")))
+    (if (int-cmp-node? n)
+      (let [cc (gen-int-compare n)]
+        (emitf "  j" (if jump-if cc (cc-negate cc)) " " label))
+      (if (and (= :num (:op n)) (not (:fval n)))
+        (when (= jump-if (not (zero? (:val n)))) (emitf "  jmp " label))
+        (let [ty (:type n)]
+          (gen-expr n)
+          (if (and (t/integer? ty) (<= (t/type-size ty) 4))
+            (emit "  testl %eax, %eax")
+            (if (or (t/integer? ty) (t/ptr-like? ty))
+              (emit "  testq %rax, %rax")
+              (cmp-zero ty)))
+          (emitf (if jump-if "  jne " "  je ") label))))))
+
 (defn gen-binary-ld [n]
   ;; long double: lhs ends in st(0), rhs in st(1)
   (let [{:keys [op lhs rhs]} n]
@@ -342,6 +527,8 @@
         oty (if (t/ptr-like? oty) t/ty-ulong oty)]
     (if (t/ldouble? oty)
       (gen-binary-ld n)
+    (if (not (t/flonum? oty))
+      (gen-binary-int n oty)
     (do
     (gen-operands lhs rhs)
     (if (t/flonum? oty)
@@ -384,7 +571,7 @@
                                    :lt (if u "b" "l") :le (if u "be" "le")
                                    :gt (if u "a" "g") :ge (if u "ae" "ge"))
                      " %al")
-              (emit "  movzbl %al, %eax")))))))))
+              (emit "  movzbl %al, %eax"))))))))))
 
 (defn bf-unit
   "Type used to load/store a bit-field's storage: its declared type, or 8 bytes
@@ -402,6 +589,15 @@
     (emitf (if (t/unsigned? (:type m)) "  shrq $" "  sarq $") (- 64 w) ", %rax")))
 
 (defn gen-assign [n]
+  (let [{:keys [lhs rhs]} n]
+    (cond
+      (and (= :var (:op lhs)) (vreg (:var lhs)))
+      (do (gen-expr rhs) (reg-store (:var lhs)))
+      (and (scalar-var? lhs) (var-mem-op (:var lhs)))
+      (do (gen-expr rhs) (store-op (:type lhs) (var-mem-op (:var lhs))))
+      :else (gen-assign-mem n))))
+
+(defn gen-assign-mem [n]
   (let [{:keys [lhs rhs]} n]
     (gen-addr lhs)
     (push!)
@@ -671,13 +867,31 @@
             (emitf "  movq $" v ", %rax")
             (emitf "  movabsq $" v ", %rax")))))
 
-    :var (do (gen-addr n) (load (:type n)))
+    :var (let [v (:var n) ty (:type n)]
+           (cond
+             (vreg v) (reg-load v)
+             (and (t/scalar? ty) (var-mem-op v)) (load-op ty (var-mem-op v))
+             :else (do (gen-addr n) (load ty))))
     :member (do (gen-addr n) (load (if (:bitfield (:member n)) (bf-unit (:member n)) (:type n)))
                 (when (:bitfield (:member n)) (gen-bitfield-load (:member n))))
     :deref (do (gen-expr (:expr n)) (load (:type n)))
     :addr (gen-addr (:expr n))
     :assign (gen-assign n)
-    :incdec (let [ty (:type n) sz (t/type-size ty) d (:delta n)]
+    :incdec (if (and (= :var (:op (:expr n))) (vreg (:var (:expr n))))
+              (let [v (:var (:expr n)) ty (:type n) sz (t/type-size ty) d (:delta n) r (vreg v)]
+                (if (>= sz 4)
+                  (let [rr (if (= sz 8) (r 0) (r 1)) ax (if (= sz 8) "%rax" "%eax") sfx (if (= sz 8) "q" "l")]
+                    (when-not (:pre n) (emitf "  mov" sfx " " rr ", " ax))
+                    (emitf "  add" sfx " $" d ", " rr)
+                    (when (:pre n) (emitf "  mov" sfx " " rr ", " ax)))
+                  (do (emitf "  movl " (r 1) ", %eax")
+                      (emitf "  leal " d "(%rax), %edi")
+                      (emit (case [(int sz) (t/unsigned? ty)]
+                              [1 true] "  movzbl %dil, %edi" [1 false] "  movsbl %dil, %edi"
+                              [2 true] "  movzwl %di, %edi" [2 false] "  movswl %di, %edi"))
+                      (emitf "  movl %edi, " (r 1))
+                      (when (:pre n) (emit "  movl %edi, %eax")))))
+            (let [ty (:type n) sz (t/type-size ty) d (:delta n)]
               (gen-addr (:expr n))
               (emit "  movq %rax, %rdx")
               (load ty)
@@ -692,14 +906,17 @@
                   1 (emit (if (t/unsigned? ty) "  movzbl %dil, %eax" "  movsbl %dil, %eax"))
                   2 (emit (if (t/unsigned? ty) "  movzwl %di, %eax" "  movswl %di, %eax"))
                   4 (emit "  movl %edi, %eax")
-                  8 (emit "  movq %rdi, %rax"))))
+                  8 (emit "  movq %rdi, %rax")))))
     :comma (do (gen-discard (:lhs n)) (gen-expr (:rhs n)))
     :cast (do (gen-expr (:expr n)) (gen-cast (:type (:expr n)) (:type n)))
     :memzero (let [v (:var n)]
+               (if-let [r (vreg v)]
+                 (emitf "  xorl " (r 1) ", " (r 1))
+               (do
                (local-addr v "%rdi")
                (emitf "  movq $" (t/type-size (:type v)) ", %rcx")
                (emit "  xorl %eax, %eax")
-               (emit "  rep stosb"))
+               (emit "  rep stosb"))))
     :neg (let [ty (:type n)]
            (gen-expr (:expr n))
            (case (:kind ty)
@@ -709,29 +926,25 @@
              (if (= 8 (t/type-size ty)) (emit "  negq %rax") (emit "  negl %eax"))))
     :bitnot (do (gen-expr (:expr n))
                 (if (= 8 (t/type-size (:type n))) (emit "  notq %rax") (emit "  notl %eax")))
-    :not (do (gen-expr (:expr n))
-             (cmp-zero (:type (:expr n)))
-             (emit "  sete %al")
+    :not (if (int-cmp-node? (:expr n))
+           (let [cc (gen-int-compare (:expr n))]
+             (emitf "  set" (cc-negate cc) " %al")
              (emit "  movzbl %al, %eax"))
+           (do (gen-expr (:expr n))
+               (cmp-zero (:type (:expr n)))
+               (emit "  sete %al")
+               (emit "  movzbl %al, %eax")))
     (:logand :logor)
-    (let [l-short (new-label) l-end (new-label)
-          and? (= :logand (:op n))]
-      (gen-expr (:lhs n))
-      (cmp-zero (:type (:lhs n)))
-      (emitf (if and? "  je " "  jne ") l-short)
-      (gen-expr (:rhs n))
-      (cmp-zero (:type (:rhs n)))
-      (emitf (if and? "  je " "  jne ") l-short)
-      (emitf "  movl $" (if and? 1 0) ", %eax")
+    (let [l-false (new-label) l-end (new-label)]
+      (gen-branch n l-false false)
+      (emit "  movl $1, %eax")
       (emitf "  jmp " l-end)
-      (emitf l-short ":")
-      (emitf "  movl $" (if and? 0 1) ", %eax")
+      (emitf l-false ":")
+      (emit "  xorl %eax, %eax")
       (emitf l-end ":"))
     :cond
     (let [l-else (new-label) l-end (new-label)]
-      (gen-expr (:cond n))
-      (cmp-zero (:type (:cond n)))
-      (emitf "  je " l-else)
+      (gen-branch (:cond n) l-else false)
       (gen-expr (:then n))
       (emitf "  jmp " l-end)
       (emitf l-else ":")
@@ -881,33 +1094,34 @@
     :return (do (when-let [e (:expr s)] (gen-return-value e))
                 (emitf "  jmp .L.return." (:name *fn*)))
     :if (let [l-else (new-label) l-end (new-label)]
-          (gen-expr (:cond s))
-          (cmp-zero (:type (:cond s)))
-          (emitf "  je " l-else)
+          (gen-branch (:cond s) l-else false)
           (gen-stmt (:then s))
-          (emitf "  jmp " l-end)
-          (emitf l-else ":")
-          (when (:els s) (gen-stmt (:els s)))
-          (emitf l-end ":"))
-    :for (let [l-begin (new-label)]
+          (if (:els s)
+            (do (emitf "  jmp " l-end)
+                (emitf l-else ":")
+                (gen-stmt (:els s))
+                (emitf l-end ":"))
+            (emitf l-else ":")))
+    :for (let [l-begin (new-label) l-body (new-label)]
+           ;; loop rotation: test at the bottom
            (when (:init s) (gen-stmt (:init s)))
-           (emitf l-begin ":")
-           (when (:cond s)
-             (gen-expr (:cond s))
-             (cmp-zero (:type (:cond s)))
-             (emitf "  je " (:brk s)))
+           (if (:cond s)
+             (emitf "  jmp " l-begin)
+             nil)
+           (emitf l-body ":")
            (gen-stmt (:body s))
            (emitf (:cont s) ":")
            (when (:inc s) (gen-discard (:inc s)))
-           (emitf "  jmp " l-begin)
+           (emitf l-begin ":")
+           (if (:cond s)
+             (gen-branch (:cond s) l-body true)
+             (emitf "  jmp " l-body))
            (emitf (:brk s) ":"))
     :do (let [l-begin (new-label)]
           (emitf l-begin ":")
           (gen-stmt (:body s))
           (emitf (:cont s) ":")
-          (gen-expr (:cond s))
-          (cmp-zero (:type (:cond s)))
-          (emitf "  jne " l-begin)
+          (gen-branch (:cond s) l-begin true)
           (emitf (:brk s) ":"))
     :switch (let [cty (:type (:cond s))
                   w (= 8 (t/type-size cty))
