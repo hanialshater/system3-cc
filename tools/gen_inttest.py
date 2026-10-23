@@ -126,6 +126,45 @@ def main():
             vars_ = [(n, tt, (nv if n == name else vv)) for (n, tt, vv) in vars_]
             lines.append(f'  printf("%ld\\n", (long){name});')
             exp.append(str(wrap(nv, 'long')))
+        if k % 3 == 1:
+            # compound assignment / increments on a random variable
+            name, t, cur = random.choice(vars_)
+            op = random.choice(['+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '++pre', 'post++', '--pre', 'post--'])
+            pt = promote(t)
+            if op in ('++pre', 'post++', '--pre', 'post--'):
+                d = 1 if '++' in op else -1
+                nv = wrap(cur + d, t)
+                code = {'++pre': f'++{name}', 'post++': f'{name}++', '--pre': f'--{name}', 'post--': f'{name}--'}[op]
+                val = nv if 'pre' in op else cur
+                lines.append(f'  printf("%ld\\n", (long)({code}));')
+                exp.append(str(wrap(val, 'long')))
+            else:
+                bop = op[:-1]
+                if bop in ('<<', '>>'):
+                    bits = TYPES[pt][0]
+                    n = random.randrange(bits)
+                    av = wrap(cur, pt)
+                    if bop == '<<':
+                        r = wrap((av & ((1 << bits) - 1)) << n, pt)
+                    else:
+                        r = wrap(av >> n if TYPES[pt][1] else (av & ((1 << bits) - 1)) >> n, pt)
+                    nv = wrap(r, t)
+                    lines.append(f'  printf("%ld\\n", (long)({name} {op} {n}));')
+                else:
+                    e2 = gen(2, vars_)
+                    ct = common(t, e2.ty)
+                    av, bv = wrap(cur, ct), wrap(e2.val, ct)
+                    if bop in ('/', '%') and (bv == 0 or (TYPES[ct][1] and bv == -1)):
+                        bop, op = '+', '+='
+                    if bop in ('/', '%'):
+                        q = tdiv(av, bv)
+                        r = q if bop == '/' else av - q * bv
+                    else:
+                        r = {'+': av + bv, '-': av - bv, '*': av * bv, '&': av & bv, '|': av | bv, '^': av ^ bv}[bop]
+                    nv = wrap(wrap(r, ct), t)
+                    lines.append(f'  printf("%ld\\n", (long)({name} {op} {e2.code}));')
+                exp.append(str(wrap(nv, 'long')))
+            vars_ = [(n_, tt, (nv if n_ == name else vv)) for (n_, tt, vv) in vars_]
     lines.append('  return 0;\n}')
     open(out_c, 'w').write('\n'.join(lines) + '\n')
     open(out_e, 'w').write('\n'.join(exp) + '\n')
