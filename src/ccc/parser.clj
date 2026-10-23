@@ -11,8 +11,19 @@
 ;; ---------------------------------------------------------------------------
 ;; State
 
-(def ^:dynamic *toks* nil)
-(def ^:dynamic *pos* nil)
+
+;; The token vector and the current position, per thread (parse-program sets
+;; them): read on every token test, so kept out of the dynamic bindings, whose
+;; lookup is a hash-map search.
+;; cur holds the token at pos (nil when pos is past the end).
+(deftype PState [toks ^long n ^longs pos ^objects cur])
+(def ^:private ^ThreadLocal pstate (ThreadLocal.))
+(defmacro ^:private ps [] `(let [^PState s# (.get pstate)] s#))
+(defn- goto-pos! [^PState s ^long p]
+  (aset ^longs (.-pos s) 0 p)
+  (aset ^objects (.-cur s) 0 (when (and (>= p 0) (< p (.-n s))) (nth (.-toks s) p))))
+(defn get-pos ^long [] (aget ^longs (.-pos (ps)) 0))
+(defn set-pos! [^long p] (goto-pos! (ps) p) p)
 (def ^:dynamic *scope* nil)        ; volatile list of {:vars {} :tags {}}
 (def ^:dynamic *locals* nil)       ; volatile vector of local vars of current fn
 (def ^:dynamic *globals* nil)      ; volatile map name -> global var
@@ -32,15 +43,16 @@
 (def ^:dynamic *brk-depth* 0)      ; (count @*vla-blocks*) where the break target was opened
 (def ^:dynamic *cont-depth* 0)      ; volatile map: literal contents -> global       ; volatile map user-label -> asm label
 
-(defn tok [] (let [t (nth *toks* @*pos*)]
+(defn tok [] (let [s (ps)
+                   t (or (aget ^objects (.-cur s) 0) (nth (.-toks s) (aget ^longs (.-pos s) 0)))]
               (when (:stray t)
                 (throw (ex-info (str (:file t) ":" (:line t) ": error: stray '" (:text t) "' in program")
                                 {:type :compile-error})))
               t))
 (defn peek-tok [k]
-  (let [i (+ @*pos* k) n (count *toks*)]
-    (nth *toks* (if (< i n) i (dec n)))))
-(defn advance! [] (vswap! *pos* inc) nil)
+  (let [s (ps) toks (.-toks s) i (+ (aget ^longs (.-pos s) 0) k) n (count toks)]
+    (nth toks (if (< i n) i (dec n)))))
+(defn advance! [] (let [s (ps)] (goto-pos! s (inc (aget ^longs (.-pos s) 0)))) nil)
 
 (defn err-tok [tk msg]
   (throw (ex-info (str (:file tk) ":" (:line tk) ": error: " msg
@@ -48,8 +60,9 @@
                   {:type :compile-error})))
 (defn err [msg] (err-tok (tok) msg))
 
-(defn is-tok? [tk s]
-  (and (or (= :punct (:kind tk)) (= :ident (:kind tk))) (= (:text tk) s)))
+(defn is-tok? [tk ^String s]
+  (let [k (:kind tk)]
+    (and (or (identical? k :punct) (identical? k :ident)) (.equals s (:text tk)))))
 (defn is? [s] (is-tok? (tok) s))
 (defn consume! [s] (when (is? s) (advance!) true))
 (defn expect! [s] (if (is? s) (advance!) (err (str "expected '" s "'"))))
@@ -998,16 +1011,16 @@
         a0 (skip-attributes!)]
     (cond
       (and (is? "(") (nested-declarator?))
-      (let [start @*pos*]
+      (let [start (get-pos)]
         (advance!)
         (declarator ty-int)            ; skip
         (expect! ")")
         (let [ty2 (type-suffix ty)
-              end @*pos*]
-          (vreset! *pos* (inc start))
+              end (get-pos)]
+          (set-pos! (inc start))
           (let [res (declarator ty2)]
             (expect! ")")
-            (vreset! *pos* end)
+            (set-pos! end)
             (update res :attrs merge a0 (skip-attributes!)))))
 
       (and (= :ident (:kind (tok))) (not (contains? keywords (:text (tok)))))
@@ -1226,10 +1239,10 @@
   (let [len (arr-len (:ty @init))]
     (loop [i i first? true]
       (if (and (< i len) (not (is-end?)))
-        (let [start @*pos*]
+        (let [start (get-pos)]
           (when (> i 0) (expect! ","))
           (if (or (is? "[") (field-desig?))
-            (do (vreset! *pos* start) i)
+            (do (set-pos! start) i)
             (do (initializer2 (init-child init i))
                 (recur (inc i) false))))
         i))))
@@ -1265,10 +1278,10 @@
   (let [ms (members-of (:ty @init))]
     (loop [idx (skip-unnamed ms start-idx) first? (not post-desig)]
       (when (and (< idx (count ms)) (not (is-end?)))
-        (let [start @*pos*]
+        (let [start (get-pos)]
           (when-not first? (expect! ","))
           (if (or (is? "[") (field-desig?))
-            (vreset! *pos* start)
+            (set-pos! start)
             (do (initializer2 (nth (:fields @init) idx))
                 (recur (skip-unnamed ms (inc idx)) false))))))))
 
@@ -1290,9 +1303,9 @@
       (is? "[")
       (do (when-not (= :array (:kind ty)) (err "array index in non-array initializer"))
           (let [[b e] (array-designator)
-                start @*pos*]
+                start (get-pos)]
             (doseq [j (range b (inc e))]
-              (vreset! *pos* start)
+              (set-pos! start)
               (designation (init-child init j)))
             (array-initializer2! init (inc e))))
 
@@ -1311,7 +1324,7 @@
   (expect! "{")
   (let [ty (:ty @init)]
     (if (and (= :str (:kind (tok))) (t/integer? (:base ty)) (<= (t/type-size (:base ty)) 4)
-             (let [save @*pos*] (string-tok-values) (let [r (is-end?)] (vreset! *pos* save) r)))
+             (let [save (get-pos)] (string-tok-values) (let [r (is-end?)] (set-pos! save) r)))
       (do (string-initializer! init) (consume-end!))
       (let [len (arr-len ty)]
         (loop [i 0 first? true]
@@ -1319,9 +1332,9 @@
             (when-not first? (expect! ","))
             (if (is? "[")
               (let [[b e] (array-designator)
-                    start @*pos*]
+                    start (get-pos)]
                 (doseq [j (range b (inc e))]
-                  (vreset! *pos* start)
+                  (set-pos! start)
                   (designation (init-child init j)))
                 (recur (array-initializer2! init (inc e)) false))
               (do (if (< i len)
@@ -1384,21 +1397,21 @@
       (= :struct (:kind ty))
       (if (is? "{")
         (struct-initializer1! init)
-        (let [start @*pos*
+        (let [start (get-pos)
               e (assign-expr)]
           (if (and (t/struct? (:type e)) (= (:id (:type e)) (:id ty)))
             (swap! init assoc :expr e)
-            (do (vreset! *pos* start)
+            (do (set-pos! start)
                 (struct-initializer2! init 0 false)))))
 
       (= :union (:kind ty))
       (if (is? "{")
         (union-initializer! init)
-        (let [start @*pos*
+        (let [start (get-pos)
               e (assign-expr)]
           (if (and (t/struct? (:type e)) (= (:id (:type e)) (:id ty)))
             (swap! init assoc :expr e)
-            (do (vreset! *pos* start)
+            (do (set-pos! start)
                 (union-initializer! init)))))
 
       (and (is? "{") (is-tok? (peek-tok 1) "}"))
@@ -1642,12 +1655,12 @@
 
 (defn cast-expr []
   (if (and (is? "(") (typename-tok? (peek-tok 1)))
-    (let [start @*pos*]
+    (let [start (get-pos)]
       (advance!)
       (let [ty (typename)]
         (expect! ")")
         (if (is? "{")
-          (do (vreset! *pos* start) (unary))
+          (do (set-pos! start) (unary))
           (let [e (cast-expr)]
             (when-not (or (t/scalar? (decay (:type e))) (t/void? ty) (t/struct? (:type e)))
               (err "invalid cast operand"))
@@ -1684,12 +1697,12 @@
       (and (= k :ident) (= s "sizeof"))
       (do (advance!)
           (if (and (is? "(") (typename-tok? (peek-tok 1)))
-            (let [start @*pos*]
+            (let [start (get-pos)]
               (advance!)
               (let [ty (typename)]
                 (expect! ")")
                 (if (is? "{")
-                  (do (vreset! *pos* start)
+                  (do (set-pos! start)
                       (let [e (unary)] (vla-size-node (:type e))))
                   (vla-size-node ty))))
             (let [e (unary)]
@@ -2467,15 +2480,25 @@
    "__asm__" "asm" "__asm" "asm" "_Noreturn" "_Noreturn"})
 
 (defn normalize-tokens [toks]
-  (mapv (fn [t] (if-let [a (and (= :ident (:kind t)) (keyword-aliases (:text t)))]
+  (mapv (fn [t] (if-let [a (and (identical? :ident (:kind t)) (keyword-aliases (:text t)))]
                   (assoc t :text a)
                   t))
         toks))
 
+(declare parse-program*)
+
 (defn parse-program [toks]
-  (binding [*toks* (normalize-tokens toks)
-            *pos* (volatile! 0)
-            *scope* (volatile! (list {:vars {} :tags {}}))
+  (let [saved (.get pstate)]
+    (let [v (normalize-tokens toks)
+          s (PState. v (count v) (long-array 1) (object-array 1))]
+      (goto-pos! s 0)
+      (.set pstate s))
+    (try
+      (parse-program* toks)
+      (finally (.set pstate saved)))))
+
+(defn parse-program* [toks]
+  (binding [*scope* (volatile! (list {:vars {} :tags {}}))
             *globals* (volatile! {})
             *global-order* (volatile! [])
             *functions* (volatile! [])

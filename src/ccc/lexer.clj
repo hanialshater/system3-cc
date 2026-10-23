@@ -112,11 +112,11 @@
 
             ;; comments
             (and (== c 47) (== c1 47))
-            (let [j (loop [j i]
-                      (cond (>= j n) j
-                            (and (== (ch src j) 92) (< (inc j) n) (== (ch src (inc j)) 10)) (recur (+ j 2))
-                            (== (ch src j) 10) j
-                            :else (recur (inc j))))]
+            (let [j (long (loop [j i]
+                            (cond (>= j n) j
+                                  (and (== (ch src j) 92) (< (inc j) n) (== (ch src (inc j)) 10)) (recur (+ j 2))
+                                  (== (ch src j) 10) j
+                                  :else (recur (inc j)))))]
               (recur j (+ line (count-newlines src i j)) bol true))
 
             (and (== c 47) (== c1 42))
@@ -127,15 +127,15 @@
             ;; numbers (pp-number)
             (or (and (>= c 48) (<= c 57))
                 (and (== c 46) (>= c1 48) (<= c1 57)))
-            (let [j (loop [j (inc i)]
-                      (if (>= j n) j
-                          (let [d (ch src j)]
-                            (cond
-                              (and (or (== d 101) (== d 69) (== d 112) (== d 80)) (< (inc j) n)
-                                   (let [d1 (ch src (inc j))] (or (== d1 43) (== d1 45))))
-                              (recur (+ j 2))
-                              (or (ident-char-code? d) (== d 46)) (recur (inc j))
-                              :else j))))]
+            (let [j (long (loop [j (inc i)]
+                            (if (>= j n) j
+                                (let [d (ch src j)]
+                                  (cond
+                                    (and (or (== d 101) (== d 69) (== d 112) (== d 80)) (< (inc j) n)
+                                         (let [d1 (ch src (inc j))] (or (== d1 43) (== d1 45))))
+                                    (recur (+ j 2))
+                                    (or (ident-char-code? d) (== d 46)) (recur (inc j))
+                                    :else j)))))]
               (.add out (tok :pnum (.substring src (int i) (int j)) line file bol space))
               (recur j line false false))
 
@@ -143,18 +143,18 @@
             (or (== c 34) (== c 39)
                 (and (or (== c 76) (== c 85) (== c 117)) (or (== c1 34) (== c1 39)))
                 (and (== c 117) (< (+ i 2) n) (== c1 56) (== (ch src (+ i 2)) 34)))
-            (let [pre-len (cond (or (== c 34) (== c 39)) 0
-                                (== c1 56) 2
-                                :else 1)
+            (let [pre-len (long (cond (or (== c 34) (== c 39)) 0
+                                      (== c1 56) 2
+                                      :else 1))
                   prefix (.substring src (int i) (int (+ i pre-len)))
                   q (ch src (+ i pre-len))
                   start (+ i pre-len 1)
-                  j (loop [j start]
-                      (cond (>= j n) -1
-                            (== (ch src j) 10) -1
-                            (== (ch src j) 92) (recur (+ j 2))
-                            (== (ch src j) q) j
-                            :else (recur (inc j))))]
+                  j (long (loop [j start]
+                            (cond (>= j n) -1
+                                  (== (ch src j) 10) -1
+                                  (== (ch src j) 92) (recur (+ j 2))
+                                  (== (ch src j) q) j
+                                  :else (recur (inc j)))))]
               (if (neg? j)
                 ;; unterminated: a stray token (only an error if it reaches the parser)
                 (let [e (+ i pre-len 1)]
@@ -162,14 +162,14 @@
                   (recur e line false false))
                 (let [^String raw (.substring src (int i) (int (inc j)))
                       spliced (>= (.indexOf raw "\\\n") 0)
-                      nsplice (if spliced (count (re-seq #"\\\n" raw)) 0)
+                      nsplice (long (if spliced (count (re-seq #"\\\n" raw)) 0))
                       text (if spliced (str/replace raw "\\\n" "") raw)]
                   (.add out (assoc (tok (if (== q 34) :str :char) text line file bol space) :prefix prefix))
                   (recur (inc j) (+ line nsplice) false false))))
 
             (ident-start-code? c)
-            (let [j (loop [j (inc i)]
-                      (if (and (< j n) (ident-char-code? (ch src j))) (recur (inc j)) j))]
+            (let [j (long (loop [j (inc i)]
+                            (if (and (< j n) (ident-char-code? (ch src j))) (recur (inc j)) j)))]
               (.add out (tok :ident (.substring src (int i) (int j)) line file bol space))
               (recur j line false false))
 
