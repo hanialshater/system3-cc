@@ -590,6 +590,8 @@
       (swap! *guards* assoc canon g))
     (pop toks))) ; drop :eof
 
+(def ^:dynamic *cmdline-defines* [])
+
 (defn preprocess [src file include-dirs]
   (let [toks (lx/tokenize src file)]
     (if (and (not (some #(and (:bol %) (is? % "#")) toks))
@@ -602,7 +604,10 @@
                 *counter* (atom 0)]
         ;; predefined
         (let [dq (ArrayDeque.)]
-          (doseq [t (lx/tokenize predefined-src "<built-in>")] (.addLast dq t))
+          (doseq [t (lx/tokenize (str predefined-src "\n"
+                                      (apply str (for [[n v] *cmdline-defines*] (str "#define " n " " v "\n"))))
+                                 "<built-in>")]
+            (.addLast dq t))
           (preprocess-tokens dq))
         (let [dq (ArrayDeque.)]
           (doseq [t toks] (.addLast dq t))

@@ -48,12 +48,17 @@
           (= a "-I") (recur (drop 2 as) (update opts :includes conj (second as)))
           (str/starts-with? a "-I") (recur (rest as) (update opts :includes conj (subs a 2)))
           (= a "-o") (recur (drop 2 as) (assoc opts :output (second as)))
+          (or (= a "-D") (str/starts-with? a "-D"))
+          (let [d (if (= a "-D") (second as) (subs a 2))
+                [n v] (let [i (str/index-of d "=")] (if i [(subs d 0 i) (subs d (inc i))] [d "1"]))]
+            (recur (if (= a "-D") (drop 2 as) (rest as)) (update opts :defines (fnil conj []) [n v])))
           (= a "--batch") (recur (drop 2 as) (assoc opts :batch (second as)))
           (= a "-E") (recur (rest as) (assoc opts :pp-only true))
           :else (recur (rest as) (update opts :inputs conj a)))))))
 
 (defn run-main [args]
-  (let [{:keys [includes inputs output batch]} (parse-args args)]
+  (let [{:keys [includes inputs output batch defines]} (parse-args args)]
+   (binding [pp/*cmdline-defines* (or defines [])]
     (if (:pp-only (parse-args args))
       (do (doseq [tk (pp/preprocess (slurp (first inputs) :encoding "ISO-8859-1") (first inputs) includes)]
             (when (:bol tk) (println))
@@ -72,7 +77,7 @@
       (if (and (= 1 (count inputs)) output)
         (if (compile-one (first inputs) output includes) 0 1)
         (do (binding [*out* *err*] (println "usage: ccc.main [-I dir]... <in.c> -o <out.s> | --batch <list>"))
-            2))))))
+            2)))))))
 
 (defn -main [& args]
   (let [result (promise)
