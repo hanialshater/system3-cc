@@ -306,7 +306,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare rax-only? gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare capture rax-only? gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -727,13 +727,21 @@
                 (emitf "  movq " sr ", %rax")
                 (vswap! *scratch-free* conj sr)
                 (if (= w 8) "%rdi" "%edi")))
-          (let [[h release] (alloc-holder!)]
-            (emitf "  movq %rax, " h)
-            (gen-expr rhs)
-            (emit "  movq %rax, %rdi")
-            (emitf "  movq " h ", %rax")
-            (release)
-            (if (= w 8) "%rdi" "%edi"))))))))))
+          (let [[_ rtext] (capture #(gen-expr rhs))]
+            (if (and (not (str/includes? rtext "call")) (not (re-find #"%(rsi|esi|si|sil)\b" rtext)))
+              ;; rhs code leaves %rsi alone: hold lhs there
+              (do (emit "  movq %rax, %rsi")
+                  (.append ^StringBuilder *asm* rtext)
+                  (emit "  movq %rax, %rdi")
+                  (emit "  movq %rsi, %rax")
+                  (if (= w 8) "%rdi" "%edi"))
+              (let [[h release] (alloc-holder!)]
+                (emitf "  movq %rax, " h)
+                (gen-expr rhs)
+                (emit "  movq %rax, %rdi")
+                (emitf "  movq " h ", %rax")
+                (release)
+                (if (= w 8) "%rdi" "%edi"))))))))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -2176,7 +2184,7 @@
         (let [v (first cs)
               taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
               order (cond (not (r89-ok? v)) (range n-callee-saved)
-                          (call-free? v) (concat [5 6 7 8] (range n-callee-saved))
+                          (call-free? v) (concat [5 6] (range n-callee-saved) [7 8])
                           :else (range n-callee-saved))
               r (first (remove taken order))]
           (if r
