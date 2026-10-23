@@ -1563,7 +1563,7 @@
           (or (= nm "__func__") (= nm "__FUNCTION__") (= nm "__PRETTY_FUNCTION__"))
           (do (advance!)
               (let [s (:name *cur-fn*)
-                    bs (.getBytes (str s) "UTF-8")
+                    bs (.getBytes (str s) "ISO-8859-1")
                     buf (byte-array (inc (count bs)))]
                 (System/arraycopy bs 0 buf 0 (count bs))
                 (var-node (anon-global! (array-of ty-char (count buf)) {:bytes buf :relocs []}))))

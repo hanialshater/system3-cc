@@ -135,7 +135,7 @@
 
 (defn decode-string
   "Decode the body of a string literal token. Returns vector of byte/char values
-   (for plain strings: bytes, UTF-8 encoded for non-ASCII source chars)."
+   (plain strings: the source bytes; wide strings: code points)."
   [tok]
   (let [^String text (:text tok)
         pre (count (:prefix tok ""))
@@ -149,10 +149,14 @@
           (if (= c \\)
             (let [[v j] (read-escape s (inc i) (:file tok) (:line tok))]
               (recur j (conj! acc (if wide? v (bit-and v 0xff)))))
-            (if (or wide? (< (int c) 128))
-              (recur (inc i) (conj! acc (int c)))
-              (let [bs (.getBytes (str c) "UTF-8")]
-                (recur (inc i) (reduce conj! acc (map #(bit-and % 0xff) bs)))))))))))
+            (if (or (not wide?) (< (int c) 128))
+              ;; source is read as ISO-8859-1, so each char is one source byte
+              (recur (inc i) (conj! acc (bit-and (int c) 0xff)))
+              ;; wide literal: decode the run of non-ASCII bytes as UTF-8
+              (let [j (loop [j i] (if (and (< j n) (>= (int (.charAt s j)) 128)) (recur (inc j)) j))
+                    bs (byte-array (map #(unchecked-byte (int %)) (subs s i j)))
+                    ^String u (String. ^bytes bs "UTF-8")]
+                (recur j (reduce conj! acc (iterator-seq (.iterator (.boxed (.codePoints u))))))))))))))
 
 (defn char-value
   "Value of a character constant token (as int, char is signed)."

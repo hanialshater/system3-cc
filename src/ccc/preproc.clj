@@ -569,7 +569,7 @@
             (when ok (:text (v 2)))))))))
 
 (defn include-file-tokens [path]
-  (let [src (slurp path :encoding "UTF-8")
+  (let [src (slurp path :encoding "ISO-8859-1")
         toks (lx/tokenize src path)
         canon (.getCanonicalPath (io/file path))]
     (when-let [g (detect-guard toks)]

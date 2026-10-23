@@ -12,7 +12,7 @@
 (defn compile-file
   "Compile in-path to assembly text. Throws on error."
   [in-path include-dirs]
-  (let [src (slurp in-path :encoding "UTF-8")
+  (let [src (slurp in-path :encoding "ISO-8859-1")
         toks (pp/preprocess src in-path include-dirs)]
     (binding [t/*structs* (atom {})]
       (let [prog (parser/parse-program toks)]
@@ -26,7 +26,7 @@
   [in-path out-path include-dirs]
   (try
     (let [asm (compile-file in-path include-dirs)]
-      (spit out-path asm)
+      (spit out-path asm :encoding "ISO-8859-1")
       true)
     (catch Throwable e
       (delete-quietly out-path)
