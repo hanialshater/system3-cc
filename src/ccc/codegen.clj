@@ -860,6 +860,18 @@
   [n label jump-if]
   (case (:op n)
     :not (gen-branch (:expr n) label (not jump-if))
+    :comma (do (gen-discard (:lhs n)) (gen-branch (:rhs n) label jump-if))
+    :cond (if (and (:then n) (:els n) (t/scalar? (:type n)) (not (t/ldouble? (:type n))))
+            (let [l-else (new-label) l-end (new-label)]
+              (gen-branch (:cond n) l-else false)
+              (gen-branch (:then n) label jump-if)
+              (emitf "  jmp " l-end)
+              (emitf l-else ":")
+              (gen-branch (:els n) label jump-if)
+              (emitf l-end ":"))
+            (do (gen-expr n)
+                (cmp-zero (:type n))
+                (emitf (if jump-if "  jne " "  je ") label)))
     :logand (if jump-if
               (let [skip (new-label)]
                 (gen-branch (:lhs n) skip false)
@@ -1489,6 +1501,40 @@
           (emitf "  " ins " " (render-mem m) ", " (if (= w 8) (r 0) (r 1)))
           true)))))
 
+(defn capture
+  "Run f with emission captured; returns [result text]."
+  [f]
+  (let [sb (StringBuilder.)
+        r (binding [*asm* sb] (f))]
+    [r (str sb)]))
+
+(defn gen-struct-copy-nv
+  "Struct assignment between pure lvalues, value unused. Returns true if done."
+  [lhs rhs]
+  (let [sz (t/type-size (:type lhs))]
+    (when (and (#{:deref :member :var} (:op lhs)) (#{:deref :member :var} (:op rhs))
+               (pure? lhs) (pure? rhs) (<= 1 sz 64)
+               (not (and (= :var (:op lhs)) (vreg (:var lhs)))))
+      (let [[ms stext] (capture #(addr-operand rhs))
+            [md dtext] (capture #(addr-operand lhs))
+            bad-src? (or (str/includes? stext "call") (re-find #"%(rsi|esi|si|sil|rdx|edx|dx|dl)\b" stext))
+            bad-dst? (or (str/includes? dtext "call") (re-find #"%(rsi|esi|si|sil|rdx|edx|dx|dl)\b" dtext)
+                         (#{"%rsi" "%rdx"} (:base md)) (#{"%rsi" "%rdx"} (:index md)))]
+        (when-not (or bad-src? bad-dst? (#{"%rdx"} (:base ms)) (#{"%rdx"} (:index ms)))
+          (.append ^StringBuilder *asm* stext)
+          (let [ms (if (or (#{"%rax" "%rdi"} (:base ms)) (#{"%rax" "%rdi"} (:index ms)))
+                     (do (emitf "  leaq " (render-mem ms) ", %rsi") {:base "%rsi"})
+                     ms)]
+            (.append ^StringBuilder *asm* dtext)
+            (loop [k 0]
+              (let [rem (- sz k)
+                    [w r] (cond (>= rem 8) [8 "%rdx"] (>= rem 4) [4 "%edx"] (>= rem 2) [2 "%dx"] (>= rem 1) [1 "%dl"] :else [0 nil])]
+                (when (pos? w)
+                  (emitf "  mov" (sfx-of w) " " (render-mem (update ms :disp (fnil + 0) k)) ", " r)
+                  (emitf "  mov" (sfx-of w) " " r ", " (render-mem (update md :disp (fnil + 0) k)))
+                  (recur (+ k w))))))
+          true)))))
+
 (defn gen-assign-nv
   "Assignment whose value is not used."
   [n]
@@ -1498,6 +1544,8 @@
         sz (t/type-size ty)
         upd (when (and int? (#{4 8} sz)) (in-place-update lhs rhs sz))]
     (cond
+      (and (t/struct? ty) (gen-struct-copy-nv lhs rhs))
+      nil
       ;; x = x op y with x in a register
       (and upd (vreg (:var lhs)))
       (let [r (vreg (:var lhs)) [ins o] upd
@@ -1559,6 +1607,10 @@
       (and int? (not= :var (:op lhs)) (rdi-addr? lhs))
       (do (gen-expr rhs) (store-op ty (render-mem (addr-operand lhs))))
       ;; store through a pure address of a computed integer value
+      ;; store through a pure address needing no code
+      (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs)
+           (= "" (second (capture #(addr-operand lhs)))))
+      (do (gen-expr rhs) (store-op ty (render-mem (addr-operand lhs))))
       (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (pure? lhs))
       (do (gen-expr rhs)
           (emit "  movq %rax, %rsi")
@@ -1585,6 +1637,16 @@
     :incdec (gen-incdec-nv n)
     :comma (do (gen-discard (:lhs n)) (gen-discard (:rhs n)))
     :sra-copy (gen-sra-copy n)
+    :cond (if (and (:then n) (:els n))
+            (let [l-else (new-label) l-end (new-label)]
+              (gen-branch (:cond n) l-else false)
+              (gen-discard (:then n))
+              (emitf "  jmp " l-end)
+              (emitf l-else ":")
+              (gen-discard (:els n))
+              (emitf l-end ":"))
+            (gen-expr-pop n))
+    :cast (if (= :void (:kind (:type n))) (gen-discard (:expr n)) (gen-expr-pop n))
     (if (and (pure? n) (not (t/flonum? (:type n)))) nil (gen-expr-pop n))))
 
 (defn gen-expr [n]
