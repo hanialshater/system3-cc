@@ -400,7 +400,10 @@
 (defn new-comma [l r] {:op :comma :type (:type r) :lhs l :rhs r})
 
 (defn null-ptr-const? [n]
-  (and (t/integer? (:type n)) (= 0 (try-eval n))))
+  (or (and (t/integer? (:type n)) (= 0 (try-eval n)))
+      ;; (void *)0
+      (and (t/ptr? (:type n)) (t/void? (:base (:type n)))
+           (= :num (:op n)) (not (:fval n)) (zero? (:val n)))))
 
 (defn new-cond [c then els]
   (check-scalar c)
@@ -461,13 +464,26 @@
               :else nil))
           (:members info))))
 
+(defn member-value-type
+  "Type of a member's value. Bit-fields narrower than int promote like gcc:
+   to int if int holds every value, else to unsigned int."
+  [m]
+  (let [ty (:type m)]
+    (if (and (:bitfield m) (t/integer? ty))
+      (let [w (:bit-width m)]
+        (cond (< w 32) ty-int
+              (and (= w 32) (not (t/unsigned? ty))) ty-int
+              (= w 32) ty-uint
+              :else (t/strip ty)))
+      ty)))
+
 (defn new-member [e name]
   (let [ty (:type e)]
     (when-not (t/struct? ty) (err (str "member reference base is not a struct (" (t/type-str ty) ")")))
     (when-not (:complete (t/struct-info ty)) (err "incomplete struct type"))
     (let [path (find-member-path ty name)]
       (when-not path (err (str "no member named '" name "'")))
-      (reduce (fn [n m] {:op :member :type (:type m) :expr n :member m}) e path))))
+      (reduce (fn [n m] {:op :member :type (member-value-type m) :expr n :member m}) e path))))
 
 (defn simple-lvalue? [n] (= :var (:op n)))
 
@@ -742,25 +758,44 @@
              :knr-names names :param-names names))
 
     :else
-    (loop [params [] names [] toks []]
-      (cond
-        (and (is? "...") ) (do (advance!) (expect! ")")
-                               (assoc (func-type ret params true true) :param-names names :param-toks toks))
-        :else
-        (let [[base _] (declspec)
-              {:keys [type name name-tok]} (declarator base)
-              pty (adjust-param-type type)
-              params (conj params pty) names (conj names name) toks (conj toks name-tok)]
-          (cond
-            (consume! ")") (assoc (func-type ret params false true) :param-names names :param-toks toks)
-            :else (do (expect! ",") (recur params names toks))))))))
+    ;; prototype scope: earlier parameters are visible in later declarators
+    (let [own-locals (nil? *locals*)]
+      (binding [*locals* (or *locals* (volatile! []))]
+        (enter-scope!)
+        (let [result
+              (loop [params [] names [] toks [] pvars [] dtypes []]
+                (cond
+                  (is? "...")
+                  (do (advance!) (expect! ")")
+                      [(func-type ret params true true) names toks pvars dtypes])
+                  :else
+                  (let [[base _] (declspec)
+                        {:keys [type name name-tok]} (declarator base)
+                        pty (adjust-param-type type)
+                        pv {:name name :type pty :id (next-id!) :local true}
+                        _ (when name (push-ident! name {:var pv}))
+                        params (conj params pty) names (conj names name) toks (conj toks name-tok)
+                        pvars (conj pvars pv) dtypes (conj dtypes type)]
+                    (cond
+                      (consume! ")") [(func-type ret params false true) names toks pvars dtypes]
+                      :else (do (expect! ",") (recur params names toks pvars dtypes))))))
+              [fty names toks pvars dtypes] result]
+          (leave-scope!)
+          (assoc fty :param-names names :param-toks toks :param-vars pvars :param-decl-types dtypes
+                 :param-temps (when own-locals @*locals*)))))))
 
 (defn array-dims [ty]
   ;; after '['
   (loop [] (when (#{"static" "const" "volatile" "restrict" "__restrict"} (:text (tok))) (advance!) (recur)))
-  (if (consume! "]")
+  (cond
+    (consume! "]")
     (let [inner (type-suffix ty)]
       (array-of inner -1))
+    ;; [*]: VLA of unspecified size (prototypes only)
+    (and (is? "*") (is-tok? (peek-tok 1) "]"))
+    (do (advance!) (advance!)
+        {:kind :vla :base (type-suffix ty) :len-expr nil})
+    :else
     (let [e (assign-expr)]
       (expect! "]")
       (let [inner (type-suffix ty)
@@ -920,22 +955,30 @@
   (skip-attributes!)
   (let [tag (when (= :ident (:kind (tok))) (let [s (:text (tok))] (advance!) s))]
     (if (and tag (not (is? "{")))
-      (or (find-tag tag) ty-int)
+      (or (find-tag tag) ty-uint)
       (do
         (expect! "{")
-        (loop [v 0]
-          (if (consume! "}")
-            nil
-            (let [nm (:text (tok))]
-              (advance!)
-              (skip-attributes!)
-              (let [v (if (consume! "=") (const-expr) v)]
-                (push-ident! nm {:enum-val v :type ty-int})
-                (when-not (is? "}") (expect! ","))
-                (recur (inc v))))))
-        (skip-attributes!)
-        (when tag (push-tag! tag ty-int))
-        ty-int))))
+        (let [vals (loop [v 0 vals []]
+                     (if (consume! "}")
+                       vals
+                       (let [nm (:text (tok))]
+                         (advance!)
+                         (skip-attributes!)
+                         (let [v (if (consume! "=") (const-expr) v)
+                               cty (if (<= -2147483648 v 2147483647) ty-int ty-long)]
+                           (push-ident! nm {:enum-val v :type cty})
+                           (when-not (is? "}") (expect! ","))
+                           (recur (inc v) (conj vals v))))))
+              lo (reduce min 0 vals)
+              hi (reduce max 0 vals)
+              ;; gcc: unsigned int when no enumerator is negative
+              ety (if (neg? lo)
+                    (if (and (>= lo -2147483648) (<= hi 2147483647)) ty-int ty-long)
+                    (if (<= hi 0xffffffff) ty-uint ty-ulong))
+              ety (assoc ety :enum true)]
+          (skip-attributes!)
+          (when tag (push-tag! tag ety))
+          ety)))))
 
 ;; ---------------------------------------------------------------------------
 ;; Initializers (mutable tree, chibicc style)
@@ -1030,16 +1073,25 @@
       (when-not path (err (str "no member named '" nm "'")))
       path)))
 
+(defn skip-unnamed
+  "Index of the first member at or after idx that takes an initializer
+   (unnamed bit-fields do not)."
+  [ms idx]
+  (loop [i idx]
+    (if (and (< i (count ms)) (:bitfield (nth ms i)) (nil? (:name (nth ms i))))
+      (recur (inc i))
+      i)))
+
 (defn struct-initializer2! [init start-idx post-desig]
   (let [ms (members-of (:ty @init))]
-    (loop [idx start-idx first? (not post-desig)]
+    (loop [idx (skip-unnamed ms start-idx) first? (not post-desig)]
       (when (and (< idx (count ms)) (not (is-end?)))
         (let [start @*pos*]
           (when-not first? (expect! ","))
           (if (or (is? "[") (field-desig?))
             (vreset! *pos* start)
             (do (initializer2 (nth (:fields @init) idx))
-                (recur (inc idx) false))))))))
+                (recur (skip-unnamed ms (inc idx)) false))))))))
 
 (defn designate-path!
   "Follow anonymous member path from a struct/union init; returns [init-of-last-parent last-member]."
@@ -1113,10 +1165,11 @@
               (do (when (= :struct (:kind (:ty @parent)))
                     (struct-initializer2! parent (inc (:idx m)) true))
                   (recur (inc (:idx (first path))) false))))
-          (do (if (< idx (count ms))
-                (initializer2 (nth (:fields @init) idx))
-                (skip-excess!))
-              (recur (inc idx) false)))))))
+          (let [idx (skip-unnamed ms idx)]
+            (if (< idx (count ms))
+              (initializer2 (nth (:fields @init) idx))
+              (skip-excess!))
+            (recur (inc idx) false)))))))
 
 (defn union-initializer! [init]
   (let [ms (members-of (:ty @init))]
@@ -1641,6 +1694,70 @@
       "__builtin_types_compatible_p"
       (do (expect! "(") (let [a (typename)] (expect! ",") (let [b (typename)] (expect! ")")
                                                                  (num-node (if (t/same-type? (t/strip a) (t/strip b)) 1 0) ty-int))))
+      ("__builtin_choose_expr")
+      (do (expect! "(")
+          (let [c (const-expr) _ (expect! ",") a (assign-expr) _ (expect! ",") b (assign-expr)]
+            (expect! ")")
+            (if (zero? c) b a)))
+      ("__builtin_alloca")
+      (do (expect! "(") (let [n (assign-expr)] (expect! ")")
+                          {:op :alloca :type (ptr-to ty-void) :expr (new-cast n ty-ulong)}))
+      ("__builtin_prefetch")
+      (do (expect! "(")
+          (let [args (func-args)]
+            (reduce new-comma {:op :cast :type ty-void :expr (num-node 0 ty-int)}
+                    (map #(new-cast % ty-void) args))))
+      ("__builtin_inf" "__builtin_huge_val")
+      (do (expect! "(") (expect! ")") (fnum-node Double/POSITIVE_INFINITY ty-double))
+      ("__builtin_inff" "__builtin_huge_valf")
+      (do (expect! "(") (expect! ")") (fnum-node Double/POSITIVE_INFINITY ty-float))
+      ("__builtin_nan" "__builtin_nanf")
+      (do (expect! "(") (assign-expr) (expect! ")")
+          (fnum-node Double/NaN (if (= nm "__builtin_nanf") ty-float ty-double)))
+      ("__builtin_popcount" "__builtin_popcountl" "__builtin_popcountll"
+       "__builtin_clz" "__builtin_clzl" "__builtin_clzll"
+       "__builtin_ctz" "__builtin_ctzl" "__builtin_ctzll"
+       "__builtin_ffs" "__builtin_ffsl" "__builtin_ffsll"
+       "__builtin_parity" "__builtin_parityl" "__builtin_parityll"
+       "__builtin_clrsb" "__builtin_clrsbl" "__builtin_clrsbll")
+      (do (expect! "(")
+          (let [a (assign-expr)
+                wide (or (str/ends-with? nm "l") (str/ends-with? nm "ll"))
+                base (str/replace (subs nm 10) #"l+$" "")
+                at (if wide (if (#{"ffs" "clrsb"} base) ty-long ty-ulong)
+                       (if (#{"ffs" "clrsb"} base) ty-int ty-uint))]
+            (expect! ")")
+            {:op :bitop :name (keyword base) :type ty-int :expr (new-cast a at)}))
+      ("__builtin_bswap16" "__builtin_bswap32" "__builtin_bswap64")
+      (do (expect! "(")
+          (let [a (assign-expr)
+                ty (case nm "__builtin_bswap16" ty-ushort "__builtin_bswap32" ty-uint ty-ulong)]
+            (expect! ")")
+            {:op :bswap :type ty :expr (new-cast a ty)}))
+      ("__builtin_add_overflow" "__builtin_sub_overflow" "__builtin_mul_overflow"
+       "__builtin_sadd_overflow" "__builtin_saddl_overflow" "__builtin_saddll_overflow"
+       "__builtin_uadd_overflow" "__builtin_uaddl_overflow" "__builtin_uaddll_overflow"
+       "__builtin_ssub_overflow" "__builtin_ssubl_overflow" "__builtin_ssubll_overflow"
+       "__builtin_usub_overflow" "__builtin_usubl_overflow" "__builtin_usubll_overflow"
+       "__builtin_smul_overflow" "__builtin_smull_overflow" "__builtin_smulll_overflow"
+       "__builtin_umul_overflow" "__builtin_umull_overflow" "__builtin_umulll_overflow")
+      (do (expect! "(")
+          (let [a (assign-expr) _ (expect! ",") b (assign-expr) _ (expect! ",") r (assign-expr)
+                _ (expect! ")")
+                m (re-matches #"__builtin_([su]?)(add|sub|mul)(l*)_overflow" nm)
+                sign (nth m 1) op (keyword (nth m 2)) lsuf (nth m 3)
+                fixed (when (seq sign)
+                        (let [ty (if (empty? lsuf) ty-int ty-long)]
+                          (if (= sign "u") (t/to-unsigned ty) ty)))
+                a (if fixed (new-cast a fixed) a)
+                b (if fixed (new-cast b fixed) b)
+                widen (fn [e] (new-cast e (if (t/unsigned? (:type e)) ty-ulong ty-long)))
+                rty (t/strip (:base (:type r)))]
+            (when-not (and (t/integer? (:type a)) (t/integer? (:type b)) (t/ptr? (:type r)) (t/integer? rty))
+              (err "invalid arguments to overflow builtin"))
+            {:op :overflow :type ty-bool :kind op
+             :lhs (widen a) :rhs (widen b) :ptr r :rtype rty
+             :lsigned (not (t/unsigned? (:type a))) :rsigned (not (t/unsigned? (:type b)))}))
       ;; otherwise: treat __builtin_foo as call to foo
       (let [real (subs nm 10)
             e (find-ident real)]
@@ -1889,6 +2006,30 @@
                  (when-not (:no-define attr) {:defined true}))]
     (add-global! g)))
 
+(defn vla-inner-type
+  "Give inner VLA dimensions runtime size variables. Returns [type stmts]."
+  [ty]
+  (case (:kind ty)
+    :vla (let [[inner st] (vla-inner-type (:base ty))
+               sv (new-temp! ty-ulong)
+               isz (if (= :vla (:kind inner)) (var-node (:size-var inner)) (num-node (t/type-size inner) ty-ulong))
+               len (if (:len-expr ty) (new-cast (:len-expr ty) ty-ulong) (num-node 0 ty-ulong))]
+           [{:kind :vla :base inner :size-var sv}
+            (conj st (expr-stmt-node (new-assign (var-node sv) {:op :mul :type ty-ulong :lhs len :rhs isz})))])
+    :ptr (let [[inner st] (vla-inner-type (:base ty))] [(ptr-to inner) st])
+    [ty []]))
+
+(defn param-vla-type
+  "Declared parameter type -> [adjusted type, entry statements]."
+  [dt]
+  (case (:kind dt)
+    :vla (let [st0 (if (:len-expr dt) [(expr-stmt-node (new-cast (:len-expr dt) ty-void))] [])
+               [inner st] (vla-inner-type (:base dt))]
+           [(ptr-to inner) (into st0 st)])
+    :array (let [[inner st] (vla-inner-type (:base dt))] [(ptr-to inner) st])
+    :ptr (let [[inner st] (vla-inner-type (:base dt))] [(ptr-to inner) st])
+    [dt []]))
+
 (defn function-def [ty name attr]
   (let [g (declare-function! name ty attr)
         g (add-global! (assoc g :defined true))]
@@ -1919,9 +2060,30 @@
                     pvars (mapv (fn [nm pty] (new-lvar! nm pty)) names passed)
                     ty (assoc ty :params passed :knr-real ptys)]
                 [ty pvars])
-              (let [names (:param-names ty)
-                    pvars (vec (map-indexed (fn [i pty] (new-lvar! (nth names i nil) pty)) (:params ty)))]
-                [ty pvars]))
+              (if-let [pvs (:param-vars ty)]
+                (do (vswap! *locals* into (:param-temps ty))
+                    (let [pvars (mapv (fn [pv]
+                                        (vswap! *locals* conj pv)
+                                        (when (:name pv) (push-ident! (:name pv) {:var pv}))
+                                        pv)
+                                      pvs)]
+                      [ty pvars]))
+                (let [names (:param-names ty)
+                      pvars (vec (map-indexed (fn [i pty] (new-lvar! (nth names i nil) pty)) (:params ty)))]
+                  [ty pvars])))
+            ;; VLA parameters: evaluate size expressions on entry, in order
+            [params vla-stmts]
+            (if-let [dts (:param-decl-types ty)]
+              (reduce (fn [[plist stmts] [pv dt]]
+                        (let [[nt st] (param-vla-type dt)]
+                          (if (seq st)
+                            (let [pv2 (assoc pv :type nt)]
+                              (vswap! *locals* (fn [ls] (mapv #(if (= (:id %) (:id pv)) pv2 %) ls)))
+                              (when (:name pv) (push-ident! (:name pv) {:var pv2}))
+                              [(conj plist pv2) (into stmts st)])
+                            [(conj plist pv) stmts])))
+                      [[] []] (map vector params dts))
+              [params []])
             ;; K&R params declared float/char/short: convert from promoted
             conv-stmts (when (:knr-real ty)
                          (vec (keep (fn [[pv real]]
@@ -1932,7 +2094,8 @@
             va-area (when (:variadic ty) (new-temp! (array-of ty-char 176)))
             _ (expect! "{")
             body (binding [*cur-fn* {:name name :type ty}] (compound-stmt))
-            body (if (seq conv-stmts) {:op :block :body (into conv-stmts [body])} body)]
+            body (if (seq conv-stmts) {:op :block :body (into conv-stmts [body])} body)
+            body (if (seq vla-stmts) {:op :block :body (conj vla-stmts body)} body)]
         (leave-scope!)
         (vswap! *functions* conj
                 {:name name :type ty :params params :body body
@@ -1969,8 +2132,21 @@
                 nil)
               (when-not (consume! ";") (recur false)))))))))
 
+(def keyword-aliases
+  {"__attribute" "__attribute__" "__const__" "const" "__const" "const"
+   "__volatile__" "volatile" "__volatile" "volatile" "__signed__" "signed" "__signed" "signed"
+   "__restrict__" "restrict" "__restrict" "restrict" "__inline__" "inline" "__inline" "inline"
+   "__typeof__" "typeof" "__typeof" "typeof" "__alignof__" "_Alignof" "__alignof" "_Alignof"
+   "__asm__" "asm" "__asm" "asm" "_Noreturn" "_Noreturn"})
+
+(defn normalize-tokens [toks]
+  (mapv (fn [t] (if-let [a (and (= :ident (:kind t)) (keyword-aliases (:text t)))]
+                  (assoc t :text a)
+                  t))
+        toks))
+
 (defn parse-program [toks]
-  (binding [*toks* toks
+  (binding [*toks* (normalize-tokens toks)
             *pos* (volatile! 0)
             *scope* (volatile! (list {:vars {} :tags {}}))
             *globals* (volatile! {})
