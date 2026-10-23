@@ -1,0 +1,132 @@
+{
+ "w4-0001": {
+  "category": "conditional",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0002": {
+  "category": "varargs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0004": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0005": {
+  "category": "macro-function",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0013": {
+  "category": "conditional",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0015": {
+  "category": "define",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0016": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0020": {
+  "category": "stringize-paste",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0023": {
+  "category": "macro-function",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0028": {
+  "category": "varargs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0031": {
+  "category": "define",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0032": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0040": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0048": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0049": {
+  "category": "conditional",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0052": {
+  "category": "define",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0061": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0066": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0067": {
+  "category": "varargs",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0070": {
+  "category": "conditional",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0072": {
+  "category": "macro-function",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0074": {
+  "category": "define",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0076": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0086": {
+  "category": "include",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0089": {
+  "category": "macro-function",
+  "exit": 0,
+  "timeoutMs": 3000
+ },
+ "w4-0094": {
+  "category": "define",
+  "exit": 0,
+  "timeoutMs": 3000
+ }
+}
