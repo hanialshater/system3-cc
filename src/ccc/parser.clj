@@ -184,6 +184,10 @@
              [(or l1 l2) (wrap (unchecked-add a b) ty)])
       :sub (let [[l1 a] (eval-reloc (:lhs n)) [l2 b] (eval-reloc (:rhs n))]
              (cond (and l1 l2 (= l1 l2)) [nil (wrap (unchecked-subtract a b) ty)]
+                   ;; difference of two label addresses: an assemble-time constant
+                   (and l1 l2 (str/starts-with? l1 ".L") (str/starts-with? l2 ".L")
+                        (not (str/includes? l1 "-")) (not (str/includes? l2 "-")))
+                   [(str l1 "-" l2) (unchecked-subtract a b)]
                    l2 (not-const)
                    :else [l1 (wrap (unchecked-subtract a b) ty)]))
       (:mul :div :mod :bitand :bitor :bitxor :shl :shr)
@@ -231,7 +235,7 @@
                 :else
                 (let [[l v] (eval-reloc inner)]
                   (if l
-                    (if (>= (t/type-size ty) 8) [l v] (not-const))
+                    (if (or (>= (t/type-size ty) 8) (str/includes? l "-")) [l v] (not-const))
                     [nil (wrap v ty)]))))
       :addr (eval-addr (:expr n))
       :label-addr [(:label n) 0]
@@ -1356,7 +1360,7 @@
                        (catch clojure.lang.ExceptionInfo e
                          (if (= :not-const (:type (ex-data e))) (err "initializer element is not constant") (throw e))))]
         (if l
-          [{:off off :label l :addend v}]
+          [{:off off :label l :addend v :size (t/type-size ty)}]
           (do (write-int! buf off v (t/type-size ty)) []))))))
 
 (defn init-object-size

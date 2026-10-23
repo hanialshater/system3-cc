@@ -944,8 +944,10 @@
             (>= pos sz) nil
             (and (seq rs) (= pos (:off (first rs))))
             (let [r (first rs)]
-              (emitf "  .quad " (:label r) (if (neg? (:addend r)) "" "+") (:addend r))
-              (recur (+ pos 8) (rest rs)))
+              (let [sz (or (:size r) 8)]
+                (emitf (case (int sz) 1 "  .byte " 2 "  .short " 4 "  .long " "  .quad ")
+                       (:label r) (if (neg? (:addend r)) "" "+") (:addend r))
+                (recur (+ pos sz) (rest rs))))
             :else
             (let [end (min sz (if (seq rs) (:off (first rs)) sz))
                   zrun (fn [p] (loop [q p] (if (and (< q end) (zero? (aget bs q))) (recur (inc q)) q)))]
