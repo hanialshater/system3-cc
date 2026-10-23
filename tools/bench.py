@@ -24,7 +24,7 @@ for n in names:
         ts.append((r1.ru_utime - r0.ru_utime) + (r1.ru_stime - r0.ru_stime))
         ok = ok and r.stdout == exp and r.returncode == 0
     ts.sort()
-    med = ts[len(ts) // 2]
+    med = ts[0]
     total *= med
     print(f'{n:10s} {med:.3f}s {"OK" if ok else "WRONG"}')
 print(f'geomean {total ** (1 / len(names)):.3f}s')

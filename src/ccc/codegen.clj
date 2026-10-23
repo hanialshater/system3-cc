@@ -260,7 +260,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand)
+(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int*)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -358,11 +358,9 @@
              (if (contains? *defined* (:label v))
                (emitf "  leaq " (:label v) "(%rip), %rax")
                (emitf "  movq " (:label v) "@GOTPCREL(%rip), %rax"))))
-    :deref (gen-expr (:expr n))
+    :deref (materialize (addr-operand n))
     :comma (do (gen-expr (:lhs n)) (gen-addr (:rhs n)))
-    :member (do (gen-addr (:expr n))
-                (when-not (zero? (:offset (:member n)))
-                  (emitf "  addq $" (:offset (:member n)) ", %rax")))
+    :member (materialize (addr-operand n))
     (:call :assign :cond :stmt-expr :va-arg)
     (if (t/struct? (:type n)) (gen-expr n) (cerr "not an lvalue"))
     :cast (if (t/struct? (:type n)) (gen-addr (:expr n)) (cerr "not an lvalue"))
@@ -471,7 +469,7 @@
                  (cond
                    (and (= :num (:op x)) (imm32? (:val x)))
                    (update (pointer-base p) :disp (fnil + 0) (if (= :sub (:op e)) (- (:val x)) (:val x)))
-                   (= :sub (:op e)) (do (gen-addr n) {:base "%rax"})
+                   (= :sub (:op e)) (do (gen-expr e) {:base "%rax"})
                    (and (pure? p) (simple-base? p))
                    (do (index-into-rdi idx)
                        (assoc (pointer-base p) :index "%rdi" :scale scale))
@@ -493,6 +491,12 @@
                (do (emitf "  movq " (var-mem-op (:var e)) ", %rax") {:base "%rax"})
                :else (do (gen-expr e) {:base "%rax"})))
     (do (gen-addr n) {:base "%rax"})))
+
+(defn materialize
+  "Put the address described by operand map m into %rax."
+  [m]
+  (when-not (and (= "%rax" (:base m)) (not (:index m)) (or (nil? (:disp m)) (zero? (:disp m))) (nil? (:sym m)))
+    (emitf "  leaq " (render-mem m) ", %rax")))
 
 (defn simple-lvalue-op?
   "Lvalues whose loads/stores can use addr-operand."
@@ -571,6 +575,12 @@
     ((if u cc-unsigned cc-signed) op)))
 
 (defn gen-binary-int [n oty]
+  (if (and (or (= :add (:op n)) (and (= :sub (:op n)) (= :num (:op (:rhs n))) (imm32? (:val (:rhs n)))))
+           (t/ptr? (:type n)) (t/integer? (:type (:rhs n))))
+    (materialize (addr-operand {:op :deref :expr n :type (:base (:type n))}))
+    (gen-binary-int* n oty)))
+
+(defn gen-binary-int* [n oty]
   (let [{:keys [op lhs rhs]} n
         w (if (= 8 (t/type-size oty)) 8 4)
         ax (if (= w 8) "%rax" "%eax") sfx (if (= w 8) "q" "l")
@@ -737,6 +747,12 @@
       (do (gen-expr rhs) (reg-store (:var lhs)))
       (and (scalar-var? lhs) (var-mem-op (:var lhs)))
       (do (gen-expr rhs) (store-op (:type lhs) (var-mem-op (:var lhs))))
+      (and (= :var (:op lhs)) (t/struct? (:type lhs)) (:local (:var lhs)) (var-mem-op (:var lhs)))
+      (let [off (var-offset (:var lhs)) sz (t/type-size (:type lhs))]
+        (gen-expr rhs)
+        (emitf "  leaq " off "(%rbp), %rdi")
+        (emit-copy "%rax" "%rdi" sz)
+        (emit "  movq %rdi, %rax"))
       (and (simple-lvalue-op? lhs) (pure? lhs))
       (let [ty (:type lhs)]
         (gen-expr rhs)
@@ -1090,7 +1106,9 @@
               :else (gen-addr n))
     :deref (if (t/scalar? (:type n))
              (load-op (:type n) (render-mem (addr-operand n)))
-             (do (gen-expr (:expr n)) (load (:type n))))
+             (if (t/func? (:type n))
+               (gen-expr (:expr n))
+               (materialize (addr-operand n))))
     :addr (gen-addr (:expr n))
     :assign (gen-assign n)
     :incdec (if (and (= :var (:op (:expr n))) (vreg (:var (:expr n))))
@@ -1303,6 +1321,22 @@
                               (emitf "  orq %r8, " reg))))
                       (recur (inc i) (inc gi) fi))))))))))))
 
+(defn jump-table-plan
+  "A dense switch gets a jump table: {:lo :span :targets} or nil."
+  [cases]
+  (when (seq cases)
+    (let [lo (reduce min (map :lo cases))
+          hi (reduce max (map :hi cases))
+          n (reduce + (map #(inc (- (:hi %) (:lo %))) cases))
+          span (inc (- hi lo))]
+      (when (and (>= n 4) (<= -2147483648 lo) (<= hi 2147483647) (<= span (+ 10 (* 3 n))) (<= span 4096))
+        (let [tv (object-array span)]
+          ;; first matching case wins (cases are in source order)
+          (doseq [{l :lo h :hi label :label} (reverse cases)
+                  v (range l (inc h))]
+            (aset tv (- v lo) label))
+          {:lo lo :span span :targets (vec tv)})))))
+
 (defn gen-stmt [s]
   (case (:op s)
     :block (doseq [x (:body s)] (gen-stmt x))
@@ -1344,6 +1378,27 @@
                   ax (if w "%rax" "%eax") di (if w "%rdi" "%edi") sfx (if w "q" "l")
                   u (t/unsigned? cty)]
               (gen-expr (:cond s))
+              (if-let [jt (jump-table-plan (:cases s))]
+                (let [{:keys [lo span targets]} jt
+                      deflt (or (:default s) (:brk s))
+                      tab (new-label)]
+                  (if w
+                    (do (emitf "  subq $" lo ", %rax")
+                        (emitf "  cmpq $" (dec span) ", %rax"))
+                    (do (when-not (zero? lo) (emitf "  subl $" lo ", %eax"))
+                        (emitf "  cmpl $" (dec span) ", %eax")
+                        (emit "  movl %eax, %eax")))
+                  (emitf "  ja " deflt)
+                  (emitf "  leaq " tab "(%rip), %rdx")
+                  (emit "  movslq (%rdx,%rax,4), %rax")
+                  (emit "  addq %rdx, %rax")
+                  (emit "  jmp *%rax")
+                  (emit "  .section .rodata")
+                  (emit "  .align 4")
+                  (emitf tab ":")
+                  (doseq [t targets] (emitf "  .long " (or t deflt) "-" tab))
+                  (emit "  .text"))
+              (do
               (doseq [{:keys [lo hi label]} (:cases s)]
                 (if (= lo hi)
                   (if (imm32? lo)
@@ -1358,7 +1413,7 @@
                           (emitf "  cmp" sfx " $" d ", " di)
                           (do (emitf "  movabsq $" d ", %rsi") (emit "  cmpq %rsi, %rdi"))))
                       (emitf "  jbe " label))))
-              (emitf "  jmp " (or (:default s) (:brk s)))
+              (emitf "  jmp " (or (:default s) (:brk s)))))
               (gen-stmt (:body s))
               (emitf (:brk s) ":"))
     :label (do (emitf (:label s) ":") (gen-stmt (:body s)))
