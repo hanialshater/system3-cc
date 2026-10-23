@@ -419,12 +419,17 @@
       (let [r (vreg (:var (:expr inner)))]
         (emitf "  movslq " (r 1) ", %rdi")
         (emitf "  addl $" (:delta inner) ", " (r 1)))
+      (and inner (= :incdec (:op inner)) (:pre inner) (= 4 (t/type-size ity)) (not (t/unsigned? ity))
+           (= :var (:op (:expr inner))) (vreg (:var (:expr inner))))
+      (let [r (vreg (:var (:expr inner)))]
+        (emitf "  addl $" (:delta inner) ", " (r 1))
+        (emitf "  movslq " (r 1) ", %rdi"))
       (and inner (= 4 (t/type-size ity)) (int-operand inner 4))
       (emitf (if (t/unsigned? ity) "  movl " "  movslq ") (int-operand inner 4) (if (t/unsigned? ity) ", %edi" ", %rdi"))
       (int-operand x 8) (emitf "  movq " (int-operand x 8) ", %rdi")
       :else (do (gen-expr x) (emit "  movq %rax, %rdi")))))
 
-(declare addr-operand)
+(declare addr-operand fixed-addr?)
 
 (defn cheap-index?
   "Index expressions that index-into-rdi loads without touching %rax."
@@ -432,6 +437,33 @@
   (let [inner (when (and (= :cast (:op x)) (t/integer? (:type (:expr x)))) (:expr x))]
     (boolean (or (and inner (= 4 (t/type-size (:type inner))) (int-operand inner 4))
                  (int-operand x 8)))))
+
+(defn rdi-base?
+  "Pointer/array nodes whose base register is known without computing anything."
+  [p]
+  (let [ty (:type p)]
+    (and (= :var (:op p))
+         (or (and (vreg (:var p)) (= 8 (t/type-size ty)))
+             (and (t/array? ty) (not= :vla (:kind ty)) (:local (:var p)) (boolean (var-mem-op (:var p))))))))
+
+(defn split-scaled [x]
+  (if (and (= :mul (:op x)) (= :num (:op (:rhs x))) (#{1 2 4 8} (:val (:rhs x))))
+    [(:lhs x) (:val (:rhs x))]
+    [x 1]))
+
+(defn rdi-addr?
+  "Scalar loads whose address operand is computed using only %rdi."
+  [n]
+  (and (#{:deref :member} (:op n))
+       (t/scalar? (:type n))
+       (pure? n)
+       (if (= :member (:op n))
+         (and (not (:bitfield (:member n))) (fixed-addr? (:expr n)))
+         (let [e (:expr n)]
+           (or (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
+               (and (= :add (:op e)) (t/ptr? (:type e)) (rdi-base? (:lhs e))
+                    (let [[idx _] (split-scaled (:rhs e))]
+                      (or (= :num (:op (:rhs e))) (cheap-index? idx)))))))))
 
 (defn simple-base?
   "Pointer expressions whose base register is obtained without using %rdi."
@@ -571,32 +603,34 @@
     (do (gen-expr lhs) o)
     (if (and (= w 8) (cheap-index? rhs))
       (do (gen-expr lhs) (index-into-rdi rhs) "%rdi")
+    (if (and (rdi-addr? rhs) (= w (t/type-size (:type rhs))) (or (t/integer? (:type rhs)) (t/ptr? (:type rhs))))
+      ;; memory operand whose address needs only %rdi
+      (do (gen-expr lhs) (render-mem (addr-operand rhs)))
     (if (int-operand lhs w)
       ;; lhs has no side effects: compute rhs first, then load lhs
       (do (gen-expr rhs)
           (emit "  movq %rax, %rdi")
           (gen-expr lhs)
           (if (= w 8) "%rdi" "%edi"))
-      (if-let [sr (when (and *scratch-free* (seq @*scratch-free*) (pure? rhs))
-                    (let [r (first @*scratch-free*)] (vswap! *scratch-free* rest) r))]
-        (do (gen-expr lhs)
-            (emitf "  movq %rax, " sr)
-            (gen-expr rhs)
-            (emit "  movq %rax, %rdi")
-            (emitf "  movq " sr ", %rax")
-            (vswap! *scratch-free* conj sr)
-            (if (= w 8) "%rdi" "%edi"))
-      (if-let [ti (alloc-temp!)]
-        (let [tr ((nth callee-regs ti) 0)]
-          (gen-expr lhs)
-          (emitf "  movq %rax, " tr)
-          (gen-expr rhs)
-          (emit "  movq %rax, %rdi")
-          (emitf "  movq " tr ", %rax")
-          (free-temp! ti)
-          (if (= w 8) "%rdi" "%edi"))
-        (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")
-            (if (= w 8) "%rdi" "%edi"))))))))
+      (do
+        ;; evaluate lhs first, then pick where to hold it (so nested holders are reused)
+        (gen-expr lhs)
+        (if-let [sr (when (and *scratch-free* (seq @*scratch-free*) (pure? rhs))
+                      (let [r (first @*scratch-free*)] (vswap! *scratch-free* rest) r))]
+          (do (emitf "  movq %rax, " sr)
+              (gen-expr rhs)
+              (emit "  movq %rax, %rdi")
+              (emitf "  movq " sr ", %rax")
+              (vswap! *scratch-free* conj sr))
+          (if-let [ti (alloc-temp!)]
+            (let [tr ((nth callee-regs ti) 0)]
+              (emitf "  movq %rax, " tr)
+              (gen-expr rhs)
+              (emit "  movq %rax, %rdi")
+              (emitf "  movq " tr ", %rax")
+              (free-temp! ti))
+            (do (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax"))))
+        (if (= w 8) "%rdi" "%edi")))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -1051,12 +1085,12 @@
         ;; complex args right to left; the leftmost one goes straight to its register
         (let [held (doall
                      (for [a (reverse (rest complex))]
-                       (let [ti (when (= :gp (:mode a)) (alloc-temp!))]
-                         (if ti
-                           (do (gen-expr (:node a))
-                               (emitf "  movq %rax, " ((nth callee-regs ti) 0))
-                               [a ti])
-                           (do (push-arg! a) [a nil])))))]
+                       (if (= :gp (:mode a))
+                         (do (gen-expr (:node a))
+                             (if-let [ti (alloc-temp!)]
+                               (do (emitf "  movq %rax, " ((nth callee-regs ti) 0)) [a ti])
+                               (do (push!) [a nil])))
+                         (do (push-arg! a) [a nil]))))]
             (when-let [a0 (first complex)]
               (gen-expr (:node a0))
               (to-reg a0))
