@@ -422,10 +422,19 @@
         oty (if (t/ptr-like? oty) t/ty-ulong oty)
         w (if (= 8 (t/type-size oty)) 8 4)
         u (or (t/unsigned? oty) (t/ptr? oty))
-        o (gen-int-operands lhs rhs w)]
-    (if (and (= o "$0") (#{:eq :ne} op))
-      (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))
-      (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax")))
+        lo (int-operand lhs w)
+        ro (int-operand rhs w)
+        reg? #(and % (str/starts-with? % "%"))
+        imm? #(and % (str/starts-with? % "$"))]
+    (if (and lo (not (imm? lo)) ro (or (reg? lo) (reg? ro) (imm? ro)))
+      ;; compare in place
+      (if (and (= ro "$0") (reg? lo) (#{:eq :ne} op))
+        (emitf "  test" (if (= w 8) "q " "l ") lo ", " lo)
+        (emitf "  cmp" (if (= w 8) "q " "l ") ro ", " lo))
+      (let [o (gen-int-operands lhs rhs w)]
+        (if (and (= o "$0") (#{:eq :ne} op))
+          (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))
+          (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax")))))
     ((if u cc-unsigned cc-signed) op)))
 
 (defn gen-binary-int [n oty]
@@ -708,14 +717,61 @@
           (= :float (:kind ty)) (emitf "  movss %xmm0, " off "(%rsp)")
           (t/flonum? ty) (emitf "  movsd %xmm0, " off "(%rsp)")
           :else (emitf "  movq %rax, " off "(%rsp)"))))
-    ;; register args, reverse order
-    (doseq [a (reverse args)] (when (not= :stack (:mode a)) (push-arg! a)))
-    (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))]
-      (when-not direct
-        (gen-expr fnode)
-        (emit "  movq %rax, %r10"))
-      (when ret-mem
-        (local-addr (:ret-buf n) "%rdi"))
+    (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))
+          fast (and direct (not-any? #(= :struct-reg (:mode %)) args))
+          ;; register targets
+          args (loop [as args gp (if ret-mem 1 0) fp 0 out []]
+                 (if (empty? as) out
+                     (let [a (first as)]
+                       (case (:mode a)
+                         :gp (recur (rest as) (inc gp) fp (conj out (assoc a :reg gp)))
+                         :fp (recur (rest as) gp (inc fp) (conj out (assoc a :reg fp)))
+                         (recur (rest as) gp fp (conj out a))))))
+          simple? (fn [a]
+                    (let [nd (:node a) ty (:type nd)]
+                      (case (:mode a)
+                        :gp (or (and (= :num (:op nd)) (not (:fval nd)))
+                                (and (#{4 8} (t/type-size ty)) (int-operand nd (t/type-size ty)))
+                                (and (= :addr (:op nd)) (= :var (:op (:expr nd))) (:local (:var (:expr nd)))
+                                     (not (vreg (:var (:expr nd)))) (var-mem-op (:var (:expr nd)))))
+                        :fp (and (= :var (:op nd)) (#{:float :double} (:kind ty)) (var-mem-op (:var nd)))
+                        false)))
+          regargs (filter #(#{:gp :fp :struct-reg} (:mode %)) args)
+          complex (if fast (vec (remove simple? regargs)) (vec regargs))
+          simple (if fast (filter simple? regargs) [])
+          load-simple (fn [a]
+                        (let [nd (:node a) ty (:type nd) i (:reg a)]
+                          (case (:mode a)
+                            :gp (cond
+                                  (= :num (:op nd)) (if (imm32? (:val nd))
+                                                      (emitf "  movq $" (:val nd) ", " (nth argreg64 i))
+                                                      (emitf "  movabsq $" (:val nd) ", " (nth argreg64 i)))
+                                  (= :addr (:op nd)) (emitf "  leaq " (var-mem-op (:var (:expr nd))) ", " (nth argreg64 i))
+                                  :else (let [w (t/type-size ty) o (int-operand nd w)]
+                                          (if (= w 8)
+                                            (emitf "  movq " o ", " (nth argreg64 i))
+                                            (emitf "  movl " o ", " (nth argreg32 i)))))
+                            :fp (emitf (if (= :float (:kind ty)) "  movss " "  movsd ") (var-mem-op (:var nd)) ", %xmm" i))))
+          to-reg (fn [a]
+                   (if (= :gp (:mode a))
+                     (emitf "  movq %rax, " (nth argreg64 (:reg a)))
+                     (when-not (zero? (:reg a)) (emitf "  movaps %xmm0, %xmm" (:reg a)))))]
+      (if fast
+        ;; complex args right to left; the leftmost one goes straight to its register
+        (do (doseq [a (reverse (rest complex))] (push-arg! a))
+            (when-let [a0 (first complex)]
+              (gen-expr (:node a0))
+              (to-reg a0))
+            (doseq [a (rest complex)]
+              (if (= :gp (:mode a)) (pop! (nth argreg64 (:reg a))) (popf! (:reg a))))
+            (doseq [a simple] (load-simple a))
+            (when ret-mem (local-addr (:ret-buf n) "%rdi")))
+        (do (doseq [a (reverse args)] (when (not= :stack (:mode a)) (push-arg! a)))
+            (when-not direct
+              (gen-expr fnode)
+              (emit "  movq %rax, %r10"))
+            (when ret-mem
+              (local-addr (:ret-buf n) "%rdi"))))
       (let [[gp fp] (reduce (fn [[gp fp] a]
                               (case (:mode a)
                                 :gp (do (pop! (nth argreg64 gp)) [(inc gp) fp])
@@ -727,8 +783,11 @@
                                             (do (pop! (nth argreg64 gp)) [(inc gp) fp])))
                                         [gp fp] (:classes a))
                                 [gp fp]))
-                            [(if ret-mem 1 0) 0] args)]
-        (emitf "  movl $" fp ", %eax")
+                            [(if ret-mem 1 0) 0] (if fast [] args))
+            fp (count (filter #(= :fp (:mode %)) args))
+            fty (:fn-type n)]
+        (when (or (:variadic fty) (not (:proto fty)) (not direct))
+          (emitf "  movl $" fp ", %eax"))
         (if direct
           (let [label (:label (:var fnode))]
             (if (contains? *defined* label)
@@ -1329,8 +1388,7 @@
       (emitf ".L.return." name ":")
       (doseq [[i r] (map-indexed vector saved)]
         (emitf "  movq " (- (+ frame (* 8 (inc i)))) "(%rbp), " (r 0)))
-      (emit "  movq %rbp, %rsp")
-      (emit "  popq %rbp")
+      (emit "  leave")
       (emit "  ret")
       (emitf "  .size " name ", .-" name))))
 
@@ -1403,6 +1461,27 @@
         (emitf label ":")
         (emitf "  .zero " (max sz 1))))))
 
+(defn peephole
+  "Simple cleanups on the emitted lines."
+  [^String text]
+  (let [lines (vec (str/split-lines text))
+        n (count lines)
+        out (java.util.ArrayList.)]
+    (loop [i 0]
+      (when (< i n)
+        (let [l (lines i)
+              nx (when (< (inc i) n) (lines (inc i)))]
+          (cond
+            ;; jump to the very next label
+            (and nx (str/starts-with? l "  jmp ") (= (str (subs l 6) ":") nx))
+            (recur (inc i))
+            ;; push/pop pair
+            (and nx (= l "  pushq %rax") (str/starts-with? nx "  popq %"))
+            (do (when (not= nx "  popq %rax") (.add out (str "  movq %rax, " (subs nx 7))))
+                (recur (+ i 2)))
+            :else (do (.add out l) (recur (inc i)))))))
+    (str (str/join "\n" out) "\n")))
+
 (defn generate [{:keys [globals functions]}]
   (let [sb (StringBuilder.)
         defined (into #{} (concat (map :label (filter #(or (:defined %) (:init %)) globals))
@@ -1425,4 +1504,4 @@
           (emitf "  .short " e)
           (emit "  .zero 6")))
       (emit "  .section .note.GNU-stack,\"\",@progbits"))
-    (str sb)))
+    (peephole (str sb))))
