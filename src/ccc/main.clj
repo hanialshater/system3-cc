@@ -49,10 +49,17 @@
           (str/starts-with? a "-I") (recur (rest as) (update opts :includes conj (subs a 2)))
           (= a "-o") (recur (drop 2 as) (assoc opts :output (second as)))
           (= a "--batch") (recur (drop 2 as) (assoc opts :batch (second as)))
+          (= a "-E") (recur (rest as) (assoc opts :pp-only true))
           :else (recur (rest as) (update opts :inputs conj a)))))))
 
 (defn run-main [args]
   (let [{:keys [includes inputs output batch]} (parse-args args)]
+    (if (:pp-only (parse-args args))
+      (do (doseq [tk (pp/preprocess (slurp (first inputs) :encoding "ISO-8859-1") (first inputs) includes)]
+            (when (:bol tk) (println))
+            (print (str (when (:space tk) " ") (:text tk))))
+          (println)
+          0)
     (if batch
       (do
         (doseq [line (str/split-lines (slurp batch))
@@ -65,7 +72,7 @@
       (if (and (= 1 (count inputs)) output)
         (if (compile-one (first inputs) output includes) 0 1)
         (do (binding [*out* *err*] (println "usage: ccc.main [-I dir]... <in.c> -o <out.s> | --batch <list>"))
-            2)))))
+            2))))))
 
 (defn -main [& args]
   (let [result (promise)

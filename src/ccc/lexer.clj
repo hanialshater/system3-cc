@@ -107,15 +107,22 @@
                   q (.charAt src (+ i pre-len))
                   start (+ i pre-len 1)
                   j (loop [j start]
-                      (cond (>= j n) (error file line "unterminated literal")
-                            (= (.charAt src j) \newline) (error file line "unterminated literal")
+                      (cond (>= j n) nil
+                            (= (.charAt src j) \newline) nil
                             (= (.charAt src j) \\) (recur (+ j 2))
                             (= (.charAt src j) q) j
-                            :else (recur (inc j))))
-                  text (subs src i (inc j))]
-              (conj! out {:kind (if (= q \") :str :char) :text text :prefix prefix
-                          :line line :file file :bol bol :space space})
-              (recur (inc j) line false false))
+                            :else (recur (inc j))))]
+              (if (nil? j)
+                ;; unterminated: a stray token (only an error if it reaches the parser)
+                (let [e (+ i pre-len 1)]
+                  (conj! out {:kind :punct :text (subs src i e) :line line :file file :bol bol :space space :stray true})
+                  (recur e line false false))
+                (let [raw (subs src i (inc j))
+                      nsplice (count (re-seq #"\\\n" raw))
+                      text (if (pos? nsplice) (str/replace raw "\\\n" "") raw)]
+                  (conj! out {:kind (if (= q \") :str :char) :text text :prefix prefix
+                              :line line :file file :bol bol :space space})
+                  (recur (inc j) (+ line nsplice) false false))))
 
             (ident-start? c)
             (let [j (loop [j (inc i)]
@@ -128,7 +135,8 @@
               (if p
                 (do (conj! out {:kind :punct :text p :line line :file file :bol bol :space space})
                     (recur (+ i (count p)) line false false))
-                (error file line (str "stray character '" c "'"))))))))))
+                (do (conj! out {:kind :punct :text (str c) :line line :file file :bol bol :space space :stray true})
+                    (recur (inc i) line false false))))))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Literal conversion

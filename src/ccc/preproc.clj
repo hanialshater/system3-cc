@@ -119,8 +119,12 @@
     (str sb)))
 
 (defn stringize [toks origin]
-  (let [s (tokens-spelling toks)]
-    (assoc origin :kind :str :text (quote-str s) :prefix "" :hideset #{})))
+  (let [s (tokens-spelling (map (fn [t] (if (#{:str :char} (:kind t))
+                                          (assoc t :text (-> (:text t) (str/replace "\\" "\\\\") (str/replace "\"" "\\\"")))
+                                          t))
+                                toks))
+        s (str "\"" s "\"")]
+    (assoc origin :kind :str :text s :prefix "" :hideset #{})))
 
 (defn paste [lhs rhs]
   (let [s (str (:text lhs) (:text rhs))
@@ -172,6 +176,11 @@
             (perr name-tok (str "macro '" (:name macro) "' passed " (count args) " arguments, but takes " np))))
         (zipmap params args)))))
 
+(defn raw-or-pm [toks origin]
+  (if (empty? toks)
+    [{:kind :placemarker :text "" :line (:line origin) :file (:file origin)}]
+    (assoc-in (vec toks) [0 :space] (:space origin))))
+
 (defn subst [macro argmap origin]
   (let [body (:body macro)
         n (count body)
@@ -180,7 +189,7 @@
         va-name (:va-name macro)]
     (loop [i 0 out []]
       (if (>= i n)
-        out
+        (filterv #(not= :placemarker (:kind %)) out)
         (let [tk (nth body i)
               nxt (when (< (inc i) n) (nth body (inc i)))]
           (cond
@@ -200,12 +209,12 @@
             (is? tk "##")
             (do
               (when (or (empty? out) (nil? nxt)) (perr tk "'##' cannot appear at either end of macro expansion"))
-              (if (arg? nxt)
-                (let [a (get argmap (:text nxt))]
-                  (if (empty? a)
-                    (recur (+ i 2) out)
-                    (recur (+ i 2) (into (conj (pop out) (paste (peek out) (first a))) (rest a)))))
-                (recur (+ i 2) (conj (pop out) (paste (peek out) nxt)))))
+              (let [rhs (if (arg? nxt) (raw-or-pm (get argmap (:text nxt)) nxt) [nxt])
+                    lhs (peek out)
+                    p (cond (= :placemarker (:kind lhs)) (first rhs)
+                            (= :placemarker (:kind (first rhs))) lhs
+                            :else (paste lhs (first rhs)))]
+                (recur (+ i 2) (into (conj (pop out) p) (rest rhs)))))
 
             ;; __VA_OPT__
             (and (is? tk "__VA_OPT__") (:variadic macro) nxt (is? nxt "("))
@@ -218,16 +227,9 @@
                 (recur j out)
                 (recur j (into out (subst (assoc macro :body inner) argmap origin)))))
 
-            ;; param followed by ##: raw
+            ;; param followed by ##: raw tokens (or a placemarker)
             (and (arg? tk) nxt (is? nxt "##"))
-            (let [a (get argmap (:text tk))]
-              (if (empty? a)
-                ;; empty lhs: result is rhs (raw if param)
-                (let [rhs (when (< (+ i 2) n) (nth body (+ i 2)))]
-                  (if (and rhs (arg? rhs))
-                    (recur (+ i 3) (into out (get argmap (:text rhs))))
-                    (if rhs (recur (+ i 3) (conj out rhs)) (recur (+ i 2) out))))
-                (recur (inc i) (into out (if (seq out) a (assoc-in a [0 :space] (:space tk)))))))
+            (recur (inc i) (into out (raw-or-pm (get argmap (:text tk)) tk)))
 
             (arg? tk)
             (let [e (expanded (:text tk))]
@@ -253,9 +255,10 @@
           (if (nil? (:params m))
             ;; object-like
             (let [hs2 (conj hs name)
+                  raw (if (some #(is? % "##") (:body m)) (subst m {} tk) (:body m))
                   body (mapv #(assoc % :hideset (into (or (:hideset %) #{}) hs2)
                                      :line (:line tk) :file (:file tk) :bol false)
-                             (:body m))
+                             raw)
                   body (if (seq body) (assoc body 0 (assoc (body 0) :space (:space tk))) body)]
               (push-front! dq body)
               true)
@@ -309,7 +312,10 @@
         peek* (fn [] (get toks @pos))
         adv (fn [] (let [t (get toks @pos)] (vswap! pos inc) t))
         isp (fn [s] (let [t (peek*)] (and t (is? t s))))
-        err (fn [msg] (perr origin (str "#if: " msg)))]
+        err (fn [msg] (perr origin (str "#if: " msg)))
+        noeval (volatile! 0)
+        div0 (fn [] (if (pos? @noeval) true (err "division by zero")))
+        skipping (fn [f] (vswap! noeval inc) (let [r (f)] (vswap! noeval dec) r))]
     (letfn [(primary []
               (let [t (adv)]
                 (cond
@@ -334,10 +340,10 @@
                     [a ua]))))
             (cmp [f] (fn [a b u] [(if (f (if u (Long/compareUnsigned a b) (compare a b))) 1 0) false]))
             (mul [] (binary unary {"*" (fn [a b u] [(unchecked-multiply a b) u])
-                                   "/" (fn [a b u] (when (zero? b) (err "division by zero"))
-                                         [(if u (Long/divideUnsigned a b) (quot a b)) u])
-                                   "%" (fn [a b u] (when (zero? b) (err "division by zero"))
-                                         [(if u (Long/remainderUnsigned a b) (rem a b)) u])}))
+                                   "/" (fn [a b u] (if (zero? b) (do (div0) [0 u])
+                                         [(if u (Long/divideUnsigned a b) (quot a b)) u]))
+                                   "%" (fn [a b u] (if (zero? b) (do (div0) [0 u])
+                                         [(if u (Long/remainderUnsigned a b) (rem a b)) u]))}))
             (add [] (binary mul {"+" (fn [a b u] [(unchecked-add a b) u])
                                  "-" (fn [a b u] [(unchecked-subtract a b) u])}))
             (shift [] (binary add {"<<" (fn [a b u] [(bit-shift-left a b) u])
@@ -347,21 +353,26 @@
             (band [] (binary eq {"&" (fn [a b u] [(bit-and a b) u])}))
             (bxor [] (binary band {"^" (fn [a b u] [(bit-xor a b) u])}))
             (bor [] (binary bxor {"|" (fn [a b u] [(bit-or a b) u])}))
-            (land [] (loop [[a _] (bor)]
-                       (if (isp "&&") (do (adv) (let [[b _] (bor)] (recur [(if (and (not (zero? a)) (not (zero? b))) 1 0) false])))
-                           [a false])))
-            (lor [] (loop [[a ua] (land)]
-                      (if (isp "||") (do (adv) (let [[b _] (land)] (recur [(if (or (not (zero? a)) (not (zero? b))) 1 0) false])))
-                          [a ua])))
+            (land [] (loop [[a ua] (bor) seen false]
+                       (if (isp "&&")
+                         (do (adv) (let [[b _] (if (zero? a) (skipping bor) (bor))]
+                                     (recur [(if (and (not (zero? a)) (not (zero? b))) 1 0) false] true)))
+                         [a (if seen false ua)])))
+            (lor [] (loop [[a ua] (land) seen false]
+                      (if (isp "||")
+                        (do (adv) (let [[b _] (if (zero? a) (land) (skipping land))]
+                                    (recur [(if (or (not (zero? a)) (not (zero? b))) 1 0) false] true)))
+                        [a (if seen false ua)])))
             (cond-expr []
               (let [c (lor)]
                 (if (isp "?")
                   (do (adv)
-                      (let [a (cond-expr)]
+                      (let [t? (not (zero? (first c)))
+                            a (if t? (cond-expr) (skipping cond-expr))]
                         (when-not (isp ":") (err "expected :"))
                         (adv)
-                        (let [b (cond-expr)]
-                          (if (zero? (first c)) b a))))
+                        (let [b (if t? (skipping cond-expr) (cond-expr))]
+                          (if t? a b))))
                   c)))]
       (when (empty? toks) (err "no expression"))
       (let [[v _] (cond-expr)]

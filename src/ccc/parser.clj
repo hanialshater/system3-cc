@@ -24,7 +24,11 @@
 (def ^:dynamic *switch* nil)       ; volatile {:cases [] :default nil :type T}
 (def ^:dynamic *labels* nil)       ; volatile map user-label -> asm label
 
-(defn tok [] (nth *toks* @*pos*))
+(defn tok [] (let [t (nth *toks* @*pos*)]
+              (when (:stray t)
+                (throw (ex-info (str (:file t) ":" (:line t) ": error: stray '" (:text t) "' in program")
+                                {:type :compile-error})))
+              t))
 (defn peek-tok [k]
   (let [i (+ @*pos* k) n (count *toks*)]
     (nth *toks* (if (< i n) i (dec n)))))
