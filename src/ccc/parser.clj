@@ -630,12 +630,27 @@
 
 (defn simple-lvalue? [n] (= :var (:op n)))
 
+(def side-effect-free-ops
+  #{:num :var :member :deref :addr :cast :neg :bitnot :not :logand :logor :cond :comma
+    :add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr :eq :ne :lt :le :gt :ge :label-addr})
+
+(defn side-effect-free?
+  "True when evaluating n twice is the same as evaluating it once."
+  [n]
+  (and (map? n)
+       (contains? side-effect-free-ops (:op n))
+       (not (:volatile (:type n)))
+       (not (#{:div :mod} (:op n)))
+       (every? (fn [k] (let [c (get n k)] (or (nil? c) (side-effect-free? c))))
+               [:lhs :rhs :expr :cond :then :els])))
+
 (defn with-lvalue-ref
   "Calls (f lv-node) where lv-node is an lvalue equivalent to lhs that can be
    evaluated multiple times without side effects. Returns expression."
   [lhs f]
   (cond
     (simple-lvalue? lhs) (f lhs)
+    (and (#{:deref :member} (:op lhs)) (side-effect-free? lhs)) (f lhs)
     (= :member (:op lhs))
     (let [obj (:expr lhs)]
       (if (simple-lvalue? obj)
