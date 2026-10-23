@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Compile and time the benchmark programs. Usage: bench.py [runs] [names...]"""
-import subprocess, sys, os, time
+import subprocess, sys, os, time, resource
 V = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V'
 CLJ = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run'
 B = V + '/.work/bench'
@@ -18,9 +18,10 @@ for n in names:
     exp = open(f'{V}/spec/bench/{n}.expected').read()
     ts = []; ok = True
     for i in range(runs):
-        t = time.time()
+        r0 = resource.getrusage(resource.RUSAGE_CHILDREN)
         r = subprocess.run([f'{B}/{n}'], capture_output=True, text=True)
-        ts.append(time.time() - t)
+        r1 = resource.getrusage(resource.RUSAGE_CHILDREN)
+        ts.append((r1.ru_utime - r0.ru_utime) + (r1.ru_stime - r0.ru_stime))
         ok = ok and r.stdout == exp and r.returncode == 0
     ts.sort()
     med = ts[len(ts) // 2]

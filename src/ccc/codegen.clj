@@ -260,7 +260,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem)
+(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -367,6 +367,139 @@
     (if (t/struct? (:type n)) (gen-expr n) (cerr "not an lvalue"))
     :cast (if (t/struct? (:type n)) (gen-addr (:expr n)) (cerr "not an lvalue"))
     (cerr (str "not an lvalue (" (:op n) ")"))))
+
+(defn render-mem
+  "Render a memory operand map {:disp :sym :base :index :scale}."
+  [{:keys [disp sym base index scale]}]
+  (let [d (str (or sym "") (cond (nil? sym) (if (and disp (not (zero? disp))) disp "")
+                                 (and disp (pos? disp)) (str "+" disp)
+                                 (and disp (neg? disp)) disp
+                                 :else ""))]
+    (cond
+      (= base "%rip") (str d "(%rip)")
+      index (str d "(" (or base "") "," index "," scale ")")
+      :else (str d "(" base ")"))))
+
+(def pure-ops #{:num :var :member :deref :addr :cast :neg :bitnot :not :logand :logor :cond :comma
+                :add :sub :mul :div :mod :bitand :bitor :bitxor :shl :shr :eq :ne :lt :le :gt :ge
+                :label-addr :bitop :bswap :fabs})
+
+(defn pure?
+  "True when evaluating n has no side effects."
+  [n]
+  (and (map? n)
+       (contains? pure-ops (:op n))
+       (not (:volatile (:type n)))
+       (every? (fn [k] (let [c (get n k)] (or (nil? c) (pure? c))))
+               [:lhs :rhs :expr :cond :then :els])))
+
+(defn index-into-rdi
+  "Evaluate a long index expression into %rdi without clobbering registers other than %rax."
+  [x]
+  (let [inner (when (and (= :cast (:op x)) (t/integer? (:type (:expr x)))) (:expr x))
+        ity (when inner (:type inner))]
+    (cond
+      (and inner (= 4 (t/type-size ity)) (int-operand inner 4))
+      (emitf (if (t/unsigned? ity) "  movl " "  movslq ") (int-operand inner 4) (if (t/unsigned? ity) ", %edi" ", %rdi"))
+      (int-operand x 8) (emitf "  movq " (int-operand x 8) ", %rdi")
+      :else (do (gen-expr x) (emit "  movq %rax, %rdi")))))
+
+(declare addr-operand)
+
+(defn cheap-index?
+  "Index expressions that index-into-rdi loads without touching %rax."
+  [x]
+  (let [inner (when (and (= :cast (:op x)) (t/integer? (:type (:expr x)))) (:expr x))]
+    (boolean (or (and inner (= 4 (t/type-size (:type inner))) (int-operand inner 4))
+                 (int-operand x 8)))))
+
+(defn simple-base?
+  "Pointer expressions whose base register is obtained without using %rdi."
+  [p]
+  (let [ty (:type p)]
+    (and (= :var (:op p))
+         (or (and (t/array? ty) (not= :vla (:kind ty)) (var-mem-op (:var p)))
+             (and (vreg (:var p)) (= 8 (t/type-size ty)))
+             (and (var-mem-op (:var p)) (t/ptr? ty))))))
+
+(defn pointer-base
+  "Get pointer-valued node p into a base register; returns {:base reg} or a
+   mem map for array-typed variables (whose address is known)."
+  [p]
+  (let [ty (:type p)]
+    (cond
+      (and (= :var (:op p)) (t/array? ty) (not= :vla (:kind ty)))
+      (let [v (:var p)]
+        (cond
+          (and (:local v) (var-mem-op v)) {:disp (var-offset v) :base "%rbp"}
+          (and (not (:local v)) (var-mem-op v)) (do (emitf "  leaq " (:label v) "(%rip), %rax") {:base "%rax"})
+          :else (do (gen-addr p) {:base "%rax"})))
+      (and (= :var (:op p)) (vreg (:var p)) (= 8 (t/type-size ty)))
+      {:base ((vreg (:var p)) 0)}
+      (and (= :var (:op p)) (var-mem-op (:var p)) (t/ptr? ty))
+      (do (emitf "  movq " (var-mem-op (:var p)) ", %rax") {:base "%rax"})
+      (and (#{:member :deref} (:op p)) (t/array? ty))
+      (let [m (addr-operand p)]
+        (if (or (:index m) (= "%rip" (:base m)))
+          (do (emitf "  leaq " (render-mem m) ", %rax") {:base "%rax"})
+          m))
+      :else (do (gen-expr p) {:base "%rax"}))))
+
+(defn addr-operand
+  "Emit code computing the address of lvalue n; returns a memory operand map.
+   Only %rax and %rdi are used (plus the stack for complex bases)."
+  [n]
+  (case (:op n)
+    :var (let [v (:var n)]
+           (if (var-mem-op v)
+             (if (:local v) {:disp (var-offset v) :base "%rbp"} {:sym (:label v) :base "%rip"})
+             (do (gen-addr n) {:base "%rax"})))
+    :member (let [m (addr-operand (:expr n))
+                  off (:offset (:member n))]
+              (if (and (= "%rip" (:base m)) (:index m))
+                (do (emitf "  leaq " (render-mem m) ", %rax") {:disp off :base "%rax"})
+                (update m :disp (fnil + 0) off)))
+    :deref (let [e (:expr n)]
+             (cond
+               ;; p + i*s
+               (and (#{:add :sub} (:op e)) (t/ptr? (:type e)))
+               (let [p (:lhs e) x (:rhs e)
+                     [idx scale] (cond
+                                   (and (= :mul (:op x)) (= :num (:op (:rhs x))) (#{1 2 4 8} (:val (:rhs x))))
+                                   [(:lhs x) (:val (:rhs x))]
+                                   :else [x 1])]
+                 (cond
+                   (and (= :num (:op x)) (imm32? (:val x)))
+                   (update (pointer-base p) :disp (fnil + 0) (if (= :sub (:op e)) (- (:val x)) (:val x)))
+                   (= :sub (:op e)) (do (gen-addr n) {:base "%rax"})
+                   (and (pure? p) (simple-base? p))
+                   (do (index-into-rdi idx)
+                       (assoc (pointer-base p) :index "%rdi" :scale scale))
+                   (pure? p)
+                   (let [b (pointer-base p)
+                         b (if (or (:index b) (= "%rip" (:base b)))
+                             (do (emitf "  leaq " (render-mem b) ", %rax") {:base "%rax"})
+                             b)]
+                     (if (or (cheap-index? idx) (not= "%rax" (:base b)))
+                       (index-into-rdi idx)
+                       (do (push!) (index-into-rdi idx) (pop! "%rax")))
+                     (assoc b :index "%rdi" :scale scale))
+                   :else
+                   (do (gen-expr p) (push!) (index-into-rdi idx) (pop! "%rax")
+                       {:base "%rax" :index "%rdi" :scale scale})))
+               (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
+               {:base ((vreg (:var e)) 0)}
+               (and (= :var (:op e)) (var-mem-op (:var e)) (t/ptr? (:type e)))
+               (do (emitf "  movq " (var-mem-op (:var e)) ", %rax") {:base "%rax"})
+               :else (do (gen-expr e) {:base "%rax"})))
+    (do (gen-addr n) {:base "%rax"})))
+
+(defn simple-lvalue-op?
+  "Lvalues whose loads/stores can use addr-operand."
+  [n]
+  (and (#{:member :deref :var} (:op n))
+       (t/scalar? (:type n))
+       (not (and (= :member (:op n)) (:bitfield (:member n))))))
 
 (defn simple-operand?
   "Node that can be evaluated into %rdi/%xmm1 without clobbering %rax."
@@ -604,6 +737,23 @@
       (do (gen-expr rhs) (reg-store (:var lhs)))
       (and (scalar-var? lhs) (var-mem-op (:var lhs)))
       (do (gen-expr rhs) (store-op (:type lhs) (var-mem-op (:var lhs))))
+      (and (simple-lvalue-op? lhs) (pure? lhs))
+      (let [ty (:type lhs)]
+        (gen-expr rhs)
+        (cond
+          (t/ldouble? ty) (store-op ty (render-mem (addr-operand lhs)))
+          (t/flonum? ty) (do (emit "  movaps %xmm0, %xmm2")
+                             (let [op (render-mem (addr-operand lhs))]
+                               (emit "  movaps %xmm2, %xmm0")
+                               (store-op ty op)))
+          :else (do (emit "  movq %rax, %rsi")
+                    (let [op (render-mem (addr-operand lhs))]
+                      (case (int (t/type-size ty))
+                        1 (emitf "  movb %sil, " op)
+                        2 (emitf "  movw %si, " op)
+                        4 (emitf "  movl %esi, " op)
+                        8 (emitf "  movq %rsi, " op))
+                      (emit "  movq %rsi, %rax")))))
       :else (gen-assign-mem n))))
 
 (defn gen-assign-mem [n]
@@ -931,9 +1081,16 @@
              (vreg v) (reg-load v)
              (and (t/scalar? ty) (var-mem-op v)) (load-op ty (var-mem-op v))
              :else (do (gen-addr n) (load ty))))
-    :member (do (gen-addr n) (load (if (:bitfield (:member n)) (bf-unit (:member n)) (:type n)))
-                (when (:bitfield (:member n)) (gen-bitfield-load (:member n))))
-    :deref (do (gen-expr (:expr n)) (load (:type n)))
+    :member (cond
+              (:bitfield (:member n))
+              (let [m (addr-operand n)]
+                (load-op (bf-unit (:member n)) (render-mem m))
+                (gen-bitfield-load (:member n)))
+              (t/scalar? (:type n)) (load-op (:type n) (render-mem (addr-operand n)))
+              :else (gen-addr n))
+    :deref (if (t/scalar? (:type n))
+             (load-op (:type n) (render-mem (addr-operand n)))
+             (do (gen-expr (:expr n)) (load (:type n))))
     :addr (gen-addr (:expr n))
     :assign (gen-assign n)
     :incdec (if (and (= :var (:op (:expr n))) (vreg (:var (:expr n))))
