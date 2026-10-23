@@ -1150,7 +1150,7 @@
         (struct-initializer1! init)
         (let [start @*pos*
               e (assign-expr)]
-          (if (t/struct? (:type e))
+          (if (and (t/struct? (:type e)) (= (:id (:type e)) (:id ty)))
             (swap! init assoc :expr e)
             (do (vreset! *pos* start)
                 (struct-initializer2! init 0 false)))))
@@ -1160,7 +1160,7 @@
         (union-initializer! init)
         (let [start @*pos*
               e (assign-expr)]
-          (if (t/struct? (:type e))
+          (if (and (t/struct? (:type e)) (= (:id (:type e)) (:id ty)))
             (swap! init assoc :expr e)
             (do (vreset! *pos* start)
                 (union-initializer! init)))))
