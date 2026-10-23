@@ -303,7 +303,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare rax-only? gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -648,6 +648,35 @@
       (do (gen-expr lhs) (gen-simple-to-rdi rhs))
       (do (gen-expr lhs) (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax")))))
 
+(def into-ok-ops
+  #{"movl" "movq" "movw" "movb" "movslq" "movzbl" "movzwl" "movsbl" "movswl" "movsbq" "movswq" "movzbq" "movzwq"
+    "movabsq" "leaq" "leal" "addl" "addq" "subl" "subq" "andl" "andq" "orl" "orq" "xorl" "xorq"
+    "imull" "imulq" "negl" "negq" "notl" "notq" "shll" "shlq" "shrl" "shrq" "sarl" "sarq"})
+
+(def reg-names
+  {"%r10" ["%r10" "%r10d" "%r10w" "%r10b"] "%r11" ["%r11" "%r11d" "%r11w" "%r11b"]})
+
+(defn into-lines
+  "Code computing rax-only expression n into register r (a key of reg-names)
+   instead of %rax, as a vector of lines; nil if not possible."
+  [n r]
+  (when (rax-only? n)
+    (let [sb (StringBuilder.)
+          _ (binding [*asm* sb] (gen-expr n))
+          lines (str/split-lines (str sb))
+          ok (every? (fn [^String l]
+                       (let [t (str/trim l)
+                             op (first (str/split t #" " 2))]
+                         (and (contains? into-ok-ops op)
+                              (not (re-find #"%ah|%r1[01]" t))
+                              (or (not (#{"imull" "imulq"} op)) (str/includes? t ",")))))
+                     lines)]
+      (when ok
+        (let [[q d wd b] (reg-names r)]
+          (mapv (fn [l] (str/replace l #"%(rax|eax|ax|al)\b"
+                                     (fn [[_ x]] (case x "rax" q "eax" d "ax" wd "al" b))))
+                lines))))))
+
 (defn gen-int-operands
   "lhs -> %rax; returns an operand string for rhs (immediate, register or memory)."
   [lhs rhs w]
@@ -658,7 +687,14 @@
     (if (and (rdi-addr? rhs) (= w (t/type-size (:type rhs))) (or (t/integer? (:type rhs)) (t/ptr? (:type rhs))))
       ;; memory operand whose address needs only %rdi
       (do (gen-expr lhs) (render-mem (addr-operand rhs)))
-    (if (int-operand lhs w)
+    (if-let [[sr lines] (when (and *scratch-free* (seq @*scratch-free*) (rax-only? rhs))
+                          (let [sr (first @*scratch-free*)]
+                            (when-let [ls (into-lines rhs sr)] [sr ls])))]
+      ;; lhs into %rax, then the rax-only rhs straight into a scratch register
+      (do (gen-expr lhs)
+          (doseq [l lines] (emit l))
+          (let [[q d] (reg-names sr)] (if (= w 8) q d)))
+    (if (or (int-operand lhs w) (rax-only? lhs))
       ;; lhs has no side effects: compute rhs first, then load lhs
       (do (gen-expr rhs)
           (emit "  movq %rax, %rdi")
@@ -694,7 +730,7 @@
             (emit "  movq %rax, %rdi")
             (emitf "  movq " h ", %rax")
             (release)
-            (if (= w 8) "%rdi" "%edi")))))))))
+            (if (= w 8) "%rdi" "%edi"))))))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -717,10 +753,17 @@
       (if (and (= ro "$0") (reg? lo))
         (emitf "  test" (if (= w 8) "q " "l ") lo ", " lo)
         (emitf "  cmp" (if (= w 8) "q " "l ") ro ", " lo))
+      (cond
+        ;; memory load compared with a register or immediate
+        (and (or (reg? ro) (imm? ro)) (rdi-addr? lhs) (= w (t/type-size (:type lhs))))
+        (emitf "  cmp" (if (= w 8) "q " "l ") ro ", " (render-mem (addr-operand lhs)))
+        (and (reg? lo) (rdi-addr? rhs) (= w (t/type-size (:type rhs))))
+        (emitf "  cmp" (if (= w 8) "q " "l ") (render-mem (addr-operand rhs)) ", " lo)
+        :else
       (let [o (gen-int-operands lhs rhs w)]
         (if (and (= o "$0") (#{:eq :ne} op))
           (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))
-          (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax")))))
+          (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax"))))))
     ((if u cc-unsigned cc-signed) op)))
 
 (defn gen-binary-int [n oty]
@@ -752,6 +795,31 @@
           (emitf "  " ins sfx " $" (bit-and (parse-long (subs o 1)) 255) ", " ax)
           (do (emitf "  movl " o ", %ecx") (emitf "  " ins sfx " %cl, " ax))))
       (:div :mod)
+      (if-let [k (when (= :num (:op rhs))
+                   (let [v (:val rhs)
+                         v (if (= w 4) (if u (bit-and v 0xffffffff) (long (unchecked-int v))) v)]
+                     (when (and (> v 1) (zero? (bit-and v (dec v))) (< v 0x40000000))
+                       (Long/numberOfTrailingZeros v))))]
+        ;; division by a power of two
+        (let [dx (if (= w 8) "%rdx" "%edx") cx (if (= w 8) "%rcx" "%ecx")
+              bits (* 8 w)]
+          (gen-expr lhs)
+          (cond
+            (and u (= op :div)) (emitf "  shr" sfx " $" k ", " ax)
+            u (emitf "  and" sfx " $" (dec (bit-shift-left 1 k)) ", " ax)
+            (= op :div)
+            (do (emitf "  mov" sfx " " ax ", " dx)
+                (emitf "  sar" sfx " $" (dec bits) ", " dx)
+                (emitf "  shr" sfx " $" (- bits k) ", " dx)
+                (emitf "  add" sfx " " dx ", " ax)
+                (emitf "  sar" sfx " $" k ", " ax))
+            :else
+            (do (emitf "  mov" sfx " " ax ", " dx)
+                (emitf "  sar" sfx " $" (dec bits) ", " dx)
+                (emitf "  shr" sfx " $" (- bits k) ", " dx)
+                (emitf "  lea" sfx " (%rax,%rdx), " cx)
+                (emitf "  and" sfx " $" (- (bit-shift-left 1 k)) ", " cx)
+                (emitf "  sub" sfx " " cx ", " ax))))
       (let [o (gen-int-operands lhs rhs w)
             o (if (str/starts-with? o "$")
                 (do (emitf "  mov" sfx " " o ", " (if (= w 8) "%rcx" "%ecx")) (if (= w 8) "%rcx" "%ecx"))
@@ -759,7 +827,7 @@
         (if u
           (do (emit "  xorl %edx, %edx") (emitf "  div" sfx " " o))
           (do (emit (if (= w 8) "  cqto" "  cltd")) (emitf "  idiv" sfx " " o)))
-        (when (= op :mod) (emitf "  mov" sfx " " (if (= w 8) "%rdx" "%edx") ", " ax)))
+        (when (= op :mod) (emitf "  mov" sfx " " (if (= w 8) "%rdx" "%edx") ", " ax))))
       :mul (let [ro (int-operand rhs w) lo (int-operand lhs w)]
              (if (and ro (str/starts-with? ro "$") lo (not (str/starts-with? lo "$")))
                (emitf "  imul" sfx " " ro ", " lo ", " ax)
@@ -810,13 +878,29 @@
         (emitf "  j" (if jump-if cc (cc-negate cc)) " " label))
       (if (and (= :num (:op n)) (not (:fval n)))
         (when (= jump-if (not (zero? (:val n)))) (emitf "  jmp " label))
-        (let [ty (:type n)]
+        (let [ty (:type n)
+              intlike? #(or (t/integer? %) (t/ptr? %))
+              core (loop [x n]
+                     (if (and (= :cast (:op x)) (intlike? (:type x)) (intlike? (:type (:expr x)))
+                              (>= (t/type-size (:type x)) (t/type-size (:type (:expr x)))))
+                       (recur (:expr x))
+                       x))
+              cty (:type core)
+              csz (t/type-size cty)
+              sfx (case (int csz) 1 "b" 2 "w" 4 "l" 8 "q" nil)]
+          (cond
+            (and sfx (intlike? cty) (not= :bool (:kind cty)) (rdi-addr? core))
+            (emitf "  cmp" sfx " $0, " (render-mem (addr-operand core)))
+            (and sfx (intlike? cty) (= :var (:op core)) (vreg (:var core)))
+            (let [r (vreg (:var core))] (if (= 8 csz) (emitf "  testq " (r 0) ", " (r 0)) (emitf "  testl " (r 1) ", " (r 1))))
+            :else
+            (do
           (gen-expr n)
           (if (and (t/integer? ty) (<= (t/type-size ty) 4))
             (emit "  testl %eax, %eax")
             (if (or (t/integer? ty) (t/ptr-like? ty))
               (emit "  testq %rax, %rax")
-              (cmp-zero ty)))
+              (cmp-zero ty)))))
           (emitf (if jump-if "  jne " "  je ") label))))))
 
 (defn gen-binary-ld [n]
@@ -1374,6 +1458,36 @@
         (when (pure? (:rhs rhs))
           [ins :computed])))))
 
+(defn ext-load
+  "Instruction loading a value of integer type from from memory and
+   converting it to type to, as [mnemonic dst-width]; nil if not simple."
+  [from to]
+  (let [fs (t/type-size from) ts (t/type-size to)
+        fu (or (t/unsigned? from) (t/ptr? from)) tu (or (t/unsigned? to) (t/ptr? to))]
+    (when (and (or (t/integer? from) (t/ptr? from)) (or (t/integer? to) (t/ptr? to))
+               (not= :bool (:kind to)) (not= :bool (:kind from))
+               (#{1 2 4 8} fs) (#{1 2 4 8} ts)
+               (not (and (< fs ts) (< ts 4) (not= fu tu))))
+      (let [[sz u] (if (<= ts fs) [ts tu] [fs fu])]
+        (case (int sz)
+          1 (if u ["movzbl" 4] (if (= ts 8) ["movsbq" 8] ["movsbl" 4]))
+          2 (if u ["movzwl" 4] (if (= ts 8) ["movswq" 8] ["movswl" 4]))
+          4 (if (or u (< ts 8)) ["movl" 4] ["movslq" 8])
+          8 ["movq" 8])))))
+
+(defn load-to-reg!
+  "If rhs is a memory load (possibly converted) addressable with %rdi only,
+   load it straight into register variable v and return true."
+  [v rhs]
+  (let [inner (if (and (= :cast (:op rhs)) (or (t/integer? (:type rhs)) (t/ptr? (:type rhs)))) (:expr rhs) rhs)
+        lty (:type v)]
+    (when (and (rdi-addr? inner) (= (t/type-size (:type rhs)) (t/type-size lty))
+               (= (boolean (t/unsigned? (:type rhs))) (boolean (t/unsigned? lty))))
+      (when-let [[ins w] (ext-load (:type inner) lty)]
+        (let [m (addr-operand inner) r (vreg v)]
+          (emitf "  " ins " " (render-mem m) ", " (if (= w 8) (r 0) (r 1)))
+          true)))))
+
 (defn gen-assign-nv
   "Assignment whose value is not used."
   [n]
@@ -1421,6 +1535,8 @@
       (let [[ins o] upd
             o (if (= o :computed) (do (gen-expr (:rhs rhs)) (if (= sz 8) "%rax" "%eax")) o)]
         (emitf "  " ins (sfx-of sz) " " o ", " (var-mem-op (:var lhs))))
+      (and int? (= :var (:op lhs)) (vreg (:var lhs)) (load-to-reg! (:var lhs) rhs))
+      nil
       (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz) (int-operand rhs sz))
       (let [r (vreg (:var lhs)) o (int-operand rhs sz) rr (if (= sz 8) (r 0) (r 1))]
         (if (= o "$0")

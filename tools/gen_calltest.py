@@ -45,8 +45,8 @@ def main():
             cmp = random.choice(['<', '>', '==', '!=', '<=', '>='])
             return (f'({expr(params, depth - 1, allow_calls)} {cmp} {expr(params, depth - 1, allow_calls)} ? '
                     f'{expr(params, depth - 1, allow_calls)} : {expr(params, depth - 1, allow_calls)})')
-        if k < 0.78 and params:
-            # modify a parameter inside the expression
+        if k < 0.78 and params and depth == 99:
+            # modify a parameter (top level only: avoids unsequenced accesses)
             p, t = random.choice(params)
             if t == 'ro' or t.startswith('struct') or t.endswith('*'):
                 return expr(params, depth - 1, allow_calls)
@@ -91,6 +91,9 @@ def main():
         name = f'f{i}'
         budget[0] = 1
         body = expr(uses, random.randrange(1, 4))
+        mods = [p for p, t in uses if t not in ('ro',) and not t.startswith('struct') and not t.endswith('*')]
+        if mods and random.random() < 0.3:
+            body = f'({random.choice(mods)} += {random.randrange(1, 9)}, {body})'
         cost[name] = budget[0]
         st = 'static ' if random.random() < 0.7 else ''
         decl = ', '.join(f'{t} {p}' for p, t in params)
