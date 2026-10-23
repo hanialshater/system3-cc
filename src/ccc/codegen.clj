@@ -2014,7 +2014,7 @@
   "Scalar replacement of small local structs that are only accessed through
    scalar members and whole-struct copies from lvalues."
   [f]
-  (let [cands (sra-candidates f)]
+  (let [cands (if (System/getenv "CCC_NOSRA") {} (sra-candidates f))]
     (if (empty? cands)
       f
       (let [bad (volatile! #{})
@@ -2382,6 +2382,117 @@
             :else (do (.add out l) (recur (inc i)))))))
     (str (str/join "\n" out) "\n")))
 
+(defn node-count [x]
+  (cond (map? x) (if (:op x)
+                   (reduce + 1 (map (fn [[k v]] (if (#{:type :var :member :fn-type} k) 0 (node-count v))) x))
+                   0)
+        (vector? x) (reduce + 0 (map node-count x))
+        :else 0))
+
+(def no-inline-ops #{:stmt-expr :label-addr :alloca :va-arg :va-start :va-copy :vla-alloc :goto-ptr
+                     :save-sp :restore-sp :memzero :asm})
+
+(defn inline-candidate
+  "For a function whose body is a single return statement over scalar params,
+   returns {:params :expr :ret}; nil otherwise."
+  [f]
+  (let [ty (:type f) body (:body f) params (:params f)
+        pids (set (map :id params))
+        items (when (= :block (:op body)) (:body body))
+        st (when (= 1 (count items)) (first items))
+        e (when (and (= :return (:op st)) (:expr st)) (:expr st))
+        ret (:ret ty)
+        bad? (fn bad? [x]
+               (cond (map? x) (or (contains? no-inline-ops (:op x))
+                                  (and (= :addr (:op x)) (= :var (:op (:expr x))) (contains? pids (:id (:var (:expr x)))))
+                                  (some (fn [[k v]] (and (not (#{:type :var :member :fn-type} k)) (bad? v))) x))
+                     (vector? x) (some bad? x)
+                     :else false))]
+    (when (and e (:proto ty) (not (:variadic ty)) (not (:va-area f)) (not (:knr-real ty))
+               (or (t/integer? ret) (t/ptr? ret))
+               (every? #(contains? pids (:id %)) (:locals f))
+               (every? (fn [p] (and (or (t/integer? (:type p)) (t/ptr? (:type p)))
+                                    (not (:volatile (:type p))))) params)
+               (= (count params) (count (:params ty)))
+               (<= (node-count e) 40)
+               (not (bad? e)))
+      {:params params :expr e :ret ret})))
+
+(def ^:dynamic *inline-depth* 3)
+
+(defn count-calls [x]
+  (cond (map? x) (+ (if (= :call (:op x)) 1 0)
+                    (reduce + 0 (map (fn [[k v]] (if (#{:type :var :member :fn-type} k) 0 (count-calls v))) x)))
+        (vector? x) (reduce + 0 (map count-calls x))
+        :else 0))
+
+(defn inline-calls
+  "Replace calls to small single-expression functions by their bodies (one level)."
+  [f cands]
+  (if (empty? cands)
+    f
+    (let [temps (volatile! []) counter (volatile! 0)]
+      (letfn [(subst [x m]
+                (cond (map? x) (cond
+                                 (and (= :var (:op x)) (contains? m (:id (:var x))))
+                                 (assoc x :var (m (:id (:var x))))
+                                 (:op x)
+                                 (persistent! (reduce-kv (fn [acc k v] (if (#{:type :var :member :fn-type} k) acc (assoc! acc k (subst v m))))
+                                                         (transient x) x))
+                                 :else x)
+                      (vector? x) (mapv #(subst % m) x)
+                      :else x))
+              (inl-call? [x]
+                (cond (map? x) (or (= :stmt-expr (:op x))
+                                   (and (= :call (:op x)) (= :var (:op (:fn x))) (contains? cands (:label (:var (:fn x)))))
+                                   (some (fn [[k v]] (and (not (#{:type :var :member :fn-type} k)) (inl-call? v))) x))
+                      (vector? x) (some inl-call? x)
+                      :else false))
+              (rw [x path depth]
+                (cond
+                  (map? x)
+                  (let [path (if (:scope-id x) (conj path (:scope-id x)) path)
+                        ntemps (count @temps)
+                        nested? (inl-call? (:args x))
+                        x (if (:op x)
+                            (persistent! (reduce-kv (fn [acc k v] (if (#{:type :var :member :fn-type} k) acc (assoc! acc k (rw v path depth))))
+                                                    (transient x) x))
+                            x)
+                        fnode (:fn x)]
+                    (if-let [c (and (= :call (:op x)) (= :var (:op fnode)) (not (:local (:var fnode)))
+                                    (t/func? (:type fnode))
+                                    (:proto (:fn-type x))
+                                    (get cands (:label (:var fnode))))]
+                      (if (not= (count (:args x)) (count (:params c)))
+                        x
+                        (let [ps (:params c)
+                              uid (vswap! counter inc)
+                              blk (when path (if (or nested? (> (count @temps) ntemps)) path (conj path [:inl uid])))
+                              tvs (mapv (fn [p]
+                                          (cond-> {:name (str "inl." (:name p)) :type (t/strip (:type p))
+                                                   :id [:inl (:name f) (vswap! counter inc)] :local true}
+                                            (seq blk) (assoc :block blk)))
+                                        ps)
+                              _ (vswap! temps into tvs)
+                              m (zipmap (map :id ps) tvs)
+                              body (subst (:expr c) m)
+                              body (if (and (< depth *inline-depth*) (<= (count-calls (:expr c)) 2))
+                                     (rw body (conj path [:inl uid]) (inc depth))
+                                     body)
+                              body (if (= (:kind (:type body)) (:kind (:ret c))) body {:op :cast :type (:ret c) :expr body})
+                              assigns (map (fn [tv a] {:op :assign :type (:type tv) :lhs {:op :var :var tv :type (:type tv)} :rhs a})
+                                           tvs (:args x))]
+                          (reduce (fn [acc a] {:op :comma :type (:type acc) :lhs a :rhs acc})
+                                  body (reverse assigns))))
+                      x))
+                  (vector? x) (mapv #(rw % path depth) x)
+                  :else x))]
+        (let [root (or (some (fn [v] (first (:block v))) (:locals f)) :root)
+              body (rw (:body f) [root] 1)]
+          (if (seq @temps)
+            (assoc f :body body :locals (into (vec (:locals f)) @temps))
+            f))))))
+
 (defn generate [{:keys [globals functions]}]
   (let [sb (StringBuilder.)
         defined (into #{} (concat (map :label (filter #(or (:defined %) (:init %)) globals))
@@ -2393,8 +2504,11 @@
       (doseq [g globals]
         (when (and (not (:func g)) (or (:defined g) (:init g)))
           (emit-data g)))
-      (doseq [f functions]
-        (gen-function f))
+      (let [cands (if (System/getenv "CCC_NOINLINE")
+                    {}
+                    (into {} (keep (fn [f] (when-let [c (inline-candidate f)] [(:name f) c])) functions)))]
+        (doseq [f functions]
+          (gen-function (inline-calls f cands))))
       (when (seq @*ldconsts*)
         (emit "  .section .rodata")
         (doseq [[l m e] @*ldconsts*]
