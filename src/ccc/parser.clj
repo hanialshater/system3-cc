@@ -1140,6 +1140,10 @@
       (and (= :array (:kind ty)) (= :str (:kind (tok))) (t/integer? (:base ty)))
       (string-initializer! init)
 
+      ;; gcc extension: parenthesized string literal
+      (and (= :array (:kind ty)) (is? "(") (= :str (:kind (peek-tok 1))) (t/integer? (:base ty)))
+      (do (advance!) (string-initializer! init) (expect! ")"))
+
       (= :array (:kind ty))
       (if (is? "{")
         (array-initializer1! init)
