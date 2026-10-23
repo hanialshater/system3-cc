@@ -81,7 +81,8 @@ def main():
     out.append('struct S { char c; int i; long l; unsigned short us; } gs = {1, 2, 3, 4};')
     body.append('  struct S ls = {5, 6, 7, 8};')
     body.append('  struct S *ps = &ls;')
-    for nm, init in (('gs', [1, 2, 3, 4]), ('ls', [5, 6, 7, 8])):
+    body.append('  struct S lt = gs;')
+    for nm, init in (('gs', [1, 2, 3, 4]), ('ls', [5, 6, 7, 8]), ('lt', [1, 2, 3, 4])):
         for (f, t), v in zip((('c', 'signed char'), ('i', 'int'), ('l', 'long'), ('us', 'unsigned short')), init):
             state[(nm, f)] = v
             locs.append(Loc(f'{nm}.{f}', (nm, f), t))
@@ -157,7 +158,7 @@ def main():
             state[k] = wrap(tv, l.ty)
         elif kind < 0.905:
             # whole-struct copies
-            dst, src = random.choice([('ls', 'gs'), ('gs', 'ls'), ('gs', '*ps')])
+            dst, src = random.choice([('ls', 'gs'), ('gs', 'ls'), ('gs', '*ps'), ('lt', 'gs'), ('lt', '*ps'), ('lt', 'ls')])
             body.append(f'  {dst} = {src};')
             sname = 'ls' if src == '*ps' else src
             for f in ('c', 'i', 'l', 'us'):

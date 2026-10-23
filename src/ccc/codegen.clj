@@ -303,7 +303,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare gen-sra-copy gen-expr gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -508,8 +508,14 @@
          (let [e (:expr n)]
            (or (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
                (and (= :add (:op e)) (t/ptr? (:type e)) (rdi-base? (:lhs e))
-                    (let [[idx _] (split-scaled (:rhs e))]
-                      (or (= :num (:op (:rhs e))) (cheap-index? idx)))))))))
+                    (let [[idx scale] (split-scaled (:rhs e))
+                          inner (when (and (= :cast (:op idx)) (t/integer? (:type (:expr idx)))
+                                           (not (t/unsigned? (:type (:expr idx)))))
+                                  (:expr idx))]
+                      (or (= :num (:op (:rhs e))) (cheap-index? idx)
+                          (and inner (#{:add :sub} (:op inner)) (= :num (:op (:rhs inner)))
+                               (imm32? (* scale (:val (:rhs inner))))
+                               (cheap-index? (assoc idx :expr (:lhs inner))))))))))))
 
 (defn simple-base?
   "Pointer expressions whose base register is obtained without using %rdi."
@@ -1015,16 +1021,17 @@
   "Expressions whose code uses no register but %rax."
   [n]
   (let [ty (:type n)]
-    (and (t/integer? ty)
+    (and (or (t/integer? ty) (t/ptr? ty) (and (t/array? ty) (not= :vla (:kind ty)) (= :var (:op n))))
          (case (:op n)
            :num (not (:fval n))
-           :var (boolean (or (vreg (:var n)) (var-mem-op (:var n))))
+           :var (boolean (or (vreg (:var n)) (var-mem-op (:var n)) (t/array? ty)))
            :member (and (not (:bitfield (:member n))) (fixed-addr? n))
-           :cast (and (t/integer? (:type (:expr n))) (rax-only? (:expr n)))
+           :addr (and (= :var (:op (:expr n))) (not (vreg (:var (:expr n)))))
+           :cast (and (or (t/integer? (:type (:expr n))) (t/ptr? (:type (:expr n))) (t/array? (:type (:expr n)))) (rax-only? (:expr n)))
            (:add :sub :bitand :bitor :bitxor :mul)
            (let [w (if (= 8 (t/type-size ty)) 8 4)]
-             (and (rax-only? (:lhs n)) (boolean (int-operand (:rhs n) w))))
-           (:neg :bitnot) (rax-only? (:expr n))
+             (and (t/integer? ty) (rax-only? (:lhs n)) (boolean (int-operand (:rhs n) w))))
+           (:neg :bitnot) (and (t/integer? ty) (rax-only? (:expr n)))
            false))))
 
 (defn push-struct! [ty]
@@ -1124,8 +1131,33 @@
                      (emitf "  movq %rax, " (nth argreg64 (:reg a)))
                      (when-not (zero? (:reg a)) (emitf "  movaps %xmm0, %xmm" (:reg a)))))
           ;; reg +/- imm and operand * imm computed directly into the argument register
+          addr-into (fn [v dst]
+                      (cond
+                        (vreg v) false
+                        (:local v) (do (local-addr v dst) true)
+                        (contains? *defined* (:label v)) (do (emitf "  leaq " (:label v) "(%rip), " dst) true)
+                        :else (do (emitf "  movq " (:label v) "@GOTPCREL(%rip), " dst) true)))
           direct-into (fn [a]
-                        (let [nd (:node a) ty (:type nd) w (t/type-size ty) i (:reg a)]
+                        (let [nd (:node a) ty (:type nd) w (t/type-size ty) i (:reg a)
+                              inner (when (= :cast (:op nd)) (:expr nd))]
+                          (cond
+                            (not= :gp (:mode a)) nil
+                            (and (= :var (:op nd)) (t/array? ty) (not= :vla (:kind ty)))
+                            (addr-into (:var nd) (nth argreg64 i))
+                            (and (= :addr (:op nd)) (= :var (:op (:expr nd))))
+                            (addr-into (:var (:expr nd)) (nth argreg64 i))
+                            (and inner (= :var (:op inner)) (t/array? (:type inner)) (not= :vla (:kind (:type inner))) (t/ptr? ty))
+                            (addr-into (:var inner) (nth argreg64 i))
+                            (and inner (= 8 w) (t/integer? ty) (t/integer? (:type inner)) (#{1 2} (t/type-size (:type inner)))
+                                 (= :var (:op inner)) (vreg (:var inner)))
+                            (do (emitf "  movslq " ((vreg (:var inner)) 1) ", " (nth argreg64 i)) true)
+                            (and inner (= 8 w) (t/integer? ty) (t/integer? (:type inner)) (= 4 (t/type-size (:type inner)))
+                                 (int-operand inner 4))
+                            (do (if (t/unsigned? (:type inner))
+                                  (emitf "  movl " (int-operand inner 4) ", " (nth argreg32 i))
+                                  (emitf "  movslq " (int-operand inner 4) ", " (nth argreg64 i)))
+                                true)
+                            :else
                           (when (and (= :gp (:mode a)) (t/integer? ty) (#{4 8} w))
                             (let [dst (if (= w 8) (nth argreg64 i) (nth argreg32 i))
                                   sfx (if (= w 8) "q" "l")]
@@ -1144,7 +1176,7 @@
                                   (when (and lo ro (str/starts-with? ro "$") (not (str/starts-with? lo "$")))
                                     (emitf "  imul" sfx " " ro ", " lo ", " dst)
                                     true))
-                                nil)))))]
+                                nil))))))]
       (if (and fast (every? #(and (= :gp (:mode %)) (rax-only? (:node %))) complex))
         ;; every complex arg is computed in %rax alone: right to left, straight to registers
         (do (doseq [a (reverse complex)]
@@ -1362,9 +1394,9 @@
            (= sz (t/type-size (:type rhs))) (pure? (:rhs rhs)))
       (let [ins (case (:op rhs) :add "add" :sub "sub" :bitand "and" :bitor "or" :bitxor "xor")
             ro (int-operand (:rhs rhs) sz)
-            src (if (and ro (not (str/includes? ro "(")))
-                  ro
-                  (do (gen-expr (:rhs rhs)) (emit "  movq %rax, %rsi") (if (= sz 8) "%rsi" "%esi")))]
+            src (cond (and ro (not (str/includes? ro "("))) ro
+                      (rdi-addr? lhs) (do (gen-expr (:rhs rhs)) (if (= sz 8) "%rax" "%eax"))
+                      :else (do (gen-expr (:rhs rhs)) (emit "  movq %rax, %rsi") (if (= sz 8) "%rsi" "%esi")))]
         (emitf "  " ins (sfx-of sz) " " src ", " (render-mem (addr-operand lhs))))
       ;; impure address, rax-only value: address first, then the value
       (and int? (not= :var (:op lhs)) (simple-lvalue-op? lhs) (not (pure? lhs)) (rax-only? rhs))
@@ -1435,10 +1467,12 @@
     :assign (gen-assign-nv n)
     :incdec (gen-incdec-nv n)
     :comma (do (gen-discard (:lhs n)) (gen-discard (:rhs n)))
+    :sra-copy (gen-sra-copy n)
     (gen-expr-pop n)))
 
 (defn gen-expr [n]
   (case (:op n)
+    :sra-copy (gen-sra-copy n)
     :num
     (let [ty (:type n)]
       (cond
@@ -1513,9 +1547,15 @@
                 o (when (and (t/integer? from) (= 4 (t/type-size from)) (or (t/integer? to) (t/ptr? to))
                              (= 8 (t/type-size to)))
                     (int-operand (:expr n) 4))]
-            (if (and o (not (str/starts-with? o "$")))
+            (cond
+              (and o (not (str/starts-with? o "$")))
               (emitf (if (t/unsigned? from) "  movl " "  movslq ") o (if (t/unsigned? from) ", %eax" ", %rax"))
-              (do (gen-expr (:expr n)) (gen-cast from to))))
+              ;; char/short register variables are kept extended to 32 bits
+              (and (t/integer? from) (#{1 2} (t/type-size from)) (= :var (:op (:expr n))) (vreg (:var (:expr n)))
+                   (or (t/integer? to) (t/ptr? to)) (#{4 8} (t/type-size to)) (not= :bool (:kind to)))
+              (let [r ((vreg (:var (:expr n))) 1)]
+                (if (= 8 (t/type-size to)) (emitf "  movslq " r ", %rax") (emitf "  movl " r ", %eax")))
+              :else (do (gen-expr (:expr n)) (gen-cast from to))))
     :memzero (let [v (:var n)]
                (if-let [r (vreg v)]
                  (emitf "  xorl " (r 1) ", " (r 1))
@@ -1764,7 +1804,7 @@
                         (emitf "  cmpq $" (dec span) ", %rax"))
                     (do (when-not (zero? lo) (emitf "  subl $" lo ", %eax"))
                         (emitf "  cmpl $" (dec span) ", %eax")
-                        (emit "  movl %eax, %eax")))
+                        (when (zero? lo) (emit "  movl %eax, %eax"))))
                   (emitf "  ja " deflt)
                   (emitf "  leaq " tab "(%rip), %rdx")
                   (emit "  movslq (%rdx,%rax,4), %rax")
@@ -1950,8 +1990,143 @@
             (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
             (recur (rest cs) assigned out)))))))
 
+(def sra-skip-keys #{:type :member :cases :fn-type})
+
+(defn sra-candidates [f]
+  (let [params (set (map :id (:params f)))]
+    (into {}
+          (for [v (:locals f)
+                :let [ty (:type v) ms (:members (t/struct-info ty))]
+                :when (and (= :struct (:kind ty)) (not (contains? params (:id v)))
+                           (not (:align v)) (not (:volatile ty)) (not (:vla-ptr v))
+                           (seq ms) (<= (count ms) 8) (<= (t/type-size ty) 64)
+                           (every? (fn [m] (and (not (:bitfield m))
+                                                (or (t/integer? (:type m)) (t/ptr? (:type m)))
+                                                (not (:volatile (:type m)))
+                                                (#{1 2 4 8} (t/type-size (:type m)))))
+                                   ms)
+                           ;; members must not overlap
+                           (let [spans (sort (map (fn [m] [(:offset m) (+ (:offset m) (t/type-size (:type m)))]) ms))]
+                             (every? (fn [[[_ e] [b _]]] (<= e b)) (partition 2 1 spans))))]
+            [(:id v) v]))))
+
+(defn sra-function
+  "Scalar replacement of small local structs that are only accessed through
+   scalar members and whole-struct copies from lvalues."
+  [f]
+  (let [cands (sra-candidates f)]
+    (if (empty? cands)
+      f
+      (let [bad (volatile! #{})
+            cand-var? (fn [x] (and (map? x) (= :var (:op x)) (contains? cands (:id (:var x)))))
+            mentions? (fn mentions? [x id]
+                        (cond (and (map? x) (:local x) (= id (:id x))) true
+                              (map? x) (some (fn [[k v]] (and (not (sra-skip-keys k)) (mentions? v id))) x)
+                              (vector? x) (some #(mentions? % id) x)
+                              :else false))]
+        (letfn [(chk [x ctx]
+                  (cond
+                    (map? x)
+                    (let [op (:op x)]
+                      (cond
+                        (nil? op) (if (contains? cands (:id x))
+                                    (vswap! bad conj (:id x))
+                                    (doseq [[k v] x] (when-not (sra-skip-keys k) (chk v :value))))
+                        (= :var op) (when (contains? cands (:id (:var x))) (vswap! bad conj (:id (:var x))))
+                        (and (= :member op) (cand-var? (:expr x)) (t/scalar? (:type x))) nil
+                        (and (= :addr op) (= :member (:op (:expr x))) (cand-var? (:expr (:expr x))))
+                        (vswap! bad conj (:id (:var (:expr (:expr x)))))
+                        (= :assign op)
+                        (if (cand-var? (:lhs x))
+                          (if (and (= ctx :discard) (#{:deref :member :var} (:op (:rhs x)))
+                                   (t/struct? (:type (:rhs x)))
+                                   (= (:id (:type (:rhs x))) (:id (:type (:lhs x))))
+                                   (not (mentions? (:rhs x) (:id (:var (:lhs x))))))
+                            (chk (:rhs x) :value)
+                            (do (vswap! bad conj (:id (:var (:lhs x)))) (chk (:rhs x) :value)))
+                          (do (chk (:lhs x) :value) (chk (:rhs x) :value)))
+                        (= :expr-stmt op) (chk (:expr x) :discard)
+                        (= :comma op) (do (chk (:lhs x) :discard) (chk (:rhs x) ctx))
+                        :else
+                        (doseq [[k v] x]
+                          (when-not (sra-skip-keys k)
+                            (chk v (if (and (= op :for) (= k :inc)) :discard :value))))))
+                    (vector? x) (doseq [y x] (chk y ctx))
+                    :else nil))]
+          (chk (:body f) :value))
+        (let [good (apply dissoc cands @bad)]
+          (if (empty? good)
+            f
+            (let [newvars (into {}
+                                (for [[id v] good]
+                                  [id (into {}
+                                            (for [m (:members (t/struct-info (:type v)))]
+                                              [(:offset m)
+                                               (cond-> {:name (str (:name v) "." (:name m))
+                                                        :type (:type m) :id [:sra id (:offset m)] :local true}
+                                                 (:block v) (assoc :block (:block v)))]))]))
+                  good-var? (fn [x] (and (map? x) (= :var (:op x)) (contains? good (:id (:var x)))))]
+              (letfn [(rw [x]
+                        (cond
+                          (map? x)
+                          (cond
+                            (and (= :member (:op x)) (good-var? (:expr x)))
+                            (let [nv (get-in newvars [(:id (:var (:expr x))) (:offset (:member x))])]
+                              {:op :var :var nv :type (:type x)})
+                            (and (= :assign (:op x)) (good-var? (:lhs x)))
+                            (let [vs (sort-by key (newvars (:id (:var (:lhs x)))))]
+                              {:op :sra-copy :type t/ty-void :src (rw (:rhs x))
+                               :offs (mapv key vs)
+                               :targets (mapv (fn [[_ nv]] {:op :var :var nv :type (:type nv)}) vs)})
+                            :else
+                            (persistent! (reduce-kv (fn [m k v] (if (sra-skip-keys k) m (assoc! m k (rw v))))
+                                                    (transient x) x)))
+                          (vector? x) (mapv rw x)
+                          :else x))]
+                (let [body (rw (:body f))
+                      used (volatile! #{})
+                      _ ((fn walk [x]
+                           (cond (map? x) (do (when (= :var (:op x)) (vswap! used conj (:id (:var x))))
+                                              (doseq [[k v] x] (when-not (#{:targets :type :member :var} k) (walk v))))
+                                 (vector? x) (run! walk x)
+                                 :else nil)) body)
+                      used @used
+                      prune (fn prune [x]
+                              (cond
+                                (map? x)
+                                (if (= :sra-copy (:op x))
+                                  (let [keep (filterv #(contains? used (:id (:var (first %)))) (map vector (:targets x) (:offs x)))]
+                                    (assoc x :src (prune (:src x)) :targets (mapv first keep) :offs (mapv second keep)))
+                                  (persistent! (reduce-kv (fn [m k v] (if (sra-skip-keys k) m (assoc! m k (prune v))))
+                                                          (transient x) x)))
+                                (vector? x) (mapv prune x)
+                                :else x))]
+                  (assoc f
+                         :body (prune body)
+                         :locals (vec (concat (remove #(contains? good (:id %)) (:locals f))
+                                              (filter #(contains? used (:id %)) (mapcat vals (vals newvars)))))))))))))))
+
+(defn gen-sra-copy [n]
+  (let [m (addr-operand (:src n))]
+    (doseq [[tn off] (map vector (:targets n) (:offs n))]
+      (let [v (:var tn) ty (:type v) sz (t/type-size ty) u (t/unsigned? ty)
+            src (render-mem (update m :disp (fnil + 0) off))]
+        (if-let [r (vreg v)]
+          (case (int sz)
+            1 (emitf (if u "  movzbl " "  movsbl ") src ", " (r 1))
+            2 (emitf (if u "  movzwl " "  movswl ") src ", " (r 1))
+            4 (emitf "  movl " src ", " (r 1))
+            8 (emitf "  movq " src ", " (r 0)))
+          (let [dst (str (var-offset v) "(%rbp)")]
+            (case (int sz)
+              1 (do (emitf "  movb " src ", %cl") (emitf "  movb %cl, " dst))
+              2 (do (emitf "  movw " src ", %cx") (emitf "  movw %cx, " dst))
+              4 (do (emitf "  movl " src ", %ecx") (emitf "  movl %ecx, " dst))
+              8 (do (emitf "  movq " src ", %rcx") (emitf "  movq %rcx, " dst)))))))))
+
 (defn gen-function [f]
-  (let [[offsets frame info pinfo] (assign-offsets f)
+  (let [f (sra-function f)
+        [offsets frame info pinfo] (assign-offsets f)
         name (:name f)
         regvars (choose-regvars f)
         regset (set (vals regvars))
@@ -2122,10 +2297,67 @@
                 l))
             lines))))
 
+(def reg-family
+  (into {} (for [[q d w b] [["rax" "eax" "ax" "al"] ["rbx" "ebx" "bx" "bl"] ["rcx" "ecx" "cx" "cl"]
+                            ["rdx" "edx" "dx" "dl"] ["rsi" "esi" "si" "sil"] ["rdi" "edi" "di" "dil"]
+                            ["rbp" "ebp" "bp" "bpl"] ["rsp" "esp" "sp" "spl"]
+                            ["r8" "r8d" "r8w" "r8b"] ["r9" "r9d" "r9w" "r9b"] ["r10" "r10d" "r10w" "r10b"]
+                            ["r11" "r11d" "r11w" "r11b"] ["r12" "r12d" "r12w" "r12b"] ["r13" "r13d" "r13w" "r13b"]
+                            ["r14" "r14d" "r14w" "r14b"] ["r15" "r15d" "r15w" "r15b"]]
+                 n [q d w b]]
+             [(str "%" n) q])))
+
+(def dest-last-ops
+  #{"mov" "movq" "movl" "movw" "movb" "movslq" "movzbl" "movzwl" "movsbl" "movswl" "movsbq" "movzbq"
+    "movswq" "movzwq" "movsbw" "movzbw" "leaq" "leal" "addq" "addl" "subq" "subl" "andq" "andl" "orq" "orl"
+    "xorq" "xorl" "imulq" "imull" "shlq" "shll" "sarq" "sarl" "shrq" "shrl" "salq" "sall"
+    "addw" "addb" "subw" "subb" "andw" "andb" "orw" "orb" "xorw" "xorb"
+    "sete" "setne" "setl" "setle" "setg" "setge" "setb" "setbe" "seta" "setae" "setp" "setnp"
+    "negq" "negl" "notq" "notl" "incq" "incl" "decq" "decl"})
+(def no-write-ops #{"cmpq" "cmpl" "cmpw" "cmpb" "testq" "testl" "testw" "testb"})
+
+(defn drop-redundant-ext
+  "Remove 32->64 sign extensions repeated within a basic block while neither
+   register changed in between."
+  [lines]
+  (let [out (java.util.ArrayList.)]
+    (loop [ls (seq lines) known {}]
+      (if-not ls
+        (vec out)
+        (let [^String l (first ls)]
+          (cond
+            (or (not (str/starts-with? l "  ")) (str/starts-with? l "  .")) (do (.add out l) (recur (next ls) {}))
+            :else
+            (let [t (str/trim l)
+                  sp (str/index-of t " ")
+                  op (if sp (subs t 0 sp) t)
+                  args (if sp (str/split (subs t (inc sp)) #", ") [])
+                  dst (last args)
+                  fam (reg-family dst)
+                  kill (fn [known f] (into {} (remove (fn [[k v]] (or (= k f) (= v f))) known)))]
+              (cond
+                (and (= op "movslq") (= 2 (count args)) fam (reg-family (first args)))
+                (let [src (reg-family (first args))]
+                  (if (and (= (known fam) src) (not= fam src))
+                    (recur (next ls) known)
+                    (do (.add out l)
+                        (recur (next ls) (cond-> (kill known fam) (not= fam src) (assoc fam src))))))
+                (contains? no-write-ops op) (do (.add out l) (recur (next ls) known))
+                (str/starts-with? op "j") (do (.add out l) (recur (next ls) known))
+                (contains? dest-last-ops op)
+                (do (.add out l)
+                    (recur (next ls) (if fam
+                                       (kill known fam)
+                                       (if (and dst (str/starts-with? dst "%")) {} known))))
+                (#{"cqto" "cltd" "cqo"} op) (do (.add out l) (recur (next ls) (kill known "rdx")))
+                (#{"cltq"} op) (do (.add out l) (recur (next ls) (kill known "rax")))
+                (#{"idivq" "idivl" "divq" "divl"} op) (do (.add out l) (recur (next ls) (-> known (kill "rax") (kill "rdx"))))
+                :else (do (.add out l) (recur (next ls) {}))))))))))
+
 (defn peephole
   "Simple cleanups on the emitted lines."
   [^String text]
-  (let [lines (thread-jumps (vec (str/split-lines text)))
+  (let [lines (drop-redundant-ext (thread-jumps (vec (str/split-lines text))))
         n (count lines)
         out (java.util.ArrayList.)]
     (loop [i 0]
@@ -2138,6 +2370,10 @@
             (recur (inc i))
             ;; sign extension right after a sign-extending 32->64 load
             (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
+            (do (.add out l) (recur (+ i 2)))
+            ;; sign extension of a zero-extended byte/word
+            (and nx (re-matches #"  movz[bw]l .*, %e(ax|cx|dx|si|di)" l)
+                 (= nx (str "  movslq %e" (subs l (- (count l) 2)) ", %r" (subs l (- (count l) 2)))))
             (do (.add out l) (recur (+ i 2)))
             ;; push/pop pair
             (and nx (= l "  pushq %rax") (str/starts-with? nx "  popq %"))
