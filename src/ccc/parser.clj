@@ -493,7 +493,7 @@
         (if (= :vla (:kind base))
           {:op :div :type ty-long :lhs diff :rhs (new-cast (vla-size-expr base) ty-long)}
           (let [sz (ptr-base-size pt)]
-            (if (= sz 1) diff {:op :div :type ty-long :lhs diff :rhs (num-node sz ty-long)}))))
+            (if (= sz 1) diff {:op :div :type ty-long :lhs diff :rhs (num-node sz ty-long) :exact true}))))
       :else (err "invalid operands to -"))))
 
 (defn new-mul [l r] (arith-conv :mul l r))

@@ -807,6 +807,15 @@
             (when-not (zero? c) (emitf "  " ins sfx " $" c ", " ax)))
           (do (emitf "  movl " o ", %ecx") (emitf "  " ins sfx " %cl, " ax))))
       (:div :mod)
+      (if (and (:exact n) (= op :div) (= :num (:op rhs)) (> (:val rhs) 1) (= w 8))
+        ;; exact division (pointer difference): shift, then multiply by the odd part's inverse
+        (let [c (:val rhs) k (Long/numberOfTrailingZeros c) odd (bit-shift-right c k)
+              inv (loop [x odd i 0] (if (= i 6) x (recur (unchecked-multiply x (unchecked-subtract 2 (unchecked-multiply odd x))) (inc i))))]
+          (gen-expr lhs)
+          (when (pos? k) (emitf "  sarq $" k ", %rax"))
+          (when (not= odd 1)
+            (emitf "  movabsq $" inv ", %rdx")
+            (emit "  imulq %rdx, %rax")))
       (if-let [k (when (= :num (:op rhs))
                    (let [v (:val rhs)
                          v (if (= w 4) (if u (bit-and v 0xffffffff) (long (unchecked-int v))) v)]
@@ -839,7 +848,7 @@
         (if u
           (do (emit "  xorl %edx, %edx") (emitf "  div" sfx " " o))
           (do (emit (if (= w 8) "  cqto" "  cltd")) (emitf "  idiv" sfx " " o)))
-        (when (= op :mod) (emitf "  mov" sfx " " (if (= w 8) "%rdx" "%edx") ", " ax))))
+        (when (= op :mod) (emitf "  mov" sfx " " (if (= w 8) "%rdx" "%edx") ", " ax)))))
       :mul (let [ro (int-operand rhs w) lo (int-operand lhs w)]
              (if (and ro (str/starts-with? ro "$") lo (not (str/starts-with? lo "$")))
                (emitf "  imul" sfx " " ro ", " lo ", " ax)
@@ -2605,6 +2614,14 @@
             ;; sign extension right after a sign-extending 32->64 load
             (and nx (str/starts-with? l "  movslq ") (str/ends-with? l ", %rax") (= nx "  movslq %eax, %rax"))
             (do (.add out l) (recur (+ i 2)))
+            ;; address computed only to be loaded through
+            (and nx (re-matches #"  leaq (-?\d*)\((%r(?:[bcd]x|si|di|bp|8|9|1[0-5]))\), %rax" l)
+                 (re-matches #"  (mov[lqwb]|movslq|movz[bw][lq]|movs[bw][lq]) (-?\d*)\(%rax\), %(rax|eax|ax|al)" nx))
+            (let [[_ d r] (re-matches #"  leaq (-?\d*)\((%r(?:[bcd]x|si|di|bp|8|9|1[0-5]))\), %rax" l)
+                  [_ op d2 dst] (re-matches #"  (mov[lqwb]|movslq|movz[bw][lq]|movs[bw][lq]) (-?\d*)\(%rax\), %(rax|eax|ax|al)" nx)
+                  off (+ (if (seq d) (parse-long d) 0) (if (seq d2) (parse-long d2) 0))]
+              (.add out (str "  " op " " (if (zero? off) "" off) "(" r "), %" dst))
+              (recur (+ i 2)))
             ;; sign extension of a value known non-negative
             (and (= l "  movslq %eax, %rax") (pos? (.size out))
                  (let [prev (.get out (dec (.size out)))]
