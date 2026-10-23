@@ -60,7 +60,9 @@
                   ["%r13" "%r13d" "%r13w" "%r13b"] ["%r14" "%r14d" "%r14w" "%r14b"]
                   ["%r15" "%r15d" "%r15w" "%r15b"]
                   ;; caller-saved, only for variables of scopes without calls
-                  ["%r8" "%r8d" "%r8w" "%r8b"] ["%r9" "%r9d" "%r9w" "%r9b"]])
+                  ["%r8" "%r8d" "%r8w" "%r8b"] ["%r9" "%r9d" "%r9w" "%r9b"]
+                  ;; scratch registers, only for variables of call-free scopes (then not scratch)
+                  ["%r10" "%r10d" "%r10w" "%r10b"] ["%r11" "%r11d" "%r11w" "%r11b"]])
 (def n-callee-saved 5)  ; volatile vector of [label mantissa exp] long double constants ; ids of locals aligned beyond 16, reached through a pointer slot    ; {:gp n :fp n :stack-bytes n :ret-ptr-off n}
 
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
@@ -2174,7 +2176,7 @@
         (let [v (first cs)
               taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
               order (cond (not (r89-ok? v)) (range n-callee-saved)
-                          (call-free? v) (concat [5 6] (range n-callee-saved))
+                          (call-free? v) (concat [5 6 7 8] (range n-callee-saved))
                           :else (range n-callee-saved))
               r (first (remove taken order))]
           (if r
@@ -2339,7 +2341,9 @@
               *r89-slots* (vec (for [i [5 6] :when (contains? (:save (meta regvars)) i)]
                                  [((nth callee-regs i) 0)
                                   (let [k @spill-max] (vswap! spill-max inc) (str (- (+ frame 48 (* 8 (inc k)))) "(%rbp)"))]))
-              *scratch-free* (volatile! (list "%r11" "%r10"))
+              *scratch-free* (volatile! (remove #(or (and (= % "%r10") (contains? regset 7))
+                                                     (and (= % "%r11") (contains? regset 8)))
+                                                (list "%r11" "%r10")))
               *asm* body-sb
               *depth* (volatile! 0)]
       (doseq [v (:overaligned info)]
