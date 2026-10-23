@@ -69,6 +69,27 @@
 (defn emit [^String s] (.append *asm* s) (.append *asm* "\n"))
 (defmacro emitf [& parts] `(emit (str ~@parts)))
 
+(defn split-lines*
+  "clojure.string/split-lines without a regex: pieces between \\n separators,
+   a \\r before a separator dropped, trailing empty pieces dropped (a string
+   without separator is returned whole)."
+  [^String s]
+  (if (neg? (.indexOf s "\n"))
+    [s]
+    (let [out (java.util.ArrayList.)
+          n (.length s)]
+      (loop [start 0]
+        (let [i (.indexOf s "\n" (int start))]
+          (if (neg? i)
+            (.add out (subs s start n))
+            (let [e (if (and (> i start) (= \return (.charAt s (int (dec i))))) (dec i) i)]
+              (.add out (subs s start e))
+              (recur (inc i))))))
+      (loop [k (.size out)]
+        (if (and (pos? k) (= "" (.get out (dec k))))
+          (do (.remove out (int (dec k))) (recur (dec k)))))
+      (vec out))))
+
 (defn new-label [] (str ".L.cg." (vswap! *counter* inc)))
 
 (defn cerr [msg] (throw (ex-info (str "error: " msg) {:type :compile-error})))
@@ -667,7 +688,7 @@
   (when (rax-only? n)
     (let [sb (StringBuilder.)
           _ (binding [*asm* sb] (gen-expr n))
-          lines (str/split-lines (str sb))
+          lines (split-lines* (str sb))
           ok (every? (fn [^String l]
                        (let [t (str/trim l)
                              op (first (str/split t #" " 2))]
@@ -2160,10 +2181,13 @@
                     (:save-sp :restore-sp :vla-alloc :memzero) (when-let [v (:var x)] (vswap! pinned conj (:id v)))
                     :goto (when-let [slot (some-> (:restore x) deref)] (vswap! pinned conj (:id slot)))
                     nil)
-                  (let [inner (if (#{:for :do} op) (inc depth) depth)]
-                    (doseq [[k v] x]
-                      (when-not (#{:var :type :member :restore :cases :fn-type :ret-buf :tmp} k)
-                        (walk v (if (#{:cond :inc :body} k) inner depth))))
+                  (let [inner (case op (:for :do) (inc depth) depth)]
+                    (reduce-kv (fn [_ k v]
+                                 (case k
+                                   (:var :type :member :restore :cases :fn-type :ret-buf :tmp) nil
+                                   (walk v (case k (:cond :inc :body) inner depth)))
+                                 nil)
+                               nil x)
                     (when (= op :call) (walk (:fn x) depth)))
                   (when (:scope-id x) (vswap! path pop)))
                 (vector? x) (doseq [y x] (walk y depth))
@@ -2543,9 +2567,15 @@
     "negq" "negl" "notq" "notl" "incq" "incl" "decq" "decl"})
 (def no-write-ops #{"cmpq" "cmpl" "cmpw" "cmpb" "testq" "testl" "testw" "testb"})
 
+(defn- kill-family
+  "known (register family -> source family) without entries mentioning f."
+  [known f]
+  (if (empty? known) {} (into {} (remove (fn [[k v]] (or (= k f) (= v f))) known))))
+
 (defn drop-redundant-ext
   "Remove 32->64 sign extensions repeated within a basic block while neither
-   register changed in between."
+   register changed in between. (The operands of a line are split only when
+   they matter: for movslq, and for writes while some extension is known.)"
   [lines]
   (let [out (java.util.ArrayList.)]
     (loop [ls (seq lines) known {}]
@@ -2553,32 +2583,42 @@
         (vec out)
         (let [^String l (first ls)]
           (cond
-            (or (not (str/starts-with? l "  ")) (str/starts-with? l "  .")) (do (.add out l) (recur (next ls) {}))
+            (or (not (.startsWith l "  ")) (.startsWith l "  .")) (do (.add out l) (recur (next ls) {}))
             :else
-            (let [t (str/trim l)
+            (let [^String t (str/trim l)
                   sp (str/index-of t " ")
-                  op (if sp (subs t 0 sp) t)
-                  args (if sp (str/split (subs t (inc sp)) #", ") [])
-                  dst (last args)
-                  fam (reg-family dst)
-                  kill (fn [known f] (if (empty? known) {} (into {} (remove (fn [[k v]] (or (= k f) (= v f))) known))))]
+                  op (if sp (subs t 0 sp) t)]
               (cond
-                (and (= op "movslq") (= 2 (count args)) fam (reg-family (first args)))
-                (let [src (reg-family (first args))]
-                  (if (and (= (known fam) src) (not= fam src))
-                    (recur (next ls) known)
+                (= op "movslq")
+                (let [args (if sp (str/split (subs t (inc sp)) #", ") [])
+                      dst (last args)
+                      fam (reg-family dst)]
+                  (if (and (= 2 (count args)) fam (reg-family (first args)))
+                    (let [src (reg-family (first args))]
+                      (if (and (= (known fam) src) (not= fam src))
+                        (recur (next ls) known)
+                        (do (.add out l)
+                            (recur (next ls) (cond-> (kill-family known fam) (not= fam src) (assoc fam src))))))
+                    ;; movslq is a dest-last op
                     (do (.add out l)
-                        (recur (next ls) (cond-> (kill known fam) (not= fam src) (assoc fam src))))))
+                        (recur (next ls) (if fam
+                                           (kill-family known fam)
+                                           (if (and dst (str/starts-with? dst "%")) {} known))))))
                 (contains? no-write-ops op) (do (.add out l) (recur (next ls) known))
                 (str/starts-with? op "j") (do (.add out l) (recur (next ls) known))
                 (contains? dest-last-ops op)
                 (do (.add out l)
-                    (recur (next ls) (if fam
-                                       (kill known fam)
-                                       (if (and dst (str/starts-with? dst "%")) {} known))))
-                (#{"cqto" "cltd" "cqo"} op) (do (.add out l) (recur (next ls) (kill known "rdx")))
-                (#{"cltq"} op) (do (.add out l) (recur (next ls) (kill known "rax")))
-                (#{"idivq" "idivl" "divq" "divl"} op) (do (.add out l) (recur (next ls) (-> known (kill "rax") (kill "rdx"))))
+                    (recur (next ls) (if (empty? known)
+                                       {}
+                                       (let [args (if sp (str/split (subs t (inc sp)) #", ") [])
+                                             dst (last args)
+                                             fam (reg-family dst)]
+                                         (if fam
+                                           (kill-family known fam)
+                                           (if (and dst (str/starts-with? dst "%")) {} known))))))
+                (#{"cqto" "cltd" "cqo"} op) (do (.add out l) (recur (next ls) (kill-family known "rdx")))
+                (#{"cltq"} op) (do (.add out l) (recur (next ls) (kill-family known "rax")))
+                (#{"idivq" "idivl" "divq" "divl"} op) (do (.add out l) (recur (next ls) (-> known (kill-family "rax") (kill-family "rdx"))))
                 :else (do (.add out l) (recur (next ls) {}))))))))))
 
 (defn rdi-dead-after?
@@ -2612,7 +2652,7 @@
 (defn peephole
   "Simple cleanups on the emitted lines."
   [^String text]
-  (let [lines (drop-redundant-ext (thread-jumps (vec (str/split-lines text))))
+  (let [lines (drop-redundant-ext (thread-jumps (vec (split-lines* text))))
         n (count lines)
         out (java.util.ArrayList.)]
     (loop [i 0]
