@@ -28,6 +28,30 @@
 
 (defn free-temp! [i] (vswap! *temp-free* conj i))
 
+(declare callee-regs)
+
+(def ^:dynamic *loop-depth* nil)   ; volatile: nesting of loops being generated
+(def ^:dynamic *spill-free* nil)   ; volatile vector of free spill slot indices
+(def ^:dynamic *spill-max* nil)    ; volatile: number of spill slots used
+(def ^:dynamic *spill-base* 0)     ; frame offset below which spill slots live
+
+(defn alloc-holder!
+  "A place to hold a 64-bit value across arbitrary code: [operand release-fn].
+   Outside loops a frame slot (no prologue cost); inside loops a callee-saved
+   register if one is free."
+  []
+  (let [slot (fn []
+               (let [k (if (seq @*spill-free*)
+                         (let [k (peek @*spill-free*)] (vswap! *spill-free* pop) k)
+                         (let [k @*spill-max*] (vswap! *spill-max* inc) k))]
+                 [(str (- (+ *spill-base* (* 8 (inc k)))) "(%rbp)")
+                  #(vswap! *spill-free* conj k)]))]
+    (if (and *loop-depth* (pos? @*loop-depth*))
+      (if-let [ti (alloc-temp!)]
+        [((nth callee-regs ti) 0) #(free-temp! ti)]
+        (slot))
+      (slot))))
+
 ;; caller-saved registers that code for side-effect-free expressions never uses
 (def ^:dynamic *scratch-free* nil)   ; volatile list of free scratch registers    ; var id -> index into callee-regs (register-allocated locals)
 
@@ -622,14 +646,12 @@
               (emit "  movq %rax, %rdi")
               (emitf "  movq " sr ", %rax")
               (vswap! *scratch-free* conj sr))
-          (if-let [ti (alloc-temp!)]
-            (let [tr ((nth callee-regs ti) 0)]
-              (emitf "  movq %rax, " tr)
-              (gen-expr rhs)
-              (emit "  movq %rax, %rdi")
-              (emitf "  movq " tr ", %rax")
-              (free-temp! ti))
-            (do (push!) (gen-expr rhs) (emit "  movq %rax, %rdi") (pop! "%rax"))))
+          (let [[h release] (alloc-holder!)]
+            (emitf "  movq %rax, " h)
+            (gen-expr rhs)
+            (emit "  movq %rax, %rdi")
+            (emitf "  movq " h ", %rax")
+            (release)))
         (if (= w 8) "%rdi" "%edi")))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
@@ -1087,17 +1109,17 @@
                      (for [a (reverse (rest complex))]
                        (if (= :gp (:mode a))
                          (do (gen-expr (:node a))
-                             (if-let [ti (alloc-temp!)]
-                               (do (emitf "  movq %rax, " ((nth callee-regs ti) 0)) [a ti])
-                               (do (push!) [a nil])))
+                             (let [h (alloc-holder!)]
+                               (emitf "  movq %rax, " (first h))
+                               [a h]))
                          (do (push-arg! a) [a nil]))))]
             (when-let [a0 (first complex)]
               (gen-expr (:node a0))
               (to-reg a0))
-            (doseq [[a ti] (reverse held)]
-              (if ti
-                (do (emitf "  movq " ((nth callee-regs ti) 0) ", " (nth argreg64 (:reg a)))
-                    (free-temp! ti))
+            (doseq [[a h] (reverse held)]
+              (if h
+                (do (emitf "  movq " (first h) ", " (nth argreg64 (:reg a)))
+                    ((second h)))
                 (if (= :gp (:mode a)) (pop! (nth argreg64 (:reg a))) (popf! (:reg a)))))
             (doseq [a simple] (load-simple a))
             (when ret-mem (local-addr (:ret-buf n) "%rdi")))
@@ -1640,7 +1662,8 @@
                 (gen-stmt (:els s))
                 (emitf l-end ":"))
             (emitf l-else ":")))
-    :for (let [l-begin (new-label) l-body (new-label)]
+    :for (let [l-begin (new-label) l-body (new-label)
+               _ (when *loop-depth* (vswap! *loop-depth* inc))]
            ;; loop rotation: test at the bottom
            (when (:init s) (gen-stmt (:init s)))
            (if (:cond s)
@@ -1654,12 +1677,15 @@
            (if (:cond s)
              (gen-branch (:cond s) l-body true)
              (emitf "  jmp " l-body))
+           (when *loop-depth* (vswap! *loop-depth* dec))
            (emitf (:brk s) ":"))
-    :do (let [l-begin (new-label)]
+    :do (let [l-begin (new-label)
+              _ (when *loop-depth* (vswap! *loop-depth* inc))]
           (emitf l-begin ":")
           (gen-stmt (:body s))
           (emitf (:cont s) ":")
           (gen-branch (:cond s) l-begin true)
+          (when *loop-depth* (vswap! *loop-depth* dec))
           (emitf (:brk s) ":"))
     :switch (let [cty (:type (:cond s))
                   w (= 8 (t/type-size cty))
@@ -1856,7 +1882,8 @@
         regset (set (vals regvars))
         outer *asm*
         body-sb (StringBuilder.)
-        used (volatile! regset)]
+        used (volatile! regset)
+        spill-max (volatile! 0)]
     (binding [*offsets* offsets
               *fn* f
               *fninfo* info
@@ -1864,6 +1891,10 @@
               *regvars* regvars
               *temp-free* (volatile! (vec (reverse (remove regset (range (count callee-regs))))))
               *temp-used* used
+              *loop-depth* (volatile! 0)
+              *spill-free* (volatile! [])
+              *spill-max* spill-max
+              *spill-base* (+ frame 48)
               *scratch-free* (volatile! (list "%r11" "%r10" "%r9" "%r8"))
               *asm* body-sb
               *depth* (volatile! 0)]
@@ -1905,7 +1936,9 @@
         (emitf name ":")
         (emit "  pushq %rbp")
         (emit "  movq %rsp, %rbp")
-        (let [sz (+ frame (if (seq saved) save-bytes 0))]
+        (let [sz (cond (pos? @spill-max) (align-to (+ frame 48 (* 8 @spill-max)) 16)
+                       (seq saved) (+ frame save-bytes)
+                       :else frame)]
           (when (pos? sz) (emitf "  subq $" sz ", %rsp")))
         (doseq [i saved]
           (emitf "  movq " ((nth callee-regs i) 0) ", " (slot i) "(%rbp)"))
