@@ -895,6 +895,7 @@
               *depth* (volatile! 0)]
       (when-not (:static f) (emitf "  .globl " name))
       (emit "  .text")
+      (when-let [al (:align f)] (emitf "  .align " al))
       (emitf "  .type " name ", @function")
       (emitf name ":")
       (emit "  pushq %rbp")

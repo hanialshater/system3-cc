@@ -1615,7 +1615,11 @@
       (do (advance!)
           (if (and (is? "(") (typename-tok? (peek-tok 1)))
             (do (advance!) (let [ty (typename)] (expect! ")") (num-node (t/type-align ty) ty-ulong)))
-            (let [e (unary)] (num-node (t/type-align (:type e)) ty-ulong))))
+            (let [e (unary)
+                  decl-align (when (= :var (:op e))
+                               (or (:align (:var e))
+                                   (when-not (:local (:var e)) (:align (@*globals* (:label (:var e)))))))]
+              (num-node (max (or decl-align 0) (t/type-align (:type e))) ty-ulong))))
       (and (= k :ident) (= s "__extension__")) (do (advance!) (cast-expr))
       :else (postfix))))
 
@@ -2163,7 +2167,8 @@
   (let [old (@*globals* name)
         ty (if (and old (:proto (:type old)) (not (:proto ty))) (:type old) ty)
         g (merge old {:name name :label name :type ty :global true :func true}
-                 (when (:static attr) {:static true}))]
+                 (when (:static attr) {:static true})
+                 (when (:align attr) {:align (max (:align attr) (or (:align old) 0))}))]
     (add-global! g)))
 
 (defn declare-gvar! [name ty attr]
@@ -2302,7 +2307,8 @@
         (leave-scope!)
         (vswap! *functions* conj
                 {:name name :type ty :params params :body body
-                 :locals @*locals* :static (:static (@*globals* name)) :va-area va-area})))))
+                 :locals @*locals* :static (:static (@*globals* name)) :va-area va-area
+                 :align (:align (@*globals* name))})))))
 
 (defn global-declaration []
   (let [[base attr] (declspec)]
