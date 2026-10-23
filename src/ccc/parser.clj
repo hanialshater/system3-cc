@@ -21,7 +21,7 @@
 (defmacro ^:private ps [] `(let [^PState s# (.get pstate)] s#))
 (defn- goto-pos! [^PState s ^long p]
   (aset ^longs (.-pos s) 0 p)
-  (aset ^objects (.-cur s) 0 (when (and (>= p 0) (< p (.-n s))) (nth (.-toks s) p))))
+  (aset ^objects (.-cur s) 0 (when (and (>= p 0) (< p (.-n s))) (.nth ^clojure.lang.Indexed (.-toks s) (int p)))))
 (defn get-pos ^long [] (aget ^longs (.-pos (ps)) 0))
 (defn set-pos! [^long p] (goto-pos! (ps) p) p)
 (def ^:dynamic *scope* nil)        ; volatile list of {:vars {} :tags {}}
@@ -1617,7 +1617,10 @@
   `(defn ~name []
      (loop [n# (~next)]
        (let [tk# (tok)]
-         (if-let [f# (and (= :punct (:kind tk#)) (get ~ops (:text tk#)))]
+         ;; ops is a literal {operator function}: dispatch on the operator text
+         ;; (evaluating only the matching function, not a fresh map per token)
+         (if-let [f# (and (identical? :punct (:kind tk#))
+                          (case (:text tk#) ~@(mapcat identity ops) nil))]
            (do (advance!) (recur (f# n# (~next))))
            n#)))))
 

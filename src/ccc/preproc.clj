@@ -105,6 +105,11 @@
         (.put canon-cache path c)
         c)))
 
+(defn union-hs
+  "(into (or h #{}) hs): hs itself when h is empty (the same set value)."
+  [h hs]
+  (if (or (nil? h) (empty? h)) hs (into h hs)))
+
 (defn retag
   "tk with the given hideset, line and file, not at the beginning of a line
    (assoc of :hideset :line :file :bol, in one step for lexer tokens)."
@@ -283,7 +288,7 @@
             (let [hs2 (conj hs name)
                   raw (if (:paste m) (subst m {} tk) (:body m))
                   line (:line tk) file (:file tk)
-                  body (mapv #(retag % (into (or (:hideset %) #{}) hs2) line file)
+                  body (mapv #(retag % (union-hs (:hideset %) hs2) line file)
                              raw)
                   body (if (seq body) (assoc body 0 (assoc (body 0) :space (:space tk))) body)]
               (push-front! dq body)
@@ -296,7 +301,7 @@
                       hs2 (conj (clojure.set/intersection hs (or (:hideset rparen) #{})) name)
                       body (subst m argmap tk)
                       line (:line tk) file (:file tk)
-                      body (mapv #(retag % (into (or (:hideset %) #{}) hs2) line file)
+                      body (mapv #(retag % (union-hs (:hideset %) hs2) line file)
                                  body)
                       body (if (seq body) (assoc body 0 (assoc (body 0) :space (:space tk))) body)]
                   (push-front! dq body)
