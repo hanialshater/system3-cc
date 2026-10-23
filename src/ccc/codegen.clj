@@ -30,6 +30,7 @@
 
 (declare callee-regs)
 
+(def ^:dynamic *r89-slots* nil)    ; [[reg slot] ...] for r8/r9 holding variables (saved around calls)
 (def ^:dynamic *loop-depth* nil)   ; volatile: nesting of loops being generated
 (def ^:dynamic *spill-free* nil)   ; volatile vector of free spill slot indices
 (def ^:dynamic *spill-max* nil)    ; volatile: number of spill slots used
@@ -1188,8 +1189,11 @@
           (= :float (:kind ty)) (emitf "  movss %xmm0, " off "(%rsp)")
           (t/flonum? ty) (emitf "  movsd %xmm0, " off "(%rsp)")
           :else (emitf "  movq %rax, " off "(%rsp)"))))
+    (doseq [[r slot] *r89-slots*] (emitf "  movq " r ", " slot))
     (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))
-          fast (and direct (not-any? #(= :struct-reg (:mode %)) args))
+          ngp (+ (if ret-mem 1 0) (count (filter #(= :gp (:mode %)) args)))
+          fast (and direct (not-any? #(= :struct-reg (:mode %)) args)
+                    (not (and (seq *r89-slots*) (>= ngp 5))))
           ;; register targets
           args (loop [as args gp (if ret-mem 1 0) fp 0 out []]
                  (if (empty? as) out
@@ -1330,6 +1334,7 @@
               (emitf "  call " label)
               (emitf "  call " label "@PLT")))
           (emit "  call *%r10"))
+        (doseq [[r slot] *r89-slots*] (emitf "  movq " slot ", " r))
         (let [cleanup (+ stack (if pad 1 0))]
           (when (pos? cleanup)
             (emitf "  addq $" (* 8 cleanup) ", %rsp")
@@ -2107,12 +2112,13 @@
    address is taken, and variables that must stay in memory."
   [body]
   (let [weights (volatile! {}) addr (volatile! #{}) pinned (volatile! #{})
-        unsafe (volatile! #{}) path (volatile! []) seen (volatile! #{})]
+        unsafe (volatile! #{}) path (volatile! []) seen (volatile! #{}) has-call (volatile! #{})]
     (letfn [(walk [x depth]
               (cond
                 (map? x)
                 (when-let [op (:op x)]
-                  (when (or (#{:call :overflow :va-arg :va-start :va-copy :alloca :vla-alloc :goto-ptr} op)
+                  (when (= op :call) (vswap! has-call into @path))
+                  (when (or (#{:overflow :va-arg :va-start :va-copy :alloca :vla-alloc :goto-ptr} op)
                             (and (= op :assign) (= :member (:op (:lhs x))) (:bitfield (:member (:lhs x))))
                             (and (= op :return) (:expr x) (t/struct? (:type (:expr x)))))
                     (vswap! unsafe into @path))
@@ -2132,15 +2138,20 @@
                 (vector? x) (doseq [y x] (walk y depth))
                 :else nil))]
       (walk body 0))
-    {:weights @weights :addr @addr :pinned @pinned :unsafe @unsafe :seen @seen}))
+    {:weights @weights :addr @addr :pinned @pinned :unsafe @unsafe :seen @seen :has-call @has-call}))
 
 (defn choose-regvars
   "Assign callee-saved registers to the most used eligible scalar locals."
   [f]
-  (let [{:keys [weights addr pinned unsafe seen]} (usage-info (:body f))
-        ;; variables declared in a call-free inner scope may use r8/r9
+  (let [{:keys [weights addr pinned unsafe seen has-call]} (usage-info (:body f))
+        ;; r8/r9 (saved around calls) for variables of scopes without special operations
+        r89-ok? (fn [v] (let [b (:block v)]
+                          (if (seq b)
+                            (and (contains? seen (peek b)) (not (contains? unsafe (peek b))))
+                            (and (empty? unsafe) (not (:va-area f))
+                                 (< (count (:params f)) 5)))))
         call-free? (fn [v] (let [b (:block v)]
-                             (and (seq b) (contains? seen (peek b)) (not (contains? unsafe (peek b))))))
+                             (if (seq b) (not (contains? has-call (peek b))) (empty? has-call))))
         ok? (fn [v]
               (let [ty (:type v)]
                 (and (or (t/integer? ty) (t/ptr? ty))
@@ -2159,10 +2170,12 @@
         nregs (count callee-regs)]
     (loop [cs cands assigned [] out {}]
       (if (empty? cs)
-        out
+        (with-meta out {:save (set (keep (fn [[v r]] (when (and (#{5 6} r) (not (call-free? v))) r)) assigned))})
         (let [v (first cs)
               taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
-              order (if (call-free? v) (concat [5 6] (range n-callee-saved)) (range n-callee-saved))
+              order (cond (not (r89-ok? v)) (range n-callee-saved)
+                          (call-free? v) (concat [5 6] (range n-callee-saved))
+                          :else (range n-callee-saved))
               r (first (remove taken order))]
           (if r
             (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
@@ -2323,6 +2336,9 @@
               *spill-free* (volatile! [])
               *spill-max* spill-max
               *spill-base* (+ frame 48)
+              *r89-slots* (vec (for [i [5 6] :when (contains? (:save (meta regvars)) i)]
+                                 [((nth callee-regs i) 0)
+                                  (let [k @spill-max] (vswap! spill-max inc) (str (- (+ frame 48 (* 8 (inc k)))) "(%rbp)"))]))
               *scratch-free* (volatile! (list "%r11" "%r10"))
               *asm* body-sb
               *depth* (volatile! 0)]
@@ -2337,7 +2353,7 @@
         (let [o (offsets (:id va))]
           (doseq [i (range 6)] (emitf "  movq " (nth argreg64 i) ", " (+ o (* 8 i)) "(%rbp)"))
           (doseq [i (range 8)] (emitf "  movsd %xmm" i ", " (+ o 48 (* 16 i)) "(%rbp)"))))
-      (doseq [pi pinfo]
+      (doseq [pi (sort-by #(if (#{5 6} (get regvars (:id (:var %)))) 1 0) pinfo)]
         (if-let [r (vreg (:var pi))]
           (let [ty (:type (:var pi)) sz (t/type-size ty) u (t/unsigned? ty)]
             (case (:mode pi)
