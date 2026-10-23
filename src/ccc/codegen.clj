@@ -1235,13 +1235,60 @@
                 (recur (rest cls) (inc i) (inc gp) fp)))))
       :stack nil)))
 
+(defn usage-info
+  "Walk a function body: weighted use counts of variables, variables whose
+   address is taken, and variables that must stay in memory."
+  [body]
+  (let [weights (volatile! {}) addr (volatile! #{}) pinned (volatile! #{})]
+    (letfn [(walk [x depth]
+              (cond
+                (map? x)
+                (when-let [op (:op x)]
+                  (case op
+                    :var (vswap! weights update (:id (:var x)) (fnil + 0) (long (Math/pow 8 (min depth 5))))
+                    :addr (when (= :var (:op (:expr x))) (vswap! addr conj (:id (:var (:expr x)))))
+                    (:save-sp :restore-sp :vla-alloc :memzero) (when-let [v (:var x)] (vswap! pinned conj (:id v)))
+                    :goto (when-let [slot (some-> (:restore x) deref)] (vswap! pinned conj (:id slot)))
+                    nil)
+                  (let [inner (if (#{:for :do} op) (inc depth) depth)]
+                    (doseq [[k v] x]
+                      (when-not (#{:var :type :member :restore :cases :fn-type :ret-buf :tmp} k)
+                        (walk v (if (#{:cond :inc :body} k) inner depth))))
+                    (when (= op :call) (walk (:fn x) depth))))
+                (vector? x) (doseq [y x] (walk y depth))
+                :else nil))]
+      (walk body 0))
+    {:weights @weights :addr @addr :pinned @pinned}))
+
+(defn choose-regvars
+  "Assign callee-saved registers to the most used eligible scalar locals."
+  [f]
+  (let [{:keys [weights addr pinned]} (usage-info (:body f))
+        ok? (fn [v]
+              (let [ty (:type v)]
+                (and (or (t/integer? ty) (t/ptr? ty))
+                     (#{1 2 4 8} (t/type-size ty))
+                     (not (:volatile ty))
+                     (not (:vla-ptr v))
+                     (not (:align v))
+                     (not (contains? addr (:id v)))
+                     (not (contains? pinned (:id v)))
+                     (pos? (get weights (:id v) 0)))))
+        cands (->> (:locals f) (filter ok?) (sort-by #(- (get weights (:id %) 0))) (take (count callee-regs)))]
+    (into {} (map-indexed (fn [i v] [(:id v) i]) cands))))
+
 (defn gen-function [f]
   (let [[offsets frame info pinfo] (assign-offsets f)
-        name (:name f)]
+        name (:name f)
+        regvars (choose-regvars f)
+        nsaved (count (set (vals regvars)))
+        saved (take nsaved callee-regs)
+        save-bytes (align-to (* 8 nsaved) 16)]
     (binding [*offsets* offsets
               *fn* f
               *fninfo* info
               *overaligned* (set (map :id (:overaligned info)))
+              *regvars* regvars
               *depth* (volatile! 0)]
       (when-not (:static f) (emitf "  .globl " name))
       (emit "  .text")
@@ -1250,7 +1297,9 @@
       (emitf name ":")
       (emit "  pushq %rbp")
       (emit "  movq %rsp, %rbp")
-      (when (pos? frame) (emitf "  subq $" frame ", %rsp"))
+      (when (pos? (+ frame save-bytes)) (emitf "  subq $" (+ frame save-bytes) ", %rsp"))
+      (doseq [[i r] (map-indexed vector saved)]
+        (emitf "  movq " (r 0) ", " (- (+ frame (* 8 (inc i)))) "(%rbp)"))
       (doseq [v (:overaligned info)]
         (let [al (or (:align v) (t/type-align (:type v)))]
           (emitf "  subq $" (align-to (max 1 (t/type-size (:type v))) 16) ", %rsp")
@@ -1263,10 +1312,23 @@
           (doseq [i (range 6)] (emitf "  movq " (nth argreg64 i) ", " (+ o (* 8 i)) "(%rbp)"))
           (doseq [i (range 8)] (emitf "  movsd %xmm" i ", " (+ o 48 (* 16 i)) "(%rbp)"))))
       (doseq [pi pinfo]
-        (store-param pi (offsets (:id (:var pi)))))
+        (if-let [r (vreg (:var pi))]
+          (let [ty (:type (:var pi)) sz (t/type-size ty) u (t/unsigned? ty)]
+            (case (:mode pi)
+              :gp (let [i (:reg pi)]
+                    (case (int sz)
+                      1 (emitf (if u "  movzbl " "  movsbl ") (nth argreg8 i) ", " (r 1))
+                      2 (emitf (if u "  movzwl " "  movswl ") (nth argreg16 i) ", " (r 1))
+                      4 (emitf "  movl " (nth argreg32 i) ", " (r 1))
+                      8 (emitf "  movq " (nth argreg64 i) ", " (r 0))))
+              :stack (do (load-op ty (str (offsets (:id (:var pi))) "(%rbp)"))
+                         (reg-store (:var pi)))))
+          (store-param pi (offsets (:id (:var pi))))))
       (gen-stmt (:body f))
       (when (= name "main") (emit "  movl $0, %eax"))
       (emitf ".L.return." name ":")
+      (doseq [[i r] (map-indexed vector saved)]
+        (emitf "  movq " (- (+ frame (* 8 (inc i)))) "(%rbp), " (r 0)))
       (emit "  movq %rbp, %rsp")
       (emit "  popq %rbp")
       (emit "  ret")
