@@ -37,3 +37,15 @@ Rules for all parts:
 - Compile-time budget is shared (limit 60 s; main is ~12 s wall on 4 cores): a pass that costs more
   than ~5 s on sqlite3.c needs a measured gain to justify it.
 - Judge flake (board #19): a failure of `expr-0528` alone is not a reason to revert; compare bytes.
+
+## Notes from w-lean (round 2)
+- `src/ccc/passes/inline.clj` (AST pass, called at the start of `codegen/generate`) inlines callees of
+  at most `CCC_INLINE_LIMIT` (100) nodes as statement expressions. Its fresh variable ids are
+  `[:ginl fname n]` (codegen's expression inliner uses `[:inl fname n]`: never share a tag). Scope marks
+  (`:scope-id`) on the statement expression and on the callee's root block keep the register-sharing rule
+  (block-path prefix = live together) valid for codegen's own inliner running after this pass.
+  Off: `CCC_NOGINLINE`. Growth is about 3.4x the node count of sqlite3.c, compile CPU about 2.5x.
+  `CCC_INLINE_COLD` limits callee size outside loops (default = the limit; smaller values lose more).
+- `src/ccc/frame.clj` is step 6, run at the end of the finisher on each function's text. It converts
+  only when every rbp/rsp use is understood and the stack depth is consistent at every jump.
+  Off: `CCC_NOFRAME`.
