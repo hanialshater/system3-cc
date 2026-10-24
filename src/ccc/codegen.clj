@@ -946,9 +946,60 @@
   (and (#{:eq :ne :lt :le :gt :ge} (:op n))
        (let [t (:type (:lhs n))] (or (t/integer? t) (t/ptr-like? t)))))
 
+(defn test-mask-parts
+  "For an integer node x & c (c constant, either side): [x c]; else nil."
+  [n]
+  (when (and (= :bitand (:op n)) (t/integer? (:type n)) (#{4 8} (t/type-size (:type n))))
+    (let [{:keys [lhs rhs]} n
+          num? #(and (= :num (:op %)) (not (:fval %)))]
+      (cond (num? rhs) [lhs (:val rhs)]
+            (num? lhs) [rhs (:val lhs)]
+            :else nil))))
+
+(defn gen-test-mask
+  "Set ZF from (x & c) without computing it into a register where possible."
+  [n x c]
+  (let [w (t/type-size (:type n))
+        intlike? #(or (t/integer? %) (t/ptr? %))
+        ;; strip widening integer casts: the low bits tested do not depend on the extension
+        xc (loop [e x]
+             (if (and (= :cast (:op e)) (intlike? (:type e)) (intlike? (:type (:expr e)))
+                      (>= (t/type-size (:type e)) (t/type-size (:type (:expr e)))))
+               (recur (:expr e))
+               e))
+        xw (t/type-size (:type xc))
+        cw (if (= w 4) (bit-and c 0xffffffff) c)
+        fits? (fn [bytes] (and (<= 0 cw) (or (>= bytes 8) (< cw (bit-shift-left 1 (* 8 bytes))))))
+        imm (fn [bytes] (case (int bytes) 1 cw 2 cw 4 (long (unchecked-int cw)) 8 cw))]
+    (cond
+      ;; narrow load tested in place
+      (and (intlike? (:type xc)) (#{1 2 4 8} xw) (< xw w) (fits? xw) (not= :bool (:kind (:type xc)))
+           (not= :num (:op xc)) (not (and (= :member (:op xc)) (:bitfield (:member xc))))
+           (or (rdi-addr? xc) (int-operand xc xw)
+               (and (#{:deref :member} (:op xc)) (fixed-mem-op xc))))
+      (let [op (cond (rdi-addr? xc) (render-mem (addr-operand xc))
+                     :else (or (int-operand xc xw) (fixed-mem-op xc)))]
+        (if (and (str/starts-with? op "%") (#{1 2} xw))
+          (emitf "  testl $" cw ", " op)
+          (emitf "  test" (sfx-of xw) " $" (imm xw) ", " op)))
+      (and (= xw w) (or (= w 4) (imm32? cw)) (fits? w) (not= :num (:op xc))
+           (or (int-operand xc w) (rdi-addr? xc)))
+      (emitf "  test" (sfx-of w) " $" (imm w) ", " (or (int-operand xc w) (render-mem (addr-operand xc))))
+      (or (= w 4) (imm32? c))
+      (do (gen-expr x)
+          (emitf "  test" (sfx-of w) " $" (if (= w 4) (long (unchecked-int c)) c) ", " (if (= w 8) "%rax" "%eax")))
+      :else
+      (do (gen-expr n) (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))))))
+
 (defn gen-branch
   "Jump to label when the truth of n equals jump-if; otherwise fall through."
   [n label jump-if]
+  (if-let [[x c] (or (test-mask-parts n)
+                     (when (and (#{:eq :ne} (:op n)) (= :num (:op (:rhs n))) (not (:fval (:rhs n)))
+                                (zero? (:val (:rhs n))))
+                       (test-mask-parts (:lhs n))))]
+    (do (gen-test-mask (if (#{:eq :ne} (:op n)) (:lhs n) n) x c)
+        (emitf (if (= jump-if (not= :eq (:op n))) "  jne " "  je ") label))
   (case (:op n)
     :not (gen-branch (:expr n) label (not jump-if))
     :comma (do (gen-discard (:lhs n)) (gen-branch (:rhs n) label jump-if))
@@ -1005,7 +1056,7 @@
             (if (or (t/integer? ty) (t/ptr-like? ty))
               (emit "  testq %rax, %rax")
               (cmp-zero ty)))))
-          (emitf (if jump-if "  jne " "  je ") label))))))
+          (emitf (if jump-if "  jne " "  je ") label)))))))
 
 (defn gen-binary-ld [n]
   ;; long double: lhs ends in st(0), rhs in st(1)
