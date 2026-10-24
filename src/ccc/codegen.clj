@@ -1930,7 +1930,17 @@
                               [2 true] "  movzwl %di, %edi" [2 false] "  movswl %di, %edi"))
                       (emitf "  movl %edi, " (r 1))
                       (when (:pre n) (emit "  movl %edi, %eax")))))
-            (let [ty (:type n) sz (t/type-size ty) d (:delta n)]
+            (let [ty (:type n) sz (t/type-size ty) d (:delta n)
+                  e (:expr n)
+                  ;; a memory operand needing no address computation: load and add in place
+                  mo (when (and (or (t/integer? ty) (t/ptr? ty)) (not= :bool (:kind ty))
+                                (not (:volatile ty)) (not (:volatile (:type e))))
+                       (let [o (int-operand e sz)] (when (and o (str/includes? o "(")) o)))]
+             (if mo
+              (do (when-not (:pre n) (load-op ty mo))
+                  (emitf "  add" (sfx-of sz) " $" d ", " mo)
+                  (when (:pre n) (load-op ty mo)))
+             (do
               (gen-addr (:expr n))
               (emit "  movq %rax, %rdx")
               (load ty)
@@ -1945,7 +1955,7 @@
                   1 (emit (if (t/unsigned? ty) "  movzbl %dil, %eax" "  movsbl %dil, %eax"))
                   2 (emit (if (t/unsigned? ty) "  movzwl %di, %eax" "  movswl %di, %eax"))
                   4 (emit "  movl %edi, %eax")
-                  8 (emit "  movq %rdi, %rax")))))
+                  8 (emit "  movq %rdi, %rax")))))))
     :memzero (let [v (:var n)]
                (if-let [r (vreg v)]
                  (emitf "  xorl " (r 1) ", " (r 1))
