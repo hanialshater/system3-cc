@@ -787,7 +787,8 @@
             (do (emitf "  movq %rax, " sr)
                 (gen-expr rhs)
                 (if comm
-                  (do (vswap! *scratch-free* conj sr)
+                  (do (when (volatile? comm) (vreset! comm true))
+                      (vswap! *scratch-free* conj sr)
                       (let [[q d] (reg-names sr)] (if (= w 8) q d)))
                   (do (emit "  movq %rax, %rdi")
                       (emitf "  movq " sr ", %rax")
@@ -799,7 +800,8 @@
               (do (emit "  movq %rax, %rsi")
                   (.append ^StringBuilder *asm* rtext)
                   (if comm
-                    (if (= w 8) "%rsi" "%esi")
+                    (do (when (volatile? comm) (vreset! comm true))
+                        (if (= w 8) "%rsi" "%esi"))
                     (do (emit "  movq %rax, %rdi")
                         (emit "  movq %rsi, %rax")
                         (if (= w 8) "%rdi" "%edi"))))
@@ -807,7 +809,8 @@
                 (emitf "  movq %rax, " h)
                 (gen-expr rhs)
                 (if comm
-                  (do (release)
+                  (do (when (volatile? comm) (vreset! comm true))
+                      (release)
                       (if (= w 8) h (or (some (fn [r] (when (= h (r 0)) (r 1))) callee-regs) h)))
                   (do (emit "  movq %rax, %rdi")
                       (emitf "  movq " h ", %rax")
@@ -841,10 +844,18 @@
         (emitf "  cmp" (if (= w 8) "q " "l ") ro ", " (render-mem (addr-operand lhs)))
         (and (reg? lo) (rdi-addr? rhs) (= w (t/type-size (:type rhs))))
         (emitf "  cmp" (if (= w 8) "q " "l ") (render-mem (addr-operand rhs)) ", " lo)
+        ;; lhs a register/memory operand: rhs into %rax, then compare lhs with it in place
+        (and lo (not (imm? lo)) (not ro))
+        (do (gen-expr rhs)
+            (emitf "  cmp" (if (= w 8) "q " "l ") (if (= w 8) "%rax" "%eax") ", " lo))
         :else
-      (let [o (gen-int-operands lhs rhs w)]
-        (if (and (= o "$0") (#{:eq :ne} op))
+      (let [sw (volatile! false)
+            o (gen-int-operands* lhs rhs w sw)]
+        (cond
+          @sw (emitf "  cmp" (if (= w 8) "q " "l ") (if (= w 8) "%rax" "%eax") ", " o)
+          (and (= o "$0") (#{:eq :ne} op))
           (emit (if (= w 8) "  testq %rax, %rax" "  testl %eax, %eax"))
+          :else
           (emitf "  cmp" (if (= w 8) "q " "l ") o ", " (if (= w 8) "%rax" "%eax"))))))
     ((if u cc-unsigned cc-signed) op)))
 
