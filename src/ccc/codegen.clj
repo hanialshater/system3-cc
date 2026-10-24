@@ -4,6 +4,7 @@
   (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.types :as t]
             [ccc.mach :as mach]
+            [ccc.frame :as frame]
             [clojure.string :as str]))
 
 (def ^:dynamic ^StringBuilder *asm* nil)
@@ -2674,7 +2675,7 @@
             (emit "  leave")
             (emit "  ret")
             (emitf "  .size " name ", .-" name))
-          (str out))))))
+          (if (System/getenv "CCC_NOFRAME") (str out) (frame/rsp-frame (str out))))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Data
