@@ -331,7 +331,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare gen-memset-inline capture rax-only? gen-sra-copy gen-expr gen-call-finish gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare gen-into-reg! gen-memset-inline capture rax-only? gen-sra-copy gen-expr gen-call-finish gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -782,8 +782,9 @@
           (let [[q d] (reg-names sr)] (if (= w 8) q d)))
     (if (or (int-operand lhs w) (rax-only? lhs))
       ;; lhs has no side effects: compute rhs first, then load lhs
-      (do (gen-expr rhs)
-          (emit "  movq %rax, %rdi")
+      (do (when-not (gen-into-reg! ["%rdi" "%edi" "%di" "%dil"] rhs nil)
+            (gen-expr rhs)
+            (emit "  movq %rax, %rdi"))
           (gen-expr lhs)
           (if (= w 8) "%rdi" "%edi"))
       (do
