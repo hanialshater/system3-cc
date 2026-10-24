@@ -105,8 +105,9 @@
 
 (defn- inline-function
   "Returns f with the calls to gcands inlined."
-  [f gcands limit-budget counter-start]
-  (let [temps (volatile! []) counter (volatile! 0) budget (volatile! limit-budget)
+  [f gcands limit cold-limit limit-budget counter-start]
+  (let [temps (volatile! []) counter (volatile! 0)
+        budget (volatile! (min limit-budget (+ 200 (long (* (env-long "CCC_INLINE_GROWTH" 100000) 0.01 (node-count (:body f)))))))
         label-n (volatile! counter-start)
         new-label (fn [] (str ".L.inl." (vswap! label-n inc)))
         inl-call? (fn inl-call? [x]
@@ -115,14 +116,15 @@
                                        (some (fn [[k v]] (and (not (contains? skip-keys k)) (inl-call? v))) x))
                           (vector? x) (some inl-call? x)
                           :else false))]
-    (letfn [(rw [x path depth]
+    (letfn [(rw [x path depth lp]
               (cond
                 (map? x)
                 (let [path (if (:scope-id x) (conj path (:scope-id x)) path)
+                      lp (or lp (= :for (:op x)) (= :do (:op x)))
                       ntemps (count @temps)
                       nested? (inl-call? (:args x))
                       x (if (:op x)
-                          (persistent! (reduce-kv (fn [acc k v] (if (contains? skip-keys k) acc (assoc! acc k (rw v path depth))))
+                          (persistent! (reduce-kv (fn [acc k v] (if (contains? skip-keys k) acc (assoc! acc k (rw v path depth lp))))
                                                   (transient x) x))
                           x)
                       fnode (:fn x)
@@ -132,7 +134,7 @@
                              (pos? @budget)
                              (< depth inline-depth)
                              (get gcands (:label (:var fnode))))]
-                  (if (and g
+                  (if (and g (<= (:size g) (if lp limit cold-limit))
                            (let [cf (:f g)]
                              (and (= (count (:args x)) (count (:params cf)))
                                   (every? (fn [[a p]] (same-shape? (:type a) (t/strip (:type p)))) (map vector (:args x) (:params cf)))
@@ -161,7 +163,7 @@
                           body (clone-body (:body cf) vmap lmap rv lend rt)
                           croot (some (fn [v] (first (:block v))) (:locals cf))
                           body (if croot {:op :block :body [body] :scope-id croot} body)
-                          body (rw body base (inc depth))
+                          body (rw body base (inc depth) lp)
                           assigns (mapv (fn [p a]
                                           (let [tv (vmap (:id p)) pt (t/strip (:type p))]
                                             {:op :expr-stmt
@@ -175,10 +177,10 @@
                                         (cond-> (not void?)
                                           (conj {:op :expr-stmt :expr {:op :var :var rv :type rt}})))}})
                     x))
-                (vector? x) (mapv #(rw % path depth) x)
+                (vector? x) (mapv #(rw % path depth lp) x)
                 :else x))]
       (let [root (or (some (fn [v] (first (:block v))) (:locals f)) :root)
-            body (rw (:body f) [root] 1)]
+            body (rw (:body f) [root] 1 false)]
         [(if (seq @temps)
            (assoc f :body body :locals (into (vec (:locals f)) @temps))
            f)
@@ -189,7 +191,7 @@
   [{:keys [functions] :as prog}]
   (if (or (System/getenv "CCC_NOINLINE") (System/getenv "CCC_NOGINLINE"))
     prog
-    (let [limit (env-long "CCC_INLINE_LIMIT" 200)
+    (let [limit (env-long "CCC_INLINE_LIMIT" 100)
           budget (env-long "CCC_INLINE_BUDGET" 60000)
           gcands (into {} (keep (fn [f] (when-let [c (candidate f limit)] [(:name f) c])) functions))]
       (if (empty? gcands)
@@ -197,5 +199,7 @@
         (loop [fs (seq functions) out [] n 0]
           (if-not fs
             (assoc prog :functions out)
-            (let [[f2 n2] (inline-function (first fs) gcands budget n)]
+            (let [[f2 n2] (inline-function (first fs) gcands limit (env-long "CCC_INLINE_COLD" 100) budget n)
+                  _ (when (System/getenv "CCC_PROF")
+                      (binding [*out* *err*] (println "GROW" (:name f2) (node-count (:body (first fs))) (node-count (:body f2)))))]
               (recur (next fs) (conj out f2) (long n2)))))))))
