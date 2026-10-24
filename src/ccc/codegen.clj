@@ -328,7 +328,7 @@
 ;; ---------------------------------------------------------------------------
 ;; Expressions
 
-(declare capture rax-only? gen-sra-copy gen-expr gen-call-finish gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
+(declare gen-memset-inline capture rax-only? gen-sra-copy gen-expr gen-call-finish gen-stmt var-offset gen-discard gen-assign-mem int-operand addr-operand materialize gen-binary-int* cheap-index? index-into-rdi sfx-of fixed-mem-op render-mem)
 
 (defn local-addr
   "Emit the address of local v into reg."
@@ -1688,6 +1688,7 @@
     :incdec (gen-incdec-nv n)
     :comma (do (gen-discard (:lhs n)) (gen-discard (:rhs n)))
     :sra-copy (gen-sra-copy n)
+    :memset-inline (gen-memset-inline n)
     :cond (if (and (:then n) (:els n))
             (let [l-else (new-label) l-end (new-label)]
               (gen-branch (:cond n) l-else false)
@@ -1704,6 +1705,7 @@
   "gen-expr for the less common operators (apart, so that gen-expr stays small enough to JIT-compile)."
   [n]
   (case (:op n)
+    :memset-inline (gen-memset-inline n)
     :incdec (if (and (= :var (:op (:expr n))) (vreg (:var (:expr n))))
               (let [v (:var (:expr n)) ty (:type n) sz (t/type-size ty) d (:delta n) r (vreg v)]
                 (if (>= sz 4)
@@ -2236,6 +2238,97 @@
             (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
             (recur (rest cs) assigned out)))))))
 
+;; ---------------------------------------------------------------------------
+;; memcpy/memset with a small constant size, value unused: open-coded copies/stores
+
+(def mem-inline-max 64)
+
+(defn blob-type
+  "A struct type of n bytes, alignment 1, with no members (for byte copies)."
+  [n]
+  (let [id [:ccc-blob n]]
+    (when-not (contains? @t/*structs* id)
+      (swap! t/*structs* assoc id {:complete true :kind :struct :size n :align 1 :members []}))
+    {:kind :struct :id id}))
+
+(defn const-size-arg [a]
+  (let [a (if (and (= :cast (:op a)) (t/integer? (:type a))) (:expr a) a)]
+    (when (and (= :num (:op a)) (not (:fval a)) (t/integer? (:type a)))
+      (:val a))))
+
+(defn retype-ptr
+  "Pointer node p seen as pointing to type ty."
+  [p ty]
+  (let [inner (if (and (= :cast (:op p)) (t/ptr? (:type p)) (t/ptr? (:type (:expr p)))) (:expr p) p)]
+    (if (and (t/ptr? (:type inner)) (#{:var :add :sub :member :deref :call :addr} (:op inner)))
+      (assoc inner :type (t/ptr-to ty))
+      {:op :cast :type (t/ptr-to ty) :expr p})))
+
+(defn lower-mem-call
+  "Rewrite a discarded memcpy/memset call node, or return it unchanged."
+  [x]
+  (let [fnode (:fn x)
+        nm (when (and (= :call (:op x)) (= :var (:op fnode)) (not (:local (:var fnode)))
+                      (t/func? (:type fnode)) (= 3 (count (:args x))))
+             (:label (:var fnode)))]
+    (if (and (#{"memcpy" "memset"} nm) (not (contains? *defined* nm)))
+      (let [[d s c] (:args x)
+            n (const-size-arg c)]
+        (cond
+          (not (and n (<= 1 n mem-inline-max))) x
+          (= nm "memcpy")
+          (let [bt (blob-type n)]
+            {:op :assign :type bt
+             :lhs {:op :deref :type bt :expr (retype-ptr d bt)}
+             :rhs {:op :deref :type bt :expr (retype-ptr s bt)}})
+          :else
+          (if-let [v (const-size-arg s)]
+            {:op :memset-inline :type t/ty-void :dst d :val (bit-and v 255) :size n}
+            x)))
+      x)))
+
+(defn lower-mem-builtins
+  "Open-code memcpy/memset calls whose size is a small constant and whose value is unused."
+  [body]
+  (letfn [(disc [e]
+            (case (:op e)
+              :call (lower-mem-call (rw e))
+              :comma (assoc e :lhs (disc (:lhs e)) :rhs (disc (:rhs e)))
+              :cast (if (= :void (:kind (:type e))) (assoc e :expr (disc (:expr e))) (rw e))
+              (rw e)))
+          (rw [x]
+            (cond
+              (map? x)
+              (if-let [op (:op x)]
+                (case op
+                  :expr-stmt (assoc x :expr (disc (:expr x)))
+                  :comma (assoc x :lhs (disc (:lhs x)) :rhs (rw (:rhs x)))
+                  (persistent! (reduce-kv (fn [acc k v]
+                                            (if (or (map? v) (vector? v))
+                                              (case k
+                                                (:type :var :member :fn-type :cases :restore :ret-buf :tmp) acc
+                                                (assoc! acc k (if (and (= k :inc) (= op :for)) (disc v) (rw v))))
+                                              acc))
+                                          (transient x) x)))
+                x)
+              (vector? x) (mapv rw x)
+              :else x))]
+    (rw body)))
+
+(defn gen-memset-inline [n]
+  (let [sz (:size n) v (:val n)
+        pat (reduce (fn [acc _] (bit-or (bit-shift-left acc 8) v)) 0 (range 8))]
+    (gen-expr (:dst n))
+    (if (zero? v)
+      (emit "  xorl %edx, %edx")
+      (emitf "  movabsq $" pat ", %rdx"))
+    (loop [k 0]
+      (let [rem (- sz k)
+            [w r] (cond (>= rem 8) [8 "%rdx"] (>= rem 4) [4 "%edx"] (>= rem 2) [2 "%dx"] (>= rem 1) [1 "%dl"] :else [0 nil])]
+        (when (pos? w)
+          (emitf "  mov" (sfx-of w) " " r ", " (if (zero? k) "" k) "(%rax)")
+          (recur (+ k w)))))))
+
 (def sra-skip-keys #{:type :member :cases :fn-type})
 
 (defn sra-candidates [f]
@@ -2371,7 +2464,7 @@
               8 (do (emitf "  movq " src ", %rcx") (emitf "  movq %rcx, " dst)))))))))
 
 (defn gen-function [f]
-  (let [f (sra-function f)
+  (let [f (sra-function (assoc f :body (lower-mem-builtins (:body f))))
         [offsets frame info pinfo] (assign-offsets f)
         name (:name f)
         regvars (choose-regvars f)
