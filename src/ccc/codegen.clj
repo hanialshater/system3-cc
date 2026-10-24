@@ -1730,6 +1730,33 @@
                   (recur (+ k w))))))
           true)))))
 
+(defn gen-into-vreg!
+  "Emit rhs computed straight into register variable v's register when rhs's code is
+   straight-line moves/arithmetic that never mention v's register (then %rax only names
+   the result). Returns true if done, false (nothing emitted) otherwise."
+  [v rhs]
+  (let [r (vreg v)
+        [_ text] (capture #(gen-expr rhs))
+        lines (split-lines* text)
+        target-re (re-pattern (str "(" (str/join "|" r) ")\\b"))
+        ok (and (seq lines)
+                (every? (fn [^String l]
+                          (let [t (str/trim l)
+                                op (first (str/split t #" " 2))]
+                            (and (str/starts-with? l "  ")
+                                 (contains? into-ok-ops op)
+                                 (not (str/includes? t "%ah"))
+                                 (not (re-find target-re t))
+                                 (or (not (#{"imull" "imulq"} op)) (str/includes? t ",")))))
+                        lines))]
+    (if ok
+      (let [[q d wd b] r]
+        (doseq [l lines]
+          (emit (str/replace l #"%(rax|eax|ax|al)\b"
+                             (fn [[_ x]] (case x "rax" q "eax" d "ax" wd "al" b)))))
+        true)
+      false)))
+
 (defn strip-store-casts
   "For a store of sz bytes to a memory integer lvalue whose value is unused: integer casts
    on the stored value that keep its low sz bytes are dropped."
@@ -1806,6 +1833,9 @@
         (if (= o "$0")
           (emitf "  xorl " (r 1) ", " (r 1))
           (when-not (= o rr) (emitf "  mov" (sfx-of sz) " " o ", " rr))))
+      ;; x = e with x in a register and e's code using only %rax: compute e in x's register
+      (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz) (gen-into-vreg! (:var lhs) rhs))
+      nil
       ;; y = x +/- c with x, y in registers: lea
       (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz)
            (#{:add :sub} (:op rhs)) (= :var (:op (:lhs rhs))) (vreg (:var (:lhs rhs)))
