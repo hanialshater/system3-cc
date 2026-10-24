@@ -2406,6 +2406,8 @@
       (walk body 0))
     {:weights @weights :addr @addr :pinned @pinned :unsafe @unsafe :seen @seen :has-call @has-call}))
 
+(def ^:private rv-min (if-let [e (System/getenv "CCC_RVMIN")] (parse-long e) 24))
+
 (defn choose-regvars
   "Assign callee-saved registers to the most used eligible scalar locals."
   [f]
@@ -2443,6 +2445,8 @@
               order (cond (not (r89-ok? v)) (range n-callee-saved)
                           (call-free? v) (concat [5 6] (range n-callee-saved) [7 8])
                           :else (range n-callee-saved))
+              w (get weights (:id v) 0)
+              order (if (< w rv-min) (remove #(< % n-callee-saved) order) order)
               r (first (remove taken order))]
           (if r
             (recur (rest cs) (conj assigned [v r]) (assoc out (:id v) r))
