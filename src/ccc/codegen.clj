@@ -2971,10 +2971,42 @@
                 (reads-rdi? args) false
                 :else (recur (inc j) (inc steps))))))))))
 
+(defn dup-tails
+  "A jmp to a label whose block is at most 3 plain instructions followed by an unconditional
+   jmp is replaced by a copy of that block (saves one jump per execution)."
+  [lines]
+  (let [n (count lines)
+        label? (fn [^String l] (and (pos? (count l)) (not (.startsWith l " ")) (.endsWith l ":")))
+        plain? (fn [^String l] (and (.startsWith l "  ") (not (.startsWith l "  ."))
+                                    (not (.startsWith l "  j")) (not (.startsWith l "  call"))
+                                    (not (.startsWith l "  ret")) (not (.startsWith l "  rep "))))
+        tails (loop [i 0 m (transient {})]
+                (if (>= i n)
+                  (persistent! m)
+                  (let [l (lines i)]
+                    (if (label? l)
+                      (let [j (loop [j (inc i)] (if (and (< j n) (label? (lines j))) (recur (inc j)) j))
+                            k (loop [k j] (if (and (< k n) (< (- k j) 4) (plain? (lines k))) (recur (inc k)) k))
+                            nx (when (< k n) (lines k))]
+                        (recur (inc i)
+                               (if (and nx (<= 1 (- k j) 3) (.startsWith ^String nx "  jmp ") (not (.startsWith ^String nx "  jmp *"))
+                                        (not= (subs nx 6) (subs l 0 (dec (count l)))))
+                                 (assoc! m (subs l 0 (dec (count l))) (subvec lines j (inc k)))
+                                 m)))
+                      (recur (inc i) m)))))]
+    (if (empty? tails)
+      lines
+      (let [out (java.util.ArrayList. (+ n 1024))]
+        (doseq [^String l lines]
+          (if-let [tl (and (.startsWith l "  jmp ") (get tails (subs l 6)))]
+            (.addAll out ^java.util.Collection tl)
+            (.add out l)))
+        (vec out)))))
+
 (defn peephole
   "Simple cleanups on the emitted lines."
   [^String text]
-  (let [lines (drop-redundant-ext (thread-jumps (vec (split-lines* text))))
+  (let [lines (drop-redundant-ext (dup-tails (thread-jumps (vec (split-lines* text)))))
         n (count lines)
         out (java.util.ArrayList.)]
     (loop [i 0]
