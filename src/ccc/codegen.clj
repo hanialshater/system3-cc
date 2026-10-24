@@ -425,6 +425,12 @@
     :deref (let [ty (:type n)]
              (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty)))
                (fixed-mem-op n)))
+    ;; a cast between integer/pointer types of the same size changes no bits
+    :cast (let [ty (:type n) e (:expr n) ft (:type e)]
+            (when (and (or (t/integer? ty) (t/ptr? ty)) (or (t/integer? ft) (t/ptr? ft))
+                       (not= :bool (:kind ty)) (not= :bool (:kind ft))
+                       (= w (t/type-size ty)) (= w (t/type-size ft)))
+              (int-operand e w)))
     nil))
 
 (defn fixed-mem-op
@@ -510,7 +516,14 @@
           (emit (if (t/unsigned? ity) "  movl %eax, %edi" "  movslq %eax, %rdi")))
       :else (do (gen-expr x) (emit "  movq %rax, %rdi")))))
 
-(declare addr-operand fixed-addr?)
+(declare addr-operand fixed-addr? into-lines)
+
+(defn index-into-rdi-direct
+  "Compute a long index whose code needs only %rax straight into %rdi (leaving %rax alone); false if not possible."
+  [x]
+  (if-let [lines (into-lines x "%rdi")]
+    (do (doseq [l lines] (emit l)) true)
+    false))
 
 (defn cheap-index?
   "Index expressions that index-into-rdi loads without touching %rax."
@@ -656,10 +669,13 @@
                              b)]
                      (if (or (cheap-index? idx) (not= "%rax" (:base b)))
                        (index-into-rdi idx)
-                       (do (push!) (index-into-rdi idx) (pop! "%rax")))
+                       (when-not (index-into-rdi-direct idx)
+                         (push!) (index-into-rdi idx) (pop! "%rax")))
                      (-> b (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
                    :else
-                   (do (gen-expr p) (push!) (index-into-rdi idx) (pop! "%rax")
+                   (do (gen-expr p)
+                       (when-not (index-into-rdi-direct idx)
+                         (push!) (index-into-rdi idx) (pop! "%rax"))
                        {:base "%rax" :index "%rdi" :scale scale :disp extra})))
                (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
                {:base ((vreg (:var e)) 0)}
@@ -715,7 +731,8 @@
     "imull" "imulq" "negl" "negq" "notl" "notq" "shll" "shlq" "shrl" "shrq" "sarl" "sarq"})
 
 (def reg-names
-  {"%r10" ["%r10" "%r10d" "%r10w" "%r10b"] "%r11" ["%r11" "%r11d" "%r11w" "%r11b"]})
+  {"%r10" ["%r10" "%r10d" "%r10w" "%r10b"] "%r11" ["%r11" "%r11d" "%r11w" "%r11b"]
+   "%rdi" ["%rdi" "%edi" "%di" "%dil"]})
 
 (defn into-lines
   "Code computing rax-only expression n into register r (a key of reg-names)
@@ -729,7 +746,7 @@
                        (let [t (str/trim l)
                              op (first (str/split t #" " 2))]
                          (and (contains? into-ok-ops op)
-                              (not (re-find #"%ah|%r1[01]" t))
+                              (not (re-find (if (= r "%rdi") #"%ah|%(rdi|edi|di|dil)\b" #"%ah|%r1[01]") t))
                               (or (not (#{"imull" "imulq"} op)) (str/includes? t ",")))))
                      lines)]
       (when ok
@@ -1062,6 +1079,9 @@
             (emitf "  cmp" sfx " $0, " (render-mem (addr-operand core)))
             (and sfx (intlike? cty) (= :var (:op core)) (vreg (:var core)))
             (let [r (vreg (:var core))] (if (= 8 csz) (emitf "  testq " (r 0) ", " (r 0)) (emitf "  testl " (r 1) ", " (r 1))))
+            ;; memory operand (frame/static variable, *p or p->m with p in a register)
+            (and (#{4 8} csz) (intlike? cty) (let [o (int-operand core csz)] (and o (str/includes? o "("))))
+            (emitf "  cmp" sfx " $0, " (int-operand core csz))
             :else
             (do
           (gen-expr n)
@@ -1317,6 +1337,14 @@
               (emitf "  movq " reg ", " off "(%rdi)")
               (recur (inc i) (inc gi) fi))))))))
 
+(declare gen-into-reg! argreg-names-re)
+
+(defn arg-into-reg!
+  "A general-register argument computed straight into its argument register; true if done."
+  [a]
+  (let [i (:reg a)]
+    (gen-into-reg! [(nth argreg64 i) (nth argreg32 i) (nth argreg16 i) (nth argreg8 i)] (:node a) argreg-names-re)))
+
 (defn gen-call [n]
   (let [fnode (:fn n)
         ret (:type n)
@@ -1346,8 +1374,19 @@
           :else (emitf "  movq %rax, " off "(%rsp)"))))
     (doseq [[r slot] *r89-slots*] (emitf "  movq " r ", " slot))
     (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))
+          ;; indirect call through a pointer that is a plain operand: loaded into %r10 after the arguments
+          fn-op (when-not direct
+                  (let [f (if (and (= :deref (:op fnode)) (t/func? (:type fnode))) (:expr fnode) fnode)
+                        o (when (t/ptr? (:type f)) (int-operand f 8))]
+                    (if (and o (not (re-find #"%r(8|9|10|11)" o)))
+                      (str "  movq " o ", %r10\n")
+                      ;; a pure pointer expression whose code uses only %rax: computed after the arguments
+                      (when (pure? f)
+                        (let [[_ text] (capture #(gen-expr f))]
+                          (when-not (re-find #"call|push|pop|%(rdi|edi|di|dil|rsi|esi|si|sil|rdx|edx|dx|dl|rcx|ecx|cx|cl|r8|r9|r10|r11|rsp)" text)
+                            (str text "  movq %rax, %r10\n")))))))
           ngp (+ (if ret-mem 1 0) (count (filter #(= :gp (:mode %)) args)))
-          fast (and direct (not-any? #(= :struct-reg (:mode %)) args)
+          fast (and (or direct fn-op) (not-any? #(= :struct-reg (:mode %)) args)
                     (not (and (seq *r89-slots*) (>= ngp 5))))
           ;; register targets
           args (loop [as args gp (if ret-mem 1 0) fp 0 out []]
@@ -1436,7 +1475,7 @@
       (if (and fast (every? #(and (= :gp (:mode %)) (rax-only? (:node %))) complex))
         ;; every complex arg is computed in %rax alone: right to left, straight to registers
         (do (doseq [a (reverse complex)]
-              (when-not (direct-into a)
+              (when-not (or (direct-into a) (arg-into-reg! a))
                 (gen-expr (:node a))
                 (to-reg a)))
             (doseq [a simple] (load-simple a))
@@ -1452,8 +1491,9 @@
                                [a h]))
                          (do (push-arg! a) [a nil]))))]
             (when-let [a0 (first complex)]
-              (gen-expr (:node a0))
-              (to-reg a0))
+              (when-not (and (= :gp (:mode a0)) (arg-into-reg! a0))
+                (gen-expr (:node a0))
+                (to-reg a0)))
             (doseq [[a h] (reverse held)]
               (if h
                 (do (emitf "  movq " (first h) ", " (nth argreg64 (:reg a)))
@@ -1467,6 +1507,7 @@
               (emit "  movq %rax, %r10"))
             (when ret-mem
               (local-addr (:ret-buf n) "%rdi")))))
+      (when (and fast fn-op) (.append ^StringBuilder *asm* ^String fn-op))
       (gen-call-finish n args fast direct ret ret-mem stack pad fnode))))
 
 (defn gen-call-finish
@@ -1700,8 +1741,59 @@
                   (recur (+ k w))))))
           true)))))
 
+(defn gen-into-reg!
+  "Emit rhs computed straight into register r ([q d w b] names) when rhs's code is
+   straight-line moves/arithmetic that never mention r (nor registers matching the regex
+   string extra); then %rax only names the result. Returns true if done, false (nothing
+   emitted) otherwise."
+  [r rhs extra]
+  (let [[_ text] (capture #(gen-expr rhs))
+        lines (split-lines* text)
+        target-re (re-pattern (str "(" (str/join "|" r) (if extra (str "|" extra) "") ")\\b"))
+        ok (and (seq lines)
+                (every? (fn [^String l]
+                          (let [t (str/trim l)
+                                op (first (str/split t #" " 2))]
+                            (and (str/starts-with? l "  ")
+                                 (contains? into-ok-ops op)
+                                 (not (str/includes? t "%ah"))
+                                 (not (re-find target-re t))
+                                 (or (not (#{"imull" "imulq"} op)) (str/includes? t ",")))))
+                        lines))]
+    (if ok
+      (let [[q d wd b] r]
+        (doseq [l lines]
+          (emit (str/replace l #"%(rax|eax|ax|al)\b"
+                             (fn [[_ x]] (case x "rax" q "eax" d "ax" wd "al" b)))))
+        true)
+      false)))
+
+(defn gen-into-vreg! [v rhs] (gen-into-reg! (vreg v) rhs nil))
+
+(def argreg-names-re "%(rdi|edi|di|dil|rsi|esi|si|sil|rdx|edx|dx|dl|rcx|ecx|cx|cl|r8|r8d|r8w|r8b|r9|r9d|r9w|r9b)")
+
+(defn strip-store-casts
+  "For a store of sz bytes to a memory integer lvalue whose value is unused: integer casts
+   on the stored value that keep its low sz bytes are dropped."
+  [lhs rhs]
+  (let [ty (:type lhs) sz (t/type-size ty)
+        ok? (fn [t] (and (or (t/integer? t) (t/ptr? t)) (not= :bool (:kind t)) (>= (t/type-size t) sz)))]
+    (if (and (t/integer? ty) (not= :bool (:kind ty)) (#{1 2 4} sz)
+             (not (and (= :var (:op lhs)) (vreg (:var lhs)))))
+      (loop [r rhs]
+        (if (and (= :cast (:op r)) (ok? (:type r)) (ok? (:type (:expr r))))
+          (recur (:expr r))
+          r))
+      rhs)))
+
+(declare gen-assign-nv*)
+
 (defn gen-assign-nv
   "Assignment whose value is not used."
+  [n]
+  (gen-assign-nv* (update n :rhs #(strip-store-casts (:lhs n) %))))
+
+(defn gen-assign-nv*
   [n]
   (let [{:keys [lhs rhs]} n
         ty (:type lhs)
@@ -1756,6 +1848,9 @@
         (if (= o "$0")
           (emitf "  xorl " (r 1) ", " (r 1))
           (when-not (= o rr) (emitf "  mov" (sfx-of sz) " " o ", " rr))))
+      ;; x = e with x in a register and e's code using only %rax: compute e in x's register
+      (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz) (gen-into-vreg! (:var lhs) rhs))
+      nil
       ;; y = x +/- c with x, y in registers: lea
       (and int? (= :var (:op lhs)) (vreg (:var lhs)) (#{4 8} sz)
            (#{:add :sub} (:op rhs)) (= :var (:op (:lhs rhs))) (vreg (:var (:lhs rhs)))
