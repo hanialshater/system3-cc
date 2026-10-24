@@ -5,6 +5,7 @@
             [ccc.types :as t]
             [ccc.mach :as mach]
             [ccc.frame :as frame]
+            [ccc.passes.inline :as inline-pass]
             [clojure.string :as str]))
 
 (def ^:dynamic ^StringBuilder *asm* nil)
@@ -3049,8 +3050,9 @@
             (assoc f :body body :locals (into (vec (:locals f)) @temps))
             f))))))
 
-(defn generate [{:keys [globals functions]}]
-  (let [sb (StringBuilder.)
+(defn generate [prog]
+  (let [{:keys [globals functions]} (inline-pass/run prog)
+        sb (StringBuilder.)
         defined (into #{} (concat (map :label (filter #(or (:defined %) (:init %)) globals))
                                   (map :name functions)))]
     (binding [*asm* sb
