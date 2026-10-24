@@ -457,7 +457,9 @@
           (let [it (items i)]
             (if (= :ins (:k it))
               (let [d (long (:d it))]
-                (if (and (:pure it) (zero? (bit-and d live)) (not (:mw it)) (not (zero? d)))
+                (if (or (and (:pure it) (zero? (bit-and d live)) (not (:mw it)) (not (zero? d)))
+                        (and (= :move (:c it)) (#{"movq" "movw" "movb"} (:op it))
+                             (let [[x y] (:a it)] (and (reg? x) (reg? y) (= (:f x) (:f y)) (= (:w x) (:w y))))))
                   (do (assoc! items i nop-item) (vreset! changed true) (recur (dec i) live))
                   (recur (dec i) (bit-or (bit-and live (bit-not d)) (long (:u it))))))
               (recur (dec i) live))))))
@@ -666,6 +668,201 @@
     [(persistent! items) @changed]))
 
 ;; ---------------------------------------------------------------------------
+;; Slot promotion: a safe frame slot whose every access can take a register
+;; operand instead is given a register that is free (not live, not touched)
+;; wherever the slot is live.
+
+(defn ext-src-width ^long [^String op]
+  (cond (.startsWith op "movzb") 8 (.startsWith op "movsb") 8
+        (.startsWith op "movzw") 16 (.startsWith op "movsw") 16
+        (= op "movslq") 32 :else 0))
+
+(defn slot-access
+  "For an instruction with a frame-slot memory operand: [pos width use? def?]
+   when the operand can be replaced by a register, :bad when it cannot, nil
+   when the instruction has no frame-slot operand."
+  [it]
+  (let [a (:a it) n (count a)
+        pos (loop [k 0] (cond (>= k n) nil (:slot (a k)) k :else (recur (inc k))))]
+    (when pos
+      (let [c (:c it) w (long (or (:w it) 0))
+            other-ok (fn [] (every? (fn [k] (or (= k pos) (#{:r :i} (:t (a k))))) (range n)))]
+        (or
+         (case c
+           :move (when (and (= 2 n) (#{"movq" "movl" "movw" "movb"} (:op it)) (other-ok))
+                   (if (= 0 pos) (when (reg? (a 1)) [pos w true false]) [pos w false true]))
+           :ext (when (and (= 0 pos) (pos? (ext-src-width (:op it)))) [pos (ext-src-width (:op it)) true false])
+           (:alu :aluc) (when (and (= 2 n) (other-ok)) [pos w true (= 1 pos)])
+           :cmp (when (and (= 2 n) (other-ok)) [pos w true false])
+           (:shift :rot) (when (and (= pos (dec n)) (other-ok)) [pos w true true])
+           (:neg :not :incdec) (when (= 1 n) [pos w true true])
+           :imul (case (int n) 2 (when (and (= 0 pos) (other-ok)) [pos w true false])
+                       3 (when (and (= 1 pos) (other-ok)) [pos w true false])
+                       nil)
+           :setcc (when (= 1 n) [pos 8 false true])
+           :cmov (when (and (= 0 pos) (other-ok)) [pos w true false])
+           :push (when (= 1 n) [pos 64 true false])
+           nil)
+         :bad)))))
+
+(defn- loop-blocks
+  "Boolean array: block lies on a cycle of the CFG (Tarjan SCC)."
+  [{:keys [succ n]}]
+  (let [n (long n)
+        index (int-array n -1) low (int-array n) on (boolean-array n)
+        stack (java.util.ArrayDeque.) res (boolean-array n) counter (volatile! 0)]
+    (letfn [(strong [v]
+              (aset index v (int @counter)) (aset low v (int @counter)) (vswap! counter inc)
+              (.push stack (int v)) (aset on v true)
+              (doseq [w (succ v) :when (>= (long w) 0)]
+                (cond (neg? (aget index (int w))) (do (strong w) (aset low v (min (aget low v) (aget low (int w)))))
+                      (aget on (int w)) (aset low v (min (aget low v) (aget index (int w))))))
+              (when (= (aget low v) (aget index v))
+                (let [comp (loop [acc []] (let [w (int (.pop stack))] (aset on w false)
+                                            (if (= w v) (conj acc w) (recur (conj acc w)))))]
+                  (when (or (> (count comp) 1) (some #(= v %) (succ v)))
+                    (doseq [w comp] (aset res (int w) true))))))]
+      (dotimes [v n] (when (neg? (aget index v)) (strong v))))
+    res))
+
+(def promote-order
+  ;; caller-saved first (free only where no call intervenes), then callee-saved
+  [11 10 9 8 6 7 1 2 3 12 13 14 15])
+
+(defn promote-slots
+  [items safe? ^long callee-used]
+  (let [bl (build-blocks items)
+        nb (long (:n bl)) starts (:starts bl) ends (:ends bl)
+        n (count items)
+        ;; slot accesses
+        acc (object-array n)
+        slot-of (java.util.HashMap.)    ; offset -> slot index
+        offs (java.util.ArrayList.)
+        info (java.util.ArrayList.)     ; per slot: volatile {:w :bad :n}
+        _ (dotimes [i n]
+            (let [it (items i)]
+              (when (= :ins (:k it))
+                (when-let [sa (slot-access it)]
+                  (let [off ((:a it) (if (= :bad sa) (some (fn [k] (when (:slot ((:a it) k)) k)) (range (count (:a it)))) (sa 0)))
+                        off (:slot off)
+                        k (or (.get slot-of off) (let [k (.size offs)] (.put slot-of off k) (.add offs off) (.add info (volatile! {:w nil :bad false :n 0})) k))
+                        inf (.get info k)]
+                    (if (= :bad sa)
+                      (vswap! inf assoc :bad true)
+                      (let [[_ w] sa]
+                        (when (and (:w @inf) (not= (:w @inf) w)) (vswap! inf assoc :bad true))
+                        (vswap! inf (fn [m] (-> m (assoc :w w) (update :n inc))))
+                        (aset acc i (conj sa k)))))))))
+        ns (.size offs)
+        ;; overlapping slots and unsafe slots are out
+        _ (dotimes [k ns]
+            (let [off (long (.get offs k)) inf (.get info k) w (:w @inf)]
+              (when (or (nil? w) (not (safe? off (quot (long w) 8)))) (vswap! inf assoc :bad true))
+              (when w
+                (dotimes [j ns]
+                  (when (not= j k)
+                    (let [o2 (long (.get offs j)) w2 (:w @(.get info j))]
+                      (when (and w2 (< o2 (+ off (quot (long w) 8))) (< off (+ o2 (quot (long w2) 8))))
+                        (vswap! inf assoc :bad true))))))))
+        good (vec (filter #(not (:bad @(.get info %))) (range ns)))]
+    (if (empty? good)
+      [items false]
+      (let [;; slot liveness (BitSets over slot indices)
+            gen (object-array nb) kill (object-array nb)
+            _ (dotimes [b nb]
+                (let [g (java.util.BitSet.) k (java.util.BitSet.)]
+                  (loop [i (dec (ends b))]
+                    (when (>= i (starts b))
+                      (when-let [[_ _ u d s] (aget acc i)]
+                        (when d (.clear g (int s)) (.set k (int s)))
+                        (when u (.set g (int s)) (.clear k (int s))))
+                      (recur (dec i))))
+                  (aset gen b g) (aset kill b k)))
+            lin (object-array nb) lout (object-array nb)
+            _ (dotimes [b nb] (aset lin b (java.util.BitSet.)) (aset lout b (java.util.BitSet.)))
+            all-slots (doto (java.util.BitSet.) (.set 0 (int ns)))
+            _ (loop [changed true]
+                (when changed
+                  (recur (loop [b (dec nb) ch false]
+                           (if (< b 0) ch
+                               (let [out (java.util.BitSet.)]
+                                 (doseq [s ((:succ bl) b)]
+                                   (case (int s) -1 nil -2 (.or out all-slots) (.or out ^java.util.BitSet (aget lin (int s)))))
+                                 (let [in (.clone out)]
+                                   (.andNot ^java.util.BitSet in ^java.util.BitSet (aget kill b))
+                                   (.or ^java.util.BitSet in ^java.util.BitSet (aget gen b))
+                                   (aset lout b out)
+                                   (if (= in (aget lin b))
+                                     (recur (dec b) ch)
+                                     (do (aset lin b in) (recur (dec b) true))))))))))
+            ;; slots live into the function are out
+            entry-live ^java.util.BitSet (if (pos? nb) (aget lin 0) (java.util.BitSet.))
+            ;; register liveness
+            rlo (liveness items bl)
+            busy (long-array n)
+            ;; region of each good slot: instruction indices where it is live or accessed
+            region (object-array ns)
+            loops (loop-blocks bl)
+            weight (long-array ns)
+            good-set (doto (java.util.BitSet.) (#(doseq [k good] (.set ^java.util.BitSet % (int k)))))
+            _ (doseq [k good] (aset region k (java.util.ArrayList.)))
+            _ (dotimes [b nb]
+                (loop [i (dec (ends b))
+                       rl (aget ^longs rlo b)
+                       sl ^java.util.BitSet (.clone ^java.util.BitSet (aget lout b))]
+                  (when (>= i (starts b))
+                    (let [it (items i)]
+                      (if (not= :ins (:k it))
+                        (recur (dec i) rl sl)
+                        (let [u (long (:u it)) d (long (:d it))
+                              rin (bit-or (bit-and rl (bit-not d)) u)
+                              a (aget acc i)
+                              sin ^java.util.BitSet (.clone sl)]
+                          (when a
+                            (let [[_ _ su sd s] a]
+                              (when sd (.clear sin (int s)))
+                              (when su (.set sin (int s)))))
+                          (aset busy i (bit-or rl rin u d))
+                          ;; every slot live before or after, or accessed here
+                          (let [touch (doto ^java.util.BitSet (.clone sin) (.or sl))]
+                            (when a (.set touch (int (nth a 4))))
+                            (.and touch good-set)
+                            (loop [s (.nextSetBit touch 0)]
+                              (when (>= s 0)
+                                (.add ^java.util.ArrayList (aget region s) (int i))
+                                (recur (.nextSetBit touch (inc s))))))
+                          (when a
+                            (let [s (int (nth a 4))]
+                              (aset weight s (+ (aget weight s) (if (aget ^booleans loops b) 8 1)))))
+                          (recur (dec i) rin sin)))))))
+            order (sort-by (fn [k] (- (aget weight (int k)))) (remove #(.get entry-live (int %)) good))
+            assign (java.util.HashMap.)
+            used-callee (volatile! callee-used)]
+        (doseq [k order]
+          (let [^java.util.ArrayList reg (aget region k)
+                bm (loop [j 0 m 0] (if (< j (.size reg)) (recur (inc j) (bit-or m (aget busy (int (.get reg j))))) m))
+                w (long (:w @(.get info k)))
+                hot (>= (aget weight k) 8)
+                R (some (fn [r] (when (and (not (bit-test bm r))
+                                           (or (not (#{3 12 13 14 15} r)) (bit-test @used-callee r) hot))
+                                  r))
+                        promote-order)]
+            (when R
+              (.put assign (int k) (int R))
+              (when (#{3 12 13 14 15} R) (vswap! used-callee bit-or (bit R)))
+              (dotimes [j (.size reg)]
+                (let [i (int (.get reg j))] (aset busy i (bit-or (aget busy i) (bit R))))))))
+        (if (.isEmpty assign)
+          [items false]
+          (let [out (transient items)]
+            (dotimes [i n]
+              (when-let [[pos w _ _ s] (aget acc i)]
+                (when-let [R (.get assign (int s))]
+                  (let [it (items i)]
+                    (assoc! out i (reanalyse (assoc it :a (assoc (:a it) pos {:t :r :f (long R) :w (long w)}))))))))
+            [(persistent! out) true]))))))
+
+;; ---------------------------------------------------------------------------
 
 (def ^:private off-passes (or (System/getenv "CCC_AO_OFF") ""))
 (defn- off? [p] (str/includes? off-passes p))
@@ -693,7 +890,10 @@
                   (and (not (contains? leaq-offs off))
                        (not (some (fn [[lo h]] (and (< off h) (< lo hi))) exposed)))))
         no-slots (:no-slots opts)]
-    (loop [items items iter 0]
+    (loop [items (if (or no-slots (off? "PROMO"))
+                   items
+                   (first (promote-slots items safe? (reduce bit-or 0 (keep (fn [it] (when (= :ins (:k it)) (bit-and (bit-or (long (:u it)) (long (:d it))) 0xf008))) items)))))
+           iter 0]
       (let [bl (build-blocks items)
             [items c1] (if (or no-slots (off? "SLOT")) [items false] (slot-forward items bl safe?))
             [items c2] (if (off? "CP") [items false] (copy-prop items bl))
