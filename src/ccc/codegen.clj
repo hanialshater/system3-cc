@@ -735,9 +735,17 @@
                                      (fn [[_ x]] (case x "rax" q "eax" d "ax" wd "al" b))))
                 lines))))))
 
+(declare gen-int-operands*)
+
 (defn gen-int-operands
   "lhs -> %rax; returns an operand string for rhs (immediate, register or memory)."
   [lhs rhs w]
+  (gen-int-operands* lhs rhs w false))
+
+(defn gen-int-operands*
+  "gen-int-operands; with comm (a commutative operation) the result may instead be
+   rhs in %rax and the returned operand the held lhs."
+  [lhs rhs w comm]
   (if-let [o (int-operand rhs w)]
     (do (gen-expr lhs) o)
     (if (and (= w 8) (cheap-index? rhs))
@@ -778,25 +786,33 @@
               (render-mem m))
             (do (emitf "  movq %rax, " sr)
                 (gen-expr rhs)
-                (emit "  movq %rax, %rdi")
-                (emitf "  movq " sr ", %rax")
-                (vswap! *scratch-free* conj sr)
-                (if (= w 8) "%rdi" "%edi")))
+                (if comm
+                  (do (vswap! *scratch-free* conj sr)
+                      (let [[q d] (reg-names sr)] (if (= w 8) q d)))
+                  (do (emit "  movq %rax, %rdi")
+                      (emitf "  movq " sr ", %rax")
+                      (vswap! *scratch-free* conj sr)
+                      (if (= w 8) "%rdi" "%edi")))))
           (let [[_ rtext] (capture #(gen-expr rhs))]
             (if (and (not (str/includes? rtext "call")) (not (re-find #"%(rsi|esi|si|sil)\b" rtext)))
               ;; rhs code leaves %rsi alone: hold lhs there
               (do (emit "  movq %rax, %rsi")
                   (.append ^StringBuilder *asm* rtext)
-                  (emit "  movq %rax, %rdi")
-                  (emit "  movq %rsi, %rax")
-                  (if (= w 8) "%rdi" "%edi"))
+                  (if comm
+                    (if (= w 8) "%rsi" "%esi")
+                    (do (emit "  movq %rax, %rdi")
+                        (emit "  movq %rsi, %rax")
+                        (if (= w 8) "%rdi" "%edi"))))
               (let [[h release] (alloc-holder!)]
                 (emitf "  movq %rax, " h)
                 (gen-expr rhs)
-                (emit "  movq %rax, %rdi")
-                (emitf "  movq " h ", %rax")
-                (release)
-                (if (= w 8) "%rdi" "%edi"))))))))))))
+                (if comm
+                  (do (release)
+                      (if (= w 8) h (or (some (fn [r] (when (= h (r 0)) (r 1))) callee-regs) h)))
+                  (do (emit "  movq %rax, %rdi")
+                      (emitf "  movq " h ", %rax")
+                      (release)
+                      (if (= w 8) "%rdi" "%edi"))))))))))))))
 
 (def cc-signed {:eq "e" :ne "ne" :lt "l" :le "le" :gt "g" :ge "ge"})
 (def cc-unsigned {:eq "e" :ne "ne" :lt "b" :le "be" :gt "a" :ge "ae"})
@@ -907,7 +923,7 @@
       :mul (let [ro (int-operand rhs w) lo (int-operand lhs w)]
              (if (and ro (str/starts-with? ro "$") lo (not (str/starts-with? lo "$")))
                (emitf "  imul" sfx " " ro ", " lo ", " ax)
-               (let [o (gen-int-operands lhs rhs w)]
+               (let [o (gen-int-operands* lhs rhs w true)]
                  (if (str/starts-with? o "$")
                    (emitf "  imul" sfx " " o ", " ax ", " ax)
                    (emitf "  imul" sfx " " o ", " ax)))))
@@ -920,9 +936,9 @@
               (emitf "  lea" sfx " " c "(" (lr 0) "), " ax)
               (let [o (gen-int-operands lhs rhs w)]
                 (emitf "  " (if (= op :add) "add" "sub") sfx " " o ", " ax))))
-          (let [o (gen-int-operands lhs rhs w)]
+          (let [o (gen-int-operands* lhs rhs w (= op :add))]
             (emitf "  " (if (= op :add) "add" "sub") sfx " " o ", " ax))))
-      (let [o (gen-int-operands lhs rhs w)
+      (let [o (gen-int-operands* lhs rhs w true)
             ins (case op :add "add" :sub "sub" :bitand "and" :bitor "or" :bitxor "xor")]
         (emitf "  " ins sfx " " o ", " ax)))))
 
