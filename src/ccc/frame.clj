@@ -176,21 +176,39 @@
                           (not (.contains text "%rsp")) (not (.contains text "rep ")))
                 M (if red? 0 (+ N 8))
                 sb (StringBuilder. (+ 64 (.length text)))]
-            (dotimes [i n]
-              (let [^String l (aget lines i)]
-                (cond
-                  (<= i lab) (do (.append sb l) (.append sb "\n")
-                                 (when (and (== i lab) (not red?))
-                                   (.append sb "  subq $") (.append sb M) (.append sb ", %rsp\n")))
-                  (< i first-body) nil
-                  :else
-                  (let [d (let [x (aget depth i)] (if (== x UNKNOWN) 0 x))]
-                    (cond
-                      (or (label-line? l) (dir-line? l)) (do (.append sb l) (.append sb "\n"))
-                      (= l "  leave")
-                      (let [k (+ M d)]
-                        (when (pos? k) (.append sb "  addq $") (.append sb k) (.append sb ", %rsp\n")))
-                      (.contains l "%rbp")
-                      (do (.append sb (rewrite-rbp l (+ (- M 8) d))) (.append sb "\n"))
-                      :else (do (.append sb l) (.append sb "\n")))))))
+            (let [conv (fn [i]
+                         (let [^String l (aget lines i)
+                               d (let [x (aget depth i)] (if (== x UNKNOWN) 0 x))]
+                           (cond
+                             (or (label-line? l) (dir-line? l)) (str l "\n")
+                             (= l "  leave") (let [k (+ M d)] (if (pos? k) (str "  addq $" k ", %rsp\n") ""))
+                             (.contains l "%rbp") (str (rewrite-rbp l (+ (- M 8) d)) "\n")
+                             :else (str l "\n"))))
+                  ;; the epilogue after .L.return.<name>: small ones are copied to the early returns
+                  rl (loop [i (inc lab)]
+                       (cond (>= i n) -1
+                             (and (label-line? (aget lines i)) (.startsWith ^String (aget lines i) ".L.return.")) i
+                             :else (recur (inc i))))
+                  re (when (pos? rl)
+                       (loop [i (inc rl)]
+                         (cond (or (>= i n) (> (- i rl) 10)) -1
+                               (= "  ret" (aget lines i)) i
+                               (or (label-line? (aget lines i)) (dir-line? (aget lines i))) -1
+                               :else (recur (inc i)))))
+                  epi (when (and re (pos? re))
+                        (let [es (StringBuilder.)]
+                          (loop [i (inc rl)]
+                            (when (<= i re) (.append es ^String (conv i)) (recur (inc i))))
+                          (.toString es)))
+                  jmp-ret (when (pos? rl) (str "  jmp " (let [^String x (aget lines rl)] (subs x 0 (dec (.length x))))))]
+              (dotimes [i n]
+                (let [^String l (aget lines i)]
+                  (cond
+                    (<= i lab) (do (.append sb l) (.append sb "\n")
+                                   (when (and (== i lab) (not red?))
+                                     (.append sb "  subq $") (.append sb M) (.append sb ", %rsp\n")))
+                    (< i first-body) nil
+                    (and epi (= l jmp-ret) (not (and (< (inc i) n) (= (aget lines (inc i)) (aget lines rl)))))
+                    (.append sb ^String epi)
+                    :else (.append sb ^String (conv i))))))
             (.toString sb)))))))
