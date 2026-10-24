@@ -398,6 +398,14 @@
       (fnum-node (if (:fval n) (:fval n) (eval-double n)) ty)
       (and (= :num (:op n)) (:fval n) (t/integer? ty) (not= :bool (:kind ty)))
       (num-node (double->long (:fval n) ty) ty)
+      ;; (integer)&((T *)0)->m and similar: an address with no object is a constant
+      (and (= :addr (:op n)) (t/integer? ty) (not= :bool (:kind ty)) (= 8 (t/type-size ty)))
+      (let [r (try (eval-reloc n)
+                   (catch clojure.lang.ExceptionInfo e
+                     (if (= :not-const (:type (ex-data e))) nil (throw e))))]
+        (if (and r (nil? (first r)))
+          (num-node (wrap (second r) ty) ty)
+          {:op :cast :type ty :expr n}))
       :else {:op :cast :type ty :expr n})))
 
 (defn fold
@@ -502,12 +510,12 @@
       (let [pt (decay lt)] {:op :sub :type pt :lhs lhs :rhs (scale-index rhs pt)})
       (and (t/ptr-like? lt) (t/ptr-like? rt))
       (let [pt (decay lt)
-            diff {:op :sub :type ty-long :lhs (new-cast lhs ty-long) :rhs (new-cast rhs ty-long)}
+            diff (fold {:op :sub :type ty-long :lhs (new-cast lhs ty-long) :rhs (new-cast rhs ty-long)})
             base (:base pt)]
         (if (= :vla (:kind base))
           {:op :div :type ty-long :lhs diff :rhs (new-cast (vla-size-expr base) ty-long)}
           (let [sz (ptr-base-size pt)]
-            (if (= sz 1) diff {:op :div :type ty-long :lhs diff :rhs (num-node sz ty-long) :exact true}))))
+            (if (= sz 1) diff (fold {:op :div :type ty-long :lhs diff :rhs (num-node sz ty-long) :exact true})))))
       :else (err "invalid operands to -"))))
 
 (defn new-mul [l r] (arith-conv :mul l r))
