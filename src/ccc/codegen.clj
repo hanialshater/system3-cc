@@ -423,6 +423,12 @@
     :deref (let [ty (:type n)]
              (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty)))
                (fixed-mem-op n)))
+    ;; a cast between integer/pointer types of the same size changes no bits
+    :cast (let [ty (:type n) e (:expr n) ft (:type e)]
+            (when (and (or (t/integer? ty) (t/ptr? ty)) (or (t/integer? ft) (t/ptr? ft))
+                       (not= :bool (:kind ty)) (not= :bool (:kind ft))
+                       (= w (t/type-size ty)) (= w (t/type-size ft)))
+              (int-operand e w)))
     nil))
 
 (defn fixed-mem-op
@@ -1060,6 +1066,9 @@
             (emitf "  cmp" sfx " $0, " (render-mem (addr-operand core)))
             (and sfx (intlike? cty) (= :var (:op core)) (vreg (:var core)))
             (let [r (vreg (:var core))] (if (= 8 csz) (emitf "  testq " (r 0) ", " (r 0)) (emitf "  testl " (r 1) ", " (r 1))))
+            ;; memory operand (frame/static variable, *p or p->m with p in a register)
+            (and (#{4 8} csz) (intlike? cty) (let [o (int-operand core csz)] (and o (str/includes? o "("))))
+            (emitf "  cmp" sfx " $0, " (int-operand core csz))
             :else
             (do
           (gen-expr n)
@@ -1344,8 +1353,19 @@
           :else (emitf "  movq %rax, " off "(%rsp)"))))
     (doseq [[r slot] *r89-slots*] (emitf "  movq " r ", " slot))
     (let [direct (and (= :var (:op fnode)) (t/func? (:type fnode)) (not (:local (:var fnode))))
+          ;; indirect call through a pointer that is a plain operand: loaded into %r10 after the arguments
+          fn-op (when-not direct
+                  (let [f (if (and (= :deref (:op fnode)) (t/func? (:type fnode))) (:expr fnode) fnode)
+                        o (when (t/ptr? (:type f)) (int-operand f 8))]
+                    (if (and o (not (re-find #"%r(8|9|10|11)" o)))
+                      (str "  movq " o ", %r10\n")
+                      ;; a pure pointer expression whose code uses only %rax: computed after the arguments
+                      (when (pure? f)
+                        (let [[_ text] (capture #(gen-expr f))]
+                          (when-not (re-find #"call|push|pop|%(rdi|edi|di|dil|rsi|esi|si|sil|rdx|edx|dx|dl|rcx|ecx|cx|cl|r8|r9|r10|r11|rsp)" text)
+                            (str text "  movq %rax, %r10\n")))))))
           ngp (+ (if ret-mem 1 0) (count (filter #(= :gp (:mode %)) args)))
-          fast (and direct (not-any? #(= :struct-reg (:mode %)) args)
+          fast (and (or direct fn-op) (not-any? #(= :struct-reg (:mode %)) args)
                     (not (and (seq *r89-slots*) (>= ngp 5))))
           ;; register targets
           args (loop [as args gp (if ret-mem 1 0) fp 0 out []]
@@ -1465,6 +1485,7 @@
               (emit "  movq %rax, %r10"))
             (when ret-mem
               (local-addr (:ret-buf n) "%rdi")))))
+      (when (and fast fn-op) (.append ^StringBuilder *asm* ^String fn-op))
       (gen-call-finish n args fast direct ret ret-mem stack pad fnode))))
 
 (defn gen-call-finish
