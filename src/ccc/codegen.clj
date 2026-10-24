@@ -1335,6 +1335,14 @@
               (emitf "  movq " reg ", " off "(%rdi)")
               (recur (inc i) (inc gi) fi))))))))
 
+(declare gen-into-reg! argreg-names-re)
+
+(defn arg-into-reg!
+  "A general-register argument computed straight into its argument register; true if done."
+  [a]
+  (let [i (:reg a)]
+    (gen-into-reg! [(nth argreg64 i) (nth argreg32 i) (nth argreg16 i) (nth argreg8 i)] (:node a) argreg-names-re)))
+
 (defn gen-call [n]
   (let [fnode (:fn n)
         ret (:type n)
@@ -1465,7 +1473,7 @@
       (if (and fast (every? #(and (= :gp (:mode %)) (rax-only? (:node %))) complex))
         ;; every complex arg is computed in %rax alone: right to left, straight to registers
         (do (doseq [a (reverse complex)]
-              (when-not (direct-into a)
+              (when-not (or (direct-into a) (arg-into-reg! a))
                 (gen-expr (:node a))
                 (to-reg a)))
             (doseq [a simple] (load-simple a))
@@ -1481,8 +1489,9 @@
                                [a h]))
                          (do (push-arg! a) [a nil]))))]
             (when-let [a0 (first complex)]
-              (gen-expr (:node a0))
-              (to-reg a0))
+              (when-not (and (= :gp (:mode a0)) (arg-into-reg! a0))
+                (gen-expr (:node a0))
+                (to-reg a0)))
             (doseq [[a h] (reverse held)]
               (if h
                 (do (emitf "  movq " (first h) ", " (nth argreg64 (:reg a)))
@@ -1730,15 +1739,15 @@
                   (recur (+ k w))))))
           true)))))
 
-(defn gen-into-vreg!
-  "Emit rhs computed straight into register variable v's register when rhs's code is
-   straight-line moves/arithmetic that never mention v's register (then %rax only names
-   the result). Returns true if done, false (nothing emitted) otherwise."
-  [v rhs]
-  (let [r (vreg v)
-        [_ text] (capture #(gen-expr rhs))
+(defn gen-into-reg!
+  "Emit rhs computed straight into register r ([q d w b] names) when rhs's code is
+   straight-line moves/arithmetic that never mention r (nor registers matching the regex
+   string extra); then %rax only names the result. Returns true if done, false (nothing
+   emitted) otherwise."
+  [r rhs extra]
+  (let [[_ text] (capture #(gen-expr rhs))
         lines (split-lines* text)
-        target-re (re-pattern (str "(" (str/join "|" r) ")\\b"))
+        target-re (re-pattern (str "(" (str/join "|" r) (if extra (str "|" extra) "") ")\\b"))
         ok (and (seq lines)
                 (every? (fn [^String l]
                           (let [t (str/trim l)
@@ -1756,6 +1765,10 @@
                              (fn [[_ x]] (case x "rax" q "eax" d "ax" wd "al" b)))))
         true)
       false)))
+
+(defn gen-into-vreg! [v rhs] (gen-into-reg! (vreg v) rhs nil))
+
+(def argreg-names-re "%(rdi|edi|di|dil|rsi|esi|si|sil|rdx|edx|dx|dl|rcx|ecx|cx|cl|r8|r8d|r8w|r8b|r9|r9d|r9w|r9b)")
 
 (defn strip-store-casts
   "For a store of sz bytes to a memory integer lvalue whose value is unused: integer casts
