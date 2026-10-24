@@ -53,3 +53,20 @@ Rules for all parts:
   in ns ccc.frame: w-sceptic's converter (`finalize*`: rsp frame, red zone, small epilogues copied to
   early returns) runs first; when it leaves a function unchanged, w-lean's converter (`rsp-frame`, now
   in ns ccc.frame-rsp) is tried. Codegen calls only `frame/finalize`. Off: `CCC_NOFRAME` (both).
+
+## Decisions after round 2 (architect)
+- **Revert settled.** The round-end revert of w-measure's round-2 merge (5ec3391) was caused only by
+  the expr-0528 judge flake (board #19); W1-W5 and Lua passed in that same check. Reinstated by
+  fast-forward; fast judge on it: corpus 600/600, W1-W5 and Lua ok, ratio 1.294, sqlite3.c in 26 s.
+- **Comparing outputs yourself:** decode both sides as UTF-8 with replacement before comparing. The
+  .ref files were written through a UTF-8 decode (they contain U+FFFD where SQLite prints invalid
+  bytes, e.g. blobs), so a raw byte compare reports 16 false mismatches (dml-0026 etc.).
+- **Register allocation has one home for new work: mach.** codegen's choose-regvars stays as it
+  is (tuning its weights/thresholds is fine), but live-range work (splitting, per-range assignment,
+  renaming callee-saved to caller-saved) is done in mach on the frame-slot/register namespace, using
+  its CFG and liveness. Do not build a second allocator in codegen. Contract it relies on: any slot
+  not in :exposed and never lea'd is a private scalar that mach may keep in any register over any
+  part of its live range, as long as it stores/loads at the range's boundaries.
+- **Compile-time ceiling for the team: 35 s wall on a quiet 4-core machine** for sqlite3.c (the gate is
+  60 s; keep headroom for the hidden machine). Main after round 2 used about 87 s user CPU. A change
+  that adds more than 10 s user CPU must say so in its board post, with its gain.
