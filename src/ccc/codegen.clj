@@ -419,6 +419,9 @@
               (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty))
                          (not (:bitfield (:member n))))
                 (fixed-mem-op n)))
+    :deref (let [ty (:type n)]
+             (when (and (or (t/integer? ty) (t/ptr? ty)) (= w (t/type-size ty)))
+               (fixed-mem-op n)))
     nil))
 
 (defn fixed-mem-op
@@ -430,6 +433,10 @@
                      (when-let [op (var-mem-op v)]
                        (if (:local v) {:disp (var-offset v) :base "%rbp"} {:sym (:label v) :base "%rip"})))
               :member (when-let [m (go (:expr n))] (update m :disp (fnil + 0) (:offset (:member n))))
+              ;; *p / p->m with pointer p in a register
+              :deref (let [e (:expr n)]
+                       (when (and (= :var (:op e)) (t/ptr? (:type e)))
+                         (when-let [r (vreg (:var e))] {:base (r 0)})))
               nil))]
     (when-let [m (go n)] (render-mem m))))
 
