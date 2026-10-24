@@ -3,6 +3,7 @@
   (:refer-clojure :exclude [integer? pop! load case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
   (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.types :as t]
+            [ccc.mach :as mach]
             [clojure.string :as str]))
 
 (def ^:dynamic ^StringBuilder *asm* nil)
@@ -2338,7 +2339,8 @@
         nregs (count callee-regs)]
     (loop [cs cands assigned [] out {}]
       (if (empty? cs)
-        (with-meta out {:save (set (keep (fn [[v r]] (when (and (#{5 6} r) (not (call-free? v))) r)) assigned))})
+        (with-meta out {:save (set (keep (fn [[v r]] (when (and (#{5 6} r) (not (call-free? v))) r)) assigned))
+                        :addr addr :pinned pinned})
         (let [v (first cs)
               taken (set (keep (fn [[w r]] (when (conflict? v w) r)) assigned))
               order (cond (not (r89-ok? v)) (range n-callee-saved)
@@ -2580,7 +2582,6 @@
         name (:name f)
         regvars (choose-regvars f)
         regset (set (vals regvars))
-        outer *asm*
         body-sb (StringBuilder.)
         used (volatile! regset)
         spill-max (volatile! 0)]
@@ -2629,31 +2630,51 @@
           (store-param pi (offsets (:id (:var pi))))))
       (gen-stmt (:body f))
       (when (= name "main") (emit "  movl $0, %eax")))
-    ;; now the prologue, knowing which callee-saved registers were used
-    (let [saved (sort (filter #(< % n-callee-saved) @used))
-          save-bytes (align-to (* 8 n-callee-saved) 16)
-          slot (fn [i] (- (+ frame (* 8 (inc i)))))]
-      (binding [*asm* outer]
-        (when-not (:static f) (emitf "  .globl " name))
-        (emit "  .text")
-        (when-let [al (:align f)] (emitf "  .align " al))
-        (emitf "  .type " name ", @function")
-        (emitf name ":")
-        (emit "  pushq %rbp")
-        (emit "  movq %rsp, %rbp")
-        (let [sz (cond (pos? @spill-max) (align-to (+ frame 48 (* 8 @spill-max)) 16)
-                       (seq saved) (+ frame save-bytes)
-                       :else frame)]
-          (when (pos? sz) (emitf "  subq $" sz ", %rsp")))
-        (doseq [i saved]
-          (emitf "  movq " ((nth callee-regs i) 0) ", " (slot i) "(%rbp)"))
-        (.append outer body-sb)
-        (emitf ".L.return." name ":")
-        (doseq [i saved]
-          (emitf "  movq " (slot i) "(%rbp), " ((nth callee-regs i) 0)))
-        (emit "  leave")
-        (emit "  ret")
-        (emitf "  .size " name ", .-" name)))))
+    ;; the rest (machine-level optimisation of the body, then the prologue,
+    ;; knowing which callee-saved registers the body uses) depends only on the
+    ;; body text: returned as a function, run in parallel by generate
+    (let [{:keys [addr pinned]} (meta regvars)
+          over-ids (set (map :id (:overaligned info)))
+          exposed (vec (for [v (:locals f)
+                             :let [o (get offsets (:id v)) ty (:type v)]
+                             :when (and o (or (not (t/scalar? ty)) (contains? addr (:id v)) (contains? pinned (:id v))
+                                              (:volatile ty) (:vla-ptr v) (:align v) (contains? over-ids (:id v))))]
+                         [o (+ o (max 16 (t/type-size ty)))]))
+          txt (str body-sb)
+          spill-max @spill-max]
+      (fn []
+        (let [body-txt (if (System/getenv "CCC_NOASMOPT")
+                         txt
+                         (let [setjmp? (re-find #"call (_setjmp|setjmp|sigsetjmp|__sigsetjmp|_longjmp|vfork|savectx|getcontext)\b" txt)]
+                           (mach/optimize-body txt {:exposed exposed :no-slots (boolean setjmp?) :name name})))
+              saved (sort (filter (fn [i] (and (< i n-callee-saved)
+                                               (some #(str/includes? body-txt %) (nth callee-regs i))))
+                                  (range n-callee-saved)))
+              save-bytes (align-to (* 8 n-callee-saved) 16)
+              slot (fn [i] (- (+ frame (* 8 (inc i)))))
+              out (StringBuilder.)]
+          (binding [*asm* out]
+            (when-not (:static f) (emitf "  .globl " name))
+            (emit "  .text")
+            (when-let [al (:align f)] (emitf "  .align " al))
+            (emitf "  .type " name ", @function")
+            (emitf name ":")
+            (emit "  pushq %rbp")
+            (emit "  movq %rsp, %rbp")
+            (let [sz (cond (pos? spill-max) (align-to (+ frame 48 (* 8 spill-max)) 16)
+                           (seq saved) (+ frame save-bytes)
+                           :else frame)]
+              (when (pos? sz) (emitf "  subq $" sz ", %rsp")))
+            (doseq [i saved]
+              (emitf "  movq " ((nth callee-regs i) 0) ", " (slot i) "(%rbp)"))
+            (.append out ^String body-txt)
+            (emitf ".L.return." name ":")
+            (doseq [i saved]
+              (emitf "  movq " (slot i) "(%rbp), " ((nth callee-regs i) 0)))
+            (emit "  leave")
+            (emit "  ret")
+            (emitf "  .size " name ", .-" name))
+          (str out))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Data
@@ -3041,8 +3062,15 @@
       (let [cands (if (System/getenv "CCC_NOINLINE")
                     {}
                     (into {} (keep (fn [f] (when-let [c (inline-candidate f)] [(:name f) c])) functions)))]
-        (doseq [f functions]
-          (gen-function (inline-calls f cands))))
+        (let [pool (java.util.concurrent.Executors/newFixedThreadPool
+                    (max 1 (min 3 (dec (.availableProcessors (Runtime/getRuntime)))))
+                    (reify java.util.concurrent.ThreadFactory
+                      (newThread [_ r] (doto (Thread. nil r "ccc-mach" (* 256 1024 1024)) (.setDaemon true)))))
+              ;; each body is finished on the pool while the next one is generated
+              futs (try (mapv (fn [f] (.submit pool ^Callable (gen-function (inline-calls f cands)))) functions)
+                        (finally (.shutdown pool)))]
+          (doseq [^java.util.concurrent.Future fu futs]
+            (.append sb ^String (.get fu)))))
       (when (seq @*ldconsts*)
         (emit "  .section .rodata")
         (doseq [[l m e] @*ldconsts*]
