@@ -1,1 +1,10 @@
 .work/
+
+# B10: build and profiling output, the harness's saved leftovers
+build/
+*.s
+*.o
+callgrind.out*
+cg*.out
+sqlrun
+.b10-leftover/
