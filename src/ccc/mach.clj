@@ -1104,8 +1104,12 @@
             lo (liveness items bl)
             ;; registers live after some call
             across (volatile! 0)
+            ;; every register live at some point (e.g. an argument register
+            ;; passed through untouched from the entry to a call)
+            live-any (volatile! 0)
             _ (dotimes [b (:n bl)]
                 (loop [i (dec ((:ends bl) b)) live (aget ^longs lo b)]
+                  (vswap! live-any bit-or live)
                   (when (>= i ((:starts bl) b))
                     (let [it (items i)]
                       (if (= :ins (:k it))
@@ -1123,7 +1127,7 @@
             [items changed]
             (let [R (first Rs)]
               (if (and (bit-test touched R) (not (bit-test @across R)))
-                (if-let [C (some #(when-not (bit-test touched %) %) rename-candidates)]
+                (if-let [C (some #(when-not (or (bit-test touched %) (bit-test @live-any %)) %) rename-candidates)]
                   (recur (rest Rs)
                          (mapv #(if (= :ins (:k %)) (rename-reg % R C) %) items)
                          (bit-or touched (bit C)) true)
@@ -1150,6 +1154,9 @@
 
 (defn optimize-body*
   [^String text opts]
+  (when-let [d (System/getenv "CCC_AO_DUMP")]
+    (when (= d (str (:name opts)))
+      (spit (str "build/t/dump-" d ".edn") (pr-str {:text text :opts opts}))))
   (let [lines (str/split text #"\n")
         items (mapv parse-line lines)
         exposed (:exposed opts)
@@ -1159,11 +1166,12 @@
                   (and (not (contains? leaq-offs off))
                        (not (some (fn [[lo h]] (and (< off h) (< lo hi))) exposed)))))
         no-slots (:no-slots opts)]
-    (loop [items (if (or no-slots (off? "PROMO"))
-                   items
-                   (first (promote-slots items safe? (reduce bit-or 0 (keep (fn [it] (when (= :ins (:k it)) (bit-and (bit-or (long (:u it)) (long (:d it))) 0xf008))) items)))))
+    (loop [items items
            iter 0]
-      (let [bl (build-blocks items)
+      (let [items (if (or no-slots (off? "PROMO") (and (pos? iter) (not (System/getenv "CCC_AO_PROMO2"))))
+                    items
+                    (first (promote-slots items safe? (reduce bit-or 0 (keep (fn [it] (when (= :ins (:k it)) (bit-and (bit-or (long (:u it)) (long (:d it))) 0xf008))) items)))))
+            bl (build-blocks items)
             [items c1] (if (or no-slots (off? "SLOT")) [items false] (slot-forward items bl safe?))
             [items c2] (if (off? "CP") [items false] (copy-prop items bl))
             lo (liveness items bl)
