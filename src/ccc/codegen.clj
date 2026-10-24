@@ -3,7 +3,7 @@
   (:refer-clojure :exclude [integer? pop! load case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto])
   (:require [ccc.fastcase :refer [case let fn defn defn- if-let when-let and or loop doseq for binding cond-> some-> dotimes letfn doto]]
             [ccc.types :as t]
-            [ccc.asmopt :as asmopt]
+            [ccc.mach :as mach]
             [clojure.string :as str]))
 
 (def ^:dynamic ^StringBuilder *asm* nil)
@@ -2442,7 +2442,7 @@
         (let [body-txt (if (System/getenv "CCC_NOASMOPT")
                          txt
                          (let [setjmp? (re-find #"call (_setjmp|setjmp|sigsetjmp|__sigsetjmp|_longjmp|vfork|savectx|getcontext)\b" txt)]
-                           (asmopt/optimize-body txt {:exposed exposed :no-slots (boolean setjmp?) :name name})))
+                           (mach/optimize-body txt {:exposed exposed :no-slots (boolean setjmp?) :name name})))
               saved (sort (filter (fn [i] (and (< i n-callee-saved)
                                                (some #(str/includes? body-txt %) (nth callee-regs i))))
                                   (range n-callee-saved)))
@@ -2858,12 +2858,12 @@
       (let [cands (if (System/getenv "CCC_NOINLINE")
                     {}
                     (into {} (keep (fn [f] (when-let [c (inline-candidate f)] [(:name f) c])) functions)))]
-        (let [finish (mapv (fn [f] (gen-function (inline-calls f cands))) functions)
-              pool (java.util.concurrent.Executors/newFixedThreadPool
-                    (max 1 (min 4 (.availableProcessors (Runtime/getRuntime))))
+        (let [pool (java.util.concurrent.Executors/newFixedThreadPool
+                    (max 1 (min 3 (dec (.availableProcessors (Runtime/getRuntime)))))
                     (reify java.util.concurrent.ThreadFactory
-                      (newThread [_ r] (doto (Thread. nil r "ccc-asmopt" (* 256 1024 1024)) (.setDaemon true)))))
-              futs (try (mapv (fn [g] (.submit pool ^Callable g)) finish)
+                      (newThread [_ r] (doto (Thread. nil r "ccc-mach" (* 256 1024 1024)) (.setDaemon true)))))
+              ;; each body is finished on the pool while the next one is generated
+              futs (try (mapv (fn [f] (.submit pool ^Callable (gen-function (inline-calls f cands)))) functions)
                         (finally (.shutdown pool)))]
           (doseq [^java.util.concurrent.Future fu futs]
             (.append sb ^String (.get fu)))))

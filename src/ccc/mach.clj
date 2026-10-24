@@ -1,4 +1,4 @@
-(ns ccc.asmopt
+(ns ccc.mach
   "Machine-level optimisation of one function body (the instructions between
    the prologue and the epilogue, as emitted by ccc.codegen).
 
@@ -71,7 +71,12 @@
           (and b (not= 64 (b 1))) nil
           (and x (not= 64 (x 1))) nil
           (> (count parts) 3) nil
-          :else {:t :m :d disp :b (when b (b 0)) :x (when x (x 0)) :sc (nth parts 2 nil)})))))
+          :else (let [bf (when b (b 0)) xf (when x (x 0))
+                      slot (when (and (= RBP bf) (nil? xf))
+                             (cond (= "" disp) 0
+                                   (re-matches #"-?\d+" disp) (parse-long disp)
+                                   :else nil))]
+                  {:t :m :d disp :b bf :x xf :sc (nth parts 2 nil) :slot slot}))))))
 
 (defn parse-operand [^String s]
   (cond
@@ -97,11 +102,9 @@
     0))
 
 (defn frame-slot
-  "[offset] of a direct rbp-relative operand with a numeric displacement, or nil."
+  "Offset of a direct rbp-relative operand with a numeric displacement, or nil."
   [o]
-  (when (and (= :m (:t o)) (= RBP (:b o)) (nil? (:x o)))
-    (let [^String d (:d o)]
-      (when (re-matches #"-?\d+" d) (parse-long d)))))
+  (:slot o))
 
 ;; ---------------------------------------------------------------------------
 ;; Instruction classes
@@ -299,9 +302,11 @@
           barrier)))))
 
 (defn split-args [^String s]
-  (if (neg? (.indexOf s ", "))
-    [s]
-    (vec (.split s ", "))))
+  (loop [start 0 out (transient [])]
+    (let [i (.indexOf s ", " (int start))]
+      (if (neg? i)
+        (persistent! (conj! out (subs s start)))
+        (recur (+ i 2) (conj! out (subs s start i)))))))
 
 (defn parse-line
   "An item for one line of the body."
@@ -546,93 +551,125 @@
 (defn copy-prop
   "Forward copy propagation within blocks."
   [items bl]
-  (let [items (transient items) changed (volatile! false)]
+  (let [items (transient items) changed (volatile! false)
+        src (int-array 16) wid (int-array 16)]
     (dotimes [b (:n bl)]
-      (loop [i ((:starts bl) b) facts {}]   ; D -> [S w]
+      (java.util.Arrays/fill src (int -1))
+      (loop [i ((:starts bl) b) nf 0]   ; nf: number of live facts (D -> src[D] of width wid[D])
         (when (< i ((:ends bl) b))
           (let [it (items i)]
             (if (not= :ins (:k it))
-              (recur (inc i) facts)
-              (let [;; substitute
-                    it2 (if (empty? facts)
+              (recur (inc i) nf)
+              (let [sub (fn [o]
+                          (case (:t o)
+                            :r (let [D (int (:f o)) S (aget src D)]
+                                 (if (and (>= S 0) (<= (long (:w o)) (aget wid D))) (assoc o :f S) o))
+                            :m (let [bD (:b o) xD (:x o)
+                                     o (if (and bD (>= (aget src (int bD)) 0) (= 64 (aget wid (int bD)))) (assoc o :b (aget src (int bD))) o)
+                                     o (if (and xD (>= (aget src (int xD)) 0) (= 64 (aget wid (int xD)))) (assoc o :x (aget src (int xD))) o)]
+                                 o)
+                            o))
+                    it2 (if (or (zero? nf) (= :barrier (:c it)))
                           it
                           (let [a (:a it)
                                 rp (read-positions it)
-                                a2 (reduce (fn [a p]
-                                             (let [o (a p)]
-                                               (assoc a p (reduce (fn [o [D [S w]]] (subst-operand o D S w)) o facts))))
-                                           a rp)
-                                ;; memory operands in any position: address registers are reads
-                                a2 (if (= :barrier (:c it))
-                                     a2
-                                     (mapv (fn [o] (if (mem? o)
-                                                     (reduce (fn [o [D [S w]]] (subst-operand o D S w)) o facts)
-                                                     o))
-                                           a2))]
+                                a2 (reduce (fn [a p] (let [o (a p)] (if (= :r (:t o)) (assoc a p (sub o)) a))) a rp)
+                                a2 (reduce (fn [a p] (let [o (a p)] (if (= :m (:t o)) (assoc a p (sub o)) a))) a2 (range (count a2)))]
                             (if (= a2 a) it (reanalyse (assoc it :a a2)))))
                     _ (when-not (identical? it2 it) (assoc! items i it2) (vreset! changed true))
                     d (long (:d it2))
-                    facts (if (zero? d)
-                            facts
-                            (into {} (remove (fn [[D [S _]]] (or (not (zero? (bit-and d (bit D))))
-                                                                 (not (zero? (bit-and d (bit S))))))
-                                             facts)))
-                    facts (if-let [[S D w] (copy-move it2)] (assoc facts D [S w]) facts)]
-                (recur (inc i) facts)))))))
+                    nf (if (or (zero? d) (zero? nf))
+                         nf
+                         (loop [D 0 nf 0]
+                           (if (< D 16)
+                             (let [S (aget src D)]
+                               (if (and (>= S 0) (or (bit-test d D) (bit-test d S)))
+                                 (do (aset src D (int -1)) (recur (inc D) nf))
+                                 (recur (inc D) (if (>= S 0) (inc nf) nf))))
+                             nf)))
+                    nf (if-let [[S D w] (copy-move it2)]
+                         (do (when (< (aget src (int D)) 0) nil)
+                             (let [had (>= (aget src (int D)) 0)]
+                               (aset src (int D) (int S)) (aset wid (int D) (int w))
+                               (if had nf (inc nf))))
+                         nf)]
+                (recur (inc i) nf)))))))
     [(persistent! items) @changed]))
 
 (defn slot-forward
   "Within blocks: a load of a safe frame slot whose value is known to be held
    in a register becomes a register copy (or disappears)."
   [items bl safe?]
-  (let [items (transient items) changed (volatile! false)]
+  (let [items (transient items) changed (volatile! false)
+        ;; facts: parallel arrays of [offset size reg width]
+        fo (long-array 64) fs (long-array 64) fr (long-array 64) fw (long-array 64)
+        n (volatile! 0)
+        kill-if (fn [pred]
+                  (loop [k 0]
+                    (when (< k (long @n))
+                      (if (pred k)
+                        (let [last (dec (long @n))]
+                          (aset fo k (aget fo last)) (aset fs k (aget fs last))
+                          (aset fr k (aget fr last)) (aset fw k (aget fw last))
+                          (vreset! n last)
+                          (recur k))
+                        (recur (inc k))))))
+        find (fn [off sz] (loop [k 0] (cond (>= k (long @n)) -1
+                                             (and (= off (aget fo k)) (= sz (aget fs k))) k
+                                             :else (recur (inc k)))))
+        add! (fn [off sz r w]
+               (when (< (long @n) 64)
+                 (let [k (long @n)]
+                   (aset fo k (long off)) (aset fs k (long sz)) (aset fr k (long r)) (aset fw k (long w))
+                   (vreset! n (inc k)))))
+        kill-reg (fn [^long d] (when (pos? (long @n)) (kill-if (fn [k] (bit-test d (aget fr k))))))
+        kill-range (fn [^long lo ^long hi] (kill-if (fn [k] (and (< (aget fo k) hi) (< lo (+ (aget fo k) (aget fs k)))))))]
     (dotimes [b (:n bl)]
-      (loop [i ((:starts bl) b) facts {}]   ; [off size] -> [reg-family width]
+      (vreset! n 0)
+      (loop [i ((:starts bl) b)]
         (when (< i ((:ends bl) b))
           (let [it (items i)]
-            (if (not= :ins (:k it))
-              (recur (inc i) facts)
+            (when (= :ins (:k it))
               (let [c (:c it) a (:a it) op (:op it)
-                    mv (and (= :move c) (#{"movq" "movl"} op) (= 2 (count a)))
+                    mv (and (= :move c) (= 2 (count a)) (or (= "movq" op) (= "movl" op)))
                     w (if (= "movq" op) 64 32)
                     sz (quot w 8)
-                    [s0 d0] a
-                    load-slot (when (and mv (reg? d0) (not (#{4 5} (:f d0)))) (frame-slot s0))
-                    store-slot (when (and mv (reg? s0) (not (#{4 5} (:f s0)))) (frame-slot d0))]
+                    s0 (when mv (a 0)) d0 (when mv (a 1))
+                    load-slot (when (and mv (reg? d0) (not= 4 (:f d0)) (not= 5 (:f d0))) (:slot s0))
+                    store-slot (when (and mv (reg? s0) (not= 4 (:f s0)) (not= 5 (:f s0))) (:slot d0))]
                 (cond
                   (and load-slot (safe? load-slot sz))
-                  (let [k [load-slot sz] f (facts k)]
-                    (if f
-                      (let [[R fw] f]
+                  (let [k (find load-slot sz)]
+                    (if (>= k 0)
+                      (let [R (aget fr k)]
                         (if (= R (:f d0))
-                          (do (assoc! items i nop-item) (vreset! changed true) (recur (inc i) facts))
-                          (let [ni (reanalyse (assoc it :a [{:t :r :f R :w w} d0]))]
-                            (assoc! items i ni) (vreset! changed true)
-                            (recur (inc i) (-> (into {} (remove (fn [[_ [r _]]] (= r (:f d0))) facts))
-                                               (assoc k [(:f d0) w]))))))
-                      (recur (inc i) (-> (into {} (remove (fn [[_ [r _]]] (= r (:f d0))) facts))
-                                         (assoc k [(:f d0) w])))))
+                          (do (assoc! items i nop-item) (vreset! changed true))
+                          (do (assoc! items i (reanalyse (assoc it :a [{:t :r :f R :w w} d0])))
+                              (vreset! changed true)
+                              (kill-reg (bit (:f d0)))
+                              (add! load-slot sz (:f d0) w))))
+                      (do (kill-reg (bit (:f d0)))
+                          (add! load-slot sz (:f d0) w))))
                   (and store-slot (safe? store-slot sz))
-                  (let [k [store-slot sz]
-                        facts (into {} (remove (fn [[[o s] _]] (and (< o (+ store-slot sz)) (< store-slot (+ o s)))) facts))]
-                    (recur (inc i) (assoc facts k [(:f s0) w])))
-                  (= :barrier c) (recur (inc i) {})
+                  (do (kill-range store-slot (+ store-slot sz))
+                      (add! store-slot sz (:f s0) w))
+                  (= :barrier c) (vreset! n 0)
                   :else
-                  (let [d (long (:d it))
-                        ;; direct writes to frame slots kill overlapping facts
-                        facts (if (and (:mw it) (some frame-slot a))
-                                (let [o (some frame-slot a)]
-                                  (into {} (remove (fn [[[fo s] _]] (and (< fo (+ o 16)) (< (- o 16) (+ fo s)))) facts)))
-                                facts)
-                        facts (if (zero? d) facts
-                                  (into {} (remove (fn [[_ [r _]]] (not (zero? (bit-and d (bit r))))) facts)))]
-                    (recur (inc i) facts)))))))))
+                  (let [d (long (:d it))]
+                    ;; direct writes to frame slots kill overlapping facts
+                    (when (and (:mw it) (pos? (long @n)))
+                      (doseq [o a]
+                        (when-let [off (:slot o)]
+                          (kill-range (- (long off) 16) (+ (long off) 16)))))
+                    (when-not (zero? d) (kill-reg d))))))
+            (recur (inc i))))))
     [(persistent! items) @changed]))
 
 ;; ---------------------------------------------------------------------------
 
 (def ^:private off-passes (or (System/getenv "CCC_AO_OFF") ""))
 (defn- off? [p] (str/includes? off-passes p))
+(def ^:private max-iter (if-let [m (System/getenv "CCC_AO_ITER")] (parse-long m) 1))
 
 (declare optimize-body*)
 (defn optimize-body
@@ -666,7 +703,7 @@
             [items c4] (if (off? "DCE") [items false] (dce items bl lo))
             ;; compact
             items (filterv #(not (and (= :dir (:k %)) (nil? (:text %)))) items)]
-        (if (and (or c1 c2 c3 c4) (< iter 6))
+        (if (and (or c1 c2 c3 c4) (< iter max-iter))
           (recur items (inc iter))
           (let [sb (StringBuilder.)]
             (doseq [it items]
