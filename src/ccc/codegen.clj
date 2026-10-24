@@ -617,6 +617,32 @@
                    (and (= :num (:op x)) (imm32? (:val x)))
                    (update (pointer-base p) :disp (fnil + 0) (if (= :sub (:op e)) (- (:val x)) (:val x)))
                    (= :sub (:op e)) (do (gen-expr e) {:base "%rax"})
+                   ;; p[i] with i computed: keep i in %rax and use it as the index register
+                   (and (pure? p) (simple-base? p) (= :var (:op p)) (not (cheap-index? idx))
+                        (or (t/ptr? (:type p)) (:local (:var p))))
+                   (let [[_ text] (capture #(index-into-rdi idx))
+                         lines (split-lines* text)
+                         fix (case (peek lines)
+                               "  movq %rax, %rdi" ""
+                               "  movslq %eax, %rdi" "  movslq %eax, %rax"
+                               "  movl %eax, %edi" "  movl %eax, %eax"
+                               nil)]
+                     (if (nil? fix)
+                       (do (.append ^StringBuilder *asm* text)
+                           (-> (pointer-base p) (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
+                       (let [v (:var p)]
+                         (doseq [l (pop lines)] (emit l))
+                         (when (seq fix) (emit fix))
+                         (cond
+                           (and (t/ptr? (:type p)) (vreg v))
+                           {:base ((vreg v) 0) :index "%rax" :scale scale :disp extra}
+                           (t/ptr? (:type p))
+                           (if (= 1 scale)
+                             (do (emitf "  addq " (var-mem-op v) ", %rax") {:base "%rax" :disp extra})
+                             (do (emitf "  movq " (var-mem-op v) ", %rdi")
+                                 {:base "%rdi" :index "%rax" :scale scale :disp extra}))
+                           :else
+                           {:disp (+ (var-offset v) extra) :base "%rbp" :index "%rax" :scale scale}))))
                    (and (pure? p) (simple-base? p))
                    (do (index-into-rdi idx)
                        (-> (pointer-base p) (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
