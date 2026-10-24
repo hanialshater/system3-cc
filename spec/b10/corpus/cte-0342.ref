@@ -1,0 +1,109 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+65|10610209857723
+64|6557470319842
+63|4052739537881
+62|2504730781961
+61|1548008755920
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+63|4052739537881
+62|2504730781961
+61|1548008755920
+60|956722026041
+59|591286729879
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+18|1597
+17|987
+16|610
+15|377
+14|233
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# id|c1|last_value(c1) OVER (ORDER BY id RANGE BETWEEN CURRENT ROW AND 1 FOLLOWING)
+1|NULL|1000000000000000.0
+2|1000000000000000.0|-550
+3|-550|-550
+# n|a
+21|6765
+20|4181
+19|2584
+18|1597
+17|987
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

@@ -1,0 +1,89 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t0.c0
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: near ";": syntax error
+# json('{')
+error: malformed JSON
+error: no such table: nope
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+8|8
+2|2
+1|1
+10|9
+5|5
+4|4
+3|3
+9|9
+7|7
+6|6
+# id
+8
+9
+# id
+9
+10
+# id
+4
+5
+6
+7
+8
+9
+10
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4,5,6,7,8,9]|{"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":521}
+{"id":2,"v":-1}
+{"id":3,"v":null}
+{"id":4,"v":1000000000000000.0}

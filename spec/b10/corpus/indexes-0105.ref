@@ -1,0 +1,269 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|ref
+1|NULL
+2|NULL
+6|NULL
+10|NULL
+9|1
+14|1
+15|1
+5|2
+11|2
+13|2
+8|5
+12|5
+16|5
+7|6
+3|7
+4|8
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+error: no query solution
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+2|NULL
+9|NULL
+10|NULL
+18|NULL
+1|-475.9
+3|3
+8|3.1415926535897931
+7|5
+11|28
+15|111
+14|141.0983
+13|641
+6|1000000000000000
+5|café
+19|delta
+12|xi
+17|über
+16|日本
+4|X'7FAB'
+# count(*)
+15
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+# id
+# c2
+2.5
+36
+259
+421
+992.63
+9223372036854775807
+ pad 
+X''
+X'92E4E591EA'
+X'D2025355'
+X'ECCE74DFD5'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+17|17
+14|14
+21|19
+20|19
+12|12
+7|7
+8|8
+6|6
+2|2
+19|19
+9|9
+11|11
+13|13
+3|3
+10|10
+1|1
+15|15
+18|18
+5|5
+4|4
+22|19
+16|16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+# c2
+NULL
+-681.8
+-484
+-473.8547
+-418
+-355
+-307
+-283
+-239
+-199
+-109
+-108
+-94
+-9
+-2.5
+-2
+6
+8.25
+13
+173

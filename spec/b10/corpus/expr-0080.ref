@@ -1,0 +1,132 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+# id|id|abs(CASE WHEN c2 THEN id ELSE 5 END) BETWEEN typeof(c2 IN (id, -5, x'ddb4')) AND NULL
+1|1|0
+2|2|0
+3|3|0
+4|4|0
+5|5|0
+6|6|0
+7|7|0
+8|8|0
+9|9|0
+10|10|0
+11|11|0
+12|12|0
+13|13|0
+14|14|0
+15|15|0
+16|16|0
+17|17|0
+18|18|0
+19|19|0
+# x'0e31'|CASE WHEN CASE WHEN 'a%b' THEN NULL ELSE CAST(-3 AS BLOB) END THEN 5 ELSE (NULL * x'87e7046c95') IN ((1e308 AND NULL), x'cafaf7b73e7e', x'4f988a4ec153') END
+X'0E31'|5
+# id|abs(abs(NOT id))|CASE WHEN typeof(coalesce(c1, -5)) THEN 3 ELSE id END
+1|0|1
+2|0|2
+3|0|3
+4|0|4
+# 388.1|coalesce((947 >> 'naïve') BETWEEN iif(' pad ', -281, x'') AND NULL BETWEEN NULL AND 'señor', coalesce('rho', abs(123456789012)))
+388.1|rho
+# id|(iif(id IN (c0, -6, NULL), iif(x'0e7b', x'685a', 'theta'), x'53f854ff') / c1)|CASE WHEN nullif(nullif('beta', id), typeof(c1)) THEN NULL ELSE CASE WHEN NULL THEN NULL ELSE c1 END IS NULL END
+1|NULL|0
+2|NULL|0
+3|NULL|0
+4|NULL|0
+# CASE WHEN NOT nullif(NULL, x'7a0c94196f') THEN NULL ELSE -(typeof(NULL)) END|-('rho' BETWEEN x'36' AND 4.5e-310) IS NULL
+0|0
+# id|c1 IN (id, x'3388', x'4518e640')|c1
+1|0|x_y
+2|0|X'74DEFC24'
+3|0|psi
+4|0|delta
+# NOT x'04619356'|NULL BETWEEN -(x'') AND CAST(nullif('MU', NULL) AS INTEGER)
+1|NULL
+# id|c0|1 IN (typeof(iif(c0, 'Lambda', x'')), 0, NULL)
+1|X'BBF4C08803'|NULL
+2|83.04|NULL
+3|879.5|NULL
+4|NULL|NULL
+5|3.0|NULL
+6|5.0|NULL
+7|286.0|NULL
+8|X'E230'|NULL
+9|NULL|NULL
+10|NULL|NULL
+11|X'DEB1'|NULL
+12|-9.2233720368547758e+18|NULL
+13|688.001|NULL
+14|beta|NULL
+15|X'41F5A4A7A5'|NULL
+16|epsilon|NULL
+17|-2.0|NULL
+18|x_y|NULL
+19|NULL|NULL
+# 123456789012 IS NULL IN (x'7a5421a8', -265.433, x'2d9b3c') BETWEEN -(x'822ab64a3e' IN (-352, NULL, NULL)) AND NOT (123456789012 << 319)|CAST(iif(CAST(x'2c5cc6' AS REAL), typeof(0), NULL) AS NUMERIC)
+NULL|NULL
+# id|typeof(CASE WHEN -(c2) THEN 'café' ELSE (c0 >> id) END)|-283.04
+1|integer|-283.04
+2|text|-283.04
+3|text|-283.04
+4|null|-283.04
+5|text|-283.04
+6|integer|-283.04
+7|text|-283.04
+8|integer|-283.04
+9|null|-283.04
+10|null|-283.04
+11|text|-283.04
+12|integer|-283.04
+13|integer|-283.04
+14|text|-283.04
+15|text|-283.04
+16|text|-283.04
+17|integer|-283.04
+18|integer|-283.04
+19|null|-283.04
+# CAST(('Ελλάδα' BETWEEN 3 AND 'delta' IS NOT NOT x'7c') AS NUMERIC)|(x'a979b5bd' >= NULL IS NULL)
+1|1
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+4|4|10|10.0|2.5|1|4|4
+# id|count(*)|group_concat(id)
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+# id|ref|last_value(ref) OVER (ORDER BY id)
+1|5|5
+2|8|8
+3|7|7
+4|7|7
+5|6|6

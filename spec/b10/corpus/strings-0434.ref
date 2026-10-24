@@ -1,0 +1,88 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('Lambda')|upper('Lambda')|lower('Lambda')|substr('Lambda', -1, 5)|instr('Lambda', 'pi')|replace('Lambda', 'a', '_')|trim('Lambda')|ltrim('Lambda', 'ab')|hex('Lambda')|quote('Lambda')|unicode('Lambda')|'Lambda' LIKE '%'|'Lambda' GLOB '?'|char(71, 216)|'Lambda' || 'pi'|'Lambda' < 'pi'|'Lambda' = 'pi' COLLATE NOCASE
+6|LAMBDA|lambda|a|0|L_mbd_|Lambda|Lambda|4C616D626461|'Lambda'|76|1|0|GØ|Lambdapi|1|0
+# length('')|upper('')|lower('')|substr('', -3, 4)|instr('', ' pad ')|replace('', 'e', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%a_'|'' GLOB '?'|char(76, 712)|'' || ' pad '|'' < ' pad '|'' = ' pad ' COLLATE NOCASE
+0||||0|||||''|NULL|0|0|Lˈ| pad |1|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', 4, 3)|instr('it''s', '0x1F')|replace('it''s', 'a', 'XY')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE '%é%'|'it''s' GLOB '*'|char(73, 482)|'it''s' || '0x1F'|'it''s' < '0x1F'|'it''s' = '0x1F' COLLATE NOCASE
+4|IT'S|it's|s|0|it's|it's|it's|69742773|'it''s'|105|0|1|IǢ|it's0x1F|0|0
+# length('omega')|upper('omega')|lower('omega')|substr('omega', 4, 1)|instr('omega', 'iota')|replace('omega', '', 'XY')|trim('omega')|ltrim('omega', 'ab')|hex('omega')|quote('omega')|unicode('omega')|'omega' LIKE '%'|'omega' GLOB '*'|char(66, 242)|'omega' || 'iota'|'omega' < 'iota'|'omega' = 'iota' COLLATE NOCASE
+5|OMEGA|omega|g|0|omega|omega|omega|6F6D656761|'omega'|111|1|1|Bò|omegaiota|0|0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', -1, 1)|instr('a%b', 'iota')|replace('a%b', 'a', '_')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE 'A%'|'a%b' GLOB 'a*'|char(70, 382)|'a%b' || 'iota'|'a%b' < 'iota'|'a%b' = 'iota' COLLATE NOCASE
+3|A%B|a%b|b|0|_%b|a%b|%b|612562|'a%b'|97|1|1|Fž|a%biota|1|0
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# n|a
+18|1597
+17|987
+16|610
+15|377
+14|233
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

@@ -1,0 +1,90 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+125|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+125|NULL
+183|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+125|NULL
+128|NULL
+183|NULL
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', 'start of month')|julianday('1999-12-31T23:59:59.999')|strftime('%j %w %W', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|1999-12-01 00:00:00|2451544.4999999884|365 5 52|946684799|+0001-01-15 00:00:00.000

@@ -1,0 +1,124 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c1|id
+1|4|NULL|4
+1|11|NULL|11
+1|14|NULL|14
+1|20|NULL|20
+2|5|NULL|5
+2|10|NULL|10
+2|18|NULL|18
+3|17|-719|17
+4|NULL|2|NULL
+# count(*)
+21
+# id|id|c0|id
+1|4|NULL|4
+1|11|NULL|11
+1|14|NULL|14
+1|20|NULL|20
+2|5|X'4949'|5
+2|10|X'4949'|10
+2|18|X'4949'|18
+3|17|NULL|17
+5|2|naïve|2
+6|3|4|3
+6|9|4|9
+7|1|psi|1
+7|15|psi|15
+8|6|X'CB49'|6
+8|8|X'CB49'|8
+8|19|X'CB49'|19
+# count(*)
+21
+# id|id|id|ref
+1|4|1|1
+1|11|1|1
+1|14|1|1
+1|20|1|1
+2|5|2|2
+2|10|2|2
+2|18|2|2
+3|17|3|3
+5|2|5|5
+6|3|6|6
+6|9|6|6
+7|1|7|7
+7|15|7|7
+8|6|8|8
+8|8|8|8
+8|19|8|8
+# count(*)
+20
+# id|c0|(CAST(c0 AS INTEGER) % id IN (typeof('zeta'), x'84', x'5f644e9e89'))
+1|NULL|NULL
+2|X'4949'|0
+3|NULL|NULL
+4|X'06'|0
+5|naïve|0
+6|4|0
+7|psi|0
+8|X'CB49'|0
+9|X'08'|0
+10|NULL|NULL
+11|-4|0
+12|beta|0
+13|4|0
+14|0|0
+15|NULL|NULL
+16|X'924754'|0
+17|3.1415926535897931|0
+18|NULL|NULL
+19|0|0
+20|1.0e-07|0
+21|epsilon|0
+# typeof(x'84b2' BETWEEN 827.7 AND x'de7ef7d5') BETWEEN x'7cd1' AND nullif('iota', x'cc3fda14744c') BETWEEN NULL AND 2.5 IS NULL|-(NULL)
+1|NULL
+changes: 1
+# id|c0
+# count(*)
+21
+changes: 1
+changes: 1

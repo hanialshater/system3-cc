@@ -1,0 +1,67 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', -3, 1)|instr('zeta', 'NULL')|replace('zeta', 'a', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%a_'|'zeta' GLOB 'a*'|char(79, 467)|'zeta' || 'NULL'|'zeta' < 'NULL'|'zeta' = 'NULL' COLLATE NOCASE
+4|ZETA|zeta|e|0|zet_|zeta|zeta|7A657461|'zeta'|122|0|0|OǓ|zetaNULL|0|0
+# length(' pad ')|upper(' pad ')|lower(' pad ')|substr(' pad ', -3, 5)|instr(' pad ', 'sigma')|replace(' pad ', '', '_')|trim(' pad ')|ltrim(' pad ', 'ab')|hex(' pad ')|quote(' pad ')|unicode(' pad ')|' pad ' LIKE '_'|' pad ' GLOB '*[a-m]*'|char(65, 789)|' pad ' || 'sigma'|' pad ' < 'sigma'|' pad ' = 'sigma' COLLATE NOCASE
+5| PAD | pad |ad |0| pad |pad| pad |2070616420|' pad '|32|0|1|A̕| pad sigma|1|0
+# length('0x1F')|upper('0x1F')|lower('0x1F')|substr('0x1F', 0, 2)|instr('0x1F', 'it''s')|replace('0x1F', 'é', '')|trim('0x1F')|ltrim('0x1F', 'ab')|hex('0x1F')|quote('0x1F')|unicode('0x1F')|'0x1F' LIKE 'a%'|'0x1F' GLOB '*[a-m]*'|char(75, 516)|'0x1F' || 'it''s'|'0x1F' < 'it''s'|'0x1F' = 'it''s' COLLATE NOCASE
+4|0X1F|0x1f|0|0|0x1F|0x1F|0x1F|30783146|'0x1F'|48|0|0|KȄ|0x1Fit's|1|0
+# length('theta')|upper('theta')|lower('theta')|substr('theta', 2, 4)|instr('theta', 'gamma')|replace('theta', 'é', '_')|trim('theta')|ltrim('theta', 'ab')|hex('theta')|quote('theta')|unicode('theta')|'theta' LIKE 'A%'|'theta' GLOB '*'|char(72, 337)|'theta' || 'gamma'|'theta' < 'gamma'|'theta' = 'gamma' COLLATE NOCASE
+5|THETA|theta|heta|0|theta|theta|theta|7468657461|'theta'|116|0|1|Hő|thetagamma|0|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', 2, 5)|instr('it''s', 'rho')|replace('it''s', 'é', '_')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE 'A%'|'it''s' GLOB '?'|char(86, 516)|'it''s' || 'rho'|'it''s' < 'rho'|'it''s' = 'rho' COLLATE NOCASE
+4|IT'S|it's|t's|0|it's|it's|it's|69742773|'it''s'|105|0|0|VȄ|it'srho|1|0
+# length('phi')|upper('phi')|lower('phi')|substr('phi', 3, 1)|instr('phi', 'theta')|replace('phi', 'a', '')|trim('phi')|ltrim('phi', 'ab')|hex('phi')|quote('phi')|unicode('phi')|'phi' LIKE '%'|'phi' GLOB 'a*'|char(82, 785)|'phi' || 'theta'|'phi' < 'theta'|'phi' = 'theta' COLLATE NOCASE
+3|PHI|phi|i|0|phi|phi|phi|706869|'phi'|112|1|0|Ȓ|phitheta|1|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', 2, 1)|instr('it''s', 'alpha')|replace('it''s', '', 'XY')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE '%'|'it''s' GLOB '*'|char(72, 774)|'it''s' || 'alpha'|'it''s' < 'alpha'|'it''s' = 'alpha' COLLATE NOCASE
+4|IT'S|it's|t|0|it's|it's|it's|69742773|'it''s'|105|1|1|H̆|it'salpha|0|0
+error: cannot commit - no transaction is active
+# abs(-9223372036854775808)
+error: integer overflow

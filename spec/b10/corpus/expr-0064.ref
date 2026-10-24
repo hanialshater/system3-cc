@@ -1,0 +1,124 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|typeof(typeof(c0))|abs(nullif(c1, c0))
+1|text|0.0
+2|text|0.0
+3|text|1.0e+308
+4|text|1000
+# CAST(NOT typeof('MU') AS BLOB)|1
+X'31'|1
+# id|abs(c0 IS NULL BETWEEN id BETWEEN ref AND id AND -2)|NOT 'omega'
+1|0|1
+2|0|1
+3|0|1
+4|0|1
+5|0|1
+6|0|1
+7|0|1
+8|0|1
+9|0|1
+10|0|1
+11|0|1
+12|0|1
+13|0|1
+14|0|1
+15|0|1
+16|0|1
+17|0|1
+18|0|1
+# 1e308|NOT x'c4104a' BETWEEN 687 BETWEEN x'2fce0b64' AND NULL AND x'a862353c' BETWEEN 'psi' IN (abs(-715.21), 305, x'97c911d1c7') AND coalesce(NOT NULL, 'chi' IN ('x_y', x'', 2))
+1.0e+308|0
+# id|id|NOT -211
+1|1|0
+2|2|0
+3|3|0
+4|4|0
+5|5|0
+6|6|0
+7|7|0
+8|8|0
+9|9|0
+10|10|0
+11|11|0
+12|12|0
+13|13|0
+14|14|0
+15|15|0
+16|16|0
+17|17|0
+18|18|0
+19|19|0
+20|20|0
+21|21|0
+22|22|0
+# -(typeof('naïve'))|typeof(coalesce(417.58, typeof('x_y')))
+0|real
+# id|iif(-(typeof(c1)), '' IS NULL IN (coalesce(ref, x'98a2c6a8a4f9'), 842, 399), 1.0e15)|c0 IN (CASE WHEN ref THEN c1 ELSE 'nu' END, x'06b1d5f4', 2) BETWEEN ref AND abs(c0) IN (CASE WHEN -244.824 THEN c1 ELSE id END, 0.1, -47)
+1|1000000000000000.0|0
+2|1000000000000000.0|0
+3|1000000000000000.0|1
+4|1000000000000000.0|NULL
+5|1000000000000000.0|1
+6|1000000000000000.0|0
+7|1000000000000000.0|0
+8|1000000000000000.0|0
+9|1000000000000000.0|0
+10|1000000000000000.0|0
+11|1000000000000000.0|0
+12|1000000000000000.0|NULL
+13|1000000000000000.0|0
+14|1000000000000000.0|NULL
+15|1000000000000000.0|1
+16|1000000000000000.0|0
+17|1000000000000000.0|0
+18|1000000000000000.0|0
+# -9223372036854775808|-(CASE WHEN 'it''s' THEN x'' ELSE NULL END IN (NOT NULL, NULL, 429))
+-9223372036854775808|NULL
+# length('kappa')|upper('kappa')|lower('kappa')|substr('kappa', 2, 3)|instr('kappa', 'alpha')|replace('kappa', 'e', 'XY')|trim('kappa')|ltrim('kappa', 'ab')|hex('kappa')|quote('kappa')|unicode('kappa')|'kappa' LIKE 'A%'|'kappa' GLOB '*[a-m]*'|char(80, 589)|'kappa' || 'alpha'|'kappa' < 'alpha'|'kappa' = 'alpha' COLLATE NOCASE
+5|KAPPA|kappa|app|0|kappa|kappa|kappa|6B61707061|'kappa'|107|0|1|Pɍ|kappaalpha|0|0
+error: no such column: t1.nope

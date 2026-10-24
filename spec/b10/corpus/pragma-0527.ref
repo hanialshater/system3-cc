@@ -1,0 +1,130 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|VARCHAR(10)|0|'d'|0
+4|c3|INT|0|NULL|0
+5|c4|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|VARCHAR(10)|0|'d'|0
+4|c3|INT|0|NULL|0
+5|c4|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|VARCHAR(10)|0|'d'|0
+4|c3|INT|0|NULL|0
+5|c4|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table
+error: table t1 has no column named nope
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+15|15|120|120.0|8.0|1|15|15
+# id|count(*)|group_concat(id, ';')
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+13|1|13
+14|1|14
+15|1|15

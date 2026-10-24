@@ -1,0 +1,174 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":-3}
+{"id":2,"v":"chi"}
+{"id":3,"v":784}
+{"id":4,"v":"alpha"}
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+{"id":1,"v":5}
+{"id":2,"v":"gamma"}
+{"id":3,"v":"chi"}
+error: JSON cannot hold BLOB values
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]|{"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21}
+# json_object('id', id, 'v', c0)
+{"id":1,"v":-629.156}
+{"id":2,"v":4}
+error: JSON cannot hold BLOB values
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4,5,6,7,8,9,10,11,12]|{"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"11":11,"12":12}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":"rho"}
+{"id":2,"v":"MU"}
+{"id":3,"v":-7}
+{"id":4,"v":1.0e+308}
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c3)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c0)
+error: JSON cannot hold BLOB values
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+13|X'76A0F4C6'
+# id|c0|c1|c2|c3
+13|X'76A0F4C6'|0|NULL|d
+12|X'63739AC1'|X'63722BC9'|NULL|X'BAA5E9C97C9F'
+11|42.0|X'EE47F3'|NULL|X'D298'
+9|82.0|X''|omega|X'D8FF0B'
+8|X'E940FC15'|NULL|X'ADFB61C7'|NULL
+6|psi|794|-576|X'5043810B45'
+5|NULL|0|alpha|X'6C040F'
+4|123456789012.0|0|NULL|d
+3|X'DB06'|-7|chi|NULL
+2|X'7ECC064DA1CE'|MU|gamma|X'E2DD23'
+# id|typeof('')|(typeof(c3) % coalesce(5, (c1 * x'ccaa907afd')))
+13|text|0
+12|text|0
+11|text|0
+9|text|0
+8|text|0
+6|text|0
+5|text|0
+4|text|0
+3|text|0
+2|text|0
+# -570.65 BETWEEN CAST(NULL AS INTEGER) AND (NULL < NULL) BETWEEN CASE WHEN NULL IN (x'3beb410b3218', x'1d', '日本') THEN 3.141592653589793 BETWEEN 'it''s' AND -3 ELSE nullif(-538, x'983849') END AND typeof('rho' IS NULL)|CAST(-1 IN (NULL, x'b93be8', NULL) AS INTEGER)
+NULL|NULL

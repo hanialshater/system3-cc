@@ -1,0 +1,40 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: wrong number of arguments to function substr()
+error: near "SELEC": syntax error
+error: cannot commit - no transaction is active
+error: no such table: nope
+# json('{')
+error: malformed JSON
+error: unrecognized token: "x'zz'"
+changes: 5
+changes: 0
+# count(*)|count(c0)
+7|2
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 0
+# id|c0
+4|NULL
+5|NULL
+3|-519
+1|X''
+2|X'E8'
+# count(*)
+3
+changes: 0
+changes: 0
+error: 1st ORDER BY term out of range - should be between 1 and 1

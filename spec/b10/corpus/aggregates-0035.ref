@@ -1,0 +1,127 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+11|8|176.94159265358974|176.94159265358974|22.117699081698717|-755.2|X'6ABF672FC4'|8
+# c2|count(*)|group_concat(id, ';')
+NULL|3|4;5;11
+-755.2|1|9
+0|1|8
+1|1|10
+3.1415926535897931|1|3
+928|1|6
+sigma|1|7
+X'697C'|1|2
+X'6ABF672FC4'|1|1
+# count(*)|count(ref)|sum(ref)|total(ref)|avg(ref)|min(ref)|max(ref)|count(DISTINCT ref)
+11|9|50|50.0|5.5555555555555554|1|8|5
+# ref|count(*)|group_concat(id)
+NULL|2|6,10
+1|1|2
+3|1|7
+5|2|8,9
+6|2|4,5
+8|3|1,3,11
+# count(*)|count(c3)|sum(c3)|total(c3)|avg(c3)|min(c3)|max(c3)|count(DISTINCT c3)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c3|count(*)|group_concat(id)
+0.0|3|1,8,10
+3.1415926535897931|1|11
+4.0|1|4
+ pad |1|3
+a%b|1|9
+gamma|1|6
+nu|1|7
+X'38E1B553'|1|5
+X'C69F206BB5DA'|1|2
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+11|10|-526.8274999|-526.8274999|-52.682749990000005|-877.3275|X'9ACBB2B7E4'|10
+# c1|count(*)|group_concat(id)
+NULL|1|6
+-877.3275|1|11
+-5|1|8
+-2.5|1|1
+4.500000000000011e-310|1|2
+1.0e-07|1|5
+4|1|7
+354|1|9
+X'154CA85877'|1|3
+X'696C3D85EF'|1|10
+X'9ACBB2B7E4'|1|4
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+12|12|78|78.0|6.5|1|12|12
+# id|count(*)|group_concat(id, ';')
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+12|8|992.2|992.2|124.025|-7|X'F2'|8
+# c1|count(*)|group_concat(id)
+NULL|4|1,2,3,8
+-7|1|11
+-1|1|5
+8|1|6
+321|1|9
+671.2|1|10
+Ελλάδα|1|12
+X'D3'|1|7
+X'F2'|1|4
+# length('nu')|upper('nu')|lower('nu')|substr('nu', -3, 3)|instr('nu', 'delta')|replace('nu', '', '_')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE 'A%'|'nu' GLOB '*'|char(77, 930)|'nu' || 'delta'|'nu' < 'delta'|'nu' = 'delta' COLLATE NOCASE
+2|NU|nu|nu|0|nu|nu|nu|6E75|'nu'|110|0|1|M΢|nudelta|0|0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|INTEGER|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table

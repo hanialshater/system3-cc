@@ -1,0 +1,135 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 10
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+18|1000000000000000.0
+# id|c0|c1|c2|ref
+18|1000000000000000.0|NULL|0|NULL
+17|17.0|2.5|theta|4
+16|16.0|358.259|X'8F27D47F'|7
+14|iota|über|1.0e-07|1
+13|X'F7DAA89BF303'|X''|417|8
+11|psi|-3|-155|6
+10|10.0|9223372036854775807|über|3
+8|-637.0|1|2.5|NULL
+7|7.0|2|rho|4
+6|NULL|NULL|0|NULL
+5|5.0|0|0x1F|1
+4|X'15FA3DCADDE9'|X'97B8'|-326.17|NULL
+2|NULL|NULL|0|NULL
+1|1.0|2|0|1
+error: UNIQUE constraint failed: t2.c0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+19|-2.5
+# id|c0|c1|c2|ref
+2|NULL|NULL|0|NULL
+4|X'15FA3DCADDE9'|X'97B8'|-326.17|NULL
+5|X'93'|NULL|0|NULL
+6|NULL|NULL|0|NULL
+7|7.0|2|rho|4
+8|-637.0|1|2.5|NULL
+9|620.113|NULL|0|NULL
+10|10.0|9223372036854775807|über|3
+11|psi|-3|-155|6
+14|iota|über|1.0e-07|1
+16|16.0|358.259|X'8F27D47F'|7
+18|1000000000000000.0|NULL|0|NULL
+19|-2.5|NULL|0|NULL
+changes: 13
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+19|omega
+# id|c0|c1|c2|ref
+2|3.1415926535897931!|NULL|0|NULL
+4|NULL|X'97B8'|-326.17|NULL
+6|3.0|NULL|0|NULL
+8|NULL|1|2.5|NULL
+14|1.0|über|1.0e-07|1
+16|7.0|358.259|X'8F27D47F'|7
+18|NULL|NULL|0|NULL
+19|omega|NULL|0|NULL
+changes: 4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+5|2.5
+# id|c0|c1
+1|X'390D33'|NULL
+2|X''|NULL
+3|NULL|X'64F63E4463CD'
+4|0|X'18AA'
+5|2.5|NULL
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+6|-559.2446
+# id|c0|c1
+6|-559.2446|NULL
+5|2.5!|NULL
+3|NULL|X'64F63E4463CD'
+2|NULL|NULL
+changes: 1
+# id|id
+2|2
+3|3
+5|5
+6|6
+# count(*)
+4
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|INTEGER|1|0|0
+4|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table

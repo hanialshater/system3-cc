@@ -1,0 +1,35 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 744
+# json('{')
+error: malformed JSON
+error: near "SELEC": syntax error
+error: table t0 has no column named nope
+error: table t0 already exists
+error: wrong number of arguments to function substr()
+error: near "SELEC": syntax error
+error: cannot commit - no transaction is active

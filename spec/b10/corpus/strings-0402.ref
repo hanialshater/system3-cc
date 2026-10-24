@@ -1,0 +1,102 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+# length('rho')|upper('rho')|lower('rho')|substr('rho', -3, 5)|instr('rho', 'it''s')|replace('rho', '', 'XY')|trim('rho')|ltrim('rho', 'ab')|hex('rho')|quote('rho')|unicode('rho')|'rho' LIKE 'A%'|'rho' GLOB 'a*'|char(89, 541)|'rho' || 'it''s'|'rho' < 'it''s'|'rho' = 'it''s' COLLATE NOCASE
+3|RHO|rho|rho|0|rho|rho|rho|72686F|'rho'|114|0|0|Yȝ|rhoit's|0|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', 3, 0)|instr('nu', 'eta')|replace('nu', '', '_')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE '%é%'|'nu' GLOB '*'|char(70, 909)|'nu' || 'eta'|'nu' < 'eta'|'nu' = 'eta' COLLATE NOCASE
+2|NU|nu||0|nu|nu|nu|6E75|'nu'|110|0|1|F΍|nueta|0|0
+# length('señor')|upper('señor')|lower('señor')|substr('señor', -1, 2)|instr('señor', 'phi')|replace('señor', 'é', '_')|trim('señor')|ltrim('señor', 'ab')|hex('señor')|quote('señor')|unicode('señor')|'señor' LIKE '%é%'|'señor' GLOB '?'|char(72, 308)|'señor' || 'phi'|'señor' < 'phi'|'señor' = 'phi' COLLATE NOCASE
+5|SEñOR|señor|r|0|señor|señor|señor|7365C3B16F72|'señor'|115|0|0|HĴ|señorphi|0|0
+# length('xi')|upper('xi')|lower('xi')|substr('xi', 0, 4)|instr('xi', '')|replace('xi', 'e', 'XY')|trim('xi')|ltrim('xi', 'ab')|hex('xi')|quote('xi')|unicode('xi')|'xi' LIKE '_'|'xi' GLOB 'a*'|char(79, 555)|'xi' || ''|'xi' < ''|'xi' = '' COLLATE NOCASE
+2|XI|xi|xi|1|xi|xi|xi|7869|'xi'|120|0|0|Oȫ|xi|0|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 1, 3)|instr('zeta', 'señor')|replace('zeta', 'a', '')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%'|'zeta' GLOB '?'|char(83, 752)|'zeta' || 'señor'|'zeta' < 'señor'|'zeta' = 'señor' COLLATE NOCASE
+4|ZETA|zeta|zet|0|zet|zeta|zeta|7A657461|'zeta'|122|1|0|S˰|zetaseñor|0|0
+# length('naïve')|upper('naïve')|lower('naïve')|substr('naïve', -1, 5)|instr('naïve', 'omega')|replace('naïve', 'e', '')|trim('naïve')|ltrim('naïve', 'ab')|hex('naïve')|quote('naïve')|unicode('naïve')|'naïve' LIKE '%'|'naïve' GLOB 'a*'|char(83, 502)|'naïve' || 'omega'|'naïve' < 'omega'|'naïve' = 'omega' COLLATE NOCASE
+5|NAïVE|naïve|e|0|naïv|naïve|naïve|6E61C3AF7665|'naïve'|110|1|0|SǶ|naïveomega|1|0
+changes: 1
+# id|id
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+17|17
+18|18
+19|19
+20|20
+21|21
+# count(*)
+21
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|BLOB|0|NULL|0
+5|c4|TEXT|0|NULL|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# length('')|upper('')|lower('')|substr('', 2, 1)|instr('', 'café')|replace('', 'é', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE 'a%'|'' GLOB '*[a-m]*'|char(66, 651)|'' || 'café'|'' < 'café'|'' = 'café' COLLATE NOCASE
+0||||0|||||''|NULL|0|0|Bʋ|café|1|0

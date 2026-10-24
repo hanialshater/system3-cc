@@ -1,0 +1,111 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+# count(*)|count(c4)|sum(c4)|total(c4)|avg(c4)|min(c4)|max(c4)|count(DISTINCT c4)
+20|18|-772.428|-772.428|-42.912666666666667|-2.5|X'8AA05A1F'|18
+# c4|count(*)|group_concat(id)
+NULL|2|4,6
+-2.5|1|17
+-45|1|3
+-733|1|15
+-751|1|13
+-998|1|9
+0|1|14
+0.1|1|7
+441|1|1
+491|1|2
+5|1|8
+819.972|1|10
+iota|1|20
+it's|1|19
+naïve|1|12
+theta|1|5
+zeta|1|18
+X''|1|11
+X'8AA05A1F'|1|16
+# count(*)|count(c3)|sum(c3)|total(c3)|avg(c3)|min(c3)|max(c3)|count(DISTINCT c3)
+20|15|999999999999302.25|999999999999302.25|66666666666620.148|-882|X'C60EAAC985'|15
+# c3|count(*)|group_concat(id, ';')
+NULL|5|1;3;5;11;19
+# count(*)|count(c3)|sum(c3)|total(c3)|avg(c3)|min(c3)|max(c3)|count(DISTINCT c3)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c3|count(*)|group_concat(id)
+NULL|5|1,3,5,11,19
+-882|1|15
+-787.7|1|7
+-26|1|17
+-2|1|4
+0.0|1|2
+1.0e-07|1|16
+1000|1|12
+1000000000000000.0|1|20
+iota|1|6
+xi|1|13
+X''|1|9
+X'01EFC92CE800'|1|18
+X'28D6'|1|14
+X'90EEC54F'|1|8
+X'C60EAAC985'|1|10
+# n|a
+46|1134903170
+45|701408733
+44|433494437
+43|267914296
+42|165580141
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

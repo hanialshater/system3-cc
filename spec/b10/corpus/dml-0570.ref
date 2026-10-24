@@ -1,0 +1,98 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 7
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+7|zeta
+# id|c0|c1|c2|c3|c4
+7|zeta|NULL|NULL|NULL|NULL
+6|0|X'A2C05245'|NULL|beta|2.5
+5|0|NULL|X'621D428A8AAA'|omicron|379.067
+3|0|1|5|3|NULL
+2|-9223372036854775808|NULL|NULL|NULL|NULL
+changes: 8
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+8|kappa
+# id|c0|c1|c2
+8|kappa|d|0
+7|X'7C0C6B'|d|0
+6|0|-2|0
+5|!|it's|9223372036854775807
+3|0|X'B0'|X'98B11014BF'
+2|0|X'E7E9F78B'|0
+1|0|2|0
+changes: 5
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+9|X'9A747647'
+# id|c0|c1|c2|c3|c4
+9|X'9A747647'|NULL|NULL|NULL|NULL
+8|56|NULL|NULL|NULL|NULL
+7|NULL|NULL|NULL|NULL|NULL
+6|beta|X'A2C05245'|NULL|beta|2.5
+5|omicron|NULL|X'621D428A8AAA'|omicron|379.067
+3|3|1|5|3|NULL
+2|-��!|NULL|NULL|NULL|NULL
+# n|a
+81|23416728348467685
+80|14472334024676221
+79|8944394323791464
+78|5527939700884757
+77|3416454622906707
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+20|4181
+19|2584
+18|1597
+17|987
+16|610
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

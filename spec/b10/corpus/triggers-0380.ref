@@ -1,0 +1,177 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+178|178
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|NULL
+11|NULL
+12|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+166|166
+178|178
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+117|117
+166|166
+178|178
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+117|117
+166|166
+178|178
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+117|117
+119|119
+166|166
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', -3, 5)|instr('gamma', 'chi')|replace('gamma', 'e', 'XY')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '_'|'gamma' GLOB '?'|char(85, 518)|'gamma' || 'chi'|'gamma' < 'chi'|'gamma' = 'chi' COLLATE NOCASE
+5|GAMMA|gamma|mma|0|gamma|gamma|gamma|67616D6D61|'gamma'|103|0|0|UȆ|gammachi|0|0

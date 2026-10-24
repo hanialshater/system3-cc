@@ -1,0 +1,140 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t2.c0
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

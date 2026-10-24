@@ -1,0 +1,124 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+55|86267571272
+54|53316291173
+53|32951280099
+52|20365011074
+51|12586269025
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+20|4181
+19|2584
+18|1597
+17|987
+16|610
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+62|2504730781961
+61|1548008755920
+60|956722026041
+59|591286729879
+58|365435296162
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), ref)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]|{"1":8,"2":7,"3":5,"4":2,"5":4,"6":5,"7":5,"8":2,"9":1,"10":8,"11":1,"12":3,"13":2,"14":3,"15":5,"16":2,"17":8,"18":5,"19":4,"20":6,"21":null}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":null}
+{"id":2,"v":null}
+{"id":3,"v":-48.44}
+{"id":4,"v":1.0e+308}
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|110
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+110|NULL

@@ -1,0 +1,46 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'weekday 0')|julianday(2451545.0)|strftime('%j %w %W', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-02 12:00:00|2451545.0|001 6 00|946728000|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+1 day')|julianday('1999-12-31T23:59:59.999')|strftime('%s', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-01-01 23:59:59|2451544.4999999884|946684799|946684799|+0001-01-15 00:00:00.000
+# date(1700000000)|time(1700000000)|datetime(1700000000, '+1 day')|julianday(1700000000)|strftime('%Y-%m-%d %H:%M:%S', 1700000000)|unixepoch(1700000000)|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+6|210.2
+# id|c0|c1|c2|c3
+6|210.2|NULL|NULL|NULL
+5| pad |NULL|NULL|56.768
+4|X'EC'|NULL|NULL|NULL
+3|1.0e-07|gamma|NULL|0
+2|NULL|NULL|NULL|NULL
+1|-851.0|2|Ελλάδα|1.0e+308
+changes: 5
+changes: 4
+# count(*)|count(c0)
+9|4
+# count(*)
+9
+error: cannot commit - no transaction is active

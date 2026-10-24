@@ -1,0 +1,55 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('NULL')|upper('NULL')|lower('NULL')|substr('NULL', -2, 1)|instr('NULL', 'sigma')|replace('NULL', 'e', '')|trim('NULL')|ltrim('NULL', 'ab')|hex('NULL')|quote('NULL')|unicode('NULL')|'NULL' LIKE 'A%'|'NULL' GLOB 'a*'|char(89, 785)|'NULL' || 'sigma'|'NULL' < 'sigma'|'NULL' = 'sigma' COLLATE NOCASE
+4|NULL|null|L|0|NULL|NULL|NULL|4E554C4C|'NULL'|78|0|0|Y̑|NULLsigma|1|0
+# length('beta')|upper('beta')|lower('beta')|substr('beta', 4, 2)|instr('beta', 'chi')|replace('beta', 'a', '')|trim('beta')|ltrim('beta', 'ab')|hex('beta')|quote('beta')|unicode('beta')|'beta' LIKE '%'|'beta' GLOB '*'|char(68, 554)|'beta' || 'chi'|'beta' < 'chi'|'beta' = 'chi' COLLATE NOCASE
+4|BETA|beta|a|0|bet|beta|eta|62657461|'beta'|98|1|1|DȪ|betachi|1|0
+# length('señor')|upper('señor')|lower('señor')|substr('señor', -3, 4)|instr('señor', 'Ελλάδα')|replace('señor', 'e', 'XY')|trim('señor')|ltrim('señor', 'ab')|hex('señor')|quote('señor')|unicode('señor')|'señor' LIKE 'a%'|'señor' GLOB '?'|char(73, 991)|'señor' || 'Ελλάδα'|'señor' < 'Ελλάδα'|'señor' = 'Ελλάδα' COLLATE NOCASE
+5|SEñOR|señor|ñor|0|sXYñor|señor|señor|7365C3B16F72|'señor'|115|0|0|Iϟ|señorΕλλάδα|1|0
+changes: 3
+changes: 0
+# count(*)|count(c0)
+6|2
+# count(*)
+6
+error: cannot commit - no transaction is active
+# id|c0|last_value(c0) OVER (PARTITION BY c0 IS NULL ORDER BY id RANGE BETWEEN UNBOUNDED PRECEDING AND 1 FOLLOWING)
+1|upsilon|2.5
+2|2.5|X'7FF363'
+3|X'7FF363'|107
+4|107|107
+5|NULL|NULL
+6|X'EA'|X'EA'
+7|NULL|NULL
+8|-98.4|delta
+9|delta|omega
+10|omega|X'B7DA30321A'
+11|X'B7DA30321A'|omicron
+12|omicron|omicron
+# id|id|CASE WHEN nullif(c0, (c0 IS NOT c1)) THEN iif((c0 + NULL), typeof('omega'), x'b4522d') ELSE coalesce((id | c0), -(-649.153)) END
+1|1|649.153
+2|2|649.153
+3|3|649.153
+4|4|4
+5|5|649.153
+6|6|X'B4522D'
+# -(abs(x'4f'))|191
+0.0|191

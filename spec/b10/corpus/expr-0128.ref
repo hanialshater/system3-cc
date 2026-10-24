@@ -1,0 +1,156 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+# id|c0|CASE WHEN -684.73 THEN c0 ELSE c1 END BETWEEN coalesce(-1e308, -1e308) AND c2 IN (-700.478, NULL, 'a%b') IS NULL
+24|21.92|1
+23|-40.236|1
+22|-7.634|1
+21|-9.96|1
+20|-16.991|1
+19|-6.458|1
+18|-12.409|1
+17|-2.64|1
+16|-42.39|1
+15|31.034|1
+14|-1.533|1
+13|-43.212|1
+12|-43.398|1
+11|3.755|1
+10|-3.761|1
+9|-31.678|1
+8|-31.996|1
+7|-48.031|1
+6|42.231|1
+5|46.982|1
+4|-36.375|1
+3|-23.325|1
+2|-47.262|1
+1|35.91|1
+# 707.50|CAST((0 / 2.5) AS BLOB)
+707.5|X'302E30'
+# id|coalesce(-(-941) BETWEEN typeof(c2) AND iif(c0, c0, NULL), NULL)|-(id IS NULL)
+12|0|0
+11|0|0
+10|0|0
+9|0|0
+8|0|0
+7|0|0
+6|0|0
+5|0|0
+4|0|0
+3|0|0
+2|0|0
+1|0|0
+# NOT 965.9|-4
+0|-4
+# id|CASE WHEN CASE WHEN c0 THEN NULL ELSE x'' END IS NULL THEN CAST('kappa' AS BLOB) ELSE 'upsilon' IS NULL IN (x'f7c6', 465, x'cc114d6f') END|typeof(-14)
+1|X'6B61707061'|integer
+2|X'6B61707061'|integer
+3|X'6B61707061'|integer
+4|X'6B61707061'|integer
+5|X'6B61707061'|integer
+6|X'6B61707061'|integer
+7|X'6B61707061'|integer
+8|X'6B61707061'|integer
+9|X'6B61707061'|integer
+10|X'6B61707061'|integer
+11|X'6B61707061'|integer
+12|X'6B61707061'|integer
+13|X'6B61707061'|integer
+14|X'6B61707061'|integer
+15|X'6B61707061'|integer
+16|X'6B61707061'|integer
+17|X'6B61707061'|integer
+18|X'6B61707061'|integer
+19|X'6B61707061'|integer
+20|X'6B61707061'|integer
+21|X'6B61707061'|integer
+22|X'6B61707061'|integer
+23|X'6B61707061'|integer
+24|X'6B61707061'|integer
+# abs(NULL) IS NULL BETWEEN NULL AND coalesce(-160, nullif(NULL, x'052abb56ae'))|x'fd'
+0|X'FD'
+# id|NULL|CASE WHEN coalesce(CAST(id AS BLOB), CAST(c3 AS INTEGER)) THEN abs(c1) IS NULL ELSE (c4 + NULL) IS NULL END
+1|NULL|0
+2|NULL|0
+3|NULL|0
+4|NULL|0
+5|NULL|0
+6|NULL|1
+7|NULL|0
+8|NULL|0
+9|NULL|1
+10|NULL|0
+11|NULL|1
+12|NULL|0
+# abs(coalesce(-(980.9481), -('xi')))|coalesce(typeof(NULL), 736)
+980.9481|null
+# id|x'89466a54c67e'|CAST(coalesce(CASE WHEN c0 THEN x'43c74416fe' ELSE c4 END, -47.5) AS BLOB)
+1|X'89466A54C67E'|X'43C74416FE'
+2|X'89466A54C67E'|X'43C74416FE'
+3|X'89466A54C67E'|X'2D34372E35'
+4|X'89466A54C67E'|X'2D34372E35'
+5|X'89466A54C67E'|X'1BFF203A'
+6|X'89466A54C67E'|X'2D34372E35'
+7|X'89466A54C67E'|X'2D34372E35'
+8|X'89466A54C67E'|X'363235'
+9|X'89466A54C67E'|X'6E75'
+10|X'89466A54C67E'|X'43C74416FE'
+11|X'89466A54C67E'|X'2D34372E35'
+12|X'89466A54C67E'|X'2D34372E35'
+# 5|'zeta' BETWEEN -(abs(x'8be2')) AND nullif(NOT NULL, CASE WHEN 'Ελλάδα' THEN -961 ELSE x'd1c1' END)
+5|NULL
+# n|a
+49|4807526976
+48|2971215073
+47|1836311903
+46|1134903170
+45|701408733
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

@@ -1,0 +1,114 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1319
+# n|a
+17|987
+16|610
+15|377
+14|233
+13|144
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+71|190392490709135
+70|117669030460994
+69|72723460248141
+68|44945570212853
+67|27777890035288
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+90|1779979416004714189
+89|1100087778366101931
+88|679891637638612258
+87|420196140727489673
+86|259695496911122585
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+16|610
+15|377
+14|233
+13|144
+12|89
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+changes: 1
+changes: 16
+# count(*)|count(c0)
+8|6
+# count(*)
+24
+error: cannot commit - no transaction is active

@@ -1,0 +1,112 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t1.c2
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+# id|CASE WHEN NOT coalesce(id, c0) THEN NOT CAST(id AS NUMERIC) ELSE -('xi' BETWEEN c0 AND id) END|-(-((c1 >> c2)))
+1|0|-252182528
+2|0|-1
+3|0|7516192768
+4|0|0
+5|0|-1
+6|0|-13
+7|0|81088982548480
+8|0|0
+# CAST('delta' AS BLOB)|NOT typeof(CAST('日本' AS TEXT))
+X'64656C7461'|1
+# id|c0 BETWEEN c1 AND -989.3|CASE WHEN (c1 * iif(id, c2, 1.0e15)) THEN CASE WHEN id BETWEEN id AND c2 THEN iif(c0, id, 'it''s') ELSE (c1 & c0) END ELSE c1 END
+20|0|5
+19|0|0
+18|0|1.0e+308
+17|0|-660.95
+16|0|0
+15|0|61.7
+14|0|-230.447
+13|0|iota
+12|0|it's
+11|NULL|53
+10|0|X'63'
+9|NULL|0
+8|0|9223372036854775807
+7|0|0
+6|NULL|X'A2'
+5|0|-429.492
+4|0|café
+3|0|-2.5
+2|NULL|it's
+1|0|0
+# (CASE WHEN coalesce(444, x'd2331642fcf3') THEN 'delta' IN (923, 9223372036854775807, 'alpha') ELSE iif('x_y', x'ba', 'über') END || coalesce('0x1F', x'a503fb06') IN (iif(892, NULL, NULL), NULL, x'9e8f4ef0'))|'señor' IS NULL
+NULL|0
+# id|CASE WHEN coalesce(typeof(c0), -1e308) THEN id ELSE -(NOT id) END|-2.5
+8|0|-2.5
+7|0|-2.5
+6|0|-2.5
+5|0|-2.5
+4|0|-2.5
+3|0|-2.5
+2|0|-2.5
+1|0|-2.5
+# coalesce((NOT 'café' >= abs(744)), x'bb55710bfb')|typeof(CAST(-1e308 AS NUMERIC) IS NULL)
+0|integer
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+{"id":1,"v":-5}
+{"id":2,"v":1.0e+308}
+{"id":3,"v":0}
+{"id":4,"v":1.0e-07}
+# length('1e3')|upper('1e3')|lower('1e3')|substr('1e3', -3, 3)|instr('1e3', 'delta')|replace('1e3', '', '_')|trim('1e3')|ltrim('1e3', 'ab')|hex('1e3')|quote('1e3')|unicode('1e3')|'1e3' LIKE 'A%'|'1e3' GLOB '*'|char(80, 920)|'1e3' || 'delta'|'1e3' < 'delta'|'1e3' = 'delta' COLLATE NOCASE
+3|1E3|1e3|1e3|0|1e3|1e3|1e3|316533|'1e3'|49|0|1|PΘ|1e3delta|1|0
+# n|a
+74|806515533049393
+73|498454011879264
+72|308061521170129
+71|190392490709135
+70|117669030460994
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

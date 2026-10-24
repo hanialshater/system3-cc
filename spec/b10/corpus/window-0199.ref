@@ -1,0 +1,184 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c3|group_concat(id, '.') OVER (ORDER BY id ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)
+1|X'98'|1.2
+2|chi|1.2.3
+3|0|2.3.4
+4|9223372036854775807|3.4.5
+5|3.1415926535897931|4.5.6
+6|1|5.6.7
+7|NULL|6.7.8
+8|X'81DD50'|7.8.9
+9|NULL|8.9.10
+10|692.892|9.10.11
+11|-615|10.11.12
+12|961.2|11.12.13
+13|-40|12.13.14
+14|-4|13.14
+# id|c1|row_number() OVER (PARTITION BY c1 IS NULL ORDER BY id RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+1|über|1
+2|NULL|1
+3|0|2
+4|909|3
+5|NULL|2
+6|2.5|4
+7|X'AE'|5
+8|NULL|3
+9|4|6
+10|zeta|7
+11|NULL|4
+12|4.500000000000011e-310|8
+13|X'941D2F5730E5'|9
+14|X''|10
+# id|c2|first_value(c2) OVER (PARTITION BY c2 IS NULL ORDER BY id GROUPS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING)
+1|NULL|NULL
+2|-48|-48
+3|NULL|NULL
+4|X'EEAC'|-48
+5|3|X'EEAC'
+6|NULL|3
+7|NULL|NULL
+8|X'D0'|NULL
+9|43.11|X'D0'
+10|NULL|NULL
+11|X'4164'|43.11
+12|267|X'4164'
+13|X'4653BCE2E0'|267
+14|X'26C632711C'|X'4653BCE2E0'
+# id|c1|last_value(c1) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+1|NULL|104
+2|-112|104
+3|-467|104
+4|X''|104
+5|sigma|104
+6|0|104
+7|X'0CCE'|104
+8|X'B5'|104
+9|X'3DB36365'|104
+10|0|104
+11|X''|104
+12|1.0e-07|104
+13|104|104
+# id|c0|rank() OVER (ORDER BY id GROUPS BETWEEN CURRENT ROW AND CURRENT ROW)
+1|298|1
+2|NULL|2
+3|NULL|3
+4|X'7B05CE87'|4
+5|9223372036854775807|5
+6|NULL|6
+7|X'F8D98C'|7
+8|1.0e-07|8
+9|NULL|9
+10|NULL|10
+11|-3|11
+12|-530.8|12
+13|3|13
+# id|ref|lead(ref, 2, 'none') OVER (ORDER BY id)
+1|6|3
+2|NULL|4
+3|3|5
+4|4|8
+5|5|4
+6|8|4
+7|4|2
+8|4|3
+9|2|8
+10|3|3
+11|8|NULL
+12|3|5
+13|NULL|none
+14|5|none
+# id|c3|nth_value(c3, 2) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+1|X'98'|NULL
+2|chi|chi
+3|0|chi
+4|9223372036854775807|chi
+5|3.1415926535897931|chi
+6|1|chi
+7|NULL|chi
+8|X'81DD50'|chi
+9|NULL|chi
+10|692.892|chi
+11|-615|chi
+12|961.2|chi
+13|-40|chi
+14|-4|chi
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|190
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 13
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+14|Lambda
+# id|c0|c1|c2|c3|c4
+14|Lambda|d|0|NULL|NULL
+13|3|104|X'7810D14F1B'|-4|X'63D3754C9E7C'
+11|-3|X''|X'9731C2'|Lambda|X'3824'
+10|NULL|0|X'CB'|X'59DD'|NULL
+9|NULL|X'3DB36365'|2|X'7643D063'|-787.0
+7|X'F8D98C'|X'0CCE'|0|NULL|NULL
+6|X'CC'|d|0|NULL|NULL
+5|9223372036854775807|sigma|0|rho|NULL
+3|NULL|-467|0|NULL|1000000000000000.0
+2|Lambda!|-112|-739.3|-772.87|4.500000000000011e-310
+1|298|NULL|0|NULL|X'5A4AF682434F'

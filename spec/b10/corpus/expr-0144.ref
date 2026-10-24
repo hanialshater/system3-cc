@@ -1,0 +1,244 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+# id|c4|NOT coalesce(coalesce(5, -2), iif('pi', c2, -945))
+1|NULL|0
+2|-4|0
+3|-907|0
+4|-418.149|0
+5|-3|0
+6|-2|0
+7|X''|0
+8|X'4095026CDA'|0
+9|über|0
+10|1.0e-07|0
+11|NULL|0
+12| pad |0
+13|2.5|0
+14|iota|0
+15|-279.1|0
+16|-769|0
+17|-368.7153|0
+18|5|0
+19|gamma|0
+20|-813|0
+21|559|0
+# x'62f2e4'|-(-(-(278.0954)))
+X'62F2E4'|-278.0954
+# id|c3|-(CAST((c0 + NULL) AS NUMERIC))
+1|NULL|NULL
+2|-2|NULL
+3|42|NULL
+4|X'F576'|NULL
+5|psi|NULL
+6|0|NULL
+7|it's|NULL
+8|NULL|NULL
+9|-1.0e+308|NULL
+10|chi|NULL
+11|1.0e-07|NULL
+12|日本|NULL
+13|X'6452'|NULL
+14|NULL|NULL
+15|465.4244|NULL
+16|3|NULL
+17|1000000000000000|NULL
+18|42|NULL
+19|-900|NULL
+20|404.454|NULL
+21|NULL|NULL
+# NULL|CASE WHEN NOT 305.5276 THEN CAST(220 AS INTEGER) ELSE 327.3502 END
+NULL|327.3502
+# id|id|nullif(c1, x'0a00ad81be8e')
+21|21|NULL
+20|20|NULL
+19|19|NULL
+18|18|X'8D14'
+17|17|673
+16|16|2.5
+15|15|rho
+14|14|9223372036854775807
+13|13|999.3
+12|12|-882
+11|11|NULL
+10|10|X'0EFCCDF7E4E2'
+9|9|3
+8|8|NULL
+7|7|-140
+6|6|60
+5|5|naïve
+4|4|iota
+3|3|zeta
+2|2|-182
+1|1|860.9505
+# typeof(NULL) IS NULL BETWEEN typeof(-615 IN (389, -577, -0.0)) AND typeof(CAST(-917.357 AS REAL))|iif(NOT coalesce(898, 'beta'), 1, -569.7898)
+0|-569.7898
+# id|c1|c0
+1|über|36.363
+2|X'7E18A499292C'|25.062
+3|NULL|-15.09
+4|-5|-11.235
+5|0.1|43.217
+6|NULL|-25.932
+7|-514|-36.418
+8|-206|-36.44
+9|it's|38.807
+10|upsilon|-4.364
+11|-4|-10.814
+12||-34.931
+13|X'7FB6EC1D68'|48.926
+14|NULL|14.976
+15|NULL|15.225
+16|NULL|-32.992
+17|日本|-0.032
+18|9223372036854775807|-16.682
+19|1e3|28.627
+20|2|-14.836
+# iif(coalesce(-('zeta'), iif(4, 'omicron', NULL)), coalesce(NOT 1, CASE WHEN x'18f0e4' THEN NULL ELSE NULL END), x'e1')|-(3 IN (x'385913ed4187', NULL, 519.87)) IN (NOT x'1df65f14359b', 'pi', '42')
+X'E1'|NULL
+# id|iif(nullif(ref, 1) IN (nullif(c4, 1.0e15), x'f50ce9d1', -786), CAST(coalesce(c4, 111) AS INTEGER), x'3c6e24')|-(c1 IS NULL IN (nullif(c0, -4), 'über', x'05ec9e036af1'))
+1|X'3C6E24'|0
+2|X'3C6E24'|0
+3|X'3C6E24'|NULL
+4|X'3C6E24'|0
+5|X'3C6E24'|0
+6|X'3C6E24'|0
+7|X'3C6E24'|0
+8|X'3C6E24'|0
+9|X'3C6E24'|0
+10|X'3C6E24'|0
+11|X'3C6E24'|0
+12|X'3C6E24'|0
+13|X'3C6E24'|0
+14|X'3C6E24'|0
+15|X'3C6E24'|0
+16|X'3C6E24'|NULL
+17|X'3C6E24'|0
+18|X'3C6E24'|0
+19|X'3C6E24'|NULL
+20|X'3C6E24'|NULL
+21|X'3C6E24'|0
+# 2|coalesce(('rho' < x'addb01f4'), (1e-7 = iif('1e3', 'theta', x'7d9523c6e63b')))
+2|1
+# id|id|(c2 <> -((c1 - 3)))
+1|1|1
+2|2|NULL
+3|3|1
+4|4|1
+5|5|1
+6|6|NULL
+7|7|1
+8|8|1
+9|9|NULL
+10|10|1
+11|11|1
+12|12|1
+13|13|1
+14|14|NULL
+15|15|NULL
+16|16|NULL
+17|17|1
+18|18|1
+19|19|1
+20|20|1
+# CASE WHEN typeof(iif('rho', x'fe882742', NULL)) THEN CAST(-(NULL) AS NUMERIC) ELSE abs(CAST('theta' AS TEXT)) END|-940.9615
+0.0|-940.9615
+# id|c2|0
+20|-479|0
+19|375|0
+18|-103|0
+17|91|0
+16|-177|0
+15|354|0
+14|353|0
+13|149|0
+12|-5|0
+11|289|0
+10|-412|0
+9|NULL|0
+8|-431|0
+7|-374|0
+6|499|0
+5|475|0
+4|-128|0
+3|451|0
+2|NULL|0
+1|-178|0
+# 734 IN (NOT coalesce(-154, x'a03f'), NULL, 0)|abs(-(-4))
+NULL|4
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+[2,9,20,8,10,7,1,16,4,18,12,17,13,11,14,15,19,3,5,6]|{"2":null,"9":null,"20":-479,"8":-431,"10":-412,"7":-374,"1":-178,"16":-177,"4":-128,"18":-103,"12":-5,"17":91,"13":149,"11":289,"14":353,"15":354,"19":375,"3":451,"5":475,"6":499}
+# json_object('id', id, 'v', c2)
+{"id":1,"v":-178}
+{"id":2,"v":null}
+{"id":3,"v":451}
+{"id":4,"v":-128}
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

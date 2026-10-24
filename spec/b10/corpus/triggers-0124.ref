@@ -1,0 +1,182 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+157|157
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+138|138
+157|157
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+138|138
+157|157
+159|159
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+118|118
+138|138
+157|157
+159|159
+changes: 0
+error: UNIQUE constraint failed: t0.id
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 12
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+159|NULL
+# id|c0|c1|c2|c3
+3|X'54'|NULL|NULL|NULL
+4|-7|NULL|NULL|NULL
+5|0|NULL|NULL|-817
+6|NULL|340.4659|42|500
+7|0x1F|xi|NULL|-671
+9|2.5|2.5|NULL|X'2FC9'
+10|-5|-5|NULL|omega
+11|5|5|916.4|-2
+13|señor|omicron|-769.9282|-339
+14|NULL|NULL|349.34|alpha
+15|omega|omega|-1.0e+308|X'08'
+17|899|899|X'4661'|NULL
+18|1|1|X'1696D0C13C'|-907.709
+19|5|5|X'EE'|9223372036854775807
+113|NULL|NULL|NULL|NULL
+158|NULL|NULL|NULL|NULL
+159|NULL|NULL|NULL|NULL
+# length('tau')|upper('tau')|lower('tau')|substr('tau', 2, 1)|instr('tau', 'alpha')|replace('tau', '', 'XY')|trim('tau')|ltrim('tau', 'ab')|hex('tau')|quote('tau')|unicode('tau')|'tau' LIKE 'A%'|'tau' GLOB '?'|char(79, 759)|'tau' || 'alpha'|'tau' < 'alpha'|'tau' = 'alpha' COLLATE NOCASE
+3|TAU|tau|a|0|tau|tau|tau|746175|'tau'|116|0|0|O˷|taualpha|0|0

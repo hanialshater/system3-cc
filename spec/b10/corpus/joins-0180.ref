@@ -1,0 +1,107 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 356
+# id|id|c0|c0
+1|2|303|X'FC5530E42B0B'
+1|3|303|951
+2|3|-218|951
+3|NULL|-312|NULL
+error: near "-": syntax error
+# id|id|id|c3
+1|1|1|NULL
+1|2|1|-4
+1|3|1|X'EB17'
+2|1|2|NULL
+2|2|2|-4
+2|3|2|X'EB17'
+3|1|3|NULL
+3|2|3|-4
+3|3|3|X'EB17'
+# count(*)
+3
+# id|id|c3|c2
+1|1|X'14'|-5
+1|2|X'14'|X'CABF6FB9'
+1|3|X'14'|-9223372036854775808
+2|1|NULL|-5
+2|2|NULL|X'CABF6FB9'
+2|3|NULL|-9223372036854775808
+3|1|X'A2'|-5
+3|2|X'A2'|X'CABF6FB9'
+3|3|X'A2'|-9223372036854775808
+4|1|1.0e+308|-5
+4|2|1.0e+308|X'CABF6FB9'
+4|3|1.0e+308|-9223372036854775808
+5|1|123456789012|-5
+5|2|123456789012|X'CABF6FB9'
+5|3|123456789012|-9223372036854775808
+6|1|973.5|-5
+6|2|973.5|X'CABF6FB9'
+6|3|973.5|-9223372036854775808
+7|1|0.1|-5
+7|2|0.1|X'CABF6FB9'
+7|3|0.1|-9223372036854775808
+8|1|v1|-5
+8|2|v1|X'CABF6FB9'
+8|3|v1|-9223372036854775808
+9|1|v2|-5
+9|2|v2|X'CABF6FB9'
+9|3|v2|-9223372036854775808
+10|1|v3|-5
+10|2|v3|X'CABF6FB9'
+10|3|v3|-9223372036854775808
+11|1|v4|-5
+11|2|v4|X'CABF6FB9'
+11|3|v4|-9223372036854775808
+12|1|v5|-5
+# count(*)
+363
+# id|id|c4|c2
+1|2|X'D2B7FFA4BA49'|X'CABF6FB9'
+1|3|X'D2B7FFA4BA49'|-9223372036854775808
+2|3|X'51'|-9223372036854775808
+3|NULL|0|NULL
+error: near "(": syntax error
+error: NOT NULL constraint failed: t2.c0
+changes: 0
+# count(*)|count(c0)
+3|3
+# count(*)
+3
+error: cannot commit - no transaction is active
+# id|id|c3|id
+1|1|NULL|1
+2|2|-4|2
+3|3|X'EB17'|3
+error: near "CASE": syntax error
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|1|0|0
+2|c1||0|NULL|0
+3|c2|INT|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table

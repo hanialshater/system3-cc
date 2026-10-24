@@ -1,0 +1,294 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2715
+# id|id|c0|c1
+1|1|NULL|beta
+1|2|NULL|X'47'
+1|3|NULL|0.1
+1|4|NULL|771
+1|5|NULL|1e3
+1|6|NULL|X'E67D0B'
+1|7|NULL|NULL
+1|8|NULL|zeta
+1|9|NULL|NULL
+1|10|NULL|X'02D8'
+1|11|NULL|X'ACCC8C49E505'
+1|12|NULL|beta
+1|13|NULL|-5
+2|1|Ελλάδα|beta
+2|2|Ελλάδα|X'47'
+2|3|Ελλάδα|0.1
+2|4|Ελλάδα|771
+2|5|Ελλάδα|1e3
+2|6|Ελλάδα|X'E67D0B'
+2|7|Ελλάδα|NULL
+2|8|Ελλάδα|zeta
+2|9|Ελλάδα|NULL
+2|10|Ελλάδα|X'02D8'
+2|11|Ελλάδα|X'ACCC8C49E505'
+2|12|Ελλάδα|beta
+2|13|Ελλάδα|-5
+3|1|X'02132D6B'|beta
+3|2|X'02132D6B'|X'47'
+3|3|X'02132D6B'|0.1
+3|4|X'02132D6B'|771
+3|5|X'02132D6B'|1e3
+3|6|X'02132D6B'|X'E67D0B'
+3|7|X'02132D6B'|NULL
+3|8|X'02132D6B'|zeta
+3|9|X'02132D6B'|NULL
+3|10|X'02132D6B'|X'02D8'
+3|11|X'02132D6B'|X'ACCC8C49E505'
+3|12|X'02132D6B'|beta
+3|13|X'02132D6B'|-5
+4|1|X'57'|beta
+4|2|X'57'|X'47'
+4|3|X'57'|0.1
+4|4|X'57'|771
+4|5|X'57'|1e3
+4|6|X'57'|X'E67D0B'
+4|7|X'57'|NULL
+error: no such column: a.naïve
+# id|id|c1|c0
+1|1|-4|NULL
+1|2|-4|Ελλάδα
+1|3|-4|X'02132D6B'
+1|4|-4|X'57'
+1|5|-4|NULL
+1|6|-4|NULL
+1|7|-4|-622
+1|8|-4|Lambda
+1|9|-4|-719.0463
+1|10|-4|NULL
+1|11|-4|X'E9'
+1|12|-4|NULL
+1|13|-4|X'F0F4EB'
+2|1|NULL|NULL
+2|2|NULL|Ελλάδα
+2|3|NULL|X'02132D6B'
+2|4|NULL|X'57'
+2|5|NULL|NULL
+2|6|NULL|NULL
+2|7|NULL|-622
+2|8|NULL|Lambda
+2|9|NULL|-719.0463
+2|10|NULL|NULL
+2|11|NULL|X'E9'
+2|12|NULL|NULL
+2|13|NULL|X'F0F4EB'
+3|1|X'A95878661FB0'|NULL
+3|2|X'A95878661FB0'|Ελλάδα
+3|3|X'A95878661FB0'|X'02132D6B'
+3|4|X'A95878661FB0'|X'57'
+3|5|X'A95878661FB0'|NULL
+3|6|X'A95878661FB0'|NULL
+3|7|X'A95878661FB0'|-622
+3|8|X'A95878661FB0'|Lambda
+3|9|X'A95878661FB0'|-719.0463
+3|10|X'A95878661FB0'|NULL
+3|11|X'A95878661FB0'|X'E9'
+3|12|X'A95878661FB0'|NULL
+3|13|X'A95878661FB0'|X'F0F4EB'
+4|1|NULL|NULL
+# count(*)
+2729
+# id|id|c0|c1
+1|1|NULL|beta
+2|1|Ελλάδα|beta
+2|2|Ελλάδα|X'47'
+3|1|X'02132D6B'|beta
+3|2|X'02132D6B'|X'47'
+3|3|X'02132D6B'|0.1
+4|1|X'57'|beta
+4|2|X'57'|X'47'
+4|3|X'57'|0.1
+4|4|X'57'|771
+5|1|NULL|beta
+5|2|NULL|X'47'
+5|3|NULL|0.1
+5|4|NULL|771
+5|5|NULL|1e3
+6|1|NULL|beta
+6|2|NULL|X'47'
+6|3|NULL|0.1
+6|4|NULL|771
+6|5|NULL|1e3
+6|6|NULL|X'E67D0B'
+7|1|-622|beta
+7|2|-622|X'47'
+7|3|-622|0.1
+7|4|-622|771
+7|5|-622|1e3
+7|6|-622|X'E67D0B'
+7|7|-622|NULL
+8|1|Lambda|beta
+8|2|Lambda|X'47'
+8|3|Lambda|0.1
+8|4|Lambda|771
+8|5|Lambda|1e3
+8|6|Lambda|X'E67D0B'
+8|7|Lambda|NULL
+8|8|Lambda|zeta
+9|1|-719.0463|beta
+9|2|-719.0463|X'47'
+9|3|-719.0463|0.1
+9|4|-719.0463|771
+9|5|-719.0463|1e3
+9|6|-719.0463|X'E67D0B'
+9|7|-719.0463|NULL
+9|8|-719.0463|zeta
+9|9|-719.0463|NULL
+10|1|NULL|beta
+10|2|NULL|X'47'
+10|3|NULL|0.1
+10|4|NULL|771
+10|5|NULL|1e3
+10|6|NULL|X'E67D0B'
+10|7|NULL|NULL
+10|8|NULL|zeta
+10|9|NULL|NULL
+10|10|NULL|X'02D8'
+11|1|X'E9'|beta
+11|2|X'E9'|X'47'
+11|3|X'E9'|0.1
+error: near "(": syntax error
+# id|id|c1|c1
+1|1|beta|beta
+2|1|X'47'|beta
+2|2|X'47'|X'47'
+3|1|0.1|beta
+3|2|0.1|X'47'
+3|3|0.1|0.1
+4|1|771|beta
+4|2|771|X'47'
+4|3|771|0.1
+4|4|771|771
+5|1|1e3|beta
+5|2|1e3|X'47'
+5|3|1e3|0.1
+5|4|1e3|771
+5|5|1e3|1e3
+6|1|X'E67D0B'|beta
+6|2|X'E67D0B'|X'47'
+6|3|X'E67D0B'|0.1
+6|4|X'E67D0B'|771
+6|5|X'E67D0B'|1e3
+6|6|X'E67D0B'|X'E67D0B'
+7|1|NULL|beta
+7|2|NULL|X'47'
+7|3|NULL|0.1
+7|4|NULL|771
+7|5|NULL|1e3
+7|6|NULL|X'E67D0B'
+7|7|NULL|NULL
+8|1|zeta|beta
+8|2|zeta|X'47'
+8|3|zeta|0.1
+8|4|zeta|771
+8|5|zeta|1e3
+8|6|zeta|X'E67D0B'
+8|7|zeta|NULL
+8|8|zeta|zeta
+9|1|NULL|beta
+9|2|NULL|X'47'
+9|3|NULL|0.1
+9|4|NULL|771
+9|5|NULL|1e3
+9|6|NULL|X'E67D0B'
+9|7|NULL|NULL
+error: near "NOT": syntax error
+# id|id|c1|c0
+1|2|-4|Ελλάδα
+1|3|-4|X'02132D6B'
+1|4|-4|X'57'
+1|5|-4|NULL
+1|6|-4|NULL
+1|7|-4|-622
+1|8|-4|Lambda
+1|9|-4|-719.0463
+1|10|-4|NULL
+1|11|-4|X'E9'
+1|12|-4|NULL
+1|13|-4|X'F0F4EB'
+2|3|NULL|X'02132D6B'
+2|4|NULL|X'57'
+2|5|NULL|NULL
+2|6|NULL|NULL
+2|7|NULL|-622
+2|8|NULL|Lambda
+2|9|NULL|-719.0463
+2|10|NULL|NULL
+2|11|NULL|X'E9'
+2|12|NULL|NULL
+2|13|NULL|X'F0F4EB'
+error: ambiguous column name: c0
+# id|id|c0|id
+1|1|NULL|1
+2|1|Ελλάδα|1
+2|2|Ελλάδα|2
+3|1|X'02132D6B'|1
+3|2|X'02132D6B'|2
+3|3|X'02132D6B'|3
+4|1|X'57'|1
+4|2|X'57'|2
+4|3|X'57'|3
+4|4|X'57'|4
+5|1|NULL|1
+5|2|NULL|2
+5|3|NULL|3
+5|4|NULL|4
+5|5|NULL|5
+6|1|NULL|1
+6|2|NULL|2
+# count(*)
+13
+# id|id|c2|c0
+1|1|X'65'|NULL
+2|1|X'76'|NULL
+2|2|X'76'|Ελλάδα
+3|1|-903|NULL
+3|2|-903|Ελλάδα
+3|3|-903|X'02132D6B'
+4|1|250.93|NULL
+4|2|250.93|Ελλάδα
+4|3|250.93|X'02132D6B'
+4|4|250.93|X'57'
+5|1|iota|NULL
+5|2|iota|Ελλάδα
+5|3|iota|X'02132D6B'
+5|4|iota|X'57'
+5|5|iota|NULL
+6|1|X'6D933F'|NULL
+6|2|X'6D933F'|Ελλάδα
+6|3|X'6D933F'|X'02132D6B'
+6|4|X'6D933F'|X'57'
+# count(*)
+2729
+error: cannot commit - no transaction is active

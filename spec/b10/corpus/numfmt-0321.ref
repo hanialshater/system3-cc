@@ -1,0 +1,62 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%.10g', -317)|round(-317, 1)|-317 * -914|-317 / 4.5e-310|CAST(-317 AS TEXT)|-317 + 0.0
+-317|-317.0|289738|-Inf|-317|-317.0
+# printf('%e', -1)|round(-1, 0)|-1 * -1|-1 / -2|CAST(-1 AS TEXT)|-1 + 0.0
+-1.000000e+00|-1.0|1|0|-1|-1.0
+# printf('%,d', 212.2)|round(212.2, 0)|212.2 * 932|212.2 / 848|CAST(212.2 AS TEXT)|212.2 + 0.0
+212|212.0|197770.4|0.25023584905660379|212.2|212.2
+# printf('%g', 5)|round(5, 1)|5 * 123456789012|5 / -557|CAST(5 AS TEXT)|5 + 0.0
+5|5.0|617283945060|0|5|5.0
+# printf('%x', 2)|round(2, 3)|2 * 445|2 / 1e308|CAST(2 AS TEXT)|2 + 0.0
+2|2.0|890|2.0e-308|2|2.0
+# printf('%q', 28)|round(28, 1)|28 * 492.6|28 / -966.480|CAST(28 AS TEXT)|28 + 0.0
+28|28.0|13792.800000000001|-0.02897111166294181|28|28.0
+# printf('%%', -996)|round(-996, 2)|-996 * 123456789012|-996 / -84|CAST(-996 AS TEXT)|-996 + 0.0
+%|-996.0|-122962961855952|11|-996|-996.0
+# count(*)|count(c3)|sum(c3)|total(c3)|avg(c3)|min(c3)|max(c3)|count(DISTINCT c3)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c3|count(*)|group_concat(id)
+NULL|5|2,4,5,6,10

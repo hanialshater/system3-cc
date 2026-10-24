@@ -1,0 +1,117 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: no such savepoint: nope
+# abs(-9223372036854775808)
+error: integer overflow
+error: no such column: t2.nope
+error: no such column: t1.nope
+# json('{')
+error: malformed JSON
+# printf('%d', 426)|round(426, 3)|426 * -892|426 / 1|CAST(426 AS TEXT)|426 + 0.0
+426|426.0|-379992|426|426|426.0
+changes: 1
+# id|c0
+2|NULL
+3|NULL
+9|NULL
+13|NULL
+17|NULL
+4|-56.2
+5|-2.5
+8|-1
+24|0
+11|49
+25|504.8
+19|672
+14|871
+12|9223372036854775807
+1|gamma
+15|gamma
+20|it's
+22|it's
+18|psi
+16|theta
+6|X''
+23|X'0A157FF4C9B1'
+7|X'60996D'
+21|X'E2050B219D'
+10|X'ED'
+# count(*)
+20
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.id

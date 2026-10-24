@@ -1,0 +1,132 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|NOT (CAST(88 AS BLOB) IS NOT 3)|'señor'
+1|0|señor
+2|0|señor
+3|0|señor
+4|0|señor
+5|0|señor
+6|0|señor
+7|0|señor
+8|0|señor
+9|0|señor
+10|0|señor
+11|0|señor
+# -(-4 IS NULL BETWEEN typeof(x'') AND -(-338.70))|NOT NULL
+0|NULL
+# id|CASE WHEN CAST(c2 IN (c1, x'dc', NULL) AS INTEGER) THEN CAST(NULL IS NULL AS INTEGER) ELSE iif(-(id), id, x'89163a9409') END|c3
+1|1|X'E87AFDE63A86'
+2|2|xi
+3|3|300
+4|4|-2.5
+5|5|4.500000000000011e-310
+6|6|272
+7|7|-536
+8|8|-630.45
+9|9|X''
+10|10|iota
+11|11|NULL
+12|12|-889
+13|13|-750
+14|14|omega
+15|15|beta
+16|16|omega
+17|17|X'DD3D8F26'
+18|18|X'7EB17BAE9B'
+19|19|X'E8C6BEA9'
+20|20|a%b
+21|21|NULL
+22|22|X''
+23|23|X''
+# NULL|-(coalesce(CASE WHEN x'' THEN 'Ελλάδα' ELSE x'ebf3a6b4' END, -0.0))
+NULL|0
+# id|NOT -(coalesce(NULL, id))|((c1 >= CAST(27 AS NUMERIC)) IS NOT NULL IN (CASE WHEN x'' THEN -573 ELSE c1 END, 'eta', 4.5e-310))
+1|0|0
+2|0|0
+3|0|0
+4|0|NULL
+5|0|NULL
+6|0|0
+7|0|0
+8|0|0
+9|0|0
+10|0|0
+11|0|0
+# (CASE WHEN x'b73b' THEN x'' BETWEEN 'xi' AND -237.9 ELSE coalesce(826, 971.706) END OR x'01783dc1')|-645
+1|-645
+# id|typeof(('iota' - c3)) IS NULL|iif(c0, (c3 AND CASE WHEN -12 THEN id ELSE '1e3' END), 448.2835)
+1|0|0
+2|0|0
+3|0|448.2835
+4|0|1
+5|0|1
+6|0|1
+7|0|448.2835
+8|0|1
+9|0|448.2835
+10|0|0
+11|0|NULL
+12|0|1
+13|0|1
+14|0|448.2835
+15|0|448.2835
+16|0|448.2835
+17|0|0
+18|0|448.2835
+19|0|448.2835
+20|0|0
+21|0|NULL
+22|0|0
+23|0|448.2835
+# CAST(iif(x'fd', x'96e26dadb689', '1e3') AS INTEGER) IN ((NULL IS NULL / NOT NULL), 'alpha', NULL)|825
+1|825
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+11|11|66|66.0|6.0|1|11|11
+# id|count(*)|group_concat(id)
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+# printf('%w', -2.5)|round(-2.5, 4)|-2.5 * 341.8572|-2.5 / -54|CAST(-2.5 AS TEXT)|-2.5 + 0.0
+-2.5|-2.5|-854.64299999999992|0.046296296296296294|-2.5|-2.5

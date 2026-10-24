@@ -1,0 +1,71 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%.0f', 446)|round(446, 2)|446 * 5|446 / -1e308|CAST(446 AS TEXT)|446 + 0.0
+446|446.0|2230|-4.46e-306|446|446.0
+# printf('%.10g', 338.98)|round(338.98, 3)|338.98 * 1.0e15|338.98 / 3.141592653589793|CAST(338.98 AS TEXT)|338.98 + 0.0
+338.98|338.98|3.3898e+17|107.90068521858137|338.98|338.98
+# printf('%+d', -2.5)|round(-2.5, 4)|-2.5 * -990|-2.5 / 283|CAST(-2.5 AS TEXT)|-2.5 + 0.0
+-2|-2.5|2475.0|-0.0088339222614841|-2.5|-2.5
+# printf('%w', -476.192)|round(-476.192, 2)|-476.192 * -4|-476.192 / 573|CAST(-476.192 AS TEXT)|-476.192 + 0.0
+-476.192|-476.19|1904.768|-0.83105061082024434|-476.192|-476.192
+# printf('%lld', -2)|round(-2, 1)|-2 * -614|-2 / -599|CAST(-2 AS TEXT)|-2 + 0.0
+-2|-2.0|1228|0|-2|-2.0
+# printf('%g', -9223372036854775808)|round(-9223372036854775808, 0)|-9223372036854775808 * 2|-9223372036854775808 / -215|CAST(-9223372036854775808 AS TEXT)|-9223372036854775808 + 0.0
+-9.22337e+18|-9.2233720368547758e+18|-1.8446744073709552e+19|42899404822580352|-9223372036854775808|-9.2233720368547758e+18
+changes: 1
+# id|c2
+# count(*)
+10
+changes: 1
+changes: 1
+# n|a
+64|6557470319842
+63|4052739537881
+62|2504730781961
+61|1548008755920
+60|956722026041
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# length('delta')|upper('delta')|lower('delta')|substr('delta', 4, 3)|instr('delta', 'omicron')|replace('delta', '', '')|trim('delta')|ltrim('delta', 'ab')|hex('delta')|quote('delta')|unicode('delta')|'delta' LIKE 'A%'|'delta' GLOB '?'|char(84, 538)|'delta' || 'omicron'|'delta' < 'omicron'|'delta' = 'omicron' COLLATE NOCASE
+5|DELTA|delta|ta|0|delta|delta|delta|64656C7461|'delta'|100|0|0|TȚ|deltaomicron|1|0

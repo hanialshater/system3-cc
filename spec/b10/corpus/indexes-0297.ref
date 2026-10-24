@@ -1,0 +1,96 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+3
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+9|-992
+12|-622
+14|-622
+2|0
+6|0
+8|0
+11|0
+16|0
+19|1000000000000000.0
+7|1.0e+308
+13|1e3
+17|1e3
+10|eta
+20|upsilon
+1|xi
+5|日本
+4|X''
+18|X'703165'
+15|X'CFC1580E'
+3|X'EB'
+error: no query solution
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+4|-2.5
+2|Lambda
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+15
+changes: 1
+changes: 1
+# id|ref|nth_value(ref, 2) OVER (ORDER BY id)
+1|5|NULL
+2|NULL|NULL
+3|NULL|NULL
+4|8|NULL
+5|6|NULL
+6|1|NULL
+7|NULL|NULL
+8|8|NULL
+9|NULL|NULL
+10|5|NULL
+11|8|NULL
+12|6|NULL
+13|7|NULL
+14|1|NULL
+15|3|NULL
+16|8|NULL
+17|7|NULL
+18|5|NULL
+19|6|NULL
+20|3|NULL
+# length('')|upper('')|lower('')|substr('', -2, 5)|instr('', 'café')|replace('', '', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB 'a*'|char(66, 393)|'' || 'café'|'' < 'café'|'' = 'café' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|BƉ|café|1|0
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18

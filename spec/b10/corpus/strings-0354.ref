@@ -1,0 +1,79 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c3
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+changes: 1
+# length('señor')|upper('señor')|lower('señor')|substr('señor', -2, 0)|instr('señor', 'NULL')|replace('señor', '', '_')|trim('señor')|ltrim('señor', 'ab')|hex('señor')|quote('señor')|unicode('señor')|'señor' LIKE '%'|'señor' GLOB 'a*'|char(75, 808)|'señor' || 'NULL'|'señor' < 'NULL'|'señor' = 'NULL' COLLATE NOCASE
+5|SEñOR|señor||0|señor|señor|señor|7365C3B16F72|'señor'|115|1|0|K̨|señorNULL|0|0
+# length('eta')|upper('eta')|lower('eta')|substr('eta', -2, 0)|instr('eta', 'a%b')|replace('eta', 'e', '')|trim('eta')|ltrim('eta', 'ab')|hex('eta')|quote('eta')|unicode('eta')|'eta' LIKE 'A%'|'eta' GLOB '*[a-m]*'|char(71, 367)|'eta' || 'a%b'|'eta' < 'a%b'|'eta' = 'a%b' COLLATE NOCASE
+3|ETA|eta||0|ta|eta|eta|657461|'eta'|101|0|1|Gů|etaa%b|0|0
+# length('MU')|upper('MU')|lower('MU')|substr('MU', 1, 0)|instr('MU', 'upsilon')|replace('MU', 'é', 'XY')|trim('MU')|ltrim('MU', 'ab')|hex('MU')|quote('MU')|unicode('MU')|'MU' LIKE '%é%'|'MU' GLOB '*[a-m]*'|char(72, 965)|'MU' || 'upsilon'|'MU' < 'upsilon'|'MU' = 'upsilon' COLLATE NOCASE
+2|MU|mu||0|MU|MU|MU|4D55|'MU'|77|0|0|Hυ|MUupsilon|1|0
+changes: 6
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+7|-529
+# id|c0|c1
+7|-529|NULL
+6|0|NULL
+5|NULL|NULL
+4|NULL|4
+3|NULL|NULL
+2|NULL|1.0e+308
+# printf('%.10g', 14.4)|round(14.4, 1)|14.4 * -307|14.4 / -2|CAST(14.4 AS TEXT)|14.4 + 0.0
+14.4|14.4|-4420.8|-7.2|14.4|14.4
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+{"id":1,"v":null}
+{"id":2,"v":"-745"}
+{"id":3,"v":"zeta"}
+{"id":4,"v":"-706"}

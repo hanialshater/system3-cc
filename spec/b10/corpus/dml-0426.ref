@@ -1,0 +1,156 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 24
+changes: 8
+changes: 1
+changes: 1
+# id|c0
+25|naïve
+# id|c0|c1|c2|c3|c4
+2|-96.253!|X''|-836.1|-160.7356|1
+3|0.0|0.0|NULL|123456789012|904
+5|X'23'|0.0|NULL|NULL|0
+6|39.0|39.0|177|X'2BB0572C'|X''
+8|0.0|0.0|X'C26C'|tau|2.5
+9|-4.0|-4.0|-635|689.46|9223372036854775807
+11|-556.0|-556.0|omega|-50|-2
+12|epsilon|epsilon|zeta|0.0|3
+14|0.0|0.0|NULL|-4|-5
+15|0.0|0.0|NULL|-4|0
+17|42.0|42.0|upsilon|X'0CBD5C78'|X'03'
+18|72.0|72.0|psi|-4|1.0e+308
+20|X'DEAB0D'|X'DEAB0D'|NULL|NULL|2.5
+21|X'2CBF2C02'|X'2CBF2C02'|888.474|716.752|-599
+23|x_y|x_y|9223372036854775807|1e3|0
+24|X'ECBB85374B'|X'ECBB85374B'|NULL|-814|-139.37
+25|naïve|0.0|NULL|NULL|0
+changes: 10
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+10|omega
+# id|c0|c1
+10|omega|NULL
+9|zeta|X'B9AB343629F2'
+7|zeta|X''
+5|NULL|NULL
+3|zeta|1000.0
+1|NULL|NULL
+changes: 4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+6|chi
+# id|c0|c1|c2
+6|chi|NULL|NULL
+5|-7|NULL|NULL
+4|real|-15|42.25
+3|real|74|22.219
+2|real|-291|14.706
+changes: 6
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+10|X'493031F9'
+# id|c0|c1
+3|1|1000.0
+5|1|NULL
+6|NULL|NULL
+7|alpha|NULL
+9|1|X'B9AB343629F2'
+10|X'493031F9'|NULL
+changes: 6
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+11|701
+# id|c0|c1
+3|X'14D9C09B'|NULL
+5|��(#I!|NULL
+7|743|NULL
+9|743|X'B9AB343629F2'
+10|743|NULL
+11|701|NULL
+changes: 17
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+26|X''
+# id|c0|c1|c2|c3|c4
+2|-160.7356|X''|-836.1|-160.7356|1
+3|!|0.0|NULL|123456789012|904
+5|NULL|0.0|NULL|NULL|0
+6|X'2BB0572C'|39.0|177|X'2BB0572C'|X''
+7|1000.0|0.0|NULL|NULL|0
+9|689.46|-4.0|-635|689.46|9223372036854775807
+11|-50.0|-556.0|omega|-50|-2
+14|-4.0|0.0|NULL|-4|-5
+15|-4.0|0.0|NULL|-4|0
+17|X'0CBD5C78'|42.0|upsilon|X'0CBD5C78'|X'03'
+18|-4.0|72.0|psi|-4|1.0e+308
+21|716.752|X'2CBF2C02'|888.474|716.752|-599
+23|1000.0|x_y|9223372036854775807|1e3|0
+25|NULL|0.0|NULL|NULL|0
+26|X''|0.0|NULL|NULL|0
+# length('MU')|upper('MU')|lower('MU')|substr('MU', 2, 5)|instr('MU', 'gamma')|replace('MU', '', 'XY')|trim('MU')|ltrim('MU', 'ab')|hex('MU')|quote('MU')|unicode('MU')|'MU' LIKE '%é%'|'MU' GLOB '?'|char(73, 666)|'MU' || 'gamma'|'MU' < 'gamma'|'MU' = 'gamma' COLLATE NOCASE
+2|MU|mu|U|0|MU|MU|MU|4D55|'MU'|77|0|0|Iʚ|MUgamma|1|0
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+5|3|79.175|79.175|26.391666666666666|14.706|42.25|3
+# c2|count(*)|group_concat(id)
+NULL|2|5,6
+14.706|1|2
+22.219|1|3
+42.25|1|4
+# id|c2|-(c0) IS NULL BETWEEN x'cc23' AND CASE WHEN nullif(NULL, c2) THEN -3 ELSE c0 END
+2|14.706|0
+3|22.219|0
+4|42.25|0
+5|NULL|0
+6|NULL|0
+# 105|nullif('0x1F' IN (typeof(x'981c8d'), '-7', -1), NOT 1 IS NULL)
+105|0

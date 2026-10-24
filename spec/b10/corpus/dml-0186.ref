@@ -1,0 +1,139 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+18|X'8E13D9'
+# id|c0|c1|c2|c3|ref
+1|NULL|-4|-4|café|4
+2|NULL|562|X'45'|-509.996|7
+4|434.6|NULL|NULL|NULL|NULL
+5|4|pi|X'9A79968B'|X'B1B5B557BD47'|NULL
+7|X'FDF6C6'|444|-152.83|X'7F897F98'|NULL
+8|NULL|-5|593.3596|nu|6
+10|NULL|1.0e-07|-4|5|NULL
+11|Lambda|-440|1.0e-07|X'1E8BAB'|6
+13|eta|NULL|NULL|X'EC6A'|7
+14|511|señor|-577.46|4|NULL
+16|-3|-235|X'37'|X'95E741'|4
+17|X'A7'|X'872322EF7B8B'|-562|899.669|4
+18|X'8E13D9'|NULL|NULL|NULL|NULL
+changes: 5
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+10|347
+# id|c0|c1|c2|c3
+1|X'AB1587DFCB09'|NULL|X'AB1587DFCB09'|-528
+2|1.0e+308!|NULL|-1.0e+308|X''
+4|-63|547|-63|phi
+5|X'C5569EC1'|0|X'C5569EC1'|5.24
+9|659|NULL|0|d
+10|347|NULL|0|d
+changes: 4
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+19|-99
+# id|c0|c1|c2|c3|ref
+2|-2.5!|562|X'45'|-509.996|7
+4|434.6|NULL|NULL|NULL|NULL
+7|NULL|NULL|NULL|NULL|NULL
+8|NULL|-5|593.3596|nu|6
+10|1|1.0e-07|-4|5|NULL
+14|1|señor|-577.46|4|NULL
+16|-3|-235|X'37'|X'95E741'|4
+18|X'8E13D9'|NULL|NULL|NULL|NULL
+19|-99|NULL|NULL|NULL|NULL
+changes: 9
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+20|X'F17613A5E5'
+# id|c0|c1|c2|c3|ref
+1|X'442428F7'|NULL|NULL|NULL|NULL
+2|-2.5!|562|X'45'|-509.996|7
+7|NULL|NULL|NULL|NULL|NULL
+10|1|1.0e-07|-4|5|NULL
+14|1|señor|-577.46|4|NULL
+18|X'8E13D9'|NULL|NULL|NULL|NULL
+19|-99|NULL|NULL|NULL|NULL
+20|X'F17613A5E5'|NULL|NULL|NULL|NULL
+changes: 6
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+11|63
+# id|c0|c1|c2|c3
+1|X'0E4856'|NULL|0|d
+2|0|NULL|-1.0e+308|X''
+4|0|547|-63|phi
+5|0|0|X'C5569EC1'|5.24
+9|iota|NULL|0|d
+10|0|NULL|0|d
+11|63|NULL|0|d
+changes: 1
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+12|NULL
+# id|c0|c1|c2|c3
+1|X'0E4856'|NULL|0|d
+3|NULL|NULL|0|d
+5|NULL|NULL|0|d
+9|iota|NULL|0|d
+11|63|NULL|0|d
+12|NULL|NULL|0|d
+changes: 1
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+21|a%b
+# id|c0|c1|c2|c3|ref
+2|9.2233720368547758e+18|562|X'45'|-509.996|7
+3|-3|NULL|NULL|NULL|NULL
+9|2|NULL|NULL|NULL|NULL
+10|1|1.0e-07|-4|5|NULL
+14|1|señor|-577.46|4|NULL
+18|X'8E13D9'|NULL|NULL|NULL|NULL
+20|X'F17613A5E5'|NULL|NULL|NULL|NULL
+21|a%b|NULL|NULL|NULL|NULL
+# id|id|row_number() OVER (ORDER BY id)
+1|1|1
+3|3|2
+5|5|3
+9|9|4
+11|11|5
+12|12|6

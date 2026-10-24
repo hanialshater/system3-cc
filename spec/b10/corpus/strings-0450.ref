@@ -1,0 +1,52 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('iota')|upper('iota')|lower('iota')|substr('iota', 3, 1)|instr('iota', '42')|replace('iota', 'é', '')|trim('iota')|ltrim('iota', 'ab')|hex('iota')|quote('iota')|unicode('iota')|'iota' LIKE 'A%'|'iota' GLOB 'a*'|char(87, 667)|'iota' || '42'|'iota' < '42'|'iota' = '42' COLLATE NOCASE
+4|IOTA|iota|t|0|iota|iota|iota|696F7461|'iota'|105|0|0|Wʛ|iota42|0|0
+# length('kappa')|upper('kappa')|lower('kappa')|substr('kappa', 2, 2)|instr('kappa', 'sigma')|replace('kappa', 'é', '_')|trim('kappa')|ltrim('kappa', 'ab')|hex('kappa')|quote('kappa')|unicode('kappa')|'kappa' LIKE '%'|'kappa' GLOB '*[a-m]*'|char(75, 775)|'kappa' || 'sigma'|'kappa' < 'sigma'|'kappa' = 'sigma' COLLATE NOCASE
+5|KAPPA|kappa|ap|0|kappa|kappa|kappa|6B61707061|'kappa'|107|1|1|K̇|kappasigma|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 1, 1)|instr('zeta', 'nu')|replace('zeta', 'a', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE 'a%'|'zeta' GLOB '*[a-m]*'|char(65, 372)|'zeta' || 'nu'|'zeta' < 'nu'|'zeta' = 'nu' COLLATE NOCASE
+4|ZETA|zeta|z|0|zet_|zeta|zeta|7A657461|'zeta'|122|0|1|AŴ|zetanu|0|0
+# length('tau')|upper('tau')|lower('tau')|substr('tau', 4, 3)|instr('tau', 'epsilon')|replace('tau', '', '')|trim('tau')|ltrim('tau', 'ab')|hex('tau')|quote('tau')|unicode('tau')|'tau' LIKE '%a_'|'tau' GLOB 'a*'|char(87, 424)|'tau' || 'epsilon'|'tau' < 'epsilon'|'tau' = 'epsilon' COLLATE NOCASE
+3|TAU|tau||0|tau|tau|tau|746175|'tau'|116|1|0|Wƨ|tauepsilon|0|0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|TEXT|1|0|0
+3|c2||1|0|0
+4|c3|INTEGER|0|NULL|0
+5|c4|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table

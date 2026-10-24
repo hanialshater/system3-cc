@@ -1,0 +1,94 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c1|(CAST(abs(c0) AS TEXT) IS NOT iif(CAST(c1 AS INTEGER), 'Lambda', 927))
+11|-3|1
+10|X'AC53EB3627C9'|1
+9|-43.63|1
+8|-9223372036854775808|1
+7|NULL|1
+6|X'E03553D0DF7C'|1
+5|-395.6023|1
+4|NULL|1
+3|4|1
+2|upsilon|1
+1|delta|1
+# -341|x'92150a2af8'
+-341|X'92150A2AF8'
+# id|abs('señor')|-(c2)
+1|0.0|0
+2|0.0|0
+3|0.0|0
+4|0.0|0
+5|0.0|0
+6|0.0|0
+7|0.0|NULL
+8|0.0|0
+9|0.0|0
+10|0.0|0
+11|0.0|-83
+# 'epsilon'|-(x'' IN (x'd94e34ab', 'sigma', 151) IN (1, 0, NULL))
+epsilon|-1
+# id|NOT -((NULL - c1))|(nullif(NULL, NULL) IN (abs(id), 929.8426, -997.8050) OR c0)
+1|NULL|NULL
+2|NULL|NULL
+3|NULL|1
+4|NULL|NULL
+5|NULL|NULL
+6|NULL|NULL
+7|NULL|NULL
+8|NULL|NULL
+9|NULL|NULL
+10|NULL|NULL
+11|NULL|NULL
+# abs(NULL)|coalesce(NOT coalesce(x'da55ab', NULL), abs(-(x'')))
+NULL|1
+# id|nullif(x'06ea', (coalesce(c2, ref) OR c2 IN (id, 'NULL', 3)))|nullif(nullif(typeof(id), 'alpha'), abs(c0) IN (abs(c1), 'zeta', 0.1))
+1|X'06EA'|integer
+2|X'06EA'|integer
+3|X'06EA'|integer
+4|X'06EA'|integer
+5|X'06EA'|integer
+6|X'06EA'|integer
+7|X'06EA'|integer
+8|X'06EA'|integer
+9|X'06EA'|integer
+10|X'06EA'|integer
+# nullif('omicron', typeof(CAST(x'60' AS INTEGER)))|CAST(NULL IN ('42', -0.0, x'69dca70b') IN (CAST(NULL AS NUMERIC), -218, 282.009) AS TEXT)
+omicron|NULL
+# id|iif(coalesce(id, id) IS NULL, CAST(3 AS REAL), 'Ελλάδα')|id
+11|Ελλάδα|11
+10|Ελλάδα|10
+9|Ελλάδα|9
+8|Ελλάδα|8
+7|Ελλάδα|7
+6|Ελλάδα|6
+5|Ελλάδα|5
+4|Ελλάδα|4
+3|Ελλάδα|3
+2|Ελλάδα|2
+1|Ελλάδα|1
+# -5 IS NULL|NULL
+0|NULL
+# length('rho')|upper('rho')|lower('rho')|substr('rho', -2, 0)|instr('rho', 'alpha')|replace('rho', 'é', 'XY')|trim('rho')|ltrim('rho', 'ab')|hex('rho')|quote('rho')|unicode('rho')|'rho' LIKE 'A%'|'rho' GLOB 'a*'|char(83, 501)|'rho' || 'alpha'|'rho' < 'alpha'|'rho' = 'alpha' COLLATE NOCASE
+3|RHO|rho||0|rho|rho|rho|72686F|'rho'|114|0|0|Sǵ|rhoalpha|0|0

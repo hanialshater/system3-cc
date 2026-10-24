@@ -1,0 +1,69 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1727
+# printf('%q', 2.5)|round(2.5, 3)|2.5 * 128|2.5 / -67|CAST(2.5 AS TEXT)|2.5 + 0.0
+2.5|2.5|320.0|-0.037313432835820892|2.5|2.5
+# printf('%q', 672)|round(672, 2)|672 * -1e308|672 / 3|CAST(672 AS TEXT)|672 + 0.0
+672|672.0|-Inf|224|672|672.0
+# printf('%-8s|', -2.5)|round(-2.5, 4)|-2.5 * 979|-2.5 / 1e-7|CAST(-2.5 AS TEXT)|-2.5 + 0.0
+-2.5    ||-2.5|-2447.5|-25000000.0|-2.5|-2.5
+# printf('%08.3f', 455)|round(455, 3)|455 * 574|455 / 4|CAST(455 AS TEXT)|455 + 0.0
+0455.000|455.0|261170|113|455|455.0
+# length('sigma')|upper('sigma')|lower('sigma')|substr('sigma', -2, 2)|instr('sigma', 'nu')|replace('sigma', 'e', '')|trim('sigma')|ltrim('sigma', 'ab')|hex('sigma')|quote('sigma')|unicode('sigma')|'sigma' LIKE '%a_'|'sigma' GLOB '*'|char(81, 338)|'sigma' || 'nu'|'sigma' < 'nu'|'sigma' = 'nu' COLLATE NOCASE
+5|SIGMA|sigma|ma|0|sigma|sigma|sigma|7369676D61|'sigma'|115|0|1|QŒ|sigmanu|0|0
+# id|id|c0|c0
+1|1|X'33D66DCDB3'|pi
+2|2|3.1415926535897931|1000000000000000.0
+3|3|NULL|X'2396DA05'
+4|4|naïve|X'D358E0'
+5|5|NULL|652.0
+6|6|omicron|gamma
+# count(*)
+6
+error: NOT NULL constraint failed: t0.c0
+changes: 1730
+# count(*)|count(c0)
+8|8
+# count(*)
+8
+error: cannot commit - no transaction is active

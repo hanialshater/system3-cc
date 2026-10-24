@@ -1,0 +1,75 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('xi')|upper('xi')|lower('xi')|substr('xi', 0, 5)|instr('xi', 'eta')|replace('xi', 'a', '')|trim('xi')|ltrim('xi', 'ab')|hex('xi')|quote('xi')|unicode('xi')|'xi' LIKE 'a%'|'xi' GLOB '*'|char(74, 539)|'xi' || 'eta'|'xi' < 'eta'|'xi' = 'eta' COLLATE NOCASE
+2|XI|xi|xi|0|xi|xi|xi|7869|'xi'|120|0|1|Jț|xieta|0|0
+# length('x_y')|upper('x_y')|lower('x_y')|substr('x_y', 4, 2)|instr('x_y', 'phi')|replace('x_y', 'a', '_')|trim('x_y')|ltrim('x_y', 'ab')|hex('x_y')|quote('x_y')|unicode('x_y')|'x_y' LIKE '%a_'|'x_y' GLOB 'a*'|char(71, 254)|'x_y' || 'phi'|'x_y' < 'phi'|'x_y' = 'phi' COLLATE NOCASE
+3|X_Y|x_y||0|x_y|x_y|x_y|785F79|'x_y'|120|0|0|Gþ|x_yphi|0|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', -2, 1)|instr('epsilon', ' pad ')|replace('epsilon', 'a', 'XY')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE '_'|'epsilon' GLOB 'a*'|char(82, 555)|'epsilon' || ' pad '|'epsilon' < ' pad '|'epsilon' = ' pad ' COLLATE NOCASE
+7|EPSILON|epsilon|o|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|0|Rȫ|epsilon pad |0|0
+# length('日本')|upper('日本')|lower('日本')|substr('日本', 0, 4)|instr('日本', '1e3')|replace('日本', 'é', 'XY')|trim('日本')|ltrim('日本', 'ab')|hex('日本')|quote('日本')|unicode('日本')|'日本' LIKE 'A%'|'日本' GLOB '*'|char(66, 998)|'日本' || '1e3'|'日本' < '1e3'|'日本' = '1e3' COLLATE NOCASE
+2|日本|日本|日本|0|日本|日本|日本|E697A5E69CAC|'日本'|26085|0|1|BϦ|日本1e3|0|0
+# length('1e3')|upper('1e3')|lower('1e3')|substr('1e3', 0, 0)|instr('1e3', 'kappa')|replace('1e3', 'é', 'XY')|trim('1e3')|ltrim('1e3', 'ab')|hex('1e3')|quote('1e3')|unicode('1e3')|'1e3' LIKE 'A%'|'1e3' GLOB '*'|char(85, 761)|'1e3' || 'kappa'|'1e3' < 'kappa'|'1e3' = 'kappa' COLLATE NOCASE
+3|1E3|1e3||0|1e3|1e3|1e3|316533|'1e3'|49|0|1|U˹|1e3kappa|1|0
+# length('rho')|upper('rho')|lower('rho')|substr('rho', -2, 4)|instr('rho', 'gamma')|replace('rho', 'é', 'XY')|trim('rho')|ltrim('rho', 'ab')|hex('rho')|quote('rho')|unicode('rho')|'rho' LIKE '_'|'rho' GLOB '*'|char(81, 559)|'rho' || 'gamma'|'rho' < 'gamma'|'rho' = 'gamma' COLLATE NOCASE
+3|RHO|rho|ho|0|rho|rho|rho|72686F|'rho'|114|0|1|Qȯ|rhogamma|0|0
+# length('kappa')|upper('kappa')|lower('kappa')|substr('kappa', -2, 0)|instr('kappa', '0x1F')|replace('kappa', 'a', '_')|trim('kappa')|ltrim('kappa', 'ab')|hex('kappa')|quote('kappa')|unicode('kappa')|'kappa' LIKE '%a_'|'kappa' GLOB 'a*'|char(72, 984)|'kappa' || '0x1F'|'kappa' < '0x1F'|'kappa' = '0x1F' COLLATE NOCASE
+5|KAPPA|kappa||0|k_pp_|kappa|kappa|6B61707061|'kappa'|107|0|0|HϘ|kappa0x1F|0|0
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', '+12 hours')|julianday('2024-02-29')|strftime('%f', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-02-29 12:00:00|2460369.5|00.000|1709164800|+0001-01-15 00:00:00.000

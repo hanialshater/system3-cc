@@ -1,0 +1,72 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1740
+# length('eta')|upper('eta')|lower('eta')|substr('eta', 0, 4)|instr('eta', 'tau')|replace('eta', 'é', 'XY')|trim('eta')|ltrim('eta', 'ab')|hex('eta')|quote('eta')|unicode('eta')|'eta' LIKE '%é%'|'eta' GLOB 'a*'|char(83, 351)|'eta' || 'tau'|'eta' < 'tau'|'eta' = 'tau' COLLATE NOCASE
+3|ETA|eta|eta|0|eta|eta|eta|657461|'eta'|101|0|0|Sş|etatau|1|0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 0, 1)|instr('a%b', 'theta')|replace('a%b', 'e', '_')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '_'|'a%b' GLOB '?'|char(90, 438)|'a%b' || 'theta'|'a%b' < 'theta'|'a%b' = 'theta' COLLATE NOCASE
+3|A%B|a%b||0|a%b|a%b|%b|612562|'a%b'|97|0|0|Zƶ|a%btheta|1|0
+# length('delta')|upper('delta')|lower('delta')|substr('delta', -2, 5)|instr('delta', 'iota')|replace('delta', 'a', 'XY')|trim('delta')|ltrim('delta', 'ab')|hex('delta')|quote('delta')|unicode('delta')|'delta' LIKE '%é%'|'delta' GLOB '*[a-m]*'|char(82, 446)|'delta' || 'iota'|'delta' < 'iota'|'delta' = 'iota' COLLATE NOCASE
+5|DELTA|delta|ta|0|deltXY|delta|delta|64656C7461|'delta'|100|0|1|Rƾ|deltaiota|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 4, 0)|instr('zeta', 'pi')|replace('zeta', 'é', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%é%'|'zeta' GLOB 'a*'|char(66, 348)|'zeta' || 'pi'|'zeta' < 'pi'|'zeta' = 'pi' COLLATE NOCASE
+4|ZETA|zeta||0|zeta|zeta|zeta|7A657461|'zeta'|122|0|0|BŜ|zetapi|0|0
+# id|c0|abs(coalesce(541.6370, id)) IN (NULL, NULL, -5)
+1|NULL|NULL
+2|-2|NULL
+3|X''|NULL
+4|omicron|NULL
+5|X'1A8F11EA'|NULL
+6|-938|NULL
+7|NULL|NULL
+# (-(CAST(x'91c1bc58f5' AS INTEGER)) / NOT NULL IS NULL)|((x'd6b0d82dec46' * NULL) BETWEEN iif(NULL, 843, 2) AND 2 < (iif('chi', 0, -299) >> coalesce(NULL, 1e-7)))
+NULL|NULL
+changes: 3
+changes: 1755
+# count(*)|count(c0)
+1761|1755
+# count(*)
+1761
+error: cannot commit - no transaction is active
+error: table t0 already exists

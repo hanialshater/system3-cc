@@ -1,0 +1,99 @@
+changes: 0
+error: cannot store BLOB value in REAL column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c3
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1||0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+5|c4|NUMERIC|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# length('phi')|upper('phi')|lower('phi')|substr('phi', 0, 1)|instr('phi', 'kappa')|replace('phi', 'a', '')|trim('phi')|ltrim('phi', 'ab')|hex('phi')|quote('phi')|unicode('phi')|'phi' LIKE 'A%'|'phi' GLOB 'a*'|char(67, 739)|'phi' || 'kappa'|'phi' < 'kappa'|'phi' = 'kappa' COLLATE NOCASE
+3|PHI|phi||0|phi|phi|phi|706869|'phi'|112|0|0|Cˣ|phikappa|0|0
+# n|a
+67|27777890035288
+66|17167680177565
+65|10610209857723
+64|6557470319842
+63|4052739537881
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+error: UNIQUE constraint failed: t2.id

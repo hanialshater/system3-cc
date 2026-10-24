@@ -1,0 +1,111 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+5|0.0
+# count(*)
+7
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+3|X'5D00'
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+16|123456789012
+2|0x1F
+4|Lambda
+9|epsilon
+10|sigma
+11|Ελλάδα
+13|X'38'
+7|X'A98EEC'
+# count(*)
+13
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+11
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+1|NULL
+4|NULL
+6|NULL
+8|NULL
+10|NULL
+11|-2.5
+5|0.0
+12|0x1F
+2|2
+9|5
+7|alpha
+3|X''
+# count(*)
+7
+changes: 1
+changes: 1
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+12 hours')|julianday('2000-01-01 12:34:56')|strftime('%f', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2000-01-02 00:34:56|2451545.0242592595|56.000|946730096|+0001-01-15 00:00:00.000
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

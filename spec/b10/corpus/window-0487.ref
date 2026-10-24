@@ -1,0 +1,180 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|last_value(id) OVER (PARTITION BY id IS NULL ORDER BY id GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+8|8|8
+9|9|9
+10|10|10
+11|11|11
+12|12|12
+13|13|13
+14|14|14
+15|15|15
+16|16|16
+17|17|17
+18|18|18
+19|19|19
+20|20|20
+21|21|21
+# id|c0|ntile(3) OVER (ORDER BY id ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
+1|-37.432|1
+2|16.107|1
+3|-14.636|1
+4|11.244|1
+5|44.323|1
+6|42.931|1
+7|-0.497|1
+8|33.523|2
+9|41.649|2
+10|5.795|2
+11|-10.964|2
+12|32.16|2
+13|19.343|2
+14|46.271|2
+15|22.891|3
+16|38.797|3
+17|22.215|3
+18|-12.192|3
+19|0.394|3
+20|-49.342|3
+21|-38.639|3
+# id|id|last_value(id) OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+# id|c0|group_concat(id, '.') OVER (PARTITION BY c0 IS NULL ORDER BY id RANGE BETWEEN CURRENT ROW AND CURRENT ROW)
+1|NULL|1
+2|-812.0|2
+3|café|3
+4|NULL|4
+5|MU|5
+6|707.0|6
+7|NULL|7
+# id|c1|sum(id) OVER (ORDER BY id GROUPS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+1|957|231
+2|MU|230
+3|3|228
+4|4.500000000000011e-310|225
+5|293.38|221
+6|NULL|216
+7|X'7A'|210
+8|epsilon|203
+9|123456789012|195
+10|X'81FA777F'|186
+11|0.0|176
+12|564|165
+13|-1|153
+14|delta|140
+15|pi|126
+16|NULL|111
+17|chi|95
+18|-191|78
+19|-974.795|60
+20|NULL|41
+21|NULL|21
+# id|c0|ntile(4) OVER (ORDER BY id)
+1|NULL|1
+2|X''|1
+3|-9223372036854775808|1
+4|807|1
+5|NULL|1
+6|850.908|2
+7|café|2
+8|X'3D5175'|2
+9|NULL|2
+10|X'87'|2
+11|X'2BE75F0E0824'|3
+12|1|3
+13|X'B76823E609DE'|3
+14|chi|3
+15|X'935A1F'|3
+16|NULL|4
+17|NULL|4
+18|-4|4
+19|NULL|4
+# id|id|first_value(id) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+changes: 1
+# id|c2
+5|NULL
+6|NULL
+7|NULL
+1|0
+2|2
+3|27.8846
+4|42
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+12
+changes: 1
+changes: 1

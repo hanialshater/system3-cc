@@ -1,0 +1,65 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+error: wrong number of arguments to function substr()
+error: UNIQUE constraint failed: t1.id
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18
+error: table t1 has no column named nope
+error: no such column: t1.nope
+error: near "SELEC": syntax error
+# json('{')
+error: malformed JSON
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c3)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c3)
+error: JSON cannot hold BLOB values
+changes: 4
+changes: 2
+# count(*)|count(c0)
+11|6
+# count(*)
+11
+error: cannot commit - no transaction is active
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+11|7|-1.0e+308|-1.0e+308|-1.4285714285714286e+307|-1.0e+308|X'8253B3'|7
+# c2|count(*)|group_concat(id, ';')
+NULL|4|1;5;10;11
+-1.0e+308|1|8
+2.5|1|9
+937|1|2
+1000000000000000|1|6
+sigma|1|7
+X'0420'|1|4
+X'8253B3'|1|3

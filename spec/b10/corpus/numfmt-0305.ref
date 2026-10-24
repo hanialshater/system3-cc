@@ -1,0 +1,53 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 386
+# printf('%Q', -4)|round(-4, 1)|-4 * 893|-4 / -701|CAST(-4 AS TEXT)|-4 + 0.0
+'-4'|-4.0|-3572|0|-4|-4.0
+# printf('%.3s', -4)|round(-4, 0)|-4 * 11|-4 / 5|CAST(-4 AS TEXT)|-4 + 0.0
+-4|-4.0|-44|0|-4|-4.0
+# printf('%x', 389)|round(389, 1)|389 * 3.141592653589793|389 / -756|CAST(389 AS TEXT)|389 + 0.0
+185|389.0|1222.0795422464296|0|389|389.0
+# printf('%.3s', -582)|round(-582, 2)|-582 * 4.5e-310|-582 / 1e-7|CAST(-582 AS TEXT)|-582 + 0.0
+-58|-582.0|-2.6190000000000066e-307|-5820000000.0|-582|-582.0
+# id|iif(CAST(coalesce(c1, id) AS REAL), CAST(c3 AS TEXT), NULL)|abs(iif(typeof(730.6), id, '1e3'))
+1|NULL|1000.0
+2|20.626|1000.0
+3|NULL|1000.0
+4|NULL|1000.0
+5|NULL|1000.0
+# 'NULL'|x'44a47239' BETWEEN -4 AND abs(NULL) BETWEEN 'upsilon' AND ' pad ' IN (123456789012, 989.7, NULL)
+NULL|NULL
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'start of month')|julianday('2038-01-19 03:14:07')|strftime('%Y-%m-%d %H:%M:%S', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-01 00:00:00|2465442.6348032407|2038-01-19 03:14:07|2147483647|+0001-01-15 00:00:00.000
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|1|0|0
+2|c1||1|0|0
+3|c2|VARCHAR(10)|0|NULL|0
+4|c3|REAL|0|NULL|0
+5|c4|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table

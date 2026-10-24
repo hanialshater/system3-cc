@@ -1,0 +1,172 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|BLOB|0|'d'|0
+3|c2|INT|0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+4|c3|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+4|c3|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|BLOB|0|'d'|0
+3|c2|INT|0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# id|id|c0|c3
+1|2|-661|-354
+1|3|-661|alpha
+1|4|-661|9223372036854775807
+1|5|-661|chi
+1|6|-661|gamma
+1|7|-661|NULL
+1|8|-661|zeta
+1|9|-661|phi
+1|10|-661|upsilon
+1|11|-661|291
+1|12|-661|NULL
+1|13|-661|X'D303C2A1'
+1|14|-661|-717
+1|15|-661|epsilon
+1|16|-661|NULL
+1|17|-661|-855.7
+1|18|-661|2
+1|19|-661|X'FD'
+2|3|X'0B7AB05ED4F3'|alpha
+2|4|X'0B7AB05ED4F3'|9223372036854775807
+2|5|X'0B7AB05ED4F3'|chi
+2|6|X'0B7AB05ED4F3'|gamma
+2|7|X'0B7AB05ED4F3'|NULL
+2|8|X'0B7AB05ED4F3'|zeta
+2|9|X'0B7AB05ED4F3'|phi
+error: near "(": syntax error
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c0)
+{"id":1,"v":-661}
+error: JSON cannot hold BLOB values

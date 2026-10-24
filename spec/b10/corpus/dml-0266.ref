@@ -1,0 +1,204 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 25
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+26|518
+# id|c0|c1
+1|0|NULL
+2|NULL|-1
+3|-456.3!|1e3
+5|X'2A7614'|d
+6|-685.6366|X'852B'
+7|0|X'65B2BA'
+9|0|-4
+10|2.5|X'332C8D25'
+11|0|-5
+13|0|NULL
+14|-2.5|573
+15|281|X'17CD2A5298'
+17|0|NULL
+18|0|NULL
+19|5|5
+21|1.0e-07|X''
+22|0|it's
+23|-217|NULL
+25|0|epsilon
+26|518|d
+changes: 5
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+26|-414
+# id|c0|c1
+1|0.0!|NULL
+3|-456.3!|1e3
+5|-500.27|d
+7|0|X'65B2BA'
+9|0|-4
+11|0|-5
+13|NULL|NULL
+15|281|X'17CD2A5298'
+17|NULL|NULL
+19|5|5
+21|1.0e-07|X''
+23|NULL|NULL
+25|0|epsilon
+26|-414|d
+changes: 4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+7|eta
+# id|c0|c1|c2|c3|c4|ref
+1|4|-821|X'933C'|X'13DBAE20615D'|xi|4
+2|1|5|X'073635A5EC'|NULL|-4|1
+3|NULL|NULL|NULL|NULL|NULL|NULL
+4|8|rho|X''|NULL|X''|8
+6|-575|NULL|NULL|NULL|NULL|NULL
+7|eta|NULL|NULL|NULL|NULL|NULL
+changes: 6
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+16|zeta
+# id|c0|c1|c2|c3|c4|ref
+2|NULL|NULL|948|xi|-4|4
+3|NULL|NULL|3.1415926535897931|X'DB2BBDDCC833'|595.3|5
+4|NULL|d|NULL|NULL|NULL|NULL
+5|NULL|889|249.85|-936|-994.55|8
+6|NULL|X'E98842'|1000000000000000|3|-1|1
+8|iota|d|NULL|NULL|NULL|NULL
+9|NULL|a%b|X'CCD518EDFA'|-2.5|X'9CBD3944'|5
+11|42|NULL|X'E5'|NULL|sigma|1
+12|NULL|NULL|x_y|NULL|X'B01CD7EE6A'|8
+14|-4|X'4B'|42|0|-786|6
+15|NULL|-298|2|-708|X'6709B87573'|2
+16|zeta|d|NULL|NULL|NULL|NULL
+changes: 12
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+17|NULL
+# id|c0|c1|c2|c3|c4|ref
+1|NULL|d|NULL|NULL|NULL|NULL
+2|NULL|NULL|948|xi|-4|4
+3|NULL|NULL|3.1415926535897931|X'DB2BBDDCC833'|595.3|5
+4|NULL|d|NULL|NULL|NULL|NULL
+6|NULL|X'E98842'|1000000000000000|3|-1|1
+8|1|d|NULL|NULL|NULL|NULL
+11|0|NULL|X'E5'|NULL|sigma|1
+12|NULL|NULL|x_y|NULL|X'B01CD7EE6A'|8
+14|0|X'4B'|42|0|-786|6
+15|NULL|-298|2|-708|X'6709B87573'|2
+16|1|d|NULL|NULL|NULL|NULL
+17|NULL|d|NULL|NULL|NULL|NULL
+changes: 12
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+18|-848
+# id|c0|c1|c2|c3|c4|ref
+2|omega|NULL|948|xi|-4|4
+3|omega|NULL|3.1415926535897931|X'DB2BBDDCC833'|595.3|5
+4|-4!|d|NULL|NULL|NULL|NULL
+5|-2.5|d|NULL|NULL|NULL|NULL
+8|omega|d|NULL|NULL|NULL|NULL
+12|omega|NULL|x_y|NULL|X'B01CD7EE6A'|8
+14|omega|X'4B'|42|0|-786|6
+15|omega|-298|2|-708|X'6709B87573'|2
+17|omega|d|NULL|NULL|NULL|NULL
+18|-848|d|NULL|NULL|NULL|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+13|6
+17|6
+23|6
+5|4
+26|6
+7|6
+9|6
+11|6
+25|6
+21|6
+19|6
+15|6
+3|3
+1|1
+# id
+# id
+5
+9
+11
+13
+15
+17
+19
+21
+23
+25
+26
+# c1
+-5
+-4
+5
+1e3
+d
+epsilon
+X''
+X'17CD2A5298'
+X'65B2BA'
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18

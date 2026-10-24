@@ -1,0 +1,113 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c0
+changes: 1
+# n|a
+21|6765
+20|4181
+19|2584
+18|1597
+17|987
+# count(*)|max(x)|group_concat(x)
+8|16|3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+54|53316291173
+53|32951280099
+52|20365011074
+51|12586269025
+50|7778742049
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+74|806515533049393
+73|498454011879264
+72|308061521170129
+71|190392490709135
+70|117669030460994
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# id|id|c1|c0
+1|NULL|296.0|NULL
+2|4|X'F46EC9FC4B49'|X'2C7752'
+3|5|3.1415926535897931|-543
+4|7|X'BFFDE63E'|tau
+5|6|-1.0e+308|X'6C'
+6|9|X'E5'|1000000000000000
+7|NULL|X'D63F2B2B'|NULL
+8|NULL|2.5|NULL
+9|NULL|X'B6BAAC37'|NULL
+10|NULL|NULL|NULL
+11|NULL|-243.0|NULL
+12|NULL|-617.0|NULL
+error: near "CASE": syntax error

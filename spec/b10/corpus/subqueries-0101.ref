@@ -1,0 +1,157 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+4|13
+9|13
+12|13
+3|13
+5|13
+6|13
+8|13
+11|13
+13|13
+7|13
+10|13
+2|13
+1|13
+# id
+# id
+12
+13
+# id
+0.1
+1
+2
+3
+4
+5
+6
+7
+8
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+1|1
+2|2
+3|3
+# id
+# id
+# c1
+-171
+-1
+0
+0.1
+4
+344
+a%b
+a%b
+zeta
+X''
+X'0FBF3EEC7A'
+X'10B7512171C2'
+X'35EB83D6AA'
+X'BC5152'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|13
+5|13
+9|13
+12|13
+2|13
+10|13
+11|13
+3|13
+4|13
+13|13
+8|13
+6|13
+7|13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+11
+12
+13
+# c0
+0.1
+4
+344
+a%b
+zeta
+X''
+X'0FBF3EEC7A'
+X'10B7512171C2'
+X'35EB83D6AA'
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# length('x_y')|upper('x_y')|lower('x_y')|substr('x_y', 3, 1)|instr('x_y', 'kappa')|replace('x_y', 'a', 'XY')|trim('x_y')|ltrim('x_y', 'ab')|hex('x_y')|quote('x_y')|unicode('x_y')|'x_y' LIKE 'a%'|'x_y' GLOB 'a*'|char(85, 362)|'x_y' || 'kappa'|'x_y' < 'kappa'|'x_y' = 'kappa' COLLATE NOCASE
+3|X_Y|x_y|y|0|x_y|x_y|x_y|785F79|'x_y'|120|0|0|UŪ|x_ykappa|0|0

@@ -1,0 +1,82 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('señor')|upper('señor')|lower('señor')|substr('señor', 0, 4)|instr('señor', 'it''s')|replace('señor', 'e', 'XY')|trim('señor')|ltrim('señor', 'ab')|hex('señor')|quote('señor')|unicode('señor')|'señor' LIKE '%'|'señor' GLOB '*[a-m]*'|char(66, 248)|'señor' || 'it''s'|'señor' < 'it''s'|'señor' = 'it''s' COLLATE NOCASE
+5|SEñOR|señor|señ|0|sXYñor|señor|señor|7365C3B16F72|'señor'|115|1|1|Bø|señorit's|0|0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', -3, 5)|instr('a%b', 'psi')|replace('a%b', 'a', 'XY')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '%a_'|'a%b' GLOB '?'|char(65, 797)|'a%b' || 'psi'|'a%b' < 'psi'|'a%b' = 'psi' COLLATE NOCASE
+3|A%B|a%b|a%b|0|XY%b|a%b|%b|612562|'a%b'|97|0|0|A̝|a%bpsi|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 1, 5)|instr('zeta', 'omicron')|replace('zeta', '', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%a_'|'zeta' GLOB 'a*'|char(68, 683)|'zeta' || 'omicron'|'zeta' < 'omicron'|'zeta' = 'omicron' COLLATE NOCASE
+4|ZETA|zeta|zeta|0|zeta|zeta|zeta|7A657461|'zeta'|122|0|0|Dʫ|zetaomicron|0|0
+# length('MU')|upper('MU')|lower('MU')|substr('MU', -1, 5)|instr('MU', 'kappa')|replace('MU', '', '')|trim('MU')|ltrim('MU', 'ab')|hex('MU')|quote('MU')|unicode('MU')|'MU' LIKE '%'|'MU' GLOB '?'|char(71, 566)|'MU' || 'kappa'|'MU' < 'kappa'|'MU' = 'kappa' COLLATE NOCASE
+2|MU|mu|U|0|MU|MU|MU|4D55|'MU'|77|1|0|Gȶ|MUkappa|1|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', 3, 3)|instr('nu', 'phi')|replace('nu', 'e', '_')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE '%'|'nu' GLOB '?'|char(73, 629)|'nu' || 'phi'|'nu' < 'phi'|'nu' = 'phi' COLLATE NOCASE
+2|NU|nu||0|nu|nu|nu|6E75|'nu'|110|1|0|Iɵ|nuphi|1|0
+# printf('%g', -158)|round(-158, 1)|-158 * 659.5|-158 / 3|CAST(-158 AS TEXT)|-158 + 0.0
+-158|-158.0|-104201.0|-52|-158|-158.0
+# id|c4|ntile(3) OVER (ORDER BY id)
+1|183|1
+2|5|1
+3|39|1
+4|498|2
+5|-464|2
+6|236|3
+7|126|3
+# id|id|c0|c1
+1|1|NULL|485
+1|2|NULL|-490
+1|3|NULL|-242
+1|4|NULL|-323
+1|5|NULL|-52
+1|6|NULL|NULL
+1|7|NULL|443
+1|8|NULL|45
+1|9|NULL|-214
+1|10|NULL|435
+1|11|NULL|323
+1|12|NULL|-31
+1|13|NULL|-140
+1|14|NULL|125
+1|15|NULL|64
+2|1|0|485
+2|2|0|-490
+2|3|0|-242
+2|4|0|-323
+2|5|0|-52
+2|6|0|NULL
+2|7|0|443
+2|8|0|45
+2|9|0|-214
+2|10|0|435
+2|11|0|323
+2|12|0|-31
+2|13|0|-140
+2|14|0|125
+2|15|0|64
+3|1|NULL|485
+3|2|NULL|-490
+3|3|NULL|-242
+3|4|NULL|-323
+3|5|NULL|-52
+3|6|NULL|NULL
+error: near "(": syntax error

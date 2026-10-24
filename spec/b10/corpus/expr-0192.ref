@@ -1,0 +1,204 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c2 IS NULL|abs(id)
+20|0|20
+19|1|19
+18|0|18
+17|0|17
+16|0|16
+15|0|15
+14|0|14
+13|0|13
+12|0|12
+11|0|11
+10|0|10
+9|0|9
+8|0|8
+7|0|7
+6|0|6
+5|1|5
+4|0|4
+3|1|3
+2|1|2
+1|0|1
+# CAST(CAST(4 AS REAL) AS BLOB) BETWEEN coalesce(iif(1, x'739499ea92a6', 0), x'ec' BETWEEN -808.37 AND 123456789012) AND -('omicron')|nullif(x'', NOT 333.5352) IN (iif(x'5f2d' BETWEEN 3.141592653589793 AND x'448a5193', NULL BETWEEN 'chi' AND NULL, 'sigma'), NULL, -516)
+0|NULL
+# id|nullif(typeof(abs('naïve')), c2)|(abs(c0 BETWEEN c2 AND 866.4201) < id)
+1|real|1
+2|real|NULL
+3|real|1
+4|real|1
+5|real|1
+6|real|NULL
+7|real|1
+8|real|1
+9|real|NULL
+10|real|1
+11|real|1
+12|real|1
+13|real|NULL
+14|real|1
+15|real|1
+16|real|1
+17|real|1
+18|real|1
+# abs(2.5)|x'c1b823d1d46b' IN (-(abs(573)), x'14', -526)
+2.5|0
+# id|coalesce(abs(abs(NULL)), nullif(c0, 'alpha'))|NOT abs(c2) IS NULL
+20|NULL|1
+19|365|0
+18|X'A4529D'|1
+17|NULL|1
+16|NULL|1
+15|NULL|1
+14|X'40330BEE'|1
+13|NULL|1
+12|814|1
+11|-1.0e+308|1
+10|X'54'|1
+9|657|1
+8|sigma|1
+7|tau|1
+6|-622|1
+5|3|0
+4|-1.0e+308|1
+3|X'88C0BB4096'|0
+2|4|0
+1|NULL|1
+# CAST(569 IS NULL BETWEEN (x'a52e0172df' <> -2.5) AND abs('theta') AS NUMERIC)|NULL
+0|NULL
+# id|-(c1) IS NULL IN (CAST(abs(c0) AS INTEGER), NULL, 4)|CAST(CAST(c0 AS BLOB) IS NULL AS REAL)
+18|NULL|0.0
+17|1|0.0
+16|NULL|0.0
+15|1|0.0
+14|NULL|0.0
+13|NULL|0.0
+12|1|0.0
+11|1|0.0
+10|1|0.0
+9|NULL|1.0
+8|1|0.0
+7|NULL|0.0
+6|NULL|1.0
+5|NULL|0.0
+4|1|0.0
+3|NULL|0.0
+2|NULL|1.0
+1|NULL|0.0
+# -((CAST(x'e798' AS NUMERIC) = -0.0 BETWEEN NULL AND 'rho'))|coalesce(-401.0415, x'')
+NULL|-401.0415
+# id|coalesce(abs(abs(c0)), NULL)|x'd9079588'
+1|NULL|X'D9079588'
+2|4|X'D9079588'
+3|0.0|X'D9079588'
+4|1.0e+308|X'D9079588'
+5|3|X'D9079588'
+6|622|X'D9079588'
+7|0.0|X'D9079588'
+8|0.0|X'D9079588'
+9|657|X'D9079588'
+10|0.0|X'D9079588'
+11|1.0e+308|X'D9079588'
+12|814|X'D9079588'
+13|0.0|X'D9079588'
+14|0.0|X'D9079588'
+15|NULL|X'D9079588'
+16|NULL|X'D9079588'
+17|NULL|X'D9079588'
+18|0.0|X'D9079588'
+19|365|X'D9079588'
+20|NULL|X'D9079588'
+error: near "xi": syntax error
+# id|id|id|c1
+1|1|1|NULL
+2|1|2|NULL
+2|2|2|X'B1'
+3|1|3|NULL
+3|2|3|X'B1'
+3|3|3|X'D42CB189'
+4|1|4|NULL
+4|2|4|X'B1'
+4|3|4|X'D42CB189'
+4|4|4|Ελλάδα
+5|1|5|NULL
+5|2|5|X'B1'
+5|3|5|X'D42CB189'
+5|4|5|Ελλάδα
+5|5|5|-785
+6|1|6|NULL
+6|2|6|X'B1'
+6|3|6|X'D42CB189'
+6|4|6|Ελλάδα
+6|5|6|-785
+6|6|6|921
+7|1|7|NULL
+7|2|7|X'B1'
+7|3|7|X'D42CB189'
+7|4|7|Ελλάδα
+7|5|7|-785
+7|6|7|921
+7|7|7|X'A4C7'
+8|1|8|NULL
+8|2|8|X'B1'
+8|3|8|X'D42CB189'
+8|4|8|Ελλάδα
+8|5|8|-785
+8|6|8|921
+8|7|8|X'A4C7'
+8|8|8|0.1
+9|1|9|NULL
+9|2|9|X'B1'
+9|3|9|X'D42CB189'
+# count(*)
+11
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|TEXT|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table

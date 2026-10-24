@@ -1,0 +1,63 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%.3s', -2)|round(-2, 4)|-2 * -801|-2 / 3.141592653589793|CAST(-2 AS TEXT)|-2 + 0.0
+-2|-2.0|1602|-0.63661977236758138|-2|-2.0
+# printf('%d', 2)|round(2, 4)|2 * 546|2 / 828.215|CAST(2 AS TEXT)|2 + 0.0
+2|2.0|1092|0.0024148318975145341|2|2.0
+# printf('%-8s|', -446.0)|round(-446.0, 2)|-446.0 * 105|-446.0 / 568.31|CAST(-446.0 AS TEXT)|-446.0 + 0.0
+-446.0  ||-446.0|-46830.0|-0.78478295296581102|-446.0|-446.0
+# printf('%c', -1e308)|round(-1e308, 0)|-1e308 * -9223372036854775808|-1e308 / 865|CAST(-1e308 AS TEXT)|-1e308 + 0.0
+-|-1.0e+308|Inf|-1.1560693641618497e+305|-1.0e+308|-1.0e+308
+# printf('%.3s', 0)|round(0, 2)|0 * 593.15|0 / -983.809|CAST(0 AS TEXT)|0 + 0.0
+0|0.0|0.0|0.0|0|0.0
+# printf('%-8s|', -3)|round(-3, 4)|-3 * -198|-3 / 1|CAST(-3 AS TEXT)|-3 + 0.0
+-3      ||-3.0|594|-3|-3|-3.0
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|114
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|NULL
+10|NULL
+11|NULL
+12|NULL

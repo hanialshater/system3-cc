@@ -1,0 +1,124 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 19
+# count(*)|count(c0)
+6|5
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 2
+changes: 10
+# count(*)|count(c0)
+16|12
+# count(*)
+16
+error: cannot commit - no transaction is active
+changes: 5
+changes: 4
+# count(*)|count(c0)
+5|0
+# count(*)
+5
+error: cannot commit - no transaction is active
+changes: 4
+changes: 8
+# count(*)|count(c0)
+16|10
+# count(*)
+16
+error: cannot commit - no transaction is active
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+4|c3|INT|1|0|0
+5|c4|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_2|1|u|0
+1|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t0_2|index
+t0|table
+t1|table
+t2|table
+changes: 8
+# id|c2
+3|NULL
+16|NULL
+13|-897.5
+11|-752
+4|-4
+14|1.0e-07
+12|4
+9|307
+7|639
+1|734
+6|café
+15|chi
+5|X'0B599466'
+8|X'0E20'
+10|X'D51415E5BD'
+2|X'D585EAEE80'
+# count(*)
+14
+changes: 8
+changes: 8

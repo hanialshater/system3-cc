@@ -1,0 +1,57 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('eta')|upper('eta')|lower('eta')|substr('eta', -2, 2)|instr('eta', 'alpha')|replace('eta', 'e', 'XY')|trim('eta')|ltrim('eta', 'ab')|hex('eta')|quote('eta')|unicode('eta')|'eta' LIKE '%é%'|'eta' GLOB '*'|char(69, 263)|'eta' || 'alpha'|'eta' < 'alpha'|'eta' = 'alpha' COLLATE NOCASE
+3|ETA|eta|ta|0|XYta|eta|eta|657461|'eta'|101|0|1|Eć|etaalpha|0|0
+# length('phi')|upper('phi')|lower('phi')|substr('phi', 3, 2)|instr('phi', 'kappa')|replace('phi', '', 'XY')|trim('phi')|ltrim('phi', 'ab')|hex('phi')|quote('phi')|unicode('phi')|'phi' LIKE '%a_'|'phi' GLOB '*'|char(90, 568)|'phi' || 'kappa'|'phi' < 'kappa'|'phi' = 'kappa' COLLATE NOCASE
+3|PHI|phi|i|0|phi|phi|phi|706869|'phi'|112|0|1|Zȸ|phikappa|0|0
+# length('pi')|upper('pi')|lower('pi')|substr('pi', 3, 0)|instr('pi', 'kappa')|replace('pi', '', 'XY')|trim('pi')|ltrim('pi', 'ab')|hex('pi')|quote('pi')|unicode('pi')|'pi' LIKE '%é%'|'pi' GLOB '?'|char(87, 520)|'pi' || 'kappa'|'pi' < 'kappa'|'pi' = 'kappa' COLLATE NOCASE
+2|PI|pi||0|pi|pi|pi|7069|'pi'|112|0|0|WȈ|pikappa|0|0
+# length('upsilon')|upper('upsilon')|lower('upsilon')|substr('upsilon', -2, 1)|instr('upsilon', 'sigma')|replace('upsilon', 'e', '')|trim('upsilon')|ltrim('upsilon', 'ab')|hex('upsilon')|quote('upsilon')|unicode('upsilon')|'upsilon' LIKE '%'|'upsilon' GLOB '*[a-m]*'|char(81, 705)|'upsilon' || 'sigma'|'upsilon' < 'sigma'|'upsilon' = 'sigma' COLLATE NOCASE
+7|UPSILON|upsilon|o|0|upsilon|upsilon|upsilon|757073696C6F6E|'upsilon'|117|1|1|Qˁ|upsilonsigma|0|0
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', -1, 2)|instr('gamma', 'x_y')|replace('gamma', 'a', '_')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%a_'|'gamma' GLOB 'a*'|char(78, 655)|'gamma' || 'x_y'|'gamma' < 'x_y'|'gamma' = 'x_y' COLLATE NOCASE
+5|GAMMA|gamma|a|0|g_mm_|gamma|gamma|67616D6D61|'gamma'|103|0|0|Nʏ|gammax_y|1|0
+# length('pi')|upper('pi')|lower('pi')|substr('pi', -3, 0)|instr('pi', 'alpha')|replace('pi', 'a', '_')|trim('pi')|ltrim('pi', 'ab')|hex('pi')|quote('pi')|unicode('pi')|'pi' LIKE 'a%'|'pi' GLOB '*'|char(86, 775)|'pi' || 'alpha'|'pi' < 'alpha'|'pi' = 'alpha' COLLATE NOCASE
+2|PI|pi||0|pi|pi|pi|7069|'pi'|112|0|1|V̇|pialpha|0|0
+# length('kappa')|upper('kappa')|lower('kappa')|substr('kappa', -2, 1)|instr('kappa', 'omicron')|replace('kappa', 'a', '')|trim('kappa')|ltrim('kappa', 'ab')|hex('kappa')|quote('kappa')|unicode('kappa')|'kappa' LIKE 'a%'|'kappa' GLOB 'a*'|char(79, 445)|'kappa' || 'omicron'|'kappa' < 'omicron'|'kappa' = 'omicron' COLLATE NOCASE
+5|KAPPA|kappa|p|0|kpp|kappa|kappa|6B61707061|'kappa'|107|0|0|Oƽ|kappaomicron|1|0
+# printf('%lld', -0.0)|round(-0.0, 1)|-0.0 * 1.0e15|-0.0 / 0.1|CAST(-0.0 AS TEXT)|-0.0 + 0.0
+0|0.0|0.0|0.0|0.0|0.0
+# n|a
+31|832040
+30|514229
+29|317811
+28|196418
+27|121393
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

@@ -1,0 +1,135 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c3|ntile(4) OVER (PARTITION BY c3 IS NULL ORDER BY id)
+1|X'01439993'|1
+2|0|1
+3|327|1
+4|-7|1
+5|0|2
+6|0|2
+7|sigma|2
+8|tau|2
+9|X'991668'|3
+10|123456789012|3
+11|omega|3
+12|9223372036854775807|3
+13|X'3E'|4
+14|-5|4
+15|2|4
+# id|id|dense_rank() OVER (ORDER BY id GROUPS BETWEEN 1 PRECEDING AND 1 FOLLOWING)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+8|8|8
+9|9|9
+10|10|10
+11|11|11
+12|12|12
+13|13|13
+14|14|14
+15|15|15
+# id|c2|sum(id) OVER (PARTITION BY c2 IS NULL ORDER BY id)
+1|5|1
+2|2|3
+3|3|6
+4|NULL|4
+5|NULL|9
+6|-614|12
+7|NULL|16
+8|-696.05|20
+9|X'F30DD682C7'|29
+10|日本|39
+11|4|50
+12|phi|62
+13|-27.9914|75
+14|phi|89
+15|X'E3686DC7'|104
+# id|c1|percent_rank() OVER (PARTITION BY c1 IS NULL ORDER BY id)
+1|-3|0.0
+2|-723.6483|0.1
+3|955|0.2
+4|-412.2|0.3
+5|NULL|0.0
+6|678|0.4
+7|tau|0.5
+8|-7|0.6
+9|NULL|0.33333333333333332
+10|NULL|0.66666666666666663
+11|zeta|0.7
+12|NULL|1.0
+13|-9223372036854775808|0.8
+14|Lambda|0.9
+15|X'6E0DC515DAE3'|1.0
+# id|id|sum(id) OVER (ORDER BY id)
+1|1|1
+2|2|3
+3|3|6
+4|4|10
+5|5|15
+6|6|21
+7|7|28
+8|8|36
+9|9|45
+10|10|55
+11|11|66
+12|12|78
+13|13|91
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[5,9,10,12,13,2,4,8,1,6,3,14,7,11,15]|{"5":5,"9":9,"10":10,"12":12,"13":13,"2":2,"4":4,"8":8,"1":1,"6":6,"3":3,"14":14,"7":7,"11":11,"15":15}
+# json_object('id', id, 'v', c0)
+error: JSON cannot hold BLOB values
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|1|0|0
+2|c1|INT|0|NULL|0
+3|c2|VARCHAR(10)|0|NULL|0
+4|c3|TEXT|1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table

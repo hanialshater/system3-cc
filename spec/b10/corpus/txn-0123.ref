@@ -1,0 +1,76 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 3
+changes: 15
+# count(*)|count(c0)
+4|1
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 4
+changes: 1
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 2
+changes: 0
+# count(*)|count(c0)
+3|1
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 4
+changes: 0
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+# id|coalesce(-0.0, -4 IS NULL)|typeof(586.8) IS NULL
+1|0.0|0
+2|0.0|0
+3|0.0|0
+# NULL|(abs(coalesce(3, 'naïve')) >> -(coalesce(-51, 'rho')))
+NULL|0
+# n|a
+24|28657
+23|17711
+22|10946
+21|6765
+20|4181
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

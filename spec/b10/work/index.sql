@@ -1,0 +1,6 @@
+CREATE TABLE t(a INTEGER PRIMARY KEY, b TEXT, c REAL, d INTEGER, e TEXT);
+INSERT INTO t(b, c, d, e) SELECT printf('k%07d', (x * 9) % 15136), x * 1.90, x % 91, printf('%x-%d', x, x % 13) FROM (WITH RECURSIVE s(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM s WHERE x < 15129) SELECT x FROM s);
+CREATE INDEX i1 ON t(b);
+CREATE INDEX i2 ON t(d, c DESC);
+SELECT count(*) FROM t WHERE b BETWEEN 'k0001' AND 'k0005';
+SELECT sum(c) FROM t WHERE d = 37;

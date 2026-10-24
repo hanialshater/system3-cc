@@ -1,0 +1,103 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|NUMERIC|0|'d'|0
+3|c2|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|NUMERIC|0|'d'|0
+3|c2|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# id|c1|nth_value(c1, 2) OVER (PARTITION BY c1 IS NULL ORDER BY id RANGE BETWEEN 1 PRECEDING AND CURRENT ROW)
+1|NULL|NULL
+2|X'5F1AB6A7C4'|NULL
+3|eta|eta
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table

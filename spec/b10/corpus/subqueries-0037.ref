@@ -1,0 +1,332 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+9|9
+3|3
+2|2
+8|8
+1|1
+11|11
+7|7
+4|4
+10|10
+6|6
+12|12
+5|5
+# id
+2
+4
+8
+10
+12
+# id
+# c2
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|16
+2|16
+3|16
+4|16
+5|16
+6|16
+7|16
+8|16
+9|16
+10|16
+11|16
+12|16
+13|16
+14|16
+15|16
+16|16
+# id
+1
+3
+5
+6
+7
+9
+11
+15
+16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+# id
+1
+1
+2
+2
+3
+3
+4
+4
+5
+5
+6
+6
+7
+7
+8
+8
+9
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|16
+4|16
+6|16
+16|16
+14|16
+11|16
+9|16
+15|16
+5|16
+7|16
+13|16
+8|16
+2|16
+12|16
+3|16
+10|16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+# id
+16
+# c1
+NULL
+-609
+-477.8
+-195
+-130
+-118
+935
+42
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+6|6
+5|5
+9|9
+10|10
+8|8
+4|4
+11|11
+2|2
+1|1
+12|12
+7|7
+3|3
+# id
+# id
+# c1
+NULL
+NULL
+NULL
+NULL
+-609
+-477.8
+-195
+-130
+-118
+935
+
+
+ pad 
+42
+NULL
+a%b
+eta
+iota
+omega
+omicron
+tau
+theta
+xi
+Ελλάδα
+日本
+日本
+X'5409BB5D2A'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+16|16
+15|16
+14|16
+13|16
+12|16
+11|16
+10|16
+9|16
+8|16
+7|16
+6|16
+5|16
+4|16
+3|16
+2|16
+1|16
+# id
+# id
+16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+12|12
+1|1
+5|5
+9|9
+8|8
+10|10
+11|11
+3|3
+4|4
+6|6
+2|2
+7|7
+# id
+9
+11
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+# c2
+-366
+-240
+-228
+-180
+-60
+-3
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+10|16
+3|16
+12|16
+2|16
+8|16
+13|16
+5|16
+7|16
+15|16
+9|16
+11|16
+14|16
+1|16
+4|16
+6|16
+16|16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# c0
+changes: 5
+changes: 8
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+# length('tau')|upper('tau')|lower('tau')|substr('tau', 4, 2)|instr('tau', 'xi')|replace('tau', 'a', '_')|trim('tau')|ltrim('tau', 'ab')|hex('tau')|quote('tau')|unicode('tau')|'tau' LIKE '%a_'|'tau' GLOB 'a*'|char(85, 998)|'tau' || 'xi'|'tau' < 'xi'|'tau' = 'xi' COLLATE NOCASE
+3|TAU|tau||0|t_u|tau|tau|746175|'tau'|116|1|0|UϦ|tauxi|1|0

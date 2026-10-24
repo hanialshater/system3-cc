@@ -1,0 +1,9 @@
+changes: 0
+changes: 4604
+changes: 4604
+changes: 1529
+changes: 1529
+# count(*)|sum(t.c)
+9663|20704270.080000002
+# count(*)
+3075

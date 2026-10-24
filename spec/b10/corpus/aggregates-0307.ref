@@ -1,0 +1,114 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+12|12|78|78.0|6.5|1|12|12
+# id|count(*)|group_concat(id)
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+11|11|66|66.0|6.0|1|11|11
+# id|count(*)|group_concat(id, ';')
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+error: integer overflow
+# c0|count(*)|group_concat(id)
+NULL|3|2,3,9
+-5|1|5
+-1|1|7
+641|1|4
+854|1|11
+9223372036854775807|1|6
+X'1938B9FD'|1|8
+X'95'|1|1
+X'DECAA9CAD3'|1|10
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+12|12|78|78.0|6.5|1|12|12
+# id|count(*)|group_concat(id, ';')
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+11|8|9.2233720368547779e+18|9.2233720368547779e+18|1.1529215046068472e+18|-5|X'DECAA9CAD3'|8
+# c0|count(*)|group_concat(id, ';')
+NULL|3|2;3;9
+-5|1|5
+-1|1|7
+641|1|4
+854|1|11
+9223372036854775807|1|6
+X'1938B9FD'|1|8
+X'95'|1|1
+X'DECAA9CAD3'|1|10
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c1|count(*)|group_concat(id, ';')
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c0|count(*)|group_concat(id, ';')
+NULL|3|2;3;9
+-5|1|5
+-1|1|7
+641|1|4
+854|1|11
+9223372036854775807|1|6
+X'1938B9FD'|1|8
+X'95'|1|1
+X'DECAA9CAD3'|1|10
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|REAL|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t0_2|index
+t0|table
+t1|table

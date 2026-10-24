@@ -1,0 +1,125 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c1|c1
+1|13|0|Ελλάδα
+2|2|NULL|NULL
+2|9|NULL|NULL
+3|NULL|X'C5E78C3E'|NULL
+4|NULL|X'2B53612C31'|NULL
+5|3|71|X'C5E78C3E'
+5|4|71|X'2B53612C31'
+5|8|71|1
+6|5|X'9D'|71
+6|6|X'9D'|X'9D'
+7|1|MU|0
+7|7|MU|MU
+8|10|1|theta
+9|NULL|NULL|NULL
+10|NULL|theta|NULL
+11|NULL|-921|NULL
+12|NULL|kappa|NULL
+13|NULL|Ελλάδα|NULL
+# count(*)
+1
+# id|id|c2|id
+1|13|X''|13
+2|2|912|2
+2|9|912|9
+5|3|353|3
+5|4|353|4
+5|8|353|8
+6|5|NULL|5
+6|6|NULL|6
+7|1|Lambda|1
+7|7|Lambda|7
+8|10|eta|10
+error: near "(": syntax error
+# id|id|c4|c2
+1|13|MU|918.13
+2|2|X'CEB57B70'|912
+2|9|X'CEB57B70'|theta
+3|NULL|x_y|NULL
+4|NULL|1000|NULL
+5|3|2.5|omega
+5|4|2.5|X'3C41E06585'
+5|8|2.5|eta
+6|5|X'FE95'|353
+6|6|X'FE95'|NULL
+7|1|-357.3|X''
+7|7|-357.3|Lambda
+8|10|-651.0091|omicron
+9|NULL|it's|NULL
+10|NULL|NULL|NULL
+11|NULL|707|NULL
+12|NULL|3|NULL
+13|NULL|-577.6705|NULL
+# count(*)
+13
+error: table t0 already exists
+# id|id|id|c4
+1|13|1|-577.6705
+2|2|2|X'CEB57B70'
+2|9|2|it's
+3|NULL|3|NULL
+4|NULL|4|NULL
+5|3|5|x_y
+5|4|5|1000
+5|8|5|-651.0091
+6|5|6|2.5
+6|6|6|X'FE95'
+7|1|7|MU
+7|7|7|-357.3
+8|10|8|NULL
+9|NULL|9|NULL
+10|NULL|10|NULL
+11|NULL|11|NULL
+12|NULL|12|NULL
+13|NULL|13|NULL
+14|NULL|14|NULL
+15|NULL|15|NULL
+16|NULL|16|NULL
+17|NULL|17|NULL
+18|NULL|18|NULL
+19|NULL|19|NULL
+20|NULL|20|NULL
+21|NULL|21|NULL
+22|NULL|22|NULL
+23|NULL|23|NULL
+# count(*)
+23

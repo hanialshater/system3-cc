@@ -1,0 +1,150 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|NOT (c4 IN (c0, NULL, 0) >> -(1e308))|id
+1|NULL|1
+2|NULL|2
+3|NULL|3
+4|NULL|4
+5|NULL|5
+6|NULL|6
+7|NULL|7
+8|NULL|8
+# NULL BETWEEN nullif((NULL >= 610.29), NOT 101) AND 5|(-308 / typeof(abs(148)))
+NULL|NULL
+# id|CAST('psi' IS NULL IN (-(NULL), -2.5, x'bd1846') AS BLOB)|iif(CASE WHEN c0 THEN coalesce(c1, c0) ELSE CAST(-124.91 AS TEXT) END, c0, 2.5)
+1|NULL|NULL
+2|NULL|-641.5381
+3|NULL|theta
+4|NULL|epsilon
+5|NULL|0x1F
+# typeof(NULL)|CAST(CAST(-(-2.5) AS REAL) AS NUMERIC)
+null|2.5
+# id|CAST(CAST(c1 BETWEEN c2 AND c0 AS NUMERIC) AS NUMERIC)|nullif(abs(c4) BETWEEN c3 AND 'omicron', id)
+1|0|NULL
+2|0|0
+3|0|0
+4|0|0
+5|0|0
+6|0|0
+7|1|0
+8|0|1
+# CASE WHEN -492.60 THEN NOT abs('xi') ELSE NULL END|CASE WHEN CASE WHEN iif(x'05515be3', x'86541cdd', x'ebb9c63c84') THEN ('sigma' AND NULL) ELSE -(NULL) END THEN CAST(x'' AS BLOB) ELSE nullif(coalesce(1.0e15, 'upsilon'), 184) END
+1|1000000000000000.0
+# id|-(NULL)|'MU'
+14|NULL|MU
+13|NULL|MU
+12|NULL|MU
+11|NULL|MU
+10|NULL|MU
+9|NULL|MU
+8|NULL|MU
+7|NULL|MU
+6|NULL|MU
+5|NULL|MU
+4|NULL|MU
+3|NULL|MU
+2|NULL|MU
+1|NULL|MU
+# 'upsilon'|CASE WHEN abs(nullif(x'', 783.66)) THEN NOT NOT x'' ELSE typeof(CAST(620.67 AS REAL)) END
+upsilon|real
+# id|nullif(c2, c1)|NOT CAST(abs(-1e308) AS INTEGER)
+14|NULL|0
+13|NULL|0
+12|-1|0
+11|NULL|0
+10|X'156BDC802ABD'|0
+9|779|0
+8|3.1415926535897931|0
+7|Ελλάδα|0
+6|X'60'|0
+5|NULL|0
+4|-903|0
+3|-622.96|0
+2|X'CA726A'|0
+1|267.8|0
+# 362|1e308 BETWEEN iif(NULL, NULL, NULL) AND -(-524) IN (CASE WHEN coalesce(0, 'it''s') THEN x'28802e7c' ELSE iif(NULL, 266, NULL) END, -0.0, 288.5504)
+362|1
+# id|abs(nullif(iif(NULL, c0, x'3a'), NOT c3))|NOT (typeof(c3) || -1 IN (852, NULL, -3))
+1|0.0|NULL
+2|0.0|NULL
+3|0.0|NULL
+4|0.0|NULL
+5|0.0|NULL
+6|0.0|NULL
+7|0.0|NULL
+8|0.0|NULL
+9|0.0|NULL
+10|0.0|NULL
+11|0.0|NULL
+12|0.0|NULL
+13|0.0|NULL
+14|0.0|NULL
+# 'gamma'|typeof(CAST(NOT x'd6459a' AS TEXT))
+gamma|text
+# id|(NULL = 'alpha')|c1
+1|NULL|-3.066
+2|NULL|-13.864
+3|NULL|43.187
+4|NULL|-5.809
+5|NULL|-19.171
+# NOT 1e308|NULL
+0|NULL
+# id|id|c4|c1
+1|2|-674|X'8F66'
+1|3|-674|X''
+1|4|-674|-63
+1|5|-674|MU
+1|6|-674|1000000000000000.0
+1|7|-674|X'262E8A'
+1|8|-674|1000000000000000.0
+2|3|X'EAA8'|X''
+2|4|X'EAA8'|-63
+2|5|X'EAA8'|MU
+2|6|X'EAA8'|1000000000000000.0
+2|7|X'EAA8'|X'262E8A'
+2|8|X'EAA8'|1000000000000000.0
+3|4|576|-63
+3|5|576|MU
+3|6|576|1000000000000000.0
+3|7|576|X'262E8A'
+3|8|576|1000000000000000.0
+4|5|X'94E6D908FAFB'|MU
+4|6|X'94E6D908FAFB'|1000000000000000.0
+4|7|X'94E6D908FAFB'|X'262E8A'
+4|8|X'94E6D908FAFB'|1000000000000000.0
+5|6|X'7853E80B'|1000000000000000.0
+5|7|X'7853E80B'|X'262E8A'
+5|8|X'7853E80B'|1000000000000000.0
+6|7|0.1|X'262E8A'
+6|8|0.1|1000000000000000.0
+7|8|-1|1000000000000000.0
+8|NULL|Ελλάδα|NULL
+error: near "x'795030f4'": syntax error

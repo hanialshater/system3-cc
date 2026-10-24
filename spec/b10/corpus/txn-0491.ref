@@ -1,0 +1,123 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+changes: 1
+changes: 3
+changes: 16
+# count(*)|count(c0)
+7|4
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 4
+changes: 19
+# count(*)|count(c0)
+22|12
+# count(*)
+22
+error: cannot commit - no transaction is active
+changes: 2
+changes: 1
+# count(*)|count(c0)
+7|4
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 2
+changes: 15
+# count(*)|count(c0)
+22|14
+# count(*)
+22
+error: cannot commit - no transaction is active
+changes: 6
+changes: 2
+# count(*)|count(c0)
+6|0
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 3
+changes: 1
+# count(*)|count(c0)
+5|0
+# count(*)
+6
+error: cannot commit - no transaction is active
+# id|c1|rank() OVER (ORDER BY id)
+1|NULL|1
+2|nu|2
+3|-612.8|3
+4|NULL|4
+5|NULL|5
+6|0x1F|6
+# id|-(nullif(NOT x'461806346b', NOT c0))|(NULL OR 'phi') IN ((iif(ref, c2, x'ea68df6ede') IS NOT c3 IS NULL), x'083d0d', 9223372036854775807)
+7|-1|NULL
+6|NULL|NULL
+5|-1|NULL
+4|NULL|NULL
+3|-1|NULL
+2|-1|NULL
+1|-1|NULL
+# x'76d8' IN (coalesce(-4, x'70910bd0d36e'), 'gamma', 0.1)|iif((nullif(x'3479d7', NULL) OR abs(566)), abs(NULL) IN ('-7' IS NULL, 'alpha', x'39'), NULL)
+0|NULL
+changes: 1
+# id|c0
+5|106
+4|it's
+6|X'AA6EB8EE'
+# count(*)
+4
+changes: 1
+changes: 1

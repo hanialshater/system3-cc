@@ -1,0 +1,10 @@
+changes: 0
+changes: 13122
+# count(*)
+360
+# count(*)
+0
+# sum(length(replace(upper(e), 'A', 'xyz')))|sum(instr(b, '1'))
+109008|34394
+# count(DISTINCT substr(b, 2, 4) || lower(e))
+13122

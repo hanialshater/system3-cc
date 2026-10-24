@@ -1,0 +1,32 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: table t0 already exists
+error: UNIQUE constraint failed: t1.id
+error: near "SELEC": syntax error
+error: UNIQUE constraint failed: t0.id
+# n|a
+7|8
+6|5
+5|3
+4|2
+3|1
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# printf('%5.2f', 3.141592653589793)|round(3.141592653589793, 0)|3.141592653589793 * 731|3.141592653589793 / -663.889|CAST(3.141592653589793 AS TEXT)|3.141592653589793 + 0.0
+ 3.14|3.0|2296.5042297741388|-0.0047321052971050779|3.1415926535897931|3.1415926535897931

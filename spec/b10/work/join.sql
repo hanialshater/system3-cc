@@ -1,0 +1,7 @@
+CREATE TABLE t(a INTEGER PRIMARY KEY, b TEXT, c REAL, d INTEGER, e TEXT);
+INSERT INTO t(b, c, d, e) SELECT printf('k%07d', (x * 5) % 4611), x * 0.93, x % 91, hex(x) FROM (WITH RECURSIVE s(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM s WHERE x < 4604) SELECT x FROM s);
+CREATE TABLE u(k INTEGER PRIMARY KEY, d INTEGER, v TEXT);
+INSERT INTO u(d, v) SELECT x % 91, printf('v%d', x) FROM (WITH RECURSIVE s(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM s WHERE x < 1529) SELECT x FROM s);
+CREATE INDEX ud ON u(d);
+SELECT count(*), sum(t.c) FROM t JOIN u ON u.d = t.d WHERE t.a % 8 = 0;
+SELECT count(*) FROM t LEFT JOIN u ON u.k = t.a WHERE u.k IS NULL;

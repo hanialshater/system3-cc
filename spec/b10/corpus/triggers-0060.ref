@@ -1,0 +1,129 @@
+changes: 0
+error: NOT NULL constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t2.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+140|140
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t0|100
+changes: 2
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t0|100
+t2|116
+changes: 2
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+# id|abs(iif(-2.5, c0, x'dd4c'))|NULL BETWEEN 'Ελλάδα' AND c0 IS NULL IN (NOT 4, NULL, 'xi')
+3|492.7|NULL
+4|0.0|NULL
+5|472.0|NULL
+6|NULL|NULL
+7|0.0|NULL
+8|NULL|NULL
+9|123456789012.0|NULL
+10|0.0|NULL
+11|0.0|NULL
+12|1.0e+308|NULL
+13|0.0|NULL
+14|NULL|NULL
+15|654.0|NULL
+16|1.0|NULL
+17|3.1415926535897931|NULL
+18|0.0|NULL
+100|NULL|NULL
+# 0|NULL
+0|NULL
+# abs(-9223372036854775808)
+error: integer overflow

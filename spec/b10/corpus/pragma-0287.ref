@@ -1,0 +1,236 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c2
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|NUMERIC|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4||1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|NUMERIC|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4||1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|NUMERIC|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4||1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|NUMERIC|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4||1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|NUMERIC|1|0|0
+4|c3|TEXT|0|NULL|0
+5|c4||1|0|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+changes: 4
+changes: 6
+# count(*)|count(c0)
+10|5
+# count(*)
+10
+error: cannot commit - no transaction is active
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|17
+2|17
+3|17
+4|17
+5|17
+6|17
+7|17
+8|17
+9|17
+10|17
+11|17
+12|17
+13|17
+14|17
+15|17
+16|17
+17|17
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+# c1
+NULL
+NULL
+NULL
+NULL
+NULL
+-2.5
+-2.5
+-251
+-251
+0
+0
+2.5
+2.5
+4.500000000000011e-310
+4.500000000000011e-310
+917
+917
+932
+932
+chi
+chi
+kappa
+kappa

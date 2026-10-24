@@ -1,0 +1,33 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot commit - no transaction is active
+error: no such savepoint: nope
+error: no such column: t0.nope
+# 'a' + 'b'|'a' > 1|x'01' < 1
+0|1|0
+changes: 1
+# id|ref
+4|2
+3|3
+1|4
+2|7
+# count(*)
+4
+changes: 1
+changes: 1

@@ -1,0 +1,195 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|ref|c1
+1|NULL|NULL|NULL
+2|NULL|8|NULL
+3|NULL|4|NULL
+4|6|7|NULL
+5|3|6|NULL
+6|1|6|chi
+6|2|6|-194
+# count(*)
+6
+# id|id|c3|c2
+1|1|-180|1.0e+308
+1|2|-180|X'F132'
+1|3|-180|NULL
+1|4|-180|X'C77C266A'
+1|5|-180|335.7
+1|6|-180|NULL
+1|7|-180|-557.4
+2|1|iota|1.0e+308
+2|2|iota|X'F132'
+2|3|iota|NULL
+2|4|iota|X'C77C266A'
+2|5|iota|335.7
+2|6|iota|NULL
+2|7|iota|-557.4
+3|1|X'D8294938'|1.0e+308
+3|2|X'D8294938'|X'F132'
+3|3|X'D8294938'|NULL
+3|4|X'D8294938'|X'C77C266A'
+3|5|X'D8294938'|335.7
+3|6|X'D8294938'|NULL
+3|7|X'D8294938'|-557.4
+4|1|-631|1.0e+308
+4|2|-631|X'F132'
+4|3|-631|NULL
+4|4|-631|X'C77C266A'
+4|5|-631|335.7
+4|6|-631|NULL
+4|7|-631|-557.4
+# count(*)
+7
+# id|id|c1|c1
+1|1|X'88DCA0'|chi
+1|2|X'88DCA0'|-194
+1|3|X'88DCA0'|NULL
+1|4|X'88DCA0'|-520.14
+1|5|X'88DCA0'|it's
+1|6|X'88DCA0'|NULL
+1|7|X'88DCA0'|a%b
+2|1|NULL|chi
+2|2|NULL|-194
+2|3|NULL|NULL
+2|4|NULL|-520.14
+2|5|NULL|it's
+2|6|NULL|NULL
+2|7|NULL|a%b
+3|1|5.0|chi
+3|2|5.0|-194
+3|3|5.0|NULL
+3|4|5.0|-520.14
+3|5|5.0|it's
+3|6|5.0|NULL
+3|7|5.0|a%b
+4|1|-1.0e+308|chi
+4|2|-1.0e+308|-194
+4|3|-1.0e+308|NULL
+4|4|-1.0e+308|-520.14
+4|5|-1.0e+308|it's
+4|6|-1.0e+308|NULL
+4|7|-1.0e+308|a%b
+5|1|-647.0|chi
+5|2|-647.0|-194
+5|3|-647.0|NULL
+# count(*)
+6
+# id|id|c0|c1
+1|NULL|X'0CE3F96288CC'|NULL
+2|NULL|NULL|NULL
+3|NULL|iota|NULL
+4|6|1|NULL
+5|3|349.887|NULL
+6|1|-299|chi
+6|2|-299|-194
+7|NULL|X'345739'|NULL
+8|7|X'88BA82'|a%b
+9|NULL|885|NULL
+10|NULL|NULL|NULL
+11|NULL|NULL|NULL
+12|NULL|1e3|NULL
+13|NULL|-807|NULL
+14|NULL|4.500000000000011e-310|NULL
+15|NULL|X'3E59A2'|NULL
+16|NULL|882.856|NULL
+17|NULL|NULL|NULL
+# count(*)
+20
+# id|id|c1|c1
+4|6|-520.14|NULL
+5|3|it's|NULL
+6|1|NULL|chi
+6|2|NULL|-194
+# count(*)
+2
+# id|id|c4|c1
+4|6|X'59E840'|NULL
+5|3|日本|NULL
+6|1|0x1F|chi
+6|2|0x1F|-194
+# count(*)
+2
+# id|id|c2|c2
+1|NULL|X'1E118C19'|NULL
+2|NULL|delta|NULL
+3|NULL|xi|NULL
+4|6|X'C5D1420186'|NULL
+5|3|281|NULL
+6|1|NULL|1.0e+308
+6|2|NULL|X'F132'
+7|NULL|-938|NULL
+8|7|NULL|-557.4
+9|NULL|0.1|NULL
+10|NULL|-2.5|NULL
+11|NULL|-678.4|NULL
+12|NULL|2.5|NULL
+13|NULL|X'777D8E'|NULL
+14|NULL|NULL|NULL
+15|NULL|X'116E4DF5A3EC'|NULL
+16|NULL|X'A0204C562D'|NULL
+17|NULL|X'D887B607'|NULL
+18|NULL|X''|NULL
+19|NULL|omicron|NULL
+20|NULL|NULL|NULL
+# count(*)
+20
+changes: 1
+# id|c3
+4|-631
+7|-577.19
+1|-180
+# count(*)
+7
+changes: 1
+changes: 1
+error: 1st ORDER BY term out of range - should be between 1 and 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+t2|table

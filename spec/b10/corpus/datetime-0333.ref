@@ -1,0 +1,80 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+1 year')|julianday('1999-12-31T23:59:59.999')|strftime('%J', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-12-31 23:59:59|2451544.4999999884|2451544.499999988|946684799|+0001-01-15 00:00:00.000
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', 'unixepoch')|julianday('1970-01-01')|strftime('%j %w %W', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|NULL|2440587.5|001 4 00|0|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'unixepoch')|julianday('2038-01-19 03:14:07')|strftime('%f', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|NULL|2465442.6348032407|07.000|2147483647|+0001-01-15 00:00:00.000
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', '+1 day')|julianday('1970-01-01')|strftime('%f', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|1970-01-02 00:00:00|2440587.5|00.000|0|+0001-01-15 00:00:00.000
+# date(1700000000)|time(1700000000)|datetime(1700000000, '+0 seconds')|julianday(1700000000)|strftime('%j %w %W', 1700000000)|unixepoch(1700000000)|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# id|id|id|id
+1|1|1|1
+2|2|2|2
+3|3|3|3
+4|4|4|4
+5|5|5|5
+6|6|6|6
+7|7|7|7
+8|8|8|8
+9|9|9|9
+10|10|10|10
+11|NULL|11|NULL
+# count(*)
+25
+changes: 6
+changes: 18
+# count(*)|count(c0)
+25|15
+# count(*)
+25
+error: cannot commit - no transaction is active

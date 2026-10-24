@@ -1,0 +1,95 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+# count(*)
+16
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+11|X''
+12|X'10'
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|NULL
+11|NULL
+12|NULL

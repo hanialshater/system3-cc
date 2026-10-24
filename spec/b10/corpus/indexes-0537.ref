@@ -1,0 +1,104 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+2|0
+6|1
+5|105.4
+3|233.3371
+4|phi
+1|X'E34D22'
+# count(*)
+6
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+1| pad 
+2| pad 
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+# count(*)
+6
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+3|NULL
+4|NULL
+1| pad 
+2| pad 
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+2|0
+6|1
+5|105.4
+3|233.3371
+4|phi
+# count(*)
+6
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+4|-243.0
+2|2
+10|138
+6|303.8
+7|488
+5|1.0e+308
+8|señor
+11|X'32B4280D'
+# count(*)
+8
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|REAL|0|'d'|0
+3|c2|BLOB|0|NULL|0
+4|c3|TEXT|0|NULL|0
+5|c4|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+1 day')|julianday('2038-01-19 03:14:07')|strftime('%s', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-20 03:14:07|2465442.6348032407|2147483647|2147483647|+0001-01-15 00:00:00.000

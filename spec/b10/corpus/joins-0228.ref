@@ -1,0 +1,277 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c0|c1
+1|7|X''|NULL
+1|15|X''|omega
+2|6|X'8E5FBD71A7'|919.7349
+2|16|X'8E5FBD71A7'|NULL
+3|3|-631|-3
+3|12|-631|-4
+3|14|-631|2.5
+3|20|-631|NULL
+4|4|-248.712|NULL
+4|18|-248.712|NULL
+4|19|-248.712|NULL
+5|10|X'C582F3'|X'E9D7C3C62271'
+6|9|NULL|123456789012
+7|1|0.1|zeta
+8|5|-850|NULL
+8|8|-850|283.8741
+8|11|-850|rho
+8|17|-850|4
+error: near ".9223372036854775807": syntax error
+# id|id|c0|id
+1|1|-3.0|1
+1|2|-3.0|2
+1|3|-3.0|3
+1|4|-3.0|4
+1|5|-3.0|5
+1|6|-3.0|6
+1|7|-3.0|7
+1|8|-3.0|8
+1|9|-3.0|9
+1|10|-3.0|10
+1|11|-3.0|11
+1|12|-3.0|12
+1|13|-3.0|13
+1|14|-3.0|14
+1|15|-3.0|15
+1|16|-3.0|16
+1|17|-3.0|17
+1|18|-3.0|18
+1|19|-3.0|19
+1|20|-3.0|20
+2|1|-3.0|1
+2|2|-3.0|2
+2|3|-3.0|3
+2|4|-3.0|4
+2|5|-3.0|5
+2|6|-3.0|6
+error: near "(": syntax error
+# id|id|id|ref
+1|7|1|1
+1|15|1|1
+2|6|2|2
+2|16|2|2
+3|3|3|3
+3|12|3|3
+3|14|3|3
+3|20|3|3
+4|4|4|4
+4|18|4|4
+4|19|4|4
+5|10|5|5
+6|9|6|6
+7|1|7|7
+8|5|8|8
+8|8|8|8
+8|11|8|8
+8|17|8|8
+# count(*)
+21
+# id|id|id|c2
+1|7|1|4
+1|15|1|tau
+2|6|2|683
+2|16|2|NULL
+3|3|3|X'B1F71A1BC194'
+3|12|3|-1
+3|14|3|omicron
+3|20|3|-831
+4|4|4|-1.0e+308
+4|18|4|-54
+4|19|4|NULL
+5|10|5|3.1415926535897931
+6|9|6|X'5F32B83D'
+7|1|7| pad 
+8|5|8|X'57B880'
+8|8|8|omicron
+8|11|8|282.392
+8|17|8|
+9|NULL|9|NULL
+10|NULL|10|NULL
+11|NULL|11|NULL
+# count(*)
+21
+# id|id|id|c2
+1|7|1|4
+1|15|1|tau
+2|6|2|683
+2|16|2|NULL
+3|3|3|X'B1F71A1BC194'
+3|12|3|-1
+3|14|3|omicron
+3|20|3|-831
+4|4|4|-1.0e+308
+4|18|4|-54
+4|19|4|NULL
+5|10|5|3.1415926535897931
+6|9|6|X'5F32B83D'
+7|1|7| pad 
+8|5|8|X'57B880'
+8|8|8|omicron
+8|11|8|282.392
+8|17|8|
+error: near "(": syntax error
+# id|id|c2|id
+1|1| pad |1
+1|2| pad |2
+1|3| pad |3
+1|4| pad |4
+1|5| pad |5
+1|6| pad |6
+1|7| pad |7
+1|8| pad |8
+1|9| pad |9
+1|10| pad |10
+1|11| pad |11
+1|12| pad |12
+1|13| pad |13
+1|14| pad |14
+1|15| pad |15
+1|16| pad |16
+1|17| pad |17
+1|18| pad |18
+1|19| pad |19
+1|20| pad |20
+2|1|650|1
+2|2|650|2
+2|3|650|3
+2|4|650|4
+2|5|650|5
+2|6|650|6
+2|7|650|7
+2|8|650|8
+2|9|650|9
+2|10|650|10
+2|11|650|11
+2|12|650|12
+2|13|650|13
+2|14|650|14
+2|15|650|15
+2|16|650|16
+2|17|650|17
+2|18|650|18
+2|19|650|19
+2|20|650|20
+3|1|X'B1F71A1BC194'|1
+3|2|X'B1F71A1BC194'|2
+3|3|X'B1F71A1BC194'|3
+3|4|X'B1F71A1BC194'|4
+3|5|X'B1F71A1BC194'|5
+3|6|X'B1F71A1BC194'|6
+3|7|X'B1F71A1BC194'|7
+3|8|X'B1F71A1BC194'|8
+3|9|X'B1F71A1BC194'|9
+3|10|X'B1F71A1BC194'|10
+3|11|X'B1F71A1BC194'|11
+3|12|X'B1F71A1BC194'|12
+3|13|X'B1F71A1BC194'|13
+3|14|X'B1F71A1BC194'|14
+3|15|X'B1F71A1BC194'|15
+3|16|X'B1F71A1BC194'|16
+3|17|X'B1F71A1BC194'|17
+3|18|X'B1F71A1BC194'|18
+3|19|X'B1F71A1BC194'|19
+3|20|X'B1F71A1BC194'|20
+# count(*)
+20
+error: table t2 already exists
+# id|c1|count(*) OVER (ORDER BY id GROUPS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING)
+1|zeta|20
+2|-3|20
+3|-3|19
+4|NULL|18
+5|NULL|17
+6|919.7349|16
+7|NULL|15
+8|283.8741|14
+9|123456789012|13
+10|X'E9D7C3C62271'|12
+11|rho|11
+12|-4|10
+13|NULL|9
+14|2.5|8
+15|omega|7
+16|NULL|6
+17|4|5
+18|NULL|4
+19|NULL|3
+20|NULL|2
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+error: JSON cannot hold BLOB values

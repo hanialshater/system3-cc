@@ -1,0 +1,311 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+5|9
+9|9
+1|9
+6|9
+8|9
+2|9
+3|9
+7|9
+4|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# id
+7
+8
+9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+3|3
+4|4
+9|9
+10|9
+16|9
+18|9
+22|9
+2|2
+13|9
+6|6
+23|9
+11|9
+15|9
+20|9
+17|9
+7|7
+8|8
+12|9
+5|5
+19|9
+1|1
+21|9
+14|9
+# id
+1
+2
+3
+5
+7
+9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# c1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+18|9
+16|9
+3|3
+11|9
+8|8
+19|9
+21|9
+14|9
+17|9
+6|6
+23|9
+2|2
+20|9
+12|9
+15|9
+1|1
+5|5
+10|9
+4|4
+7|7
+9|9
+13|9
+22|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+# id
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+9|9
+7|9
+2|9
+3|9
+1|9
+5|9
+8|9
+6|9
+4|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# id
+9
+# c1
+3.1415926535897931
+166
+259.12
+700
+927.4
+42
+epsilon
+upsilon
+日本
+X'477E'
+X'8228D4F15068'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+8|9
+6|9
+4|9
+5|9
+3|9
+1|9
+2|9
+7|9
+9|9
+# id
+2
+3
+4
+7
+# id
+7
+8
+9
+# c0
+NULL
+NULL
+-2
+1
+2
+3
+3.1415926535897931
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+8|9
+6|9
+4|9
+5|9
+3|9
+1|9
+2|9
+7|9
+9|9
+# id
+# id
+7
+8
+9
+# id
+-2
+1
+2
+3
+3.1415926535897931
+4
+5
+6
+7
+8
+9
+700
+42
+日本
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+4|9
+7|9
+3|9
+2|9
+8|9
+6|9
+1|9
+9|9
+5|9
+# id
+2
+3
+4
+5
+7
+9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+# c1
+# id|id|-(-(CAST(c2 AS INTEGER)))
+1|1|0
+2|2|0
+3|3|3
+4|4|-5
+5|5|-612
+6|6|246
+7|7|0
+8|8|-2
+9|9|-4
+10|10|9223372036854775807
+11|11|0
+12|12|-9.2233720368547758e+18
+13|13|0
+14|14|-9.2233720368547758e+18
+15|15|0
+16|16|981
+17|17|2
+18|18|-322
+19|19|0
+20|20|0
+21|21|2
+22|22|0
+23|23|0
+# typeof((CASE WHEN 123456789012 THEN -449 ELSE NULL END = x'7d' IN (-912.95, 'NULL', NULL)))|-(abs(CASE WHEN -9223372036854775808 THEN 'omicron' ELSE 0.1 END))
+null|0.0

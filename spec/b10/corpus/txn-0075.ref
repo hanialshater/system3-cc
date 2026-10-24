@@ -1,0 +1,94 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 4
+changes: 10
+# count(*)|count(c0)
+12|6
+# count(*)
+12
+error: cannot commit - no transaction is active
+changes: 4
+changes: 4
+# count(*)|count(c0)
+12|6
+# count(*)
+12
+error: cannot commit - no transaction is active
+changes: 8
+changes: 10
+# count(*)|count(c0)
+16|7
+# count(*)
+16
+error: cannot commit - no transaction is active
+changes: 5
+changes: 9
+# count(*)|count(c0)
+7|0
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 6
+changes: 1
+# count(*)|count(c0)
+7|0
+# count(*)
+7
+error: cannot commit - no transaction is active
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+12|6|-1429.0|-1429.0|-238.16666666666666|-882|X'3BD2'|6
+# c0|count(*)|group_concat(id, ';')
+NULL|6|1;2;3;4;5;9
+-882|1|8
+-664|1|7
+-5|1|6
+5|1|10
+117|1|12
+X'3BD2'|1|11
+# id|id|c1|c1
+1|1|-762.529|-762.529
+2|5|NULL|naïve
+3|3|xi|xi
+3|4|xi|über
+3|10|xi|X'A1FCAA25'
+4|NULL|über|NULL
+5|7|naïve|X'BE613ADD'
+6|2|NULL|NULL
+7|8|X'BE613ADD'|Ελλάδα
+7|11|X'BE613ADD'|pi
+7|12|X'BE613ADD'|X'D8'
+8|NULL|Ελλάδα|NULL
+9|NULL|-407.33|NULL
+10|NULL|X'A1FCAA25'|NULL
+11|NULL|pi|NULL
+12|NULL|X'D8'|NULL
+# count(*)
+12

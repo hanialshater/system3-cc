@@ -1,0 +1,211 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+18|café
+# id|c0|c1|ref
+2|NULL|3.1415926535897931|NULL
+3|NULL|372|7
+4|779|beta|2
+5|MU|NULL|7
+7|-3.97|NULL|NULL
+8|NULL|0.1|6
+9|X'866324B1'|-2|NULL
+10|0|X'70F4471A2549'|6
+12|NULL|it's|2
+13|omega|NULL|2
+14|953.7377|xi|2
+15|X''|-1|2
+17|NULL|NULL|7
+18|café|NULL|NULL
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+19|42
+# id|c0|c1|ref
+2|NULL|3.1415926535897931|NULL
+3|NULL|372|7
+4|NULL|NULL|NULL
+5|MU|NULL|7
+8|-483|NULL|NULL
+9|X'866324B1'|-2|NULL
+12|NULL|it's|2
+14|953.7377|xi|2
+15|X''|-1|2
+17|NULL|NULL|7
+18|café|NULL|NULL
+19|42|NULL|NULL
+changes: 0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+19|-536.6766
+# id|c0|c1|c2|c3|c4
+19|-536.6766|d|NULL|NULL|d
+18|556.976|NULL|0|553.59|NULL
+17|228|1000|0.1|a%b|1000
+15|X''|684|NULL|-9223372036854775808|871.3815
+14|2|epsilon|X'70A6918B'|X'81'|82.6503
+12|-939.62|nu|NULL|NULL|547.6
+11|-244|X'6748'|X''|NULL|-9223372036854775808
+9|0.1|NULL|-444.529|853|953
+8|30.225|omicron|1|X''|pi
+6|0x1F|d|NULL|NULL|d
+5|upsilon|4|124.2221|X'159EA10E'|-224
+4|NULL|d|NULL|NULL|d
+3|NULL|NULL|epsilon|256|X'71688BEE9754'
+2|NULL|0|1.0e+308|-4|X'02'
+changes: 19
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+20|931.4267
+# id|c0|c1
+2|1.0e-07!|X'E04EC07B'
+3|3|-259.401
+4|4|NULL
+5|X'DA95'|NULL
+6|6|0
+7|7|zeta
+8|8|NULL
+10|10|NULL
+11|11|697
+12|12|-2.5
+14|14|-2.5
+15|15|-1.0e+308
+16|16|-45
+18|18|NULL
+19|19|-796.25
+20|931.4267|NULL
+changes: 14
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+20|X''
+# id|c0|c1|c2|c3|c4
+3|2.5!|NULL|epsilon|256|X'71688BEE9754'
+5|4|4|124.2221|X'159EA10E'|-224
+7|9223372036854775807|d|NULL|NULL|d
+9|NULL|NULL|-444.529|853|953
+11|X'6748'|X'6748'|X''|NULL|-9223372036854775808
+15|684|684|NULL|-9223372036854775808|871.3815
+17|1000|1000|0.1|a%b|1000
+19|d|d|NULL|NULL|d
+20|X''|d|NULL|NULL|d
+changes: 15
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+21|0
+# id|c0|c1
+2|0|X'E04EC07B'
+3|0|-259.401
+4|NULL|NULL
+5|X'DA95'|NULL
+6|0|0
+7|chi|NULL
+8|0|NULL
+11|0|697
+12|0|-2.5
+14|0|-2.5
+15|0|-1.0e+308
+18|0|NULL
+20|0|NULL
+21|0|NULL
+# id|c0|c1
+2|0|X'E04EC07B'
+3|0|-259.401
+4|NULL|NULL
+5|X'DA95'|NULL
+6|0|0
+7|chi|NULL
+8|0|NULL
+11|0|697
+12|0|-2.5
+14|0|-2.5
+15|0|-1.0e+308
+18|0|NULL
+20|0|NULL
+21|0|NULL
+# 0|CAST(iif(NULL, x'f4f6fa9c4e', NULL) AS TEXT) IS NULL
+0|1
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+[2,3,4,5,8,9,12,14,15,17,18,19]|{"2":3.1415926535897931,"3":372,"4":null,"5":null,"8":null,"9":-2,"12":"it's","14":"xi","15":-1,"17":null,"18":null,"19":null}
+# json_object('id', id, 'v', c0)
+{"id":2,"v":null}
+{"id":3,"v":null}
+{"id":4,"v":null}
+{"id":5,"v":"MU"}

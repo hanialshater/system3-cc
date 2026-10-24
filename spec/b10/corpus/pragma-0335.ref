@@ -1,0 +1,178 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1062
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|INT|0|NULL|0
+3|c2|NUMERIC|0|NULL|0
+4|c3||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|1|0|0
+2|c1|TEXT|0|NULL|0
+3|c2|NUMERIC|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|INT|0|NULL|0
+3|c2|NUMERIC|0|NULL|0
+4|c3||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|1|0|0
+2|c1|TEXT|0|NULL|0
+3|c2|NUMERIC|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|1|0|0
+2|c1|INT|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|c3||0|NULL|0
+5|c4|BLOB|0|NULL|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_2|1|u|0
+1|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|1|0|0
+2|c1|TEXT|0|NULL|0
+3|c2|NUMERIC|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+t2|table
+# id|id|ref|c3
+1|1|6|1
+1|2|6|X'59A4D983A1'
+1|3|6|516
+1|4|6|X'D7C9'
+1|5|6|NULL
+1|6|6|-2
+2|1|6|1
+2|2|6|X'59A4D983A1'
+2|3|6|516
+2|4|6|X'D7C9'
+2|5|6|NULL
+2|6|6|-2
+3|1|2|1
+3|2|2|X'59A4D983A1'
+3|3|2|516
+3|4|2|X'D7C9'
+3|5|2|NULL
+3|6|2|-2
+4|1|2|1
+4|2|2|X'59A4D983A1'
+4|3|2|516
+4|4|2|X'D7C9'
+4|5|2|NULL
+4|6|2|-2
+5|1|1|1
+5|2|1|X'59A4D983A1'
+5|3|1|516
+5|4|1|X'D7C9'
+5|5|1|NULL
+error: near "(": syntax error
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'unixepoch')|julianday('2038-01-19 03:14:07')|strftime('%j %w %W', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|NULL|2465442.6348032407|019 2 03|2147483647|+0001-01-15 00:00:00.000

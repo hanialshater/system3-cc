@@ -1,0 +1,103 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# id|id|c2|ref
+1|NULL|beta|NULL
+2|1|X'59B56E'|2
+3|NULL|eta|NULL
+4|NULL|NULL|NULL
+5|NULL|271.3|NULL
+6|NULL|omega|NULL
+7|NULL|X'A2A2A0'|NULL
+8|2|503.8|8
+8|3|503.8|8
+9|NULL|NULL|NULL
+10|NULL|X'4C9053851A'|NULL
+11|NULL|X'5530DE'|NULL
+# count(*)
+11
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# id|nullif(nullif(id BETWEEN x'1f' AND c1, 369), id)|478
+1|0|478
+2|0|478
+3|0|478
+4|0|478
+5|0|478
+6|0|478
+7|0|478
+# abs(-((-1e308 OR 'alpha')))|coalesce(iif('NULL', NOT NULL, x'e48e'), 2)
+1|X'E48E'

@@ -1,0 +1,58 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2562
+# printf('%x', 123456789012)|round(123456789012, 1)|123456789012 * 4.5e-310|123456789012 / 44|CAST(123456789012 AS TEXT)|123456789012 + 0.0
+1cbe991a14|123456789012.0|5.5555555055400132e-299|2805836113|123456789012|123456789012.0
+# printf('%d', -555.0)|round(-555.0, 3)|-555.0 * -1e308|-555.0 / -512|CAST(-555.0 AS TEXT)|-555.0 + 0.0
+-555|-555.0|Inf|1.083984375|-555.0|-555.0
+# printf('%Q', -148.75)|round(-148.75, 0)|-148.75 * 123456789012|-148.75 / -425|CAST(-148.75 AS TEXT)|-148.75 + 0.0
+'-148.75'|-149.0|-18364197365535.0|0.35|-148.75|-148.75
+# printf('%lld', 0)|round(0, 1)|0 * 4|0 / 0.1|CAST(0 AS TEXT)|0 + 0.0
+0|0.0|0|0.0|0|0.0
+# printf('%.0f', 1.0e15)|round(1.0e15, 2)|1.0e15 * 2.5|1.0e15 / -391.1|CAST(1.0e15 AS TEXT)|1.0e15 + 0.0
+1000000000000000|1000000000000000.0|2500000000000000.0|-2556890820761.9531|1000000000000000.0|1000000000000000.0
+# printf('%q', 331)|round(331, 0)|331 * -902|331 / -598|CAST(331 AS TEXT)|331 + 0.0
+331|331.0|-298562|0|331|331.0
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":-289.0}
+error: JSON cannot hold BLOB values
+error: no such table: nope

@@ -1,0 +1,47 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+0 seconds')|julianday('2000-01-01 12:34:56')|strftime('%s', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2000-01-01 12:34:56|2451545.0242592595|946730096|946730096|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', 'weekday 0')|julianday('1999-12-31T23:59:59.999')|strftime('%f', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-01-02 23:59:59|2451544.4999999884|59.999|946684799|+0001-01-15 00:00:00.000
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', '+12 hours')|julianday('2024-02-29')|strftime('%j %w %W', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-02-29 12:00:00|2460369.5|060 4 09|1709164800|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', 'start of month')|julianday('bad')|strftime('%s', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+12 hours')|julianday('2038-01-19 03:14:07')|strftime('%j %w %W', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-19 15:14:07|2465442.6348032407|019 2 03|2147483647|+0001-01-15 00:00:00.000
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|141
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+141|NULL
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', -3, 0)|instr('zeta', 'kappa')|replace('zeta', '', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%é%'|'zeta' GLOB '*[a-m]*'|char(80, 700)|'zeta' || 'kappa'|'zeta' < 'kappa'|'zeta' = 'kappa' COLLATE NOCASE
+4|ZETA|zeta||0|zeta|zeta|zeta|7A657461|'zeta'|122|0|1|Pʼ|zetakappa|0|0

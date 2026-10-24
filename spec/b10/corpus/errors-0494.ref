@@ -1,0 +1,54 @@
+changes: 0
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t1.c0
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+error: wrong number of arguments to function substr()
+error: near ";": syntax error
+error: table t1 has no column named nope
+# abs(-9223372036854775808)
+error: integer overflow
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+[1,2,3,4,5,6,7]|{"1":410,"2":119,"3":-265,"4":-249,"5":187,"6":-81,"7":-137}
+# json_object('id', id, 'v', c0)
+{"id":1,"v":410}
+{"id":2,"v":119}
+{"id":3,"v":-265}
+{"id":4,"v":-249}
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+0 seconds')|julianday('2000-01-01 12:34:56')|strftime('%f', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2000-01-01 12:34:56|2451545.0242592595|56.000|946730096|+0001-01-15 00:00:00.000

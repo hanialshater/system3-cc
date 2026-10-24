@@ -1,0 +1,103 @@
+changes: 0
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 58
+# printf('%o', 926)|round(926, 3)|926 * 464.14|926 / -317|CAST(926 AS TEXT)|926 + 0.0
+1636|926.0|429793.64|-2|926|926.0
+# printf('%q', -432)|round(-432, 1)|-432 * 880|-432 / 187|CAST(-432 AS TEXT)|-432 + 0.0
+-432|-432.0|-380160|-2|-432|-432.0
+# printf('%d', 9223372036854775807)|round(9223372036854775807, 3)|9223372036854775807 * 3|9223372036854775807 / 491.3|CAST(9223372036854775807 AS TEXT)|9223372036854775807 + 0.0
+9223372036854775807|9.2233720368547758e+18|2.7670116110564327e+19|18773401255556228.0|9223372036854775807|9.2233720368547758e+18
+# printf('%q', -1e308)|round(-1e308, 2)|-1e308 * 9223372036854775807|-1e308 / -878.2|CAST(-1e308 AS TEXT)|-1e308 + 0.0
+-1.0e+308|-1.0e+308|-Inf|1.1386927806877704e+305|-1.0e+308|-1.0e+308
+# n|a
+20|4181
+19|2584
+18|1597
+17|987
+16|610
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', ref)
+{"id":1,"v":2}
+{"id":2,"v":3}
+{"id":3,"v":1}
+{"id":4,"v":4}

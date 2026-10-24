@@ -1,0 +1,25 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store REAL value in INTEGER column t1.c1
+changes: 1
+# printf('%5.2f', -552)|round(-552, 3)|-552 * 9223372036854775807|-552 / 1|CAST(-552 AS TEXT)|-552 + 0.0
+-552.00|-552.0|-5.0913013643438363e+21|-552|-552|-552.0
+# printf('%!.15g', 4)|round(4, 2)|4 * 4|4 / 4.5e-310|CAST(4 AS TEXT)|4 + 0.0
+4.0|4.0|16|Inf|4|4.0
+# printf('%,d', 408.491)|round(408.491, 0)|408.491 * -709.6202|408.491 / 3.141592653589793|CAST(408.491 AS TEXT)|408.491 + 0.0
+408|408.0|-289873.4651182|130.02672371710284|408.491|408.491
+# printf('%c', 5)|round(5, 2)|5 * -440.29|5 / 5|CAST(5 AS TEXT)|5 + 0.0
+5|5.0|-2201.4500000000003|1|5|5.0
+# printf('%.10g', 124)|round(124, 0)|124 * 824.2244|124 / 1e-7|CAST(124 AS TEXT)|124 + 0.0
+124|124.0|102203.8256|1240000000.0|124|124.0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 2, 2)|instr('a%b', 'eta')|replace('a%b', 'é', 'XY')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '%a_'|'a%b' GLOB 'a*'|char(79, 330)|'a%b' || 'eta'|'a%b' < 'eta'|'a%b' = 'eta' COLLATE NOCASE
+3|A%B|a%b|%b|0|a%b|a%b|%b|612562|'a%b'|97|0|1|OŊ|a%beta|1|0

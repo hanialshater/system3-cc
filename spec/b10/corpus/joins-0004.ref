@@ -1,0 +1,298 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|ref|ref
+1|NULL|7|NULL
+2|8|7|2
+2|12|7|2
+3|4|NULL|3
+3|7|NULL|3
+4|5|3|4
+4|11|3|4
+4|16|3|4
+5|18|4|5
+6|6|6|6
+6|14|6|6
+7|1|3|7
+7|2|3|7
+7|13|3|7
+8|15|2|8
+9|NULL|NULL|NULL
+error: near "(": syntax error
+# id|id|c0|c0
+1|NULL|X'63DF1E760F80'|NULL
+2|8|NULL|X'C50943E5AD'
+2|12|NULL|NULL
+3|4|NULL|-7
+3|7|NULL|beta
+4|5|-37|Ελλάδα
+4|11|-37|1.0e+308
+4|16|-37|982
+5|18|2|NULL
+error: near "(": syntax error
+# id|id|ref|ref
+1|NULL|7|NULL
+2|8|7|2
+2|12|7|2
+3|4|NULL|3
+3|7|NULL|3
+4|5|3|4
+4|11|3|4
+4|16|3|4
+5|18|4|5
+6|6|6|6
+6|14|6|6
+7|1|3|7
+7|2|3|7
+7|13|3|7
+8|15|2|8
+9|NULL|NULL|NULL
+10|NULL|NULL|NULL
+11|NULL|4|NULL
+12|NULL|2|NULL
+13|NULL|7|NULL
+14|NULL|6|NULL
+15|NULL|8|NULL
+16|NULL|4|NULL
+17|NULL|NULL|NULL
+18|NULL|5|NULL
+# count(*)
+18
+# id|id|id|id
+1|NULL|1|NULL
+2|8|2|8
+2|12|2|12
+3|4|3|4
+3|7|3|7
+4|5|4|5
+4|11|4|11
+4|16|4|16
+5|18|5|18
+6|6|6|6
+6|14|6|14
+7|1|7|1
+7|2|7|2
+7|13|7|13
+8|15|8|15
+9|NULL|9|NULL
+10|NULL|10|NULL
+11|NULL|11|NULL
+12|NULL|12|NULL
+13|NULL|13|NULL
+14|NULL|14|NULL
+15|NULL|15|NULL
+16|NULL|16|NULL
+17|NULL|17|NULL
+18|NULL|18|NULL
+error: near "(": syntax error
+# id|id|ref|c1
+1|1|7|0
+1|2|7|-199
+1|3|7|709
+1|4|7|-5
+1|5|7|gamma
+1|6|7|-686
+1|7|7|X'614F90'
+1|8|7|NULL
+1|9|7|-9223372036854775808
+1|10|7|2.5
+1|11|7|theta
+1|12|7|X'60'
+1|13|7|-4
+1|14|7|X'17AC03772A'
+1|15|7|-5
+1|16|7|-2
+1|17|7|NULL
+1|18|7|NULL
+2|1|7|0
+2|2|7|-199
+2|3|7|709
+2|4|7|-5
+2|5|7|gamma
+2|6|7|-686
+2|7|7|X'614F90'
+2|8|7|NULL
+2|9|7|-9223372036854775808
+2|10|7|2.5
+2|11|7|theta
+2|12|7|X'60'
+2|13|7|-4
+2|14|7|X'17AC03772A'
+2|15|7|-5
+2|16|7|-2
+2|17|7|NULL
+2|18|7|NULL
+3|1|NULL|0
+3|2|NULL|-199
+3|3|NULL|709
+3|4|NULL|-5
+3|5|NULL|gamma
+3|6|NULL|-686
+# count(*)
+18
+# id|id|id|id
+1|1|1|1
+1|2|1|2
+1|3|1|3
+1|4|1|4
+1|5|1|5
+1|6|1|6
+1|7|1|7
+1|8|1|8
+1|9|1|9
+1|10|1|10
+1|11|1|11
+1|12|1|12
+1|13|1|13
+1|14|1|14
+1|15|1|15
+1|16|1|16
+1|17|1|17
+1|18|1|18
+2|1|2|1
+2|2|2|2
+2|3|2|3
+2|4|2|4
+2|5|2|5
+2|6|2|6
+2|7|2|7
+2|8|2|8
+2|9|2|9
+2|10|2|10
+2|11|2|11
+2|12|2|12
+2|13|2|13
+2|14|2|14
+2|15|2|15
+2|16|2|16
+2|17|2|17
+2|18|2|18
+3|1|3|1
+3|2|3|2
+3|3|3|3
+3|4|3|4
+3|5|3|5
+3|6|3|6
+3|7|3|7
+3|8|3|8
+3|9|3|9
+3|10|3|10
+3|11|3|11
+3|12|3|12
+3|13|3|13
+3|14|3|14
+3|15|3|15
+3|16|3|16
+3|17|3|17
+error: near "(": syntax error
+# id|id|c2|c0
+1|NULL|X'52C6F6'|NULL
+2|8|X'81ED96A9'|X'C50943E5AD'
+2|12|X'81ED96A9'|NULL
+3|4|328.08|-7
+3|7|328.08|beta
+4|5|NULL|Ελλάδα
+4|11|NULL|1.0e+308
+4|16|NULL|982
+5|18|-3|NULL
+6|6|1e3|gamma
+6|14|1e3|42
+7|1|4.500000000000011e-310|NULL
+7|2|4.500000000000011e-310|X'C75354'
+7|13|4.500000000000011e-310|917.93
+8|15|NULL|X'DDFB44E5C744'
+9|NULL|NULL|NULL
+10|NULL|71.58|NULL
+11|NULL|eta|NULL
+12|NULL|X''|NULL
+13|NULL|X''|NULL
+14|NULL|NULL|NULL
+15|NULL|nu|NULL
+# count(*)
+22
+# id|-(c0 BETWEEN x'3d003295' IS NULL AND NULL IN (NULL, 3, 'gamma'))|CAST(CAST(CASE WHEN 2 THEN c0 ELSE x'b6eee2ba41' END AS NUMERIC) AS BLOB)
+1|NULL|NULL
+2|NULL|X'30'
+3|NULL|NULL
+4|NULL|X'2D37'
+5|NULL|X'30'
+6|NULL|X'30'
+7|NULL|X'30'
+8|NULL|X'30'
+9|NULL|X'30'
+10|NULL|X'30'
+11|NULL|X'312E30652B333038'
+12|NULL|NULL
+13|NULL|X'3931372E3933'
+14|NULL|X'3432'
+15|NULL|X'30'
+16|NULL|X'393832'
+17|NULL|NULL
+18|NULL|NULL
+# x'3b' IS NULL|275.714
+0|275.714
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table

@@ -1,0 +1,92 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|ref
+# count(*)
+20
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+1|NULL
+3|NULL
+4|-917
+2|0
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+# count(*)
+15
+changes: 1
+changes: 1
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4,5,6,7,8,9]|{"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}
+# json_object('id', id, 'v', c3)
+error: JSON cannot hold BLOB values
+changes: 1
+# id|id
+error: no query solution
+changes: 1
+changes: 1

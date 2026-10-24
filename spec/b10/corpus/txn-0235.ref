@@ -1,0 +1,62 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 4
+changes: 3
+# count(*)|count(c0)
+7|3
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 7
+changes: 0
+# count(*)|count(c0)
+7|0
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 8
+changes: 2
+# count(*)|count(c0)
+6|0
+# count(*)
+8
+error: cannot commit - no transaction is active
+changes: 7
+changes: 4
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+error: table t1 already exists
+changes: 4
+changes: 4
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+7|NULL
+185|NULL

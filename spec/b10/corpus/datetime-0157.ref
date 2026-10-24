@@ -1,0 +1,100 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', '+12 hours')|julianday('2024-02-29')|strftime('%Y-%m-%d %H:%M:%S', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-02-29 12:00:00|2460369.5|2024-02-29 00:00:00|1709164800|+0001-01-15 00:00:00.000
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'weekday 0')|julianday(2451545.0)|strftime('%j %w %W', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-02 12:00:00|2451545.0|001 6 00|946728000|+0001-01-15 00:00:00.000
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', '+1 day')|julianday('2024-02-29')|strftime('%J', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-03-01 00:00:00|2460369.5|2460369.5|1709164800|+0001-01-15 00:00:00.000
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+23|21|9.2233720368547779e+18|9.2233720368547779e+18|4.392081922311799e+17|-353.0|X'DB6C2B99EF87'|21
+# c0|count(*)|group_concat(id, ';')
+NULL|2|5;6
+-353.0|1|1
+0.0|1|2
+4.500000000000011e-310|1|13
+2.0|1|19
+3.0|1|3
+4.0|1|22
+9.0|1|20
+512.0|1|7
+905.0|1|4
+916.0|1|15
+9.2233720368547758e+18|1|12
+naïve|1|23
+nu|1|17
+tau|1|9
+theta|1|11
+upsilon|1|21
+xi|1|10
+X''|1|16
+X'2781F759'|1|8
+X'898F'|1|18
+X'DB6C2B99EF87'|1|14
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+22|16|1.0e+308|1.0e+308|6.25e+306|-783|X'EE2D7AF7'|16
+# c0|count(*)|group_concat(id, ';')
+NULL|6|7;9;13;15;19;22
+-783|1|4
+-169.6459|1|17
+-2|1|11
+3.1415926535897931|1|6
+195.7286|1|5
+474|1|20
+600.5|1|18
+1.0e+308|1|14
+1e3|1|8
+NULL|1|16
+phi|1|21
+psi|1|1
+X''|1|2
+X'0C4F'|1|12
+X'70'|1|10
+X'EE2D7AF7'|1|3

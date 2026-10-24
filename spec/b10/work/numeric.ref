@@ -1,0 +1,4 @@
+# sum(x * 1.0 / 7)|sum(x % 27)|sum(round(x / 7.0, 2))|sum(abs(689 - x))|max(printf('%.3f', x / 3.0))
+87697611.428571433|455457|87697611.43|590215441|9999.667
+# sum(CAST(printf('%d', x) AS INTEGER))|count(CAST(x AS TEXT))
+143422516|16936

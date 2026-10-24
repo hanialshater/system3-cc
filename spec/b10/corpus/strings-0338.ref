@@ -1,0 +1,27 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('theta')|upper('theta')|lower('theta')|substr('theta', 1, 0)|instr('theta', '1e3')|replace('theta', 'e', '_')|trim('theta')|ltrim('theta', 'ab')|hex('theta')|quote('theta')|unicode('theta')|'theta' LIKE '_'|'theta' GLOB '*[a-m]*'|char(77, 916)|'theta' || '1e3'|'theta' < '1e3'|'theta' = '1e3' COLLATE NOCASE
+5|THETA|theta||0|th_ta|theta|theta|7468657461|'theta'|116|0|1|MΔ|theta1e3|0|0
+# length('beta')|upper('beta')|lower('beta')|substr('beta', 2, 2)|instr('beta', 'café')|replace('beta', '', '_')|trim('beta')|ltrim('beta', 'ab')|hex('beta')|quote('beta')|unicode('beta')|'beta' LIKE '%a_'|'beta' GLOB '*[a-m]*'|char(88, 780)|'beta' || 'café'|'beta' < 'café'|'beta' = 'café' COLLATE NOCASE
+4|BETA|beta|et|0|beta|beta|eta|62657461|'beta'|98|0|1|X̌|betacafé|1|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', -3, 4)|instr('epsilon', 'Ελλάδα')|replace('epsilon', 'é', '_')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE '_'|'epsilon' GLOB 'a*'|char(72, 250)|'epsilon' || 'Ελλάδα'|'epsilon' < 'Ελλάδα'|'epsilon' = 'Ελλάδα' COLLATE NOCASE
+7|EPSILON|epsilon|lon|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|0|Hú|epsilonΕλλάδα|1|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', -3, 5)|instr('it''s', '日本')|replace('it''s', '', '')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE '_'|'it''s' GLOB 'a*'|char(68, 288)|'it''s' || '日本'|'it''s' < '日本'|'it''s' = '日本' COLLATE NOCASE
+4|IT'S|it's|t's|0|it's|it's|it's|69742773|'it''s'|105|0|0|DĠ|it's日本|1|0
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', 4, 0)|instr('gamma', 'alpha')|replace('gamma', 'e', 'XY')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%é%'|'gamma' GLOB '*[a-m]*'|char(79, 526)|'gamma' || 'alpha'|'gamma' < 'alpha'|'gamma' = 'alpha' COLLATE NOCASE
+5|GAMMA|gamma||0|gamma|gamma|gamma|67616D6D61|'gamma'|103|0|1|OȎ|gammaalpha|0|0
+# length('')|upper('')|lower('')|substr('', -3, 1)|instr('', 'naïve')|replace('', 'é', '_')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB 'a*'|char(81, 530)|'' || 'naïve'|'' < 'naïve'|'' = 'naïve' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|QȒ|naïve|1|0
+# length('pi')|upper('pi')|lower('pi')|substr('pi', 0, 4)|instr('pi', '42')|replace('pi', 'a', '_')|trim('pi')|ltrim('pi', 'ab')|hex('pi')|quote('pi')|unicode('pi')|'pi' LIKE 'A%'|'pi' GLOB 'a*'|char(65, 604)|'pi' || '42'|'pi' < '42'|'pi' = '42' COLLATE NOCASE
+2|PI|pi|pi|0|pi|pi|pi|7069|'pi'|112|0|0|Aɜ|pi42|0|0

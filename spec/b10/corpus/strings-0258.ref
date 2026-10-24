@@ -1,0 +1,83 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t2.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 574
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', 1, 1)|instr('gamma', 'theta')|replace('gamma', 'a', '')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%'|'gamma' GLOB '*[a-m]*'|char(83, 793)|'gamma' || 'theta'|'gamma' < 'theta'|'gamma' = 'theta' COLLATE NOCASE
+5|GAMMA|gamma|g|0|gmm|gamma|gamma|67616D6D61|'gamma'|103|1|1|S̙|gammatheta|1|0
+# length('Ελλάδα')|upper('Ελλάδα')|lower('Ελλάδα')|substr('Ελλάδα', -2, 3)|instr('Ελλάδα', 'omega')|replace('Ελλάδα', '', '_')|trim('Ελλάδα')|ltrim('Ελλάδα', 'ab')|hex('Ελλάδα')|quote('Ελλάδα')|unicode('Ελλάδα')|'Ελλάδα' LIKE '%a_'|'Ελλάδα' GLOB '*[a-m]*'|char(69, 286)|'Ελλάδα' || 'omega'|'Ελλάδα' < 'omega'|'Ελλάδα' = 'omega' COLLATE NOCASE
+6|Ελλάδα|Ελλάδα|δα|0|Ελλάδα|Ελλάδα|Ελλάδα|CE95CEBBCEBBCEACCEB4CEB1|'Ελλάδα'|917|0|0|EĞ|Ελλάδαomega|0|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', 4, 5)|instr('epsilon', '0x1F')|replace('epsilon', 'a', '')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE '_'|'epsilon' GLOB '?'|char(83, 427)|'epsilon' || '0x1F'|'epsilon' < '0x1F'|'epsilon' = '0x1F' COLLATE NOCASE
+7|EPSILON|epsilon|ilon|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|0|Sƫ|epsilon0x1F|0|0
+# length('upsilon')|upper('upsilon')|lower('upsilon')|substr('upsilon', 0, 0)|instr('upsilon', 'sigma')|replace('upsilon', '', '_')|trim('upsilon')|ltrim('upsilon', 'ab')|hex('upsilon')|quote('upsilon')|unicode('upsilon')|'upsilon' LIKE '_'|'upsilon' GLOB '*[a-m]*'|char(69, 517)|'upsilon' || 'sigma'|'upsilon' < 'sigma'|'upsilon' = 'sigma' COLLATE NOCASE
+7|UPSILON|upsilon||0|upsilon|upsilon|upsilon|757073696C6F6E|'upsilon'|117|0|1|Eȅ|upsilonsigma|0|0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 1, 3)|instr('a%b', '0x1F')|replace('a%b', 'e', '_')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '%a_'|'a%b' GLOB '?'|char(86, 265)|'a%b' || '0x1F'|'a%b' < '0x1F'|'a%b' = '0x1F' COLLATE NOCASE
+3|A%B|a%b|a%b|0|a%b|a%b|%b|612562|'a%b'|97|0|0|Vĉ|a%b0x1F|0|0
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', 2, 3)|instr('gamma', 'beta')|replace('gamma', '', '')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%'|'gamma' GLOB 'a*'|char(77, 744)|'gamma' || 'beta'|'gamma' < 'beta'|'gamma' = 'beta' COLLATE NOCASE
+5|GAMMA|gamma|amm|0|gamma|gamma|gamma|67616D6D61|'gamma'|103|1|0|M˨|gammabeta|0|0

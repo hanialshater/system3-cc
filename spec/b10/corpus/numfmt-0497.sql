@@ -1,0 +1,17 @@
+CREATE TABLE t0(id INTEGER PRIMARY KEY, c0 INTEGER DEFAULT 'd', c1 TEXT DEFAULT 'd', c2 REAL, c3 REAL NOT NULL DEFAULT 0, c4 NUMERIC);
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES('Lambda', x'2b64c5', 1, -0.0, -1);
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES(-2.5, -500, 'x_y', NULL, 14.835);
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES('iota', 1e308, x'', 'gamma', 4);
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES(1e308, -592.9884, -2.5, 346.27, 'rho');
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES(2, x'6e', x'6d55', 'epsilon', 'señor');
+INSERT INTO t0(c0, c1, c2, c3, c4) VALUES(-352.23, 'x_y', NULL, 1e308, NULL);
+CREATE TABLE t1(id INTEGER PRIMARY KEY, c0 BLOB, c1 BLOB UNIQUE, c2  NOT NULL DEFAULT 0, c3 REAL, c4 VARCHAR(10) NOT NULL DEFAULT 0, ref INTEGER REFERENCES t0(id));
+INSERT INTO t1(c0, c1, c2, c3, c4, ref) VALUES(3.141592653589793, -1, 0, 30.2720, 1e308, 5);
+INSERT OR IGNORE INTO t1(c0, c1, c2, c3, c4, ref) VALUES(x'', 301, 'omega', -65.07, 'omega', 4);
+INSERT INTO t1(c0, c1, c2, c3, c4, ref) VALUES(-928, 'gamma', 'nu', -2, -732, 1);
+INSERT OR IGNORE INTO t1(c0, c1, c2, c3, c4, ref) VALUES('', x'ef590e294219', x'1ceb7d67ac', -842, 0, 1);
+SELECT printf('%.0f', 3), round(3, 0), 3 * 44, 3 / -366, CAST(3 AS TEXT), 3 + 0.0;
+SELECT printf('%.3s', 1e-7), round(1e-7, 0), 1e-7 * 1e-7, 1e-7 / 1e308, CAST(1e-7 AS TEXT), 1e-7 + 0.0;
+SELECT printf('%w', -1e308), round(-1e308, 3), -1e308 * 910, -1e308 / 150.20, CAST(-1e308 AS TEXT), -1e308 + 0.0;
+SELECT id, id, sum(id) OVER (ORDER BY id) FROM t0 ORDER BY id;
+SELECT CAST('9e999' AS REAL), 1 / 0, 1 % 0, 9223372036854775807 + 1;

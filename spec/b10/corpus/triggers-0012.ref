@@ -1,0 +1,220 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t0|1
+t0|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# id|-(id)|CAST(c0 IS NULL IS NULL AS REAL)
+3|-3|0.0
+4|-4|0.0
+5|-5|0.0
+6|-6|0.0
+7|-7|0.0
+8|-8|0.0
+9|-9|0.0
+10|-10|0.0
+11|-11|0.0
+12|-12|0.0
+13|-13|0.0
+14|-14|0.0
+15|-15|0.0
+16|-16|0.0
+17|-17|0.0
+18|-18|0.0
+19|-19|0.0
+111|-111|0.0
+138|-138|0.0
+185|-185|0.0
+189|-189|0.0
+198|-198|0.0
+# -639.97|coalesce(CASE WHEN CAST(NULL AS TEXT) THEN typeof('naïve') ELSE typeof(NULL) END, typeof((199 - 'it''s')))
+-639.97|null
+# id|'rho'|-(NULL IS NULL)
+3|rho|-1
+4|rho|-1
+5|rho|-1
+6|rho|-1
+7|rho|-1
+8|rho|-1
+9|rho|-1
+10|rho|-1
+11|rho|-1
+12|rho|-1
+103|rho|-1
+200|rho|-1
+# NOT CAST(NOT -2 AS REAL)|CASE WHEN -(abs(431.15)) THEN -2.5 ELSE typeof(541) END
+1|-2.5

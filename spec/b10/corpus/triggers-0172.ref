@@ -1,0 +1,200 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1203
+changes: 1203
+changes: 1203
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 0
+error: UNIQUE constraint failed: t0.id
+error: UNIQUE constraint failed: t0.id
+changes: 222
+# x|y
+t1|1001
+t1|1002
+changes: 222
+# id|bid
+1|NULL
+2|NULL
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+changes: 222
+changes: 222
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t2|183
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+error: UNIQUE constraint failed: t0.id
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+t2|183
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+error: UNIQUE constraint failed: t0.id
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+t2|183
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', 'unixepoch')|julianday('1970-01-01')|strftime('%Y-%m-%d %H:%M:%S', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|NULL|2440587.5|1970-01-01 00:00:00|0|+0001-01-15 00:00:00.000
+# length('日本')|upper('日本')|lower('日本')|substr('日本', -3, 2)|instr('日本', 'upsilon')|replace('日本', '', '')|trim('日本')|ltrim('日本', 'ab')|hex('日本')|quote('日本')|unicode('日本')|'日本' LIKE '_'|'日本' GLOB 'a*'|char(77, 983)|'日本' || 'upsilon'|'日本' < 'upsilon'|'日本' = 'upsilon' COLLATE NOCASE
+2|日本|日本|日|0|日本|日本|日本|E697A5E69CAC|'日本'|26085|0|0|Mϗ|日本upsilon|0|0

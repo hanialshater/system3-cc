@@ -1,0 +1,56 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2367
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 3, 0)|instr('a%b', 'Ελλάδα')|replace('a%b', '', '')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '%a_'|'a%b' GLOB '?'|char(84, 448)|'a%b' || 'Ελλάδα'|'a%b' < 'Ελλάδα'|'a%b' = 'Ελλάδα' COLLATE NOCASE
+3|A%B|a%b||0|a%b|a%b|%b|612562|'a%b'|97|0|0|Tǀ|a%bΕλλάδα|1|0
+# length('psi')|upper('psi')|lower('psi')|substr('psi', 3, 2)|instr('psi', 'iota')|replace('psi', 'é', 'XY')|trim('psi')|ltrim('psi', 'ab')|hex('psi')|quote('psi')|unicode('psi')|'psi' LIKE '%'|'psi' GLOB '*'|char(79, 402)|'psi' || 'iota'|'psi' < 'iota'|'psi' = 'iota' COLLATE NOCASE
+3|PSI|psi|i|0|psi|psi|psi|707369|'psi'|112|1|1|Oƒ|psiiota|0|0
+# length('1e3')|upper('1e3')|lower('1e3')|substr('1e3', 3, 4)|instr('1e3', 'theta')|replace('1e3', 'é', '_')|trim('1e3')|ltrim('1e3', 'ab')|hex('1e3')|quote('1e3')|unicode('1e3')|'1e3' LIKE '_'|'1e3' GLOB 'a*'|char(74, 637)|'1e3' || 'theta'|'1e3' < 'theta'|'1e3' = 'theta' COLLATE NOCASE
+3|1E3|1e3|3|0|1e3|1e3|1e3|316533|'1e3'|49|0|0|Jɽ|1e3theta|1|0
+# length('MU')|upper('MU')|lower('MU')|substr('MU', 0, 0)|instr('MU', 'theta')|replace('MU', 'a', 'XY')|trim('MU')|ltrim('MU', 'ab')|hex('MU')|quote('MU')|unicode('MU')|'MU' LIKE '%é%'|'MU' GLOB '*[a-m]*'|char(76, 808)|'MU' || 'theta'|'MU' < 'theta'|'MU' = 'theta' COLLATE NOCASE
+2|MU|mu||0|MU|MU|MU|4D55|'MU'|77|0|0|L̨|MUtheta|1|0
+# length('NULL')|upper('NULL')|lower('NULL')|substr('NULL', 3, 3)|instr('NULL', 'omicron')|replace('NULL', '', '')|trim('NULL')|ltrim('NULL', 'ab')|hex('NULL')|quote('NULL')|unicode('NULL')|'NULL' LIKE 'a%'|'NULL' GLOB '?'|char(81, 950)|'NULL' || 'omicron'|'NULL' < 'omicron'|'NULL' = 'omicron' COLLATE NOCASE
+4|NULL|null|LL|0|NULL|NULL|NULL|4E554C4C|'NULL'|78|0|0|Qζ|NULLomicron|1|0
+# length('kappa')|upper('kappa')|lower('kappa')|substr('kappa', 3, 0)|instr('kappa', 'über')|replace('kappa', 'a', '_')|trim('kappa')|ltrim('kappa', 'ab')|hex('kappa')|quote('kappa')|unicode('kappa')|'kappa' LIKE 'A%'|'kappa' GLOB '*[a-m]*'|char(76, 781)|'kappa' || 'über'|'kappa' < 'über'|'kappa' = 'über' COLLATE NOCASE
+5|KAPPA|kappa||0|k_pp_|kappa|kappa|6B61707061|'kappa'|107|0|1|L̍|kappaüber|1|0
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+1 year')|julianday('2000-01-01 12:34:56')|strftime('%j %w %W', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2001-01-01 12:34:56|2451545.0242592595|001 6 00|946730096|+0001-01-15 00:00:00.000

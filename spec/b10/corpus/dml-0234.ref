@@ -1,0 +1,234 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 7
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+24|1e3
+# id|c0|c1
+1|184.472|X''
+2|chi!|0
+3|2.5|NULL
+5|-855.698|X'CE13F8EEF920'
+6|NULL|pi
+7|NULL|NULL
+8|157|NULL
+9|NULL|-710
+10|-89.3|X'7E50B08275F6'
+11|señor|X'64EED32E'
+13|NULL|407.43
+14|NULL|1
+15|NULL|-2
+17|62|NULL
+18|-6|NULL
+19|NULL|NULL
+21|NULL|87
+22|NULL|-804.9
+23|0|Lambda
+24|1e3|NULL
+changes: 16
+changes: 8
+changes: 1
+changes: 1
+# id|c0
+26|386
+# id|c0|c1|c2
+1|Lambda|NULL|NULL
+2|1|514|MU
+3|-244.93|NULL|NULL
+4|0|über|-20
+5|0|NULL|0
+7|psi|-245|535
+8|1|X''|X'316BDF'
+10|-7|0.1|-615.5
+11|1|3|rho
+13|0|sigma|日本
+14|0|X'1E'|5
+16|iota|1000000000000000|NULL
+17|1|X'E21B'|X'670D16'
+19|nu|4.500000000000011e-310|NULL
+20|über|0|NULL
+22|0|NULL|X'B1E9B0390DD7'
+23|0|über|sigma
+25|1|it's|X'D43D91'
+26|386|NULL|NULL
+changes: 8
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+24|42
+# id|c0|c1
+1|0|X''
+2|chi!|0
+3|0|NULL
+5|0|X'CE13F8EEF920'
+6|kappa!|pi
+7|X'9189'|NULL
+9|NULL|-710
+10|0|X'7E50B08275F6'
+11|señor|X'64EED32E'
+13|NULL|407.43
+14|NULL|1
+15|NULL|-2
+17|0|NULL
+18|0|NULL
+19|NULL|NULL
+21|NULL|87
+22|NULL|-804.9
+23|0|Lambda
+24|42|NULL
+changes: 19
+changes: 9
+changes: 1
+changes: 1
+# id|c0
+27|X'55A7'
+# id|c0|c1|c2
+2|-935|514|MU
+3|-935|NULL|NULL
+4|-2|NULL|NULL
+5|-935|NULL|0
+6|X'61'|NULL|NULL
+8|-935|X''|X'316BDF'
+11|-935|3|rho
+14|-935|X'1E'|5
+17|-935|X'E21B'|X'670D16'
+20|-935|0|NULL
+23|-935|über|sigma
+26|-935|NULL|NULL
+27|X'55A7'|NULL|NULL
+changes: 0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+24|1000000000000000.0
+# id|c0|c1
+1|0|X''
+3|0|NULL
+5|X'E55DC7'|NULL
+6|502|NULL
+7|X'9189'|NULL
+9|NULL|-710
+11|señor|X'64EED32E'
+13|NULL|407.43
+15|NULL|-2
+17|0|NULL
+19|NULL|NULL
+21|NULL|87
+23|0|Lambda
+24|1000000000000000.0|NULL
+changes: 13
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+28|1000
+# id|c0|c1|c2
+1|1000|NULL|NULL
+2|2|514|MU
+3|3|NULL|NULL
+4|iota|NULL|NULL
+5|5|NULL|0
+6|6|NULL|NULL
+8|8|X''|X'316BDF'
+11|11|3|rho
+14|14|X'1E'|5
+17|17|X'E21B'|X'670D16'
+20|20|0|NULL
+23|23|über|sigma
+26|26|NULL|NULL
+27|27|NULL|NULL
+28|1000|NULL|NULL
+changes: 14
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+25|1000000000000000.0
+# id|c0|c1
+25|1000000000000000.0|NULL
+24|1000000000000000.0|NULL
+23|0|Lambda
+21|NULL|87
+17|0|NULL
+15|NULL|-2
+11|señor|X'64EED32E'
+9|NULL|-710
+6|502|NULL
+5|NULL|NULL
+3|0|NULL
+2|NULL|NULL
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|'d'|0
+2|c1|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|'d'|0
+2|c1|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table

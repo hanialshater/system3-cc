@@ -1,0 +1,141 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+129|129
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+111|111
+129|129
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+111|111
+129|129
+134|134
+# id|id|c0|id
+3|NULL|NULL|NULL
+4|7|X'48'|7
+5|NULL|2|NULL
+6|3|-722|3
+7|6|X'663B'|6
+8|5|NULL|5
+9|NULL|-817.7763|NULL
+111|NULL|NULL|NULL
+129|NULL|NULL|NULL
+134|NULL|NULL|NULL
+# count(*)
+10
+changes: 10
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+135|829
+# id|c0|c1|c2|ref
+3|-123456789012|9223372036854775807|X'D0'|6
+4|1000000000000000.0|NULL|NULL|NULL
+5|-123456789012|-5|X''|8
+6|-123456789012|-2|NULL|7
+8|-123456789012|-519|X'BAB8'|1
+9|NULL|NULL|NULL|NULL
+111|-123456789012|NULL|NULL|NULL
+129|-123456789012|NULL|NULL|NULL
+134|-123456789012|NULL|NULL|NULL
+135|829|NULL|NULL|NULL
+error: no such table: nope

@@ -1,0 +1,141 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 14
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+15|2.5
+# id|c0|c1|c2|c3|ref
+1|NULL|phi|X'60'|0|6
+2|NULL|NULL|X'4454'|X'00655574'|5
+3|NULL|X'1B8EF7F1A21F'|1e3|1|5
+4|NULL|-3|4|-755|3
+6|-2.0!|X'48A5B4C8'|634.5||2
+7|NULL|X'A6D82A06B7'|X'55753C'|0|3
+8|X'022BE266'|NULL|NULL|0|NULL
+9|NULL|NULL|3|34|1
+11|NULL|5|NULL|X'F8C2'|NULL
+12|NULL|-4|kappa|-820|8
+13|NULL|-490|NULL|xi|3
+14|NULL|zeta|señor|0|3
+15|2.5|NULL|NULL|0|NULL
+changes: 11
+changes: 12
+changes: 1
+changes: 1
+# id|c0
+25|-233
+# id|c0|c1|c2|c3|c4
+1|504.39|NULL|NULL|NULL|NULL
+2|kappa|NULL|X'A6'|über|über
+4|0.0|NULL|epsilon|0|NULL
+6|señor!|8|NULL|4|-4
+8|0|1000000000000000.0|NULL|16|1000000000000000.0
+10|527|-634.375|-984.5|X'F4DC579DBDCD'|-780
+12|-36|theta|1.0e+308|delta|X'348CDD24AB'
+14|0|X'092C'|-1.0|-3|a%b
+16|0|-553.678|NULL|zeta|-402.66
+18|beta|NULL|señor|chi|NULL
+20|0|NULL|X'B7'|4|-3
+22|0|X'4E03'|X'D9792BFF5243'|155|-9223372036854775808
+24|über|NULL|epsilon|X'E2A4'|0.1
+25|-233|NULL|NULL|NULL|NULL
+error: UNIQUE constraint failed: t1.c0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+15|X''
+# id|c0|c1|c2|c3|ref
+1|X'D7'|NULL|NULL|0|NULL
+2|NULL|NULL|X'4454'|X'00655574'|5
+3|NULL|NULL|NULL|0|NULL
+4|NULL|-3|4|-755|3
+6|-2.0!|X'48A5B4C8'|634.5||2
+8|X'022BE266'|NULL|NULL|0|NULL
+12|NULL|-4|kappa|-820|8
+14|NULL|zeta|señor|0|3
+15|X''|NULL|NULL|0|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+1|1
+2|2
+4|4
+6|5
+8|6
+10|6
+12|7
+14|8
+16|9
+18|9
+20|9
+22|9
+24|9
+25|9
+# id
+10
+16
+18
+20
+22
+24
+25
+# id
+8
+14
+16
+18
+20
+22
+24
+25
+# c4
+-780
+-9223372036854775808
+0.1
+1000000000000000.0
+a%b
+über
+X'348CDD24AB'
+error: table t1 already exists

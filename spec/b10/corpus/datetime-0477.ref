@@ -1,0 +1,92 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+1 year')|julianday('2000-01-01 12:34:56')|strftime('%s', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2001-01-01 12:34:56|2451545.0242592595|946730096|946730096|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', 'unixepoch')|julianday('bad')|strftime('%s', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+12 hours')|julianday('2038-01-19 03:14:07')|strftime('%f', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-19 15:14:07|2465442.6348032407|07.000|2147483647|+0001-01-15 00:00:00.000
+changes: 3
+changes: 19
+# count(*)|count(c0)
+21|13
+# count(*)
+21
+error: cannot commit - no transaction is active
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":"it's"}
+error: JSON cannot hold BLOB values
+changes: 21
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+22|0.1
+# id|c0|c1|c2|c3
+2|X'C62B78'|0|NULL|NULL
+3|X'7E0837'|-439|X'A33C7F5B85'|X''
+5|X'7E0837'|2.5|beta|it's
+6|X'7E0837'|X'94DC'|1|X'9C28A98155'
+8|X'7E0837'|1|NULL|-3
+9|X'7E0837'|iota|café|576.638
+11|X'7E0837'|2.5|rho|X'0AB1477901'
+12|X'7E0837'|0.1|X''|alpha
+14|X'7E0837'|xi|-366|2
+15|X'7E0837'|399.32|zeta|-503
+17|X'7E0837'|3|-1|-539.96
+18|X'7E0837'|0.0|a%b|Ελλάδα
+20|X'7E0837'|X'4841CE4D7166'|-680|136.1499
+21|X'7E0837'|276.368|NULL|3.1415926535897931
+22|0.1|0|NULL|NULL

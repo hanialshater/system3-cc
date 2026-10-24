@@ -1,0 +1,95 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id IS NULL|iif(nullif(c2, x'755c9e'), abs(-9223372036854775808), x'3c078d') IS NULL
+error: integer overflow
+# (-426 % iif(NULL, -589.64, 1e-7) BETWEEN abs(x'353d04bd') AND iif(x'48b8dd', x'', x'f8'))|nullif(coalesce(CAST(NULL AS INTEGER), x'fd4c'), typeof(NOT x''))
+NULL|X'FD4C'
+# id|nullif(NOT x'c47c62255bf5', 'über') BETWEEN -1e308 AND id|c4
+5|1|-2
+4|1|MU
+3|1|281
+2|1|NULL
+1|1|alpha
+# typeof(x'401f')|(-(2) IS NULL | '-7')
+blob|0
+# id|id IS NULL IN (nullif(iif(x'4a48', c4, NULL), abs(NULL)), 'über', 'delta')|-369.164
+1|NULL|-369.164
+2|NULL|-369.164
+3|NULL|-369.164
+4|NULL|-369.164
+5|NULL|-369.164
+# -347.0172|NULL BETWEEN CAST(coalesce(NULL, 'über') AS BLOB) AND x'510b67'
+-347.0172|NULL
+# id|c1|4.5e-310
+1|X'C8E42E'|4.500000000000011e-310
+2|über|4.500000000000011e-310
+3|4|4.500000000000011e-310
+4|it's|4.500000000000011e-310
+5|X'6264'|4.500000000000011e-310
+6|gamma|4.500000000000011e-310
+7|NULL|4.500000000000011e-310
+8|eta|4.500000000000011e-310
+9|-27|4.500000000000011e-310
+10|tau|4.500000000000011e-310
+11|NULL|4.500000000000011e-310
+12|omicron|4.500000000000011e-310
+13|-5|4.500000000000011e-310
+14|X'1FE9A35BBF5D'|4.500000000000011e-310
+15|chi|4.500000000000011e-310
+# 1e-7|coalesce(-(iif(x'cc8d871d', 1, NULL)), x'6cc5c2')
+1.0e-07|X'6CC5C2'
+# id|NOT x'8d0a94bd19f4' IN (c3, 'it''s', x'0241')|c2
+1|NULL|5
+2|1|2
+3|1|-358.504
+4|1|X'10F1B54E8977'
+5|1|0.0
+# -931|812
+-931|812
+# id|id|NULL
+1|1|NULL
+2|2|NULL
+3|3|NULL
+4|4|NULL
+5|5|NULL
+6|6|NULL
+# CAST(coalesce(NULL, NULL) AS BLOB) IS NULL|nullif(typeof(-207), CAST('epsilon' AS REAL)) IN (-5, NULL, NULL)
+1|NULL
+# id|-9223372036854775808|CASE WHEN CASE WHEN CASE WHEN id THEN NULL ELSE 557.09 END THEN c0 ELSE c1 END THEN id ELSE NOT -(1e308) END
+6|-9223372036854775808|0
+5|-9223372036854775808|0
+4|-9223372036854775808|0
+3|-9223372036854775808|3
+2|-9223372036854775808|0
+1|-9223372036854775808|1
+# coalesce(abs(iif(-279, -1e308, -205.967)), NULL)|iif(iif(nullif(x'48115e', x'249a'), -('epsilon'), 'gamma'), typeof(557.820), x'7cc0')
+1.0e+308|X'7CC0'
+# length('café')|upper('café')|lower('café')|substr('café', 3, 3)|instr('café', 'omicron')|replace('café', '', 'XY')|trim('café')|ltrim('café', 'ab')|hex('café')|quote('café')|unicode('café')|'café' LIKE 'a%'|'café' GLOB 'a*'|char(65, 305)|'café' || 'omicron'|'café' < 'omicron'|'café' = 'omicron' COLLATE NOCASE
+4|CAFé|café|fé|0|café|café|café|636166C3A9|'café'|99|0|0|Aı|caféomicron|1|0

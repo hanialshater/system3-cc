@@ -1,0 +1,102 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1610
+error: no such savepoint: nope
+error: near "SELEC": syntax error
+error: near "SELEC": syntax error
+error: no such table: nope
+# json('{')
+error: malformed JSON
+error: unrecognized token: "x'zz'"
+error: table t0 already exists
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+21|21
+20|21
+19|21
+18|21
+17|21
+16|21
+15|21
+14|21
+13|21
+12|21
+11|21
+10|21
+9|21
+8|21
+7|21
+6|21
+5|21
+4|21
+3|21
+2|21
+1|21
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+# id
+21
+# ref

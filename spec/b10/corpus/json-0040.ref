@@ -1,0 +1,202 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', ref)
+{"id":1,"v":5}
+{"id":2,"v":4}
+{"id":3,"v":6}
+{"id":4,"v":null}
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c0)
+{"id":1,"v":-849.26}
+{"id":2,"v":-614}
+{"id":3,"v":" pad "}
+error: JSON cannot hold BLOB values
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+[1,2,3,4,5]|{"1":"epsilon","2":" pad ","3":"eta","4":"theta","5":"alpha"}
+# json_object('id', id, 'v', c2)
+{"id":1,"v":"epsilon"}
+{"id":2,"v":" pad "}
+{"id":3,"v":"eta"}
+{"id":4,"v":"theta"}
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[4,5,7,8,16,17,1,10,2,18,15,13,12,11,6,9,14,3]|{"4":4,"5":5,"7":7,"8":8,"16":16,"17":17,"1":1,"10":10,"2":2,"18":18,"15":15,"13":13,"12":12,"11":11,"6":6,"9":9,"14":14,"3":3}
+# json_object('id', id, 'v', c2)
+{"id":1,"v":-617.727}
+{"id":2,"v":-2}
+error: JSON cannot hold BLOB values
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+[1,2,3,4,5]|{"1":"epsilon","2":" pad ","3":"eta","4":"theta","5":"alpha"}
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), ref)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]|{"1":5,"2":4,"3":6,"4":null,"5":2,"6":null,"7":2,"8":null,"9":8,"10":7,"11":3,"12":3,"13":5,"14":5,"15":5,"16":null,"17":1,"18":7}
+# json_object('id', id, 'v', c0)
+{"id":1,"v":0}
+{"id":2,"v":0}
+{"id":3,"v":-914}
+error: JSON cannot hold BLOB values
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c3)
+[1,2,3,4,5,6,7]|{"1":null,"2":-597,"3":"MU","4":null,"5":41,"6":1,"7":null}
+# json_object('id', id, 'v', c3)
+{"id":1,"v":null}
+{"id":2,"v":-597}
+{"id":3,"v":"MU"}
+{"id":4,"v":null}
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|5
+3|5
+4|5
+1|5
+5|5
+# id
+# id
+5
+# c1
+-32.861
+-24.708
+-22.233
+24.367
+ pad 
+alpha
+epsilon
+eta
+theta
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+4|4
+5|5
+7|5
+8|5
+16|5
+17|5
+1|1
+10|5
+2|2
+18|5
+15|5
+13|5
+12|5
+11|5
+6|5
+9|5
+14|5
+3|3
+# id
+1
+2
+3
+4
+5
+# id
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+# ref
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'start of month')|julianday(2451545.0)|strftime('%f', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-01 00:00:00|2451545.0|00.000|946728000|+0001-01-15 00:00:00.000

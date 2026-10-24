@@ -1,0 +1,170 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2927
+changes: 2927
+changes: 2927
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1001
+t1|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 0
+error: UNIQUE constraint failed: t0.id
+error: UNIQUE constraint failed: t0.id
+changes: 1933
+# x|y
+t1|1001
+t1|1002
+changes: 1933
+# id|bid
+1|NULL
+2|NULL
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+changes: 1933
+# id|c0
+8|NULL
+11|NULL
+12|NULL
+13|NULL
+18|NULL
+103|NULL
+115|NULL
+146|NULL
+193|NULL
+197|NULL
+3|-219.3
+7|-3
+15|-807
+14|-9223372036854775808
+5|0x1F
+10|147.36
+9|3
+16|delta
+4|sigma
+17|X'7C'
+6|X'A42713E764'
+# count(*)
+11
+changes: 1933
+changes: 1933

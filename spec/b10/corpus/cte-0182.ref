@@ -1,0 +1,133 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+80|14472334024676221
+79|8944394323791464
+78|5527939700884757
+77|3416454622906707
+76|2111485077978050
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+32|1346269
+31|832040
+30|514229
+29|317811
+28|196418
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+29|317811
+28|196418
+27|121393
+26|75025
+25|46368
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+10|34
+9|21
+8|13
+7|8
+6|5
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+1|1|1.0e-07|1.0e-07|1.0e-07|1.0e-07|1.0e-07|1
+# c2|count(*)|group_concat(id, ';')
+-888.663|1|1
+1.0e-07|1|3
+362.4249|1|4
+9223372036854775807|1|2
+# id|id|id|c0
+1|1|1|NULL
+2|2|2|-642
+3|3|3|0
+4|4|4|X'81'
+5|5|5|X'04B5DF'
+6|6|6|601
+7|7|7|-3
+8|8|8|NULL
+9|9|9|X'27D61E'
+10|10|10|192.6029
+11|11|11|-1.0e+308
+12|12|12|NULL
+13|13|13|NULL
+14|14|14|kappa
+15|15|15|X'06354B'
+16|16|16|-2
+17|17|17|-5
+18|18|18|naïve
+19|19|19|329.2
+20|20|20|X'CEC2'
+21|21|21|644
+22|22|22|1
+# count(*)
+6
+error: 1st ORDER BY term out of range - should be between 1 and 1

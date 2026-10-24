@@ -1,0 +1,142 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|'d'|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|REAL|0|NULL|0
+4|c3|INT|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|c2|INT|0|'d'|0
+4|c3||0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|c2|INT|0|'d'|0
+4|c3||0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|TEXT|0|NULL|0
+3|c2|INT|0|'d'|0
+4|c3||0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|'d'|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|REAL|0|NULL|0
+4|c3|INT|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|'d'|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|REAL|0|NULL|0
+4|c3|INT|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# length('theta')|upper('theta')|lower('theta')|substr('theta', 2, 0)|instr('theta', 'beta')|replace('theta', '', '')|trim('theta')|ltrim('theta', 'ab')|hex('theta')|quote('theta')|unicode('theta')|'theta' LIKE 'A%'|'theta' GLOB 'a*'|char(77, 652)|'theta' || 'beta'|'theta' < 'beta'|'theta' = 'beta' COLLATE NOCASE
+5|THETA|theta||0|theta|theta|theta|7468657461|'theta'|116|0|0|Mʌ|thetabeta|0|0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|'d'|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|REAL|0|NULL|0
+4|c3|INT|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table

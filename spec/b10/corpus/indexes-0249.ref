@@ -1,0 +1,146 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 603
+changes: 603
+# id|id
+# count(*)
+618
+changes: 603
+changes: 603
+changes: 603
+# id|c0
+14|-1.0e+308
+4|-882.1
+error: no query solution
+changes: 603
+changes: 603
+changes: 603
+# id|c0
+# count(*)
+618
+changes: 603
+changes: 603
+changes: 603
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+# count(*)
+15
+changes: 603
+changes: 603
+changes: 603
+# id|c1
+# count(*)
+14
+changes: 603
+changes: 603
+changes: 603
+# id|c2
+# count(*)
+11
+changes: 603
+changes: 603
+changes: 603
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+# count(*)
+15
+changes: 603
+changes: 603
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), ref)
+[1,2,3,4]|{"1":null,"2":1,"3":null,"4":null}
+# json_object('id', id, 'v', ref)
+{"id":1,"v":null}
+{"id":2,"v":1}
+{"id":3,"v":null}
+{"id":4,"v":null}
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', -3, 0)|instr('zeta', 'chi')|replace('zeta', '', '')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE 'A%'|'zeta' GLOB '?'|char(82, 338)|'zeta' || 'chi'|'zeta' < 'chi'|'zeta' = 'chi' COLLATE NOCASE
+4|ZETA|zeta||0|zeta|zeta|zeta|7A657461|'zeta'|122|0|0|RŒ|zetachi|0|0
+changes: 603
+changes: 603
+error: UNIQUE constraint failed: t0.id
+changes: 2
+changes: 2
+# x|y
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

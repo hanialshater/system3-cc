@@ -1,0 +1,73 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%c', -215)|round(-215, 4)|-215 * -9223372036854775808|-215 / -958|CAST(-215 AS TEXT)|-215 + 0.0
+-|-215.0|1.9830249879237768e+21|0|-215|-215.0
+# printf('%!.15g', 692)|round(692, 3)|692 * -459|692 / 998.9|CAST(692 AS TEXT)|692 + 0.0
+692.0|692.0|-317628|0.69276203824206628|692|692.0
+# printf('%lld', 9223372036854775807)|round(9223372036854775807, 3)|9223372036854775807 * 3|9223372036854775807 / 1.0e15|CAST(9223372036854775807 AS TEXT)|9223372036854775807 + 0.0
+9223372036854775807|9.2233720368547758e+18|2.7670116110564327e+19|9223.3720368547765|9223372036854775807|9.2233720368547758e+18
+# printf('%w', 3.141592653589793)|round(3.141592653589793, 2)|3.141592653589793 * 538|3.141592653589793 / -9223372036854775808|CAST(3.141592653589793 AS TEXT)|3.141592653589793 + 0.0
+3.1415926535897931|3.14|1690.1768476313087|-3.4061215800865545e-19|3.1415926535897931|3.1415926535897931
+# printf('%08.3f', 942.205)|round(942.205, 0)|942.205 * 4|942.205 / -547.06|CAST(942.205 AS TEXT)|942.205 + 0.0
+0942.205|942.0|3768.82|-1.7223065111687934|942.205|942.205
+# printf('%d', 2)|round(2, 4)|2 * 0|2 / 1|CAST(2 AS TEXT)|2 + 0.0
+2|2.0|0|2|2|2.0
+# printf('%%', 1e-7)|round(1e-7, 4)|1e-7 * -597|1e-7 / -620.9606|CAST(1e-7 AS TEXT)|1e-7 + 0.0
+%|0.0|-5.9699999999999994e-05|-1.6104081321745693e-10|1.0e-07|1.0e-07
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||1|0|0
+2|c1|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+error: NOT NULL constraint failed: t1.c0
+changes: 3
+# count(*)|count(c0)
+8|8
+# count(*)
+11
+error: cannot commit - no transaction is active

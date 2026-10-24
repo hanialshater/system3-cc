@@ -1,0 +1,176 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c2|c0
+1|1|NULL|-112
+2|2|X'03692A'|0
+3|3|795.8|0
+4|4|-1.0e+308|0
+5|5|1000000000000000.0|-136
+6|6|X'006E6CEC358D'|-158.5
+7|7|NULL|0
+8|8|X'2829850BCC'|X'58'
+9|9|-496.0|X'F8A59E'
+10|10|X'FD'|0
+11|NULL|X'4A81'|NULL
+12|NULL|Lambda|NULL
+13|NULL|NULL|NULL
+14|NULL|phi|NULL
+15|NULL|-9.2233720368547758e+18|NULL
+16|NULL|X'FE6BE0BA'|NULL
+17|NULL|X'33D93A'|NULL
+18|NULL|268.25|NULL
+19|NULL|NULL|NULL
+20|NULL|psi|NULL
+21|NULL|NULL|NULL
+22|NULL|123456789012.0|NULL
+error: near "NOT": syntax error
+# id|id|c4|id
+1|1|X''|1
+2|2|2|2
+3|3|MU|3
+4|4|527|4
+5|5|eta|5
+6|6|-1|6
+7|7|363.9226|7
+8|8|1000|8
+9|9|896.623|9
+10|10|2|10
+error: near "CASE": syntax error
+# id|id|c0|c2
+1|2|NULL|NULL
+1|3|NULL|gamma
+1|4|NULL|X'B606680E'
+1|5|NULL|X'28BD36'
+1|6|NULL|188.9405
+1|7|NULL|X'97'
+1|8|NULL|NULL
+1|9|NULL|X'8E0A6D'
+1|10|NULL|1.0e-07
+2|3|X'0E21'|gamma
+2|4|X'0E21'|X'B606680E'
+2|5|X'0E21'|X'28BD36'
+2|6|X'0E21'|188.9405
+2|7|X'0E21'|X'97'
+2|8|X'0E21'|NULL
+2|9|X'0E21'|X'8E0A6D'
+2|10|X'0E21'|1.0e-07
+3|4|X''|X'B606680E'
+3|5|X''|X'28BD36'
+3|6|X''|188.9405
+3|7|X''|X'97'
+3|8|X''|NULL
+3|9|X''|X'8E0A6D'
+# count(*)
+22
+# id|id|c1|id
+1|1|X'9E91C939A270'|1
+2|2|NULL|2
+3|3|X'C46B9CA7BCDC'|3
+4|4|X'676417'|4
+5|5|upsilon|5
+6|6|586|6
+7|7|788.9|7
+8|8|NULL|8
+9|9|theta|9
+10|10|x_y|10
+# count(*)
+22
+# id|id|c2|c3
+1|2|NULL|0.1
+1|3|NULL|NULL
+1|4|NULL|NULL
+1|5|NULL|-924
+1|6|NULL|X'FAEDFF'
+1|7|NULL|0.1
+1|8|NULL|X'BE92EAA9E171'
+1|9|NULL|345.995
+1|10|NULL|café
+2|3|X'03692A'|NULL
+2|4|X'03692A'|NULL
+2|5|X'03692A'|-924
+2|6|X'03692A'|X'FAEDFF'
+2|7|X'03692A'|0.1
+2|8|X'03692A'|X'BE92EAA9E171'
+2|9|X'03692A'|345.995
+2|10|X'03692A'|café
+3|4|795.8|NULL
+3|5|795.8|-924
+3|6|795.8|X'FAEDFF'
+3|7|795.8|0.1
+# count(*)
+8
+# id|id|id|c1
+1|1|1|75
+1|2|1|pi
+1|3|1|309
+1|4|1|-814
+1|5|1|3
+1|6|1|683
+1|7|1|9223372036854775807
+1|8|1|-9223372036854775808
+1|9|1|-90
+1|10|1|1
+2|1|2|75
+2|2|2|pi
+2|3|2|309
+2|4|2|-814
+2|5|2|3
+2|6|2|683
+2|7|2|9223372036854775807
+2|8|2|-9223372036854775808
+2|9|2|-90
+2|10|2|1
+3|1|3|75
+3|2|3|pi
+3|3|3|309
+3|4|3|-814
+3|5|3|3
+3|6|3|683
+3|7|3|9223372036854775807
+3|8|3|-9223372036854775808
+3|9|3|-90
+3|10|3|1
+error: near "CASE": syntax error
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, '+12 hours')|julianday(2451545.0)|strftime('%f', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-02 00:00:00|2451545.0|00.000|946728000|+0001-01-15 00:00:00.000
+changes: 8
+changes: 18
+# count(*)|count(c0)
+22|13
+# count(*)
+22
+error: cannot commit - no transaction is active

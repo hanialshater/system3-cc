@@ -1,0 +1,147 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c3|nth_value(c3, 2) OVER (PARTITION BY c3 IS NULL ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+1|über|NULL
+2|0|0
+3|-121|0
+4|X'B31E5C'|0
+5|a%b|0
+6|X''|0
+7|X'62'|0
+8|X'3D'|0
+9|366|0
+10|500.61|0
+11|X''|0
+12|87.8082|0
+13|X'9EDC'|0
+14|eta|0
+15|0|0
+16|0|0
+17|0|0
+18|0|0
+19|0|0
+# id|c1|percent_rank() OVER (PARTITION BY c1 IS NULL ORDER BY id)
+1|557.121|0.0
+2|0.0|0.066666666666666666
+3|NULL|0.0
+4|X'37B8CCBD'|0.13333333333333333
+5|-415.1474|0.2
+6|-46.0|0.26666666666666666
+7|-5.0|0.33333333333333332
+8|313.6642|0.4
+9|theta|0.46666666666666667
+10| pad |0.53333333333333333
+11|76.0|0.6
+12|X''|0.66666666666666663
+13|upsilon|0.73333333333333328
+14|X'62F013B70F64'|0.8
+15|eta|0.8666666666666667
+16|日本|0.93333333333333335
+17||1.0
+18|NULL|0.5
+19|NULL|1.0
+# id|c3|rank() OVER (ORDER BY id)
+1|café|1
+2|X'25F19B'|2
+3|-226.32|3
+4|NULL|4
+5|alpha|5
+6|delta|6
+# id|c3|first_value(c3) OVER (PARTITION BY c3 IS NULL ORDER BY id GROUPS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+1|über|über
+2|0|0
+3|-121|-121
+4|X'B31E5C'|X'B31E5C'
+5|a%b|a%b
+6|X''|X''
+7|X'62'|X'62'
+8|X'3D'|X'3D'
+9|366|366
+10|500.61|500.61
+11|X''|X''
+12|87.8082|87.8082
+13|X'9EDC'|X'9EDC'
+14|eta|eta
+15|0|0
+16|0|0
+17|0|0
+18|0|0
+19|0|0
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+3|19
+18|19
+19|19
+5|19
+6|19
+7|19
+2|19
+11|19
+8|19
+1|19
+17|19
+10|19
+15|19
+9|19
+13|19
+16|19
+12|19
+4|19
+14|19
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+# id
+18
+19
+# id
+-295
+-4
+4.500000000000011e-310
+1
+2
+3
+4
+5
+6

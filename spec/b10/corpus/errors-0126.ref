@@ -1,0 +1,67 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: table t0 already exists
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18
+error: table t1 has no column named nope
+error: 1st ORDER BY term out of range - should be between 1 and 1
+# id|CASE WHEN c1 THEN coalesce(iif(c0, 0.1, -122), NOT id) ELSE c4 END|nullif(-(coalesce(1e-7, ref)), -('theta'))
+1|-122|-1.0e-07
+2|über|-1.0e-07
+3|X'94'|-1.0e-07
+# -(abs(typeof(1.0e15)))|x'1921'
+0.0|X'1921'
+# id|c0|lag(c0) OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|NULL|NULL
+2| pad |NULL
+3|NULL|NULL
+4|75| pad 
+5|X''|75
+6|3|X''
+7|1|3
+8||1
+9|2|
+10|-9223372036854775808|2
+11|NULL|NULL
+12|X'3FF3'|-9223372036854775808
+13|MU|X'3FF3'
+14|-642.4483|MU
+15|613.32|-642.4483
+16|3|613.32
+17|X'98'|3
+18|NULL|NULL
+19|NULL|NULL
+20|166.4659|X'98'
+21||166.4659
+22|X''|
+23|1000000000000000.0|X''
+24|X'292F'|1000000000000000.0
+25|日本|X'292F'

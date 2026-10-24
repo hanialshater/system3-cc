@@ -1,0 +1,43 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('0x1F')|upper('0x1F')|lower('0x1F')|substr('0x1F', 1, 2)|instr('0x1F', '0x1F')|replace('0x1F', '', '_')|trim('0x1F')|ltrim('0x1F', 'ab')|hex('0x1F')|quote('0x1F')|unicode('0x1F')|'0x1F' LIKE '_'|'0x1F' GLOB '*[a-m]*'|char(84, 719)|'0x1F' || '0x1F'|'0x1F' < '0x1F'|'0x1F' = '0x1F' COLLATE NOCASE
+4|0X1F|0x1f|0x|1|0x1F|0x1F|0x1F|30783146|'0x1F'|48|0|0|Tˏ|0x1F0x1F|0|1
+# length('xi')|upper('xi')|lower('xi')|substr('xi', 3, 3)|instr('xi', 'señor')|replace('xi', '', '_')|trim('xi')|ltrim('xi', 'ab')|hex('xi')|quote('xi')|unicode('xi')|'xi' LIKE '%a_'|'xi' GLOB '?'|char(67, 523)|'xi' || 'señor'|'xi' < 'señor'|'xi' = 'señor' COLLATE NOCASE
+2|XI|xi||0|xi|xi|xi|7869|'xi'|120|0|0|Cȋ|xiseñor|0|0
+# length('alpha')|upper('alpha')|lower('alpha')|substr('alpha', 0, 1)|instr('alpha', 'it''s')|replace('alpha', 'e', '')|trim('alpha')|ltrim('alpha', 'ab')|hex('alpha')|quote('alpha')|unicode('alpha')|'alpha' LIKE '%'|'alpha' GLOB 'a*'|char(88, 794)|'alpha' || 'it''s'|'alpha' < 'it''s'|'alpha' = 'it''s' COLLATE NOCASE
+5|ALPHA|alpha||0|alpha|alpha|lpha|616C706861|'alpha'|97|1|1|X̚|alphait's|1|0
+# date('bad')|time('bad')|datetime('bad', '+12 hours')|julianday('bad')|strftime('%f', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000

@@ -1,0 +1,56 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', 'unixepoch')|julianday('1999-12-31T23:59:59.999')|strftime('%Y-%m-%d %H:%M:%S', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|NULL|2451544.4999999884|1999-12-31 23:59:59|946684799|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'unixepoch')|julianday('2038-01-19 03:14:07')|strftime('%Y-%m-%d %H:%M:%S', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|NULL|2465442.6348032407|2038-01-19 03:14:07|2147483647|+0001-01-15 00:00:00.000
+# date(1700000000)|time(1700000000)|datetime(1700000000, '-1 month')|julianday(1700000000)|strftime('%f', 1700000000)|unixepoch(1700000000)|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+12|NULL
+# id|c0|c1|c2|c3|c4
+12|NULL|0|NULL|NULL|NULL
+11|123456789012|-439.53|1.0e-07|x_y|0.0
+10|X'3E54D741'|X'CEBA'|NULL|487.5|X'65'
+9|X'71BD7E'|3.1415926535897931|beta|-895.7|café
+7|-3|486|-923.5486|X'6CB935'|NULL
+6|señor|-411|3|-1.0e+308|765.0
+5|X'2025'|0|NULL|NULL|NULL
+3|NULL|-4|NULL|X'3281DBB6E6BB'|520.3
+2|xi|316|0|-3|470.0
+1|it's!|-1.0e+308|NULL|Ελλάδα|X'78'
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c0|count(*)|group_concat(id, ';')
+NULL|2|12;15

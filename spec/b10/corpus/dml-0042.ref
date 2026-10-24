@@ -1,0 +1,137 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store REAL value in INTEGER column t2.c0
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 7
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+8|-9223372036854775808
+# id|c0|c1|c2|c3
+2|X'5F'|NULL|d|d
+3|日本|X'E1'|日本|775.0
+4|X'67261BF9'|-4|X'67261BF9'|1.0
+5|0!|0|-5|chi
+7|zeta|-837|zeta|-4.0
+8|-9223372036854775808|NULL|d|d
+error: UNIQUE constraint failed: t0.c0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+21|über
+# id|c0|c1|c2|c3
+1|-1|0.0|0|3.1415926535897931
+2|�!|3.1415926535897931|-323|136
+4|X'FB0D17D9'|X'C5F626'|1.0e+308|Ελλάδα
+5|eta|770|X'892802'|NULL
+7|X'8AC05FC5B94A'|438.1|-174|NULL
+8|366.3|204.5463|-3|0
+9|it's|NULL|0|NULL
+10|-9223372036854775808|X'9CE8'|0|NULL
+11|delta|X'DFD9D5E6A577'|X'A8BA8A8A'|NULL
+13|X'D9766C2564'|gamma|X'098401'|5
+14|-470|chi|delta|X'D127'
+16|NULL|X'6455760479B7'|1000000000000000|-7
+17|NULL|X'42CE54B1'|123456789012|337
+19|X'B884236811'|1|0|epsilon
+20|-3|X'9BF2AC4C5DEB'|0|-453
+21|über|NULL|0|NULL
+error: integer overflow
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+9|453
+# id|c0|c1|c2|c3
+1|chi|NULL|d|d
+2|X'5F'|NULL|d|d
+3|日本|X'E1'|日本|775.0
+4|X'67261BF9'|-4|X'67261BF9'|1.0
+7|zeta|-837|zeta|-4.0
+8|NULL|NULL|d|d
+9|453|NULL|d|d
+changes: 0
+changes: 9
+error: cannot store TEXT value in INTEGER column t2.c0
+error: cannot store BLOB value in INTEGER column t2.c0
+# id|c0
+error: cannot store BLOB value in INTEGER column t2.c0
+# id|c0|c1|c2|c3|c4
+2|-114|-36.98|X'8D'|NULL|-470.389
+4|-388|28.63|0|MU|NULL
+6|154|-40.316|X'EDC1'|568|-656.411
+8|155|-14.591|-238|-2|-4
+10|-400|-39.908|0|1000000000000000.0|-145.0557
+12|-314|0.663|X'3C6DFAAEA8'|NULL|X'FCE1B7B8E3'
+14|612|3.066|564.933|X'B2E8AA8352E9'|rho
+16|230|-42.822|señor|NULL|X''
+18|312|9.022|0|NULL|1.0e-07
+error: cannot store REAL value in INTEGER column t2.c0
+changes: 0
+error: cannot store TEXT value in INTEGER column t2.c0
+changes: 1
+# id|c0
+error: cannot store BLOB value in INTEGER column t2.c0
+# id|c0|c1|c2|c3|c4
+18|312|9.022|0|NULL|1.0e-07
+16|230|-42.822|señor|NULL|X''
+14|612|3.066|564.933|X'B2E8AA8352E9'|rho
+12|-314|0.663|X'3C6DFAAEA8'|NULL|X'FCE1B7B8E3'
+10|-400|-39.908|0|1000000000000000.0|-145.0557
+8|155|-14.591|-238|-2|-4
+6|154|-40.316|X'EDC1'|568|-656.411
+4|-388|28.63|0|MU|NULL
+2|NULL|NULL|0|NULL|NULL
+# printf('%d', -4)|round(-4, 0)|-4 * 1.0e15|-4 / -992.682|CAST(-4 AS TEXT)|-4 + 0.0
+-4|-4.0|-4000000000000000.0|0.0040294877916593631|-4|-4.0
+# printf('%lld', 0)|round(0, 0)|0 * 39.2445|0 / 910|CAST(0 AS TEXT)|0 + 0.0
+0|0.0|0.0|0|0|0.0

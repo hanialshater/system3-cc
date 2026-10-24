@@ -1,0 +1,75 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t0.c2
+changes: 0
+# id|c2
+6|-17.12
+5|-12.198
+11|-11.677
+1|-10.444
+12|-7.397
+9|-2.63
+15|0.989
+7|8.436
+14|14.536
+4|20.645
+3|21.745
+2|34.43
+13|37.467
+10|45.972
+8|48.004
+# count(*)
+15
+changes: 0
+changes: 0
+changes: 0
+# id|c0
+4|NULL
+7|NULL
+9|NULL
+14|NULL
+15|NULL
+8|-747.511
+3|-491.031
+10|-84.6
+1|0
+5|0
+13|Lambda
+12|rho
+6|X'D656'
+2|X'E432BD6B'
+11|X'E6652F6346'
+# count(*)
+10
+changes: 0
+changes: 0
+changes: 0
+# id|id
+# count(*)
+15
+changes: 0
+changes: 0
+# length('Lambda')|upper('Lambda')|lower('Lambda')|substr('Lambda', 1, 4)|instr('Lambda', '')|replace('Lambda', 'a', '')|trim('Lambda')|ltrim('Lambda', 'ab')|hex('Lambda')|quote('Lambda')|unicode('Lambda')|'Lambda' LIKE '_'|'Lambda' GLOB '*'|char(79, 980)|'Lambda' || ''|'Lambda' < ''|'Lambda' = '' COLLATE NOCASE
+6|LAMBDA|lambda|Lamb|1|Lmbd|Lambda|Lambda|4C616D626461|'Lambda'|76|0|1|Oϔ|Lambda|0|0

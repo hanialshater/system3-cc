@@ -1,0 +1,270 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+9|21
+8|13
+7|8
+6|5
+5|3
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+65|10610209857723
+64|6557470319842
+63|4052739537881
+62|2504730781961
+61|1548008755920
+# count(*)|max(x)|group_concat(x)
+8|16|3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+12|89
+11|55
+10|34
+9|21
+8|13
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+19|2584
+18|1597
+17|987
+16|610
+15|377
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+40|63245986
+39|39088169
+38|24157817
+37|14930352
+36|9227465
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+64|6557470319842
+63|4052739537881
+62|2504730781961
+61|1548008755920
+60|956722026041
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+error: no such table: nope
+changes: 0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+21|NULL
+# id|c0|c1|c2|c3|c4
+21|NULL|NULL|NULL|NULL|NULL
+20|phi|naïve|68.7|-40.531|NULL
+19| pad |-7|X'EE9E2AA3DF65'|-47.516|NULL
+17|it's|zeta|478.59|-46.123|X'5D14F70BC5'
+16|über|NULL|X'B9B8A870DB5A'|13.649| pad 
+14|nu|iota|NULL|-38.013|señor
+13|eta|psi|202.89|-49.144|upsilon
+11|alpha|zeta|560|0.54|NULL
+10|-7|beta|0x1F|-11.349|X''
+8|NULL|NULL|NULL|NULL|NULL
+7|-7|tau|epsilon|-28.714|-850
+5|psi|señor|953|9.163|beta
+4|42|phi|1e3|-5.176|550
+2|omicron|MU|X'E6B1'|4.067|-889.8343
+1|-284.28!|3|1|16.53|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+1|1
+2|2
+4|4
+5|5
+7|7
+8|8
+10|10
+11|11
+13|13
+14|14
+16|16
+17|17
+19|19
+20|20
+21|21
+# id
+1
+2
+4
+5
+7
+8
+10
+11
+13
+14
+16
+17
+19
+20
+21
+# id
+1
+2
+4
+5
+7
+8
+10
+11
+13
+14
+16
+17
+19
+20
+21
+# c0
+-696.6231
+-610
+-602
+-187
+-2
+1
+2
+2.5
+3.1415926535897931
+126
+186
+425.65
+508.419
+631
+1000000000000000
+ pad 
+-284.28!
+-7
+42
+alpha
+beta
+eta
+it's
+nu
+omicron
+phi
+psi
+rho

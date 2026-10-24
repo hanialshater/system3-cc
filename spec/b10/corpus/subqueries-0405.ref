@@ -1,0 +1,210 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+4|4
+1|1
+2|2
+3|3
+# id
+1
+2
+3
+4
+# id
+1
+2
+3
+4
+# id
+2
+3
+4
+
+-855
+1.0e+308
+133.5
+4.500000000000011e-310
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+4|4
+3|3
+2|2
+1|1
+# id
+1
+2
+3
+4
+# id
+# c0
+NULL
+NULL
+1
+2
+2
+3
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|9
+2|9
+3|9
+4|9
+5|9
+6|9
+7|9
+8|9
+9|9
+# id
+# id
+# c1
+-201
+-7
+620
+
+-855
+1.0e+308
+133.5
+4.500000000000011e-310
+beta
+naïve
+X'3F7D'
+X'9687AD4AB2'
+X'F9'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+8|9
+3|9
+7|9
+4|9
+1|9
+9|9
+5|9
+6|9
+2|9
+# id
+# id
+8
+9
+# c0
+NULL
+-457
+-201
+-7
+4
+5
+6
+620
+123456789012
+pi
+X'3F7D'
+X'9687AD4AB2'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+5|9
+6|9
+1|9
+4|9
+3|9
+7|9
+9|9
+8|9
+2|9
+# id
+2
+3
+4
+6
+7
+9
+# id
+1
+2
+3
+4
+5
+6
+7
+# c1
+-7
+620
+X'3F7D'
+X'9687AD4AB2'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|9
+3|9
+7|9
+9|9
+1|9
+8|9
+5|9
+4|9
+6|9
+# id
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# ref
+8
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+3|9
+1|9
+4|9
+7|9
+5|9
+9|9
+6|9
+2|9
+8|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+# c1
+620
+X'3F7D'
+X'9687AD4AB2'
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4]|{"1":1,"2":2,"3":3,"4":4}
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+error: near ";": syntax error

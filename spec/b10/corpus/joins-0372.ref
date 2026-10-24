@@ -1,0 +1,202 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c1|c3
+1|1|0|3.1415926535897931
+2|2|-1|NULL
+3|3|596|2
+4|4|0|upsilon
+5|5|-1|X'FD7D38'
+6|6|X'82F065'|X'3F42'
+7|7|-3|NULL
+8|8|X'343061'|chi
+9|9|X'09A7D23DE2EA'|omicron
+10|10|1|X'4D74'
+11|11|X'3EC8'|X'6BB26399'
+12|12|X'057013B5'|NULL
+13|13|0|nu
+14|14||-922
+15|15|9223372036854775807|-475.17
+16|16|0|X'9D'
+17|17|kappa|3.1415926535897931
+error: near "(": syntax error
+# id|id|id|c2
+1|1|1|X''
+2|1|2|X''
+2|2|2|X'8A4DA49274F3'
+3|1|3|X''
+3|2|3|X'8A4DA49274F3'
+3|3|3|-935.2758
+4|1|4|X''
+4|2|4|X'8A4DA49274F3'
+4|3|4|-935.2758
+4|4|4|3
+5|1|5|X''
+5|2|5|X'8A4DA49274F3'
+5|3|5|-935.2758
+5|4|5|3
+5|5|5|NULL
+6|1|6|X''
+6|2|6|X'8A4DA49274F3'
+6|3|6|-935.2758
+6|4|6|3
+6|5|6|NULL
+6|6|6|-315
+7|1|7|X''
+7|2|7|X'8A4DA49274F3'
+7|3|7|-935.2758
+7|4|7|3
+7|5|7|NULL
+7|6|7|-315
+7|7|7|X'1CF3D4'
+8|1|8|X''
+8|2|8|X'8A4DA49274F3'
+8|3|8|-935.2758
+8|4|8|3
+8|5|8|NULL
+8|6|8|-315
+8|7|8|X'1CF3D4'
+8|8|8|-1.0e+308
+9|1|9|X''
+9|2|9|X'8A4DA49274F3'
+9|3|9|-935.2758
+9|4|9|3
+9|5|9|NULL
+9|6|9|-315
+9|7|9|X'1CF3D4'
+9|8|9|-1.0e+308
+9|9|9|NULL
+10|1|10|X''
+10|2|10|X'8A4DA49274F3'
+10|3|10|-935.2758
+10|4|10|3
+10|5|10|NULL
+10|6|10|-315
+10|7|10|X'1CF3D4'
+10|8|10|-1.0e+308
+10|9|10|NULL
+10|10|10|NULL
+11|1|11|X''
+11|2|11|X'8A4DA49274F3'
+error: near "(": syntax error
+# id|id|c3|c0
+1|1|3.1415926535897931|NULL
+2|1|NULL|NULL
+2|2|NULL|a%b
+3|1|2|NULL
+3|2|2|a%b
+3|3|2|-4
+4|1|upsilon|NULL
+4|2|upsilon|a%b
+4|3|upsilon|-4
+4|4|upsilon|645.791
+5|1|X'FD7D38'|NULL
+5|2|X'FD7D38'|a%b
+5|3|X'FD7D38'|-4
+5|4|X'FD7D38'|645.791
+5|5|X'FD7D38'|4
+6|1|X'3F42'|NULL
+6|2|X'3F42'|a%b
+6|3|X'3F42'|-4
+6|4|X'3F42'|645.791
+6|5|X'3F42'|4
+6|6|X'3F42'|-33
+# count(*)
+17
+# id|id|id|c0
+1|1|1|NULL
+2|1|2|NULL
+2|2|2|a%b
+3|1|3|NULL
+3|2|3|a%b
+3|3|3|-4
+4|1|4|NULL
+4|2|4|a%b
+error: near "(": syntax error
+# id|id|c0|c2
+1|1|753|X''
+2|2|X'7AEDEB3E6819'|X'8A4DA49274F3'
+3|3|X'6CB263068F'|-935.2758
+4|4|zeta|3
+5|5|X'C7F623'|NULL
+error: near "NOT": syntax error
+# id|id|id|c3
+1|1|1|3.1415926535897931
+2|1|2|3.1415926535897931
+2|2|2|NULL
+3|1|3|3.1415926535897931
+3|2|3|NULL
+3|3|3|2
+4|1|4|3.1415926535897931
+4|2|4|NULL
+4|3|4|2
+4|4|4|upsilon
+5|1|5|3.1415926535897931
+5|2|5|NULL
+5|3|5|2
+5|4|5|upsilon
+5|5|5|X'FD7D38'
+# count(*)
+4
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|VARCHAR(10)|1|0|0
+3|c2|INTEGER|0|'d'|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]|{"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17}
+# json_object('id', id, 'v', c3)
+{"id":1,"v":3.1415926535897931}
+{"id":2,"v":null}
+{"id":3,"v":2}
+{"id":4,"v":"upsilon"}

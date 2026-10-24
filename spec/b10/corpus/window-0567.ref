@@ -1,0 +1,164 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c0|percent_rank() OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|X'28AB8E16'|0.0
+2|3|0.25
+3|1.0e-07|0.5
+4|1|0.75
+5|NULL|0.0
+6|it's|1.0
+7|NULL|0.5
+8|NULL|1.0
+# id|id|count(*) OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+8|8|8
+# id|id|percent_rank() OVER (ORDER BY id)
+1|1|0.0
+2|2|0.05
+3|3|0.1
+4|4|0.15
+5|5|0.2
+6|6|0.25
+7|7|0.3
+8|8|0.35
+9|9|0.4
+10|10|0.45
+11|11|0.5
+12|12|0.55
+13|13|0.6
+14|14|0.65
+15|15|0.7
+16|16|0.75
+17|17|0.8
+18|18|0.85
+19|19|0.9
+20|20|0.95
+21|21|1.0
+# id|id|lead(id, 2, 'none') OVER (PARTITION BY id IS NULL ORDER BY id ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)
+1|1|3
+2|2|4
+3|3|5
+4|4|6
+5|5|7
+6|6|8
+7|7|none
+8|8|none
+# id|c2|first_value(c2) OVER (ORDER BY id GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+1|X''|X''
+2|-7|X''
+3|X'AF5D'|X''
+4|X'8DE6A7A47E'|X''
+5|-9223372036854775808|X''
+6|X''|X''
+7|0|X''
+8|iota|X''
+9|0|X''
+10|9223372036854775807|X''
+11|732.686|X''
+12|-1.0e+308|X''
+13|0|X''
+14|0|X''
+15|2.5|X''
+16|0|X''
+17|a%b|X''
+18|-637|X''
+19|X'6E'|X''
+20|2|X''
+21|861|X''
+# id|id|ref|id
+1|1|5|1
+1|2|5|2
+1|3|5|3
+1|4|5|4
+1|5|5|5
+1|6|5|6
+1|7|5|7
+1|8|5|8
+1|9|5|9
+1|10|5|10
+1|11|5|11
+1|12|5|12
+1|13|5|13
+1|14|5|14
+1|15|5|15
+1|16|5|16
+1|17|5|17
+1|18|5|18
+1|19|5|19
+1|20|5|20
+1|21|5|21
+2|1|1|1
+2|2|1|2
+2|3|1|3
+2|4|1|4
+2|5|1|5
+2|6|1|6
+error: near "(": syntax error
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|'d'|0
+2|c1|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

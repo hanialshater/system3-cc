@@ -1,0 +1,26 @@
+changes: 0
+changes: 1
+error: NOT NULL constraint failed: t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%.0f', 3)|round(3, 0)|3 * 44|3 / -366|CAST(3 AS TEXT)|3 + 0.0
+3|3.0|132|0|3|3.0
+# printf('%.3s', 1e-7)|round(1e-7, 0)|1e-7 * 1e-7|1e-7 / 1e308|CAST(1e-7 AS TEXT)|1e-7 + 0.0
+1.0|0.0|9.9999999999999984e-15|9.9999999848168381e-316|1.0e-07|1.0e-07
+# printf('%w', -1e308)|round(-1e308, 3)|-1e308 * 910|-1e308 / 150.20|CAST(-1e308 AS TEXT)|-1e308 + 0.0
+-1.0e+308|-1.0e+308|-Inf|-6.6577896138482029e+305|-1.0e+308|-1.0e+308
+# id|id|sum(id) OVER (ORDER BY id)
+1|1|1
+2|2|3
+3|3|6
+4|4|10
+5|5|15
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18

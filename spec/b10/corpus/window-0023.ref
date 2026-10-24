@@ -1,0 +1,107 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c3|dense_rank() OVER (PARTITION BY c3 IS NULL ORDER BY id)
+1|MU|1
+2||2
+3|theta|3
+4|167|4
+5|X''|5
+6|-993|6
+7|336.205|7
+8|X'D4614B922E'|8
+9|-597|9
+10|0|10
+11|omicron|11
+12|X'5C0229'|12
+13|141|13
+14|0|14
+15|0|15
+16|X'B838BCEF'|16
+17|0|17
+# id|c4|nth_value(c4, 2) OVER (ORDER BY id RANGE BETWEEN 1 PRECEDING AND CURRENT ROW)
+1|NULL|NULL
+2|NULL|NULL
+3|-256.046|-256.046
+4|9223372036854775807|9223372036854775807
+5|NULL|NULL
+6|pi|pi
+7|NULL|NULL
+8|4.500000000000011e-310|4.500000000000011e-310
+9|-566.979|-566.979
+10|X'64'|X'64'
+# id|c3|rank() OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND 1 FOLLOWING)
+1|MU|1
+2||2
+3|theta|3
+4|167|4
+5|X''|5
+6|-993|6
+7|336.205|7
+8|X'D4614B922E'|8
+9|-597|9
+10|0|10
+11|omicron|11
+12|X'5C0229'|12
+13|141|13
+14|0|14
+15|0|15
+16|X'B838BCEF'|16
+17|0|17
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+18|-9223372036854775808
+# id|c0|c1|c2|c3|c4
+1|256|X'A91B81A3'|X'0D6E'|MU|NULL
+2|-480.401|2|NULL||X'A59577E1B113'
+3|NULL|NULL|X'52384F'|theta|X'010C28'
+4|4|NULL|d|0|d
+5|NULL|über|5|X''|351
+6|-2|-1.0e+308|sigma|-993|NULL
+7|NULL|NULL|d|0|d
+9|-4|3|señor|-597|-1.0e+308
+10|psi|NULL|2.5|0|NULL
+11|915.8808|NULL|0|omicron|X'4A'
+13|1.0e+308|psi|über|141|0
+14|NULL|NULL|tau|0|X'F9D204850B'
+15|nu|omega|X'73626FF3'|0|-529
+17|1000000000000000.0|860.3|café|0|NULL
+18|-9223372036854775808|NULL|d|0|d
+changes: 7
+changes: 11
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', 'unixepoch')|julianday('1970-01-01')|strftime('%f', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|NULL|2440587.5|00.000|0|+0001-01-15 00:00:00.000

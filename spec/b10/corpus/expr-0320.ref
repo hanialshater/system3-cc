@@ -1,0 +1,115 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+# id|CAST(NOT NULL IN (NULL, NULL, NULL) AS INTEGER)|typeof(abs(id)) BETWEEN abs(-1e308 IS NULL) AND c0
+1|NULL|0
+2|NULL|1
+3|NULL|0
+4|NULL|0
+5|NULL|0
+6|NULL|1
+7|NULL|1
+8|NULL|0
+9|NULL|1
+10|NULL|0
+11|NULL|1
+12|NULL|0
+13|NULL|1
+14|NULL|0
+15|NULL|0
+16|NULL|1
+17|NULL|NULL
+18|NULL|1
+19|NULL|1
+# CASE WHEN typeof(133.638 IS NULL) THEN CASE WHEN -166.28 THEN 185 ELSE 19.1082 END BETWEEN iif(x'69', -777.54, -581) AND typeof(-2) ELSE coalesce(x'6fbfec55', CAST(-1 AS NUMERIC)) END|-(iif(coalesce(x'39267db4d0e9', ''), 0.1, -1))
+X'6FBFEC55'|-0.1
+# id|16|c3
+7|16|X'85E346E7'
+6|16|NULL
+5|16|633
+4|16|-884.94
+3|16|NULL
+2|16|MU
+1|16|X'57'
+# 'iota'|-635
+iota|-635
+# id|iif(typeof(id), CAST(NOT id AS INTEGER), 'psi')|388
+1|psi|388
+2|psi|388
+3|psi|388
+4|psi|388
+5|psi|388
+6|psi|388
+7|psi|388
+8|psi|388
+9|psi|388
+10|psi|388
+11|psi|388
+12|psi|388
+13|psi|388
+14|psi|388
+15|psi|388
+16|psi|388
+17|psi|388
+18|psi|388
+19|psi|388
+# typeof(CAST('upsilon' AS NUMERIC)) IS NULL|CAST((-5 OR 'upsilon') AS REAL)
+0|1.0
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+132|132
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+gt1|trigger
+log|table
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+t0|table
+t1|table
+vt1|view

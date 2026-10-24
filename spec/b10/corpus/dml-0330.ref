@@ -1,0 +1,139 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 13
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+13|-251
+# id|c0|c1|c2|c3|c4|ref
+2|0|a%b|X'F6100F'|-155|-113|1
+3|0|282|-1.0e+308|NULL|425.4469|3
+4|0|-2|1|X'35C1'|日本|8
+5|omicron|NULL|NULL|NULL|NULL|NULL
+6|0|106|omega|X'5A26F3A7'|X'87'|5
+7|NULL|NULL|NULL|NULL|NULL|NULL
+8|0|-5|chi|0|NULL|1
+10|0|NULL|3.1415926535897931|652.541|X'CD7CC6'|8
+11|0|NULL|NULL|-788.3999|42|1
+12|0|X'1B61C7'|X'2FB357'|3.1415926535897931|NULL|2
+13|-251|NULL|NULL|NULL|NULL|NULL
+changes: 9
+changes: 12
+changes: 1
+changes: 1
+# id|c0
+24|naïve
+# id|c0|c1|c2|c3|c4
+1|iota|NULL|NULL|NULL|NULL
+3|X'5D'|nu|-814.251|-909|-7
+5|-269.843|X'02768DC6'|NULL|X'9DC915DCB422'|MU
+6|-421|NULL|NULL|NULL|NULL
+7|NULL|X'C35661B273FD'|689|5|-500.3816
+9|NULL|a%b|X'A7E0'|X''|0
+11|-765.6|4|psi|upsilon|X'1867AE'
+13|-765.6|-665|0|156.695|tau
+15|-765.6|-687|NULL|-1|42
+17|-765.6|1.0e+308|-702.0316|1.0e+308|Ελλάδα
+19|-1.0e+308|NULL|5|NULL|-2
+21|NULL|NULL|sigma|114.041|NULL
+23|-765.6|-3|-7|NULL|X'4FC18B56'
+24|naïve|NULL|NULL|NULL|NULL
+changes: 0
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+24|X'D7'
+# id|c0|c1|c2|c3
+1|señor|-2|498.98|X'4438'
+2|X'7C3FE066'|NULL|epsilon|eta
+3|0.0!|50|670|0x1F
+5|NULL|1.0e+308|-3|NULL
+6|-21.356|-386|-970.541|NULL
+7|X'19FD33'|2|X'DC6F8A39073A'|-999
+8|X'1766'|NULL|NULL|NULL
+9|NULL|-3|x_y|-550.95
+10|123456789012|348.02|0|5
+11|-779.6|sigma|NULL|NULL
+13|it's|NULL|pi|NULL
+14|832|1.0e-07|165|0.1
+15|X'4E19B5407429'|5|NULL|X'8B'
+17|x_y|NULL|-725|-2
+18|Ελλάδα|0|Ελλάδα|alpha
+19|-9223372036854775808|alpha|2.5|NULL
+21|514.3|Lambda|nu|-379
+22|NULL|-267|NULL|-4
+23|X'9F'|X''|4|989.06
+24|X'D7'|NULL|NULL|NULL
+changes: 1
+# id|c2
+3|-1.0e+308
+# count(*)
+7
+changes: 1
+changes: 1

@@ -1,0 +1,200 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+28|196418
+27|121393
+26|75025
+25|46368
+24|28657
+# count(*)|max(x)|group_concat(x)
+8|16|3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+40|63245986
+39|39088169
+38|24157817
+37|14930352
+36|9227465
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+26|75025
+25|46368
+24|28657
+23|17711
+22|10946
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+49|4807526976
+48|2971215073
+47|1836311903
+46|1134903170
+45|701408733
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+82|37889062373143906
+81|23416728348467685
+80|14472334024676221
+79|8944394323791464
+78|5527939700884757
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+23|17711
+22|10946
+21|6765
+20|4181
+19|2584
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1001
+t2|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+181|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+8|9
+2|9
+1|9
+6|9
+5|9
+7|9
+9|9
+3|9
+4|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# id
+7
+8
+9
+# c4
+0.1
+chi
+delta
+psi
+X'9614E1'
+changes: 2
+# id|c0
+# count(*)
+20
+changes: 2
+changes: 2

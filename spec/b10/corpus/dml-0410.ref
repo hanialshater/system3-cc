@@ -1,0 +1,126 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 20
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+21|MU
+# id|c0|c1
+2|chi!|-753
+3|3|NULL
+5|889.6|388.1
+6|NULL|-927
+8|NULL|1000
+9|-1|x_y
+11|-1|sigma
+12|0|-1.0e+308
+14|-1|gamma
+15|-961|X'31264C24F7'
+17|-1|iota
+18|-1|NULL
+20|-1|rho
+21|MU|NULL
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+22|NULL
+# id|c0|c1
+2|X''|NULL
+3|3|NULL
+4|X''|NULL
+5|889.6|388.1
+6|NULL|-927
+8|NULL|1000
+9|-1|x_y
+11|-1|sigma
+12|0|-1.0e+308
+14|-1|gamma
+15|-961|X'31264C24F7'
+17|-1|iota
+18|-1|NULL
+20|-1|rho
+21|MU|NULL
+22|NULL|NULL
+changes: 16
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+23|1
+# id|c0|c1
+23|1|NULL
+22|0|NULL
+20|0|rho
+17|0|iota
+14|0|gamma
+11|0|sigma
+8|0|1000
+7|gamma|NULL
+5|0|388.1
+4|0|NULL
+2|886.8219!|NULL
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+24|-897
+# id|c0|c1
+2|4.500000000000011e-310!|NULL
+4|0|NULL
+5|NULL|NULL
+7|gamma|NULL
+8|0|1000
+11|0|sigma
+14|0|gamma
+17|0|iota
+22|0|NULL
+23|1|NULL
+24|-897|NULL
+error: no such table: nope

@@ -1,0 +1,164 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c3
+error: NOT NULL constraint failed: t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+changes: 11
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+11|alpha
+# id|c0|c1|c2|c3|c4|ref
+2|1|-74|X'2A'|naïve|-966.02|5
+3|NULL|NULL|3|NULL|0.1|5
+4|1|Lambda|0|-365|-2|6
+5|1|phi|NULL|a%b|1|2
+7|1|1000000000000000.0|X'06E2'|4|-1.0e+308|7
+8|1|eta|-137.86|psi|-2.5|6
+9|2|NULL|NULL|NULL|NULL|NULL
+10|1|NULL|NULL|X'68'|202|8
+11|alpha|NULL|NULL|NULL|NULL|NULL
+error: NOT NULL constraint failed: t1.c0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+9|über
+# id|c0|c1|ref
+1|-4|NULL|NULL
+2|X'677EB077'|rho|5
+3|267|tau|6
+4|2|sigma|1
+5||naïve|6
+8|delta|NULL|NULL
+9|über|NULL|NULL
+error: NOT NULL constraint failed: t1.c0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+10|-3
+# id|c0|c1|ref
+2|X'677EB077'|rho|5
+3|267|tau|6
+4|0.1|NULL|NULL
+5||naïve|6
+7|-2.5|NULL|NULL
+8|delta|NULL|NULL
+9|über|NULL|NULL
+10|-3|NULL|NULL
+changes: 2
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+11|zeta
+# id|c0|c1|c2|c3
+2|NULL|-399.911|NULL|1000.0
+3|X'CF8B4F8882'|0|NULL|0.0
+4|X'18038566FD'|-962|3.0|-364.2313
+6|alpha|psi|X'6E29A8'|0.0
+8|rho|X''|0.0|X'7A94B9D1'
+10|it's|X'1306'|NULL|-1.0
+11|zeta|0|NULL|0.0
+changes: 8
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+11|X'DAE5'
+# id|c0|c1|ref
+1|zeta|NULL|NULL
+2|1|rho|5
+4|MU!|NULL|NULL
+5|1|naïve|6
+7|1|NULL|NULL
+8|1|NULL|NULL
+10|1|NULL|NULL
+11|X'DAE5'|NULL|NULL
+changes: 9
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+12|4.500000000000011e-310
+# id|c0|c1|c2|c3|c4|ref
+2|eta|-74|X'2A'|naïve|-966.02|5
+3|eta|NULL|3|NULL|0.1|5
+4|NULL|NULL|NULL|NULL|NULL|NULL
+5|eta|phi|NULL|a%b|1|2
+8|0x1F|NULL|NULL|NULL|NULL|NULL
+9|eta|NULL|NULL|NULL|NULL|NULL
+11|eta|NULL|NULL|NULL|NULL|NULL
+12|4.500000000000011e-310|NULL|NULL|NULL|NULL|NULL
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t1.c0
+# id|c0|c1|ref
+1|pi|NULL|NULL
+2|1|rho|5
+4|sigma!|NULL|NULL
+8|1|NULL|NULL
+10|1|NULL|NULL
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+# x|y
+t0|1002
+changes: 1
+# id|bid
+3|NULL
+4|4
+6|NULL
+8|8
+10|10
+11|NULL
+176|NULL
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c4)
+[2,3,4,5,8,9,11,12]|{"2":"-966.02","3":"0.1","4":null,"5":"1","8":null,"9":null,"11":null,"12":null}
+# json_object('id', id, 'v', c4)
+{"id":2,"v":"-966.02"}
+{"id":3,"v":"0.1"}
+{"id":4,"v":null}
+{"id":5,"v":"1"}

@@ -1,0 +1,64 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('tau')|upper('tau')|lower('tau')|substr('tau', 0, 2)|instr('tau', 'über')|replace('tau', 'é', '_')|trim('tau')|ltrim('tau', 'ab')|hex('tau')|quote('tau')|unicode('tau')|'tau' LIKE '%a_'|'tau' GLOB '?'|char(82, 252)|'tau' || 'über'|'tau' < 'über'|'tau' = 'über' COLLATE NOCASE
+3|TAU|tau|t|0|tau|tau|tau|746175|'tau'|116|1|0|Rü|tauüber|1|0
+# length('beta')|upper('beta')|lower('beta')|substr('beta', -2, 1)|instr('beta', 'Ελλάδα')|replace('beta', 'a', 'XY')|trim('beta')|ltrim('beta', 'ab')|hex('beta')|quote('beta')|unicode('beta')|'beta' LIKE '%a_'|'beta' GLOB '?'|char(77, 424)|'beta' || 'Ελλάδα'|'beta' < 'Ελλάδα'|'beta' = 'Ελλάδα' COLLATE NOCASE
+4|BETA|beta|t|0|betXY|beta|eta|62657461|'beta'|98|0|0|Mƨ|betaΕλλάδα|1|0
+# length('')|upper('')|lower('')|substr('', -2, 3)|instr('', 'omicron')|replace('', 'a', 'XY')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB '*[a-m]*'|char(85, 560)|'' || 'omicron'|'' < 'omicron'|'' = 'omicron' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|UȰ|omicron|1|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', -2, 5)|instr('nu', 'delta')|replace('nu', 'e', '_')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE '_'|'nu' GLOB 'a*'|char(78, 409)|'nu' || 'delta'|'nu' < 'delta'|'nu' = 'delta' COLLATE NOCASE
+2|NU|nu|nu|0|nu|nu|nu|6E75|'nu'|110|0|0|Nƙ|nudelta|0|0
+# length('iota')|upper('iota')|lower('iota')|substr('iota', -1, 3)|instr('iota', 'nu')|replace('iota', '', 'XY')|trim('iota')|ltrim('iota', 'ab')|hex('iota')|quote('iota')|unicode('iota')|'iota' LIKE 'A%'|'iota' GLOB '*[a-m]*'|char(73, 889)|'iota' || 'nu'|'iota' < 'nu'|'iota' = 'nu' COLLATE NOCASE
+4|IOTA|iota|a|0|iota|iota|iota|696F7461|'iota'|105|0|1|I͹|iotanu|1|0
+# length('')|upper('')|lower('')|substr('', 4, 0)|instr('', '42')|replace('', '', '_')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB '*[a-m]*'|char(66, 829)|'' || '42'|'' < '42'|'' = '42' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|B̽|42|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 2, 1)|instr('zeta', 'upsilon')|replace('zeta', 'é', '')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '_'|'zeta' GLOB '?'|char(77, 825)|'zeta' || 'upsilon'|'zeta' < 'upsilon'|'zeta' = 'upsilon' COLLATE NOCASE
+4|ZETA|zeta|e|0|zeta|zeta|zeta|7A657461|'zeta'|122|0|0|M̹|zetaupsilon|0|0
+# id|id|c1|ref
+1|6|NULL|1
+2|NULL|NULL|NULL
+3|9|X'E6D58A3F'|3
+4|5|-4.0|4
+4|7|-4.0|4
+4|8|-4.0|4
+5|1|0.0|5
+6|NULL|NULL|NULL
+7|3|629.0|7
+8|NULL|4.0|NULL
+9|NULL|NULL|NULL
+10|NULL|101.0|NULL
+11|NULL|-830.62|NULL
+12|NULL|5.0|NULL
+13|NULL|NULL|NULL
+error: near "(": syntax error

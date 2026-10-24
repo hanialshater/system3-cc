@@ -1,0 +1,125 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 4
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+12|NULL
+# id|c0|c1|c2|c3
+12|NULL|0|NULL|NULL
+11|X'84096CA10B'|-2|5|-1
+10|NULL|0|-1.0e+308|NULL
+9|NULL|X''|NULL|225
+7|0|-5|123456789012|pi
+6|恧	�!|-3|NULL|NULL
+5|NULL|-9223372036854775808|phi|NULL
+4|-1|0|NULL|NULL
+3|NULL|-5|0|NULL
+2|NULL|0.1|x_y|-406.79
+1| pad |nu|2.5|2.5
+changes: 1
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+7|4.500000000000011e-310
+# id|c0|c1|c2|c3|c4|ref
+1|X'D4D95721266C'|-33.7|42|X'1E'|phi|2
+3|rho|beta|0.0|xi|3.1415926535897931|2
+5|X'84'|NULL|NULL|NULL|NULL|NULL
+6|x_y|NULL|NULL|NULL|NULL|NULL
+7|4.500000000000011e-310|NULL|NULL|NULL|NULL|NULL
+changes: 11
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+13|a%b
+# id|c0|c1|c2|c3
+1|NULL|nu|2.5|2.5
+2|NULL|0.1|x_y|-406.79
+3|NULL|-5|0|NULL
+4|NULL|0|NULL|NULL
+6|X'8471A734'|0|NULL|NULL
+7|NULL|-5|123456789012|pi
+9|NULL|X''|NULL|225
+11|NULL|-2|5|-1
+12|NULL|0|NULL|NULL
+13|a%b|0|NULL|NULL
+changes: 5
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+9|5
+# id|c0|c1|c2|c3|c4|ref
+3|NULL|beta|0.0|xi|3.1415926535897931|2
+6|0|NULL|NULL|NULL|NULL|NULL
+7|0|NULL|NULL|NULL|NULL|NULL
+8|X'1CF816DB99'|NULL|NULL|NULL|NULL|NULL
+9|5|NULL|NULL|NULL|NULL|NULL
+changes: 5
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+13|423
+# id|c0|c1|c2|c3
+2|NULL|0.1|x_y|-406.79
+3|0x1F!|-5|0|NULL
+4|0|0|NULL|NULL
+6|0|0|NULL|NULL
+7|NULL|-5|123456789012|pi
+9|NULL|0|NULL|NULL
+11|NULL|-2|5|-1
+12|0|0|NULL|NULL
+13|423|0|NULL|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+9|5
+4|1
+6|2
+12|5
+13|5
+3|1
+2|0
+7|3
+11|5
+# id
+2
+4
+6
+7
+9
+11
+12
+13
+# id
+4
+6
+7
+# c0
+# id|typeof(NULL) IN (abs(c1), 748.25, 'omega') IS NULL|typeof(id BETWEEN ref AND NULL) BETWEEN CASE WHEN nullif(c2, NULL) THEN 'delta' ELSE c2 IS NULL END AND c1
+3|0|0
+6|1|NULL
+7|1|NULL
+8|1|NULL
+9|1|NULL
+# nullif(typeof(nullif(x'', NULL)), (NOT x'7dc6' % -383 IS NULL))|abs((typeof(NULL) IS NOT -1e308))
+blob|1

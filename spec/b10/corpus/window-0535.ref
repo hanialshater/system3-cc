@@ -1,0 +1,159 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2641
+# id|c1|lag(c1) OVER (ORDER BY id)
+1|0.0|NULL
+2|NULL|0.0
+3|NULL|NULL
+4|2.5|NULL
+5|-773|2.5
+6|chi|-773
+7|NULL|chi
+8|X'F2B8'|NULL
+9|日本|X'F2B8'
+10|-665.4533|日本
+11|NULL|-665.4533
+12|rho|NULL
+13|NULL|rho
+14|NULL|NULL
+15|X'992E48AA'|NULL
+# id|c1|sum(id) OVER (ORDER BY id)
+1|0.0|1
+2|NULL|3
+3|NULL|6
+4|2.5|10
+5|-773|15
+6|chi|21
+7|NULL|28
+8|X'F2B8'|36
+9|日本|45
+10|-665.4533|55
+11|NULL|66
+12|rho|78
+13|NULL|91
+14|NULL|105
+15|X'992E48AA'|120
+# id|c1|sum(id) OVER (PARTITION BY c1 IS NULL ORDER BY id)
+1|0.0|1
+2|NULL|3
+3|NULL|3
+4|2.5|7
+5|-773|12
+6|chi|18
+7|NULL|10
+8|X'F2B8'|26
+9|日本|35
+10|-665.4533|45
+11|NULL|21
+12|rho|57
+13|NULL|34
+14|NULL|48
+15|X'992E48AA'|72
+# id|c2|last_value(c2) OVER (ORDER BY id)
+1|4.500000000000011e-310|4.500000000000011e-310
+2|NULL|NULL
+3|NULL|NULL
+4|NULL|NULL
+5|-9223372036854775808|-9223372036854775808
+6|NULL|NULL
+7|NULL|NULL
+8|4|4
+9|247|247
+10|NULL|NULL
+11|señor|señor
+12|iota|iota
+13|-358|-358
+14|X'BA51'|X'BA51'
+15| pad | pad 
+# id|id|lead(id, 2, 'none') OVER (PARTITION BY id IS NULL ORDER BY id ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
+1|1|3
+2|2|4
+3|3|5
+4|4|6
+5|5|7
+6|6|8
+7|7|9
+8|8|10
+9|9|11
+10|10|12
+11|11|13
+12|12|14
+13|13|15
+14|14|16
+15|15|17
+16|16|18
+17|17|19
+18|18|20
+19|19|21
+20|20|none
+21|21|none
+# id|c1|sum(id) OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+1|theta|231
+2|日本|231
+3|theta|231
+4|kappa|231
+5|phi|231
+6|delta|231
+7|chi|231
+8|upsilon|231
+9|psi|231
+10|beta|231
+11|über|231
+12|omicron|231
+13|nu|231
+14|MU|231
+15|chi|231
+16|42|231
+17|nu|231
+18|sigma|231
+19|kappa|231
+20|1e3|231
+21|0x1F|231
+# length(' pad ')|upper(' pad ')|lower(' pad ')|substr(' pad ', 1, 2)|instr(' pad ', 'x_y')|replace(' pad ', 'e', 'XY')|trim(' pad ')|ltrim(' pad ', 'ab')|hex(' pad ')|quote(' pad ')|unicode(' pad ')|' pad ' LIKE '%a_'|' pad ' GLOB 'a*'|char(80, 946)|' pad ' || 'x_y'|' pad ' < 'x_y'|' pad ' = 'x_y' COLLATE NOCASE
+5| PAD | pad | p|0| pad |pad| pad |2070616420|' pad '|32|0|0|Pβ| pad x_y|1|0

@@ -1,0 +1,78 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|ref
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|c4
+13|X'80208CD6E100'
+# count(*)
+11
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+1|2
+7|39
+12|367
+6|123456789012
+14|1000000000000000
+9|chi
+10|X''
+4|X'47'
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+# id|id
+error: no query solution
+changes: 1
+changes: 1
+changes: 7
+changes: 15
+# count(*)|count(c0)
+8|1
+# count(*)
+8
+error: cannot commit - no transaction is active

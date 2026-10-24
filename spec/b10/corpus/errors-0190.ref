@@ -1,0 +1,72 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c4
+error: UNIQUE constraint failed: t1.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1731
+error: near "SELEC": syntax error
+error: table t0 already exists
+error: unrecognized token: "x'zz'"
+error: UNIQUE constraint failed: t2.id
+# abs(-9223372036854775808)
+error: integer overflow
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|INT|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|c3|INTEGER|0|NULL|0
+5|c4|NUMERIC|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_2|1|u|0
+1|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t0_2|index
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 0, 1)|instr('a%b', 'omega')|replace('a%b', 'é', '')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '_'|'a%b' GLOB '*'|char(86, 400)|'a%b' || 'omega'|'a%b' < 'omega'|'a%b' = 'omega' COLLATE NOCASE
+3|A%B|a%b||0|a%b|a%b|%b|612562|'a%b'|97|0|1|VƐ|a%bomega|1|0
+error: NOT NULL constraint failed: t1.c0
+changes: 3
+error: NOT NULL constraint failed: t1.c0
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t1.c0
+# id|c0|c1|c2|c3|c4|ref
+2|0|-7|NULL|kappa|-734|2
+3|0|chi|X'E35AB51C689E'|X'933FE722168D'|X''|1
+4|-3|d|NULL|NULL|NULL|NULL
+5|3|227|682|-3.0|2|NULL
+7|rho|877|4|4.500000000000011e-310|X'E7329D610425'|3
+8|0|X''|733|NULL|3|NULL
+9|941.6787|X'16790B16'|omicron|X'002FE8'|X'BAC6A7'|2
+10|-854.3|X'B9BACA0B45'|X'6513'|MU|X'6CC6'|2

@@ -1,0 +1,81 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store REAL value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', 'weekday 0')|julianday('2024-02-29')|strftime('%s', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-03-03 00:00:00|2460369.5|1709164800|1709164800|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'weekday 0')|julianday('2038-01-19 03:14:07')|strftime('%j %w %W', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-24 03:14:07|2465442.6348032407|019 2 03|2147483647|+0001-01-15 00:00:00.000
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', '+0 seconds')|julianday('1970-01-01')|strftime('%s', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|1970-01-01 00:00:00|2440587.5|0|0|+0001-01-15 00:00:00.000
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, '-1 month')|julianday(2451545.0)|strftime('%Y-%m-%d %H:%M:%S', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|1999-12-01 12:00:00|2451545.0|2000-01-01 12:00:00|946728000|+0001-01-15 00:00:00.000
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+12 hours')|julianday('2000-01-01 12:34:56')|strftime('%Y-%m-%d %H:%M:%S', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2000-01-02 00:34:56|2451545.0242592595|2000-01-01 12:34:56|946730096|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+1 day')|julianday('1999-12-31T23:59:59.999')|strftime('%Y-%m-%d %H:%M:%S', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-01-01 23:59:59|2451544.4999999884|1999-12-31 23:59:59|946684799|+0001-01-15 00:00:00.000
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'unixepoch')|julianday(2451545.0)|strftime('%j %w %W', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|1970-01-29 08:59:05|2451545.0|001 6 00|946728000|+0001-01-15 00:00:00.000

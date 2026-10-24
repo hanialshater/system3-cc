@@ -1,0 +1,78 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c0
+changes: 12
+# count(*)|count(c0)
+5|5
+# count(*)
+17
+error: cannot commit - no transaction is active
+changes: 3
+changes: 1
+# count(*)|count(c0)
+6|2
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t1.c0
+changes: 15
+# count(*)|count(c0)
+2|2
+# count(*)
+17
+error: cannot commit - no transaction is active
+changes: 4
+changes: 0
+# count(*)|count(c0)
+6|1
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 6
+changes: 0
+# count(*)|count(c0)
+6|0
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t1.c0
+changes: 14
+# count(*)|count(c0)
+17|17
+# count(*)
+17
+error: cannot commit - no transaction is active
+# count(*)|count(ref)|sum(ref)|total(ref)|avg(ref)|min(ref)|max(ref)|count(DISTINCT ref)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# ref|count(*)|group_concat(id)
+NULL|2|9,14
+3|2|6,13
+4|2|3,11
+5|2|1,15
+6|4|2,7,16,17
+8|3|4,8,12

@@ -1,0 +1,51 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1957
+# printf('%.10g', 0.1)|round(0.1, 2)|0.1 * -995.024|0.1 / -307.09|CAST(0.1 AS TEXT)|0.1 + 0.0
+0.1|0.1|-99.502400000000009|-0.00032563743527955978|0.1|0.1
+# printf('%o', -570.3538)|round(-570.3538, 2)|-570.3538 * -9223372036854775808|-570.3538 / -1|CAST(-570.3538 AS TEXT)|-570.3538 + 0.0
+1777777777777777776706|-570.35|5.2605852900338612e+21|570.3538|-570.3538|-570.3538
+# printf('%g', 316)|round(316, 2)|316 * 190|316 / 5|CAST(316 AS TEXT)|316 + 0.0
+316|316.0|60040|63|316|316.0
+# printf('%-8s|', 123456789012)|round(123456789012, 2)|123456789012 * -0.0|123456789012 / 180|CAST(123456789012 AS TEXT)|123456789012 + 0.0
+123456789012||123456789012.0|0.0|685871050|123456789012|123456789012.0
+changes: 1957
+# id|id
+# count(*)
+6
+changes: 1957
+changes: 1957
+changes: 1957
+# id|c1
+1| pad 
+# count(*)
+6
+changes: 1957
+changes: 1957
+# printf('%08.3f', -0.0)|round(-0.0, 2)|-0.0 * 53.24|-0.0 / 4|CAST(-0.0 AS TEXT)|-0.0 + 0.0
+0000.000|0.0|0.0|0.0|0.0|0.0

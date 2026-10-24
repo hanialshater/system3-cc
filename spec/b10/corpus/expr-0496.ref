@@ -1,0 +1,153 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|-(typeof(typeof(c2)))|(nullif(c1, NULL) | -817.56) BETWEEN c3 AND c0
+9|0|0
+8|0|0
+7|0|0
+6|0|0
+5|0|1
+4|0|0
+3|0|1
+2|0|0
+1|0|1
+# typeof(NULL) IN (-('pi') IN (iif(NULL, 'alpha', NULL), NULL, x'463eaa693be7'), x'c09b2a1152', 270.2256)|(NULL << CASE WHEN 2 THEN 778.85 ELSE NULL END IS NULL)
+NULL|1
+# id|CASE WHEN abs(nullif(c0, c2)) THEN typeof(nullif(x'59b1dd0c7a', c0)) ELSE (id - c0) BETWEEN nullif(c3, c3) AND 145 IN (c3, x'4b9d4946', NULL) END|typeof(typeof('rho')) IS NULL
+1|NULL|0
+2|blob|0
+3|NULL|0
+4|NULL|0
+5|blob|0
+6|NULL|0
+7|NULL|0
+8|blob|0
+9|blob|0
+# nullif(coalesce(x'56d0a2', 'omega'), x'23f60f4246c0' IS NULL)|'eta'
+X'56D0A2'|eta
+# id|x'43b33711d2c8'|c1
+9|X'43B33711D2C8'|574.88
+8|X'43B33711D2C8'|X'50DC3F'
+7|X'43B33711D2C8'|über
+6|X'43B33711D2C8'|xi
+5|X'43B33711D2C8'|0.0
+4|X'43B33711D2C8'|608.0
+3|X'43B33711D2C8'|0.0
+2|X'43B33711D2C8'|X'DED97F6E'
+1|X'43B33711D2C8'|iota
+# CASE WHEN 123456789012 THEN '日本' ELSE '-7' END IN (NULL, 309.82, -927.9) BETWEEN -133 IS NULL BETWEEN '' IS NULL AND NOT x'46' AND NULL|('alpha' OR 4)
+NULL|1
+# id|(c1 BETWEEN id AND c0 BETWEEN nullif(c2, id) AND CASE WHEN c3 THEN x'c9af952c0b' ELSE -246.3 END & abs(c3))|abs(abs(x'bd') BETWEEN iif(x'52e939c72892', c0, 2.5) AND iif(-1, '1e3', 4.5e-310))
+1|0|0
+2|0|0
+3|0|0
+4|0|0
+5|0|0
+6|0|0
+7|NULL|0
+8|0|0
+9|0|0
+# coalesce(NULL, nullif(NOT NULL, x''))|x'fc21'
+NULL|X'FC21'
+# id|id|typeof(CASE WHEN c2 THEN c2 ELSE 'delta' END) IS NULL
+1|1|0
+2|2|0
+3|3|0
+4|4|0
+5|5|0
+6|6|0
+7|7|0
+8|8|0
+9|9|0
+# 1e-7|CASE WHEN NOT CAST('omicron' AS NUMERIC) THEN x'' ELSE iif(CASE WHEN 684 THEN 903 ELSE NULL END, 0 IS NULL, x'e9') END
+1.0e-07|X''
+error: UNIQUE constraint failed: t1.id
+# id|id|ref|c0
+1|1|8|2.0
+1|2|8|951.98
+1|3|8|NULL
+1|4|8|374.0
+1|5|8|5.0
+1|6|8|theta
+1|7|8|NULL
+1|8|8|
+1|9|8|omega
+1|10|8|sigma
+1|11|8|1000.0
+1|12|8|NULL
+1|13|8|NULL
+1|14|8|547.0
+1|15|8|-625.0
+1|16|8|1000.0
+1|17|8|518.0
+1|18|8|NULL
+1|19|8|X'F6'
+1|20|8|NULL
+1|21|8|NULL
+1|22|8|X'56681E'
+2|1|2|2.0
+2|2|2|951.98
+2|3|2|NULL
+2|4|2|374.0
+2|5|2|5.0
+2|6|2|theta
+2|7|2|NULL
+2|8|2|
+2|9|2|omega
+2|10|2|sigma
+2|11|2|1000.0
+2|12|2|NULL
+2|13|2|NULL
+2|14|2|547.0
+2|15|2|-625.0
+2|16|2|1000.0
+2|17|2|518.0
+2|18|2|NULL
+error: near "(": syntax error

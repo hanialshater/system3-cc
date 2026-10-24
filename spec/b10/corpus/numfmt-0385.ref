@@ -1,0 +1,78 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+# printf('%!.15g', -164.92)|round(-164.92, 4)|-164.92 * -118.3090|-164.92 / -3|CAST(-164.92 AS TEXT)|-164.92 + 0.0
+-164.92|-164.92|19511.520279999997|54.973333333333329|-164.92|-164.92
+# printf('%w', 54)|round(54, 0)|54 * 307.27|54 / -5|CAST(54 AS TEXT)|54 + 0.0
+54|54.0|16592.579999999998|-10|54|54.0
+# printf('%g', -2)|round(-2, 4)|-2 * 615|-2 / 132|CAST(-2 AS TEXT)|-2 + 0.0
+-2|-2.0|-1230|0|-2|-2.0
+# printf('%+d', -498.3)|round(-498.3, 0)|-498.3 * 255|-498.3 / 648|CAST(-498.3 AS TEXT)|-498.3 + 0.0
+-498|-498.0|-127066.5|-0.76898148148148149|-498.3|-498.3
+# printf('%e', 736)|round(736, 2)|736 * 1e308|736 / -301|CAST(736 AS TEXT)|736 + 0.0
+7.360000e+02|736.0|Inf|-2|736|736.0
+# printf('%e', -3)|round(-3, 0)|-3 * -9223372036854775808|-3 / -81.37|CAST(-3 AS TEXT)|-3 + 0.0
+-3.000000e+00|-3.0|2.7670116110564327e+19|0.036868624800294944|-3|-3.0
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c2|count(*)|group_concat(id, ';')
+NULL|4|6;8;14;18
+-573|1|12
+-264|1|15
+-250|1|16
+-5|1|13
+-3|1|22
+-1|1|19
+1.0e-07|1|1
+128|1|9
+446|1|11
+494|1|2
+9223372036854775807|1|17
+eta|1|10
+psi|1|20
+theta|1|21
+über|1|5
+Ελλάδα|1|4
+X''|1|23
+X'0040092F7999'|1|7
+X'B7A15B48'|1|3
+error: wrong number of arguments to function substr()

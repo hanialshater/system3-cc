@@ -1,0 +1,60 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%5.2f', -255)|round(-255, 1)|-255 * -3|-255 / -361|CAST(-255 AS TEXT)|-255 + 0.0
+-255.00|-255.0|765|0|-255|-255.0
+# printf('%08.3f', -1)|round(-1, 2)|-1 * 711|-1 / -525|CAST(-1 AS TEXT)|-1 + 0.0
+-001.000|-1.0|-711|0|-1|-1.0
+# printf('%c', 5)|round(5, 3)|5 * -1|5 / 3|CAST(5 AS TEXT)|5 + 0.0
+5|5.0|-5|1|5|5.0
+# printf('%d', -5)|round(-5, 0)|-5 * 601|-5 / -653.8410|CAST(-5 AS TEXT)|-5 + 0.0
+-5|-5.0|-3005|0.0076471191008211474|-5|-5.0
+# printf('%,d', -149.241)|round(-149.241, 1)|-149.241 * 402|-149.241 / -5|CAST(-149.241 AS TEXT)|-149.241 + 0.0
+-149|-149.2|-59994.882000000005|29.848200000000002|-149.241|-149.241
+changes: 1
+# id|c0
+5|NULL
+7|NULL
+8|NULL
+14|NULL
+15|NULL
+6|-9223372036854775808
+3|3.1415926535897931
+1|418
+2|597.2937
+11|748
+10|1.0e+308
+9| pad 
+4|NULL
+16|omicron
+17|omicron
+12|phi
+13|x_y
+# count(*)
+12
+changes: 1
+changes: 1
+# length('')|upper('')|lower('')|substr('', 2, 5)|instr('', 'gamma')|replace('', 'e', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%é%'|'' GLOB '*'|char(86, 551)|'' || 'gamma'|'' < 'gamma'|'' = 'gamma' COLLATE NOCASE
+0||||0|||||''|NULL|0|1|Vȧ|gamma|1|0

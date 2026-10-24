@@ -1,0 +1,68 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|ref|c1
+1|5|4|zeta
+1|10|4|X'66'
+2|6|7|1.0e-07
+3|7|NULL|4
+4|1|6|NULL
+5|8|1|546
+6|4|2|NULL
+7|2|3|4
+8|9|5|X'6CF9D9333D'
+9|NULL|8|NULL
+10|NULL|1|NULL
+# count(*)
+10
+# id|id|c0|id
+1|5|X'0D1D459032'|5
+1|10|X'0D1D459032'|10
+2|6|5|6
+3|7|707|7
+4|1|X'1F92137E3960'|1
+5|8|6|8
+6|4|NULL|4
+7|2|X'9D2F'|2
+8|9|delta|9
+9|NULL|130|NULL
+10|NULL|NULL|NULL
+# count(*)
+4
+# id|id|c0|c0
+1|5|X'0D1D459032'|6
+1|10|X'0D1D459032'|NULL
+2|6|5|NULL
+3|7|707|X'9D2F'
+4|1|X'1F92137E3960'|X'0D1D459032'
+5|8|6|delta
+6|4|NULL|X'1F92137E3960'
+7|2|X'9D2F'|5
+8|9|delta|130
+9|NULL|130|NULL
+10|NULL|NULL|NULL
+# count(*)
+10
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '-1 month')|julianday('2038-01-19 03:14:07')|strftime('%s', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2037-12-19 03:14:07|2465442.6348032407|2147483647|2147483647|+0001-01-15 00:00:00.000

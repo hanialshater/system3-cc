@@ -1,0 +1,218 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|id|c2
+1|7|1|308.86
+2|1|2|X'ED1F5A20'
+2|4|2|5
+3|5|3|530.33
+3|6|3|0
+3|13|3|epsilon
+4|10|4|it's
+4|12|4|X'758357EF'
+5|3|5|X''
+6|2|6|746
+7|8|7|-857.5054
+8|9|8|849
+8|11|8|X'83'
+8|14|8| pad 
+9|NULL|9|NULL
+10|NULL|10|NULL
+11|NULL|11|NULL
+12|NULL|12|NULL
+13|NULL|13|NULL
+14|NULL|14|NULL
+15|NULL|15|NULL
+16|NULL|16|NULL
+17|NULL|17|NULL
+18|NULL|18|NULL
+19|NULL|19|NULL
+20|NULL|20|NULL
+21|NULL|21|NULL
+22|NULL|22|NULL
+23|NULL|23|NULL
+24|NULL|24|NULL
+25|NULL|25|NULL
+# count(*)
+25
+# id|id|c0|id
+1|7|pi|7
+2|1|772|1
+2|4|772|4
+3|5|-611.9|5
+3|6|-611.9|6
+3|13|-611.9|13
+4|10|0|10
+4|12|0|12
+5|3|526|3
+6|2||2
+7|8|0.0|8
+8|9|beta|9
+8|11|beta|11
+8|14|beta|14
+error: ambiguous column name: c0
+# id|id|c3|c2
+1|1|1.0e+308|X'ED1F5A20'
+1|2|1.0e+308|746
+1|3|1.0e+308|X''
+1|4|1.0e+308|5
+1|5|1.0e+308|530.33
+1|6|1.0e+308|0
+1|7|1.0e+308|308.86
+1|8|1.0e+308|-857.5054
+1|9|1.0e+308|849
+1|10|1.0e+308|it's
+1|11|1.0e+308|X'83'
+1|12|1.0e+308|X'758357EF'
+1|13|1.0e+308|epsilon
+1|14|1.0e+308| pad 
+2|1|1000000000000000|X'ED1F5A20'
+2|2|1000000000000000|746
+2|3|1000000000000000|X''
+2|4|1000000000000000|5
+2|5|1000000000000000|530.33
+2|6|1000000000000000|0
+2|7|1000000000000000|308.86
+2|8|1000000000000000|-857.5054
+2|9|1000000000000000|849
+2|10|1000000000000000|it's
+2|11|1000000000000000|X'83'
+2|12|1000000000000000|X'758357EF'
+2|13|1000000000000000|epsilon
+2|14|1000000000000000| pad 
+3|1|X'C2'|X'ED1F5A20'
+3|2|X'C2'|746
+3|3|X'C2'|X''
+3|4|X'C2'|5
+3|5|X'C2'|530.33
+3|6|X'C2'|0
+3|7|X'C2'|308.86
+3|8|X'C2'|-857.5054
+3|9|X'C2'|849
+3|10|X'C2'|it's
+3|11|X'C2'|X'83'
+3|12|X'C2'|X'758357EF'
+3|13|X'C2'|epsilon
+3|14|X'C2'| pad 
+4|1|a%b|X'ED1F5A20'
+4|2|a%b|746
+4|3|a%b|X''
+4|4|a%b|5
+4|5|a%b|530.33
+4|6|a%b|0
+4|7|a%b|308.86
+4|8|a%b|-857.5054
+4|9|a%b|849
+4|10|a%b|it's
+4|11|a%b|X'83'
+4|12|a%b|X'758357EF'
+4|13|a%b|epsilon
+4|14|a%b| pad 
+5|1|0|X'ED1F5A20'
+5|2|0|746
+5|3|0|X''
+# count(*)
+0
+# id|id|c0|ref
+1|7|pi|1
+2|1|772|2
+2|4|772|2
+3|5|-611.9|3
+3|6|-611.9|3
+3|13|-611.9|3
+4|10|0|4
+4|12|0|4
+5|3|526|5
+6|2||6
+7|8|0.0|7
+error: near "(": syntax error
+# id|nullif('alpha', c2)|-9223372036854775808
+1|alpha|-9223372036854775808
+2|alpha|-9223372036854775808
+3|alpha|-9223372036854775808
+4|alpha|-9223372036854775808
+5|alpha|-9223372036854775808
+6|alpha|-9223372036854775808
+7|alpha|-9223372036854775808
+8|alpha|-9223372036854775808
+9|alpha|-9223372036854775808
+10|alpha|-9223372036854775808
+11|alpha|-9223372036854775808
+12|alpha|-9223372036854775808
+13|alpha|-9223372036854775808
+14|alpha|-9223372036854775808
+15|alpha|-9223372036854775808
+16|alpha|-9223372036854775808
+17|alpha|-9223372036854775808
+18|alpha|-9223372036854775808
+19|alpha|-9223372036854775808
+20|alpha|-9223372036854775808
+21|alpha|-9223372036854775808
+22|alpha|-9223372036854775808
+23|alpha|-9223372036854775808
+24|alpha|-9223372036854775808
+# coalesce(NULL BETWEEN CASE WHEN NULL THEN 4.5e-310 ELSE x'c6e3cc189d' END AND CAST(x'' AS BLOB), 2)|CAST(CAST(NULL AS NUMERIC) IN (NULL, 0, NULL) AS REAL)
+2|NULL

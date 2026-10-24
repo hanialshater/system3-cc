@@ -1,0 +1,120 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 5
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+14|1.0e+308
+# id|c0|c1|c2
+14|1.0e+308|NULL|NULL
+13|NULL|X''|-656.158
+12|5.0|5|-2.5
+11|287.0|X'8C79'|-219
+9|387.44|387.44|X'EC'
+8|2.5|NULL|NULL
+7|-307.532|tau|64.5118
+6|0.1|0.1|1000000000000000.0
+5|NULL|NULL|NULL
+4|3.0|3|431
+3|4.500000000000011e-310|xi|NULL
+2|-960.3982|a%b|9223372036854775807
+1|NULL|NULL|pi
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+9|NULL
+# id|c0|c1|ref
+2|��q5��!|0|6
+3|NULL|X'E6E28C7315'|7
+4|X'742315EA6FFC'|-858|NULL
+5|-288|NULL|NULL
+7|Ελλάδα|X'1B855484B8'|NULL
+8|-3|X'FC8734283831'|8
+9|NULL|NULL|NULL
+changes: 13
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+15|alpha
+# id|c0|c1|c2
+2|NULL|a%b|9223372036854775807
+4|3.0|3|431
+6|0.1|0.1|1000000000000000.0
+8|4.0|NULL|NULL
+12|5.0|5|-2.5
+14|NULL|NULL|NULL
+15|alpha|NULL|NULL
+error: UNIQUE constraint failed: t1.c0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+10|-2
+# id|c0|c1|ref
+1|NULL|NULL|NULL
+2|��q5��!|0|6
+3|NULL|X'E6E28C7315'|7
+5|-288|NULL|NULL
+6|X'A3'|NULL|NULL
+7|Ελλάδα|X'1B855484B8'|NULL
+9|NULL|NULL|NULL
+10|-2|NULL|NULL
+changes: 7
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+15|日本
+# id|c0|c1|c2
+2|epsilon|a%b|9223372036854775807
+3|über|NULL|NULL
+4|epsilon|3|431
+6|señor|NULL|NULL
+8|epsilon|NULL|NULL
+14|epsilon|NULL|NULL
+15|日本|NULL|NULL
+# id|c2|ntile(3) OVER (PARTITION BY c2 IS NULL ORDER BY id)
+2|9223372036854775807|1
+3|NULL|1
+4|431|2
+6|NULL|1
+8|NULL|2
+14|NULL|2
+15|NULL|3

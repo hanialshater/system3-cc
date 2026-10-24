@@ -1,0 +1,128 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c3
+changes: 1
+error: cannot store BLOB value in REAL column t1.c1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t0.c2
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+1|1
+2|2
+3|3
+# id
+# id
+1
+2
+3
+# c3
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|6
+4|6
+5|6
+1|6
+6|6
+3|6
+# id
+1
+2
+5
+6
+# id
+1
+2
+3
+# c1
+-47.193
+-42.528
+-30.424
+12.305
+40.859
+43.481
+ pad 
+0x1F
+1e3
+alpha
+omicron
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|6
+5|6
+3|6
+4|6
+1|6
+6|6
+# id
+1
+2
+3
+4
+5
+6
+# id
+1
+2
+3
+4
+# c1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+1|1
+3|3
+2|2
+# id
+1
+# id
+# c2
+5
+205
+298
+rho
+X''
+X'E4BE'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|6
+3|6
+4|6
+1|6
+6|6
+5|6
+# id
+1
+2
+3
+4
+5
+6
+# id
+1
+2
+3
+4
+# c0
+-3
+1
+2
+3
+4
+5
+6
+27
+X'8965'
+X'9798DF024CD3'
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+6|5|2.5|2.5|0.5|-2.5|X'E4BE'|5
+# c2|count(*)|group_concat(id, ';')
+# id|iif('epsilon' IS NULL BETWEEN coalesce(1e308, 'señor') AND c2 IN (NULL, 797.8, 461), id, 0)|(abs((c1 OR id)) << typeof(c1))
+1|0|1
+2|0|1
+3|0|1
+4|0|1
+5|0|1
+6|0|1
+# typeof((typeof(300) || iif(NULL, 'omicron', NULL)))|-252.21 IS NULL IS NULL
+null|0

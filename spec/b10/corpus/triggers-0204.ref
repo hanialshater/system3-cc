@@ -1,0 +1,77 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+159|NULL
+changes: 2
+changes: 2
+error: cannot store TEXT value in REAL column t2.c1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+t2|1001
+t2|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+changes: 2
+error: cannot store TEXT value in REAL column t2.c1
+changes: 0
+changes: 0
+# x|y
+t0|1001
+t0|1002
+t2|1001
+t2|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|NULL
+6|NULL
+changes: 0
+# id|c2
+3|epsilon
+4|epsilon
+1|it's
+2|tau
+error: no query solution
+changes: 0
+changes: 0

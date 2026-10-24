@@ -1,0 +1,97 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 11
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+12|NULL
+# id|c0|c1|c2|c3
+1|0|über|NULL|NULL
+3|G�!|2|NULL|-93.4018
+5|0|390| pad |NULL
+7|0|X'D836F1'|NULL|-3
+8|X'4DE9FE'|NULL|NULL|NULL
+9|0|NULL|-158|X'5F1F975139AD'
+11|0|151|NULL|NULL
+12|NULL|NULL|NULL|NULL
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+13|
+# id|c0|c1|c2|c3
+13||NULL|NULL|NULL
+12|NULL|NULL|NULL|NULL
+11|0|151|NULL|NULL
+9|NULL|NULL|NULL|NULL
+8|X'4DE9FE'|NULL|NULL|NULL
+7|0|X'D836F1'|NULL|-3
+4|NULL|NULL|NULL|NULL
+3|G�!|2|NULL|-93.4018
+1|0|über|NULL|NULL
+changes: 3
+changes: 8
+changes: 1
+changes: 1
+# id|c0
+17|-95.9051
+# id|c0|c1|c2|c3|c4|ref
+17|-95.9051|NULL|NULL|NULL|NULL|NULL
+16|X'46'|-2|X'82'|214.5|NULL|8
+14|X'400C8C'|X'2B'|X'0372'|255|rho|3
+12|-2|NULL|rho|NULL|X'1AFECDA16CAB'|2
+10|NULL|X'30166383'|X'A92726'|X'4CDA'| pad |NULL
+8|NULL|X''|2|-280|1.0e-07|NULL
+6|X'71CF3868'|-72|X'7D70'|kappa|a%b|4
+4|-7!|3.1415926535897931|NULL|X'24'|-404.4|7
+2|NULL|686.02|NULL|770|NULL|6
+1|-597|NULL|NULL|NULL|NULL|NULL
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', ref)
+{"id":1,"v":null}
+{"id":2,"v":6}
+{"id":4,"v":7}
+{"id":6,"v":4}
+changes: 4
+changes: 4
+# count(*)|count(c0)
+9|3
+# count(*)
+9
+error: cannot commit - no transaction is active

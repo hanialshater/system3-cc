@@ -1,0 +1,149 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|129
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|129
+t2|1001
+t2|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|129
+t2|1001
+t2|1002
+t1|194
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|129
+t2|1001
+t2|1002
+t1|194
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+115|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|129
+t2|1001
+t2|1002
+t1|194
+t0|1
+t0|2
+t1|199
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+error: table t1 already exists

@@ -1,0 +1,83 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in TEXT column t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c0
+changes: 0
+# count(*)|count(c0)
+5|5
+# count(*)
+5
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t0.c0
+changes: 0
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t0.c0
+changes: 0
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 7
+changes: 17
+# count(*)|count(c0)
+19|12
+# count(*)
+19
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t0.c0
+changes: 0
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t0.c0
+changes: 1
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t0.c0
+changes: 2
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active

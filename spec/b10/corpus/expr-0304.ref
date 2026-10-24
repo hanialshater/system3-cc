@@ -1,0 +1,141 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+changes: 1
+changes: 1
+# id|iif(c1, CAST(iif('beta', c1, -962) AS NUMERIC), 'über')|c3
+6|über|0
+5|-962|über
+4|über|x_y
+3|über|beta
+2|-962|-340
+1|-962|0
+# CAST(coalesce(NULL, iif(NULL, NULL, -684)) AS REAL)|-241.516
+-684.0|-241.516
+# id|id|typeof(c2)
+1|1|integer
+2|2|text
+3|3|blob
+4|4|integer
+5|5|null
+6|6|integer
+7|7|blob
+8|8|integer
+9|9|blob
+10|10|integer
+11|11|real
+12|12|blob
+13|13|integer
+# NULL|coalesce(-('omega') IS NULL, 0 IN (x'a5a917' BETWEEN NULL AND -71.8, NULL, '-7'))
+NULL|0
+# id|NULL|nullif(iif(c4 IS NULL, nullif(c3, ref), 'psi'), nullif(1, -(x'4f64234c9e')))
+1|NULL|psi
+2|NULL|psi
+3|NULL|psi
+4|NULL|psi
+5|NULL|psi
+6|NULL|psi
+7|NULL|psi
+8|NULL|psi
+9|NULL|psi
+10|NULL|psi
+11|NULL|psi
+12|NULL|psi
+13|NULL|psi
+14|NULL|395
+15|NULL|NULL
+16|NULL|psi
+17|NULL|beta
+18|NULL|NULL
+19|NULL|psi
+# abs(x'936fed') IS NULL|abs(nullif(x'161d9cc467' IN (-175.9476, x'6d46a7bf', NULL), CASE WHEN NULL THEN 3 ELSE 3 END))
+0|NULL
+# id|coalesce(NULL, c1 IS NULL)|c1
+1|0|X'D2C3'
+2|0|-534
+3|0|X''
+4|0|-5
+5|0|X'A8A1D2EB91FF'
+6|0|0.1
+7|0|zeta
+8|0|upsilon
+9|0|0.0
+10|0|-3
+11|0|-1
+12|0|X'5A42'
+13|1|NULL
+# -(NULL)|NULL
+NULL|NULL
+# id|c2|x'af3318' IN (c2, '42', 5)
+13|-2|0
+12|X'593B5CA15B'|0
+11|224.19|0
+10|9|0
+9|X'FCAD1E'|0
+8|-2|0
+7|X'4CD1A8DA'|0
+6|-2|0
+5|NULL|NULL
+4|710|0
+3|X''|0
+2|kappa|0
+1|123456789012|0
+# (-63 IS NULL <> 912) BETWEEN 278 AND 1e308|iif(typeof(-2.5) IN (abs(NULL), x'1b859b', 1), coalesce(-659 BETWEEN x'711a704918d7' AND -2, -(NULL)), NULL)
+0|NULL
+changes: 1
+# id|ref
+# count(*)
+15
+changes: 1
+changes: 1
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+{"id":1,"v":123456789012}
+{"id":2,"v":"kappa"}
+error: JSON cannot hold BLOB values

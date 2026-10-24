@@ -1,0 +1,170 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|typeof(-((id << c1)))|id
+1|integer|1
+2|integer|2
+3|integer|3
+4|integer|4
+5|integer|5
+6|integer|6
+7|integer|7
+8|integer|8
+9|integer|9
+10|null|10
+11|integer|11
+12|integer|12
+13|integer|13
+14|integer|14
+15|integer|15
+16|integer|16
+17|integer|17
+18|integer|18
+19|integer|19
+20|integer|20
+21|null|21
+22|integer|22
+# typeof(-(typeof('naïve')))|x'6fa072ea'
+integer|X'6FA072EA'
+# id|CASE WHEN c1 THEN -(c0) ELSE 'zeta' END IS NULL|abs(NOT c1)
+1|0|1
+2|0|0
+3|0|1
+4|0|1
+5|0|0
+6|0|1
+7|1|0
+8|1|0
+9|0|0
+10|0|NULL
+11|0|1
+12|0|0
+13|0|1
+14|0|1
+15|0|0
+16|0|1
+17|0|1
+18|0|0
+19|0|0
+20|0|1
+21|0|NULL
+22|0|1
+# coalesce(iif(CAST(NULL AS BLOB), 'it''s', x'0e'), CASE WHEN 639 THEN x'' ELSE -1 END BETWEEN x'82c24b4b2f0e' AND x'')|'-7'
+X'0E'|-7
+# id|c0|'omicron'
+1| pad |omicron
+2|4.0|omicron
+3|X'D8F0'|omicron
+4|-875.0|omicron
+5|3.0|omicron
+6|NULL|omicron
+7|123456789012.0|omicron
+8|iota|omicron
+9|alpha|omicron
+10|NULL|omicron
+11|X'F345B4B719'|omicron
+12|0.0|omicron
+13|-124.0|omicron
+14|-5.0|omicron
+15|gamma|omicron
+16|X'170D'|omicron
+17|4.0|omicron
+18|-440.0|omicron
+19|-4.0|omicron
+20|NULL|omicron
+21|X'8407'|omicron
+22|9.2233720368547758e+18|omicron
+23|291.0|omicron
+24|NULL|omicron
+25|0.0|omicron
+# -(coalesce(NULL BETWEEN 614.296 AND 3, x'3834' IN ('omicron', 517.2860, 3.141592653589793)))|5
+0|5
+# id|(381 BETWEEN nullif(id, id) AND NOT ref | -(ref))|c3
+1|0|X'E8CA70E81D'
+2|0|NULL
+3|NULL|-472
+4|0|X'EA35724F50'
+5|0|NULL
+6|0|zeta
+7|NULL|X'B5E282CDF2'
+8|NULL|NULL
+9|NULL|9223372036854775807
+10|0|X''
+11|0|327.35
+12|0|-1
+13|0|4
+14|0|NULL
+15|NULL| pad 
+16|NULL|-1
+17|NULL|NULL
+18|0|kappa
+19|0|-466
+20|0|780
+21|0|-386.01
+22|NULL|Ελλάδα
+23|0|X'80A5'
+24|NULL|0
+25|0|X'AA4B'
+# coalesce((-603.6 >> NULL), -1e308) BETWEEN NULL IN (coalesce('pi', 235), 'xi', x'008e92') AND coalesce(typeof(x''), (NULL / x'e412ca'))|nullif(abs(CAST(x'' AS BLOB)), (-922.0 IS NULL || typeof(x'dbcc0c')))
+NULL|NULL
+# length('chi')|upper('chi')|lower('chi')|substr('chi', -3, 5)|instr('chi', 'beta')|replace('chi', 'é', '')|trim('chi')|ltrim('chi', 'ab')|hex('chi')|quote('chi')|unicode('chi')|'chi' LIKE '%é%'|'chi' GLOB '?'|char(70, 314)|'chi' || 'beta'|'chi' < 'beta'|'chi' = 'beta' COLLATE NOCASE
+3|CHI|chi|chi|0|chi|chi|chi|636869|'chi'|99|0|0|Fĺ|chibeta|0|0
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table

@@ -1,0 +1,154 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+error: no such table: nope
+error: table t1 already exists
+error: near ";": syntax error
+error: UNIQUE constraint failed: t1.id
+error: cannot commit - no transaction is active
+# 'a' + 'b'|'a' > 1|x'01' < 1
+0|1|0
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+7|21
+11|21
+15|21
+1|21
+2|21
+17|21
+20|21
+16|21
+13|21
+21|21
+6|21
+4|21
+18|21
+10|21
+14|21
+3|21
+5|21
+8|21
+9|21
+12|21
+19|21
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+# c2
+-777
+-619
+-605
+-286
+-34.95
+-1
+0
+0.1
+3.1415926535897931
+4
+9223372036854775807
+-1.0e+308
+-105
+# length('beta')|upper('beta')|lower('beta')|substr('beta', -3, 4)|instr('beta', 'Lambda')|replace('beta', '', 'XY')|trim('beta')|ltrim('beta', 'ab')|hex('beta')|quote('beta')|unicode('beta')|'beta' LIKE '_'|'beta' GLOB '*'|char(70, 432)|'beta' || 'Lambda'|'beta' < 'Lambda'|'beta' = 'Lambda' COLLATE NOCASE
+4|BETA|beta|eta|0|beta|beta|eta|62657461|'beta'|98|0|1|Fư|betaLambda|0|0

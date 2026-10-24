@@ -1,0 +1,68 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+131|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+t1|122
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+122|122
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1001
+t0|1002
+t1|122
+changes: 0
+# id|bid
+3|3
+131|NULL
+186|NULL
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', 'start of month')|julianday('1999-12-31T23:59:59.999')|strftime('%j %w %W', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|1999-12-01 00:00:00|2451544.4999999884|365 5 52|946684799|+0001-01-15 00:00:00.000
+# id|id|c0|c2
+3|3|NULL|X'16F40D0F60'
+131|3|NULL|X'16F40D0F60'
+131|4|NULL|NULL
+131|5|NULL|sigma
+131|6|NULL|-1.0e+308
+131|7|NULL|X'C3F7AA6568'
+131|122|NULL|NULL
+186|3|NULL|X'16F40D0F60'
+186|4|NULL|NULL
+186|5|NULL|sigma
+error: near "(": syntax error

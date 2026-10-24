@@ -1,0 +1,52 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%q', -466.3360)|round(-466.3360, 1)|-466.3360 * 0|-466.3360 / 677.255|CAST(-466.3360 AS TEXT)|-466.3360 + 0.0
+-466.336|-466.3|0.0|-0.68856782157385332|-466.336|-466.336
+# printf('%5.2f', 1)|round(1, 2)|1 * -278|1 / 1e-7|CAST(1 AS TEXT)|1 + 0.0
+ 1.00|1.0|-278|10000000.0|1|1.0
+# printf('%5.2f', -626)|round(-626, 2)|-626 * -341|-626 / -1e308|CAST(-626 AS TEXT)|-626 + 0.0
+-626.00|-626.0|213466|6.26e-306|-626|-626.0
+# printf('%q', -276.7)|round(-276.7, 0)|-276.7 * -494|-276.7 / 0|CAST(-276.7 AS TEXT)|-276.7 + 0.0
+-276.7|-277.0|136689.8|NULL|-276.7|-276.7
+error: near ";": syntax error
+changes: 1
+# id|id
+# count(*)
+21
+changes: 1
+changes: 1

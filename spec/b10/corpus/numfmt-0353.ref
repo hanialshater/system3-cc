@@ -1,0 +1,69 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%g', -3)|round(-3, 1)|-3 * 695.714|-3 / 1e308|CAST(-3 AS TEXT)|-3 + 0.0
+-3|-3.0|-2087.1420000000003|-2.9999999999999997e-308|-3|-3.0
+# printf('%.0f', 2)|round(2, 1)|2 * -197|2 / 526|CAST(2 AS TEXT)|2 + 0.0
+2|2.0|-394|0|2|2.0
+# printf('%w', 2)|round(2, 2)|2 * -235|2 / 596|CAST(2 AS TEXT)|2 + 0.0
+2|2.0|-470|0|2|2.0
+# printf('%lld', -171)|round(-171, 1)|-171 * 638.253|-171 / 825|CAST(-171 AS TEXT)|-171 + 0.0
+-171|-171.0|-109141.263|0|-171|-171.0
+changes: 3
+changes: 21
+# count(*)|count(c0)
+24|14
+# count(*)
+24
+error: cannot commit - no transaction is active

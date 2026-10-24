@@ -1,0 +1,87 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('über')|upper('über')|lower('über')|substr('über', -2, 4)|instr('über', '日本')|replace('über', 'a', '_')|trim('über')|ltrim('über', 'ab')|hex('über')|quote('über')|unicode('über')|'über' LIKE '%'|'über' GLOB '*'|char(72, 355)|'über' || '日本'|'über' < '日本'|'über' = '日本' COLLATE NOCASE
+4|üBER|über|er|0|über|über|über|C3BC626572|'über'|252|1|1|Hţ|über日本|1|0
+# length('0x1F')|upper('0x1F')|lower('0x1F')|substr('0x1F', -3, 4)|instr('0x1F', 'xi')|replace('0x1F', '', '_')|trim('0x1F')|ltrim('0x1F', 'ab')|hex('0x1F')|quote('0x1F')|unicode('0x1F')|'0x1F' LIKE '%a_'|'0x1F' GLOB '*[a-m]*'|char(82, 829)|'0x1F' || 'xi'|'0x1F' < 'xi'|'0x1F' = 'xi' COLLATE NOCASE
+4|0X1F|0x1f|x1F|0|0x1F|0x1F|0x1F|30783146|'0x1F'|48|0|0|R̽|0x1Fxi|1|0
+# length('日本')|upper('日本')|lower('日本')|substr('日本', 2, 3)|instr('日本', 'señor')|replace('日本', '', 'XY')|trim('日本')|ltrim('日本', 'ab')|hex('日本')|quote('日本')|unicode('日本')|'日本' LIKE 'a%'|'日本' GLOB '?'|char(75, 585)|'日本' || 'señor'|'日本' < 'señor'|'日本' = 'señor' COLLATE NOCASE
+2|日本|日本|本|0|日本|日本|日本|E697A5E69CAC|'日本'|26085|0|0|Kɉ|日本señor|0|0
+# length('eta')|upper('eta')|lower('eta')|substr('eta', -2, 3)|instr('eta', 'beta')|replace('eta', 'é', 'XY')|trim('eta')|ltrim('eta', 'ab')|hex('eta')|quote('eta')|unicode('eta')|'eta' LIKE '%é%'|'eta' GLOB '*'|char(89, 919)|'eta' || 'beta'|'eta' < 'beta'|'eta' = 'beta' COLLATE NOCASE
+3|ETA|eta|ta|0|eta|eta|eta|657461|'eta'|101|0|1|YΗ|etabeta|0|0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+7|X'60'
+# id|c0|c1|c2|c3|c4
+1|NULL|NULL|NULL|NULL|NULL
+2|NULL|X'442527'|x_y|MU|X'203D2B6B'
+3|X'FFF1'|X'BCD146A16B'|NULL|zeta|-3
+5|X'DE45'|X'50B97069'|9223372036854775807|792|820.722
+6|�!|X'55FB30431007'|NULL|5|NULL
+7|X'60'|NULL|NULL|NULL|NULL
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[1,2,3,5,6,7]|{"1":1,"2":2,"3":3,"5":5,"6":6,"7":7}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":null}
+error: JSON cannot hold BLOB values
+changes: 1
+# id|c0
+6|�!
+7|X'60'
+5|X'DE45'
+3|X'FFF1'
+# count(*)
+4
+changes: 1
+changes: 1

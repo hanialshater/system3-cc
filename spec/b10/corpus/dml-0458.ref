@@ -1,0 +1,221 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 19
+changes: 10
+error: NOT NULL constraint failed: t2.c0
+changes: 1
+# id|c0
+19|2.5
+# id|c0|c1|c2
+1|123456789012.0|NULL|NULL
+2|2.0|x_y|-279
+4|4.0|NULL|iota
+6|6.0|0.1|263
+8|8.0|NULL|NULL
+10|10.0|X'DAB8DDAB'|9223372036854775807
+12|12.0|X''| pad 
+14|14.0|-9223372036854775808|X'A912B59A'
+16|16.0|1|9223372036854775807
+18|18.0|2|1.0e+308
+19|2.5|NULL|NULL
+changes: 25
+changes: 8
+changes: 1
+changes: 1
+# id|c0
+26|5.0
+# id|c0|c1|ref
+1|0.0|773|5
+2|omicron|d|NULL
+4|0.0|X''|NULL
+5|0.0|epsilon|6
+7|0.0|alpha|NULL
+8|0.0|782|2
+10|0.0|X''|7
+11|0.0|NULL|NULL
+13|0.0|X'1D94AC9C57B6'|NULL
+14|0.0|naïve|NULL
+16|0.0|X'B39A3E22'|7
+17|0.0|853.2|3
+19|0.0|NULL|7
+20|0.0|rho|NULL
+22|0.0|NULL|3
+23|0.0|X'FB'|NULL
+25|0.0|425|2
+26|5.0|d|NULL
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+27|X'4EFEB2'
+# id|c0|c1|ref
+27|X'4EFEB2'|d|NULL
+26|5.0|d|NULL
+25|0.0|425|2
+23|0.0|X'FB'|NULL
+22|0.0|NULL|3
+20|0.0|rho|NULL
+19|0.0|NULL|7
+17|0.0|853.2|3
+16|0.0|X'B39A3E22'|7
+14|0.0|naïve|NULL
+13|0.0|X'1D94AC9C57B6'|NULL
+11|0.0|NULL|NULL
+10|0.0|X''|7
+8|0.0|782|2
+7|0.0|alpha|NULL
+5|0.0|epsilon|6
+4|X'1F916B39C19F'|d|NULL
+2|!|d|NULL
+1|0.0|773|5
+error: NOT NULL constraint failed: t2.c0
+changes: 9
+changes: 1
+changes: 1
+# id|c0
+20|Ελλάδα
+# id|c0|c1|c2
+1|0.0|NULL|NULL
+4|-7.0|NULL|NULL
+19|2.5|NULL|NULL
+20|Ελλάδα|NULL|NULL
+changes: 4
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t2.c0
+# id|c0|c1|c2
+1|0.0|NULL|NULL
+4|null|NULL|NULL
+19|null|NULL|NULL
+20|null|NULL|NULL
+# id|id|c1|id
+1|1|X'14082F3E7CF9'|1
+1|2|X'14082F3E7CF9'|2
+1|4|X'14082F3E7CF9'|4
+1|5|X'14082F3E7CF9'|5
+1|7|X'14082F3E7CF9'|7
+1|8|X'14082F3E7CF9'|8
+1|10|X'14082F3E7CF9'|10
+1|11|X'14082F3E7CF9'|11
+1|13|X'14082F3E7CF9'|13
+1|14|X'14082F3E7CF9'|14
+1|16|X'14082F3E7CF9'|16
+1|17|X'14082F3E7CF9'|17
+1|19|X'14082F3E7CF9'|19
+1|20|X'14082F3E7CF9'|20
+1|22|X'14082F3E7CF9'|22
+1|23|X'14082F3E7CF9'|23
+1|25|X'14082F3E7CF9'|25
+1|26|X'14082F3E7CF9'|26
+1|27|X'14082F3E7CF9'|27
+2|1|2|1
+2|2|2|2
+2|4|2|4
+2|5|2|5
+2|7|2|7
+2|8|2|8
+2|10|2|10
+2|11|2|11
+2|13|2|13
+2|14|2|14
+2|16|2|16
+2|17|2|17
+# count(*)
+1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+10|19
+16|19
+19|19
+5|19
+1|19
+17|19
+22|19
+8|19
+25|19
+2|19
+4|19
+7|19
+11|19
+13|19
+14|19
+20|19
+23|19
+26|19
+27|19
+# id
+# id
+25
+26
+27
+# id
+1
+4
+8
+10
+11
+13
+14
+16
+17
+19
+20
+22
+23
+25
+26
+27
+# length('rho')|upper('rho')|lower('rho')|substr('rho', -3, 1)|instr('rho', 'Ελλάδα')|replace('rho', 'e', '')|trim('rho')|ltrim('rho', 'ab')|hex('rho')|quote('rho')|unicode('rho')|'rho' LIKE '%a_'|'rho' GLOB '?'|char(76, 482)|'rho' || 'Ελλάδα'|'rho' < 'Ελλάδα'|'rho' = 'Ελλάδα' COLLATE NOCASE
+3|RHO|rho|r|0|rho|rho|rho|72686F|'rho'|114|0|0|LǢ|rhoΕλλάδα|1|0

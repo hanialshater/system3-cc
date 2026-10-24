@@ -1,0 +1,86 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%,d', -414)|round(-414, 4)|-414 * 4|-414 / -2.5|CAST(-414 AS TEXT)|-414 + 0.0
+-414|-414.0|-1656|165.6|-414|-414.0
+# printf('%.0f', -522.896)|round(-522.896, 1)|-522.896 * -1|-522.896 / -486|CAST(-522.896 AS TEXT)|-522.896 + 0.0
+-523|-522.9|522.896|1.075917695473251|-522.896|-522.896
+# printf('%w', -0.0)|round(-0.0, 1)|-0.0 * 4|-0.0 / 856.128|CAST(-0.0 AS TEXT)|-0.0 + 0.0
+0.0|0.0|0.0|0.0|0.0|0.0
+# printf('%5s', -5)|round(-5, 3)|-5 * -56|-5 / 419|CAST(-5 AS TEXT)|-5 + 0.0
+   -5|-5.0|280|0|-5|-5.0
+# printf('%e', 3)|round(3, 1)|3 * 123456789012|3 / 0|CAST(3 AS TEXT)|3 + 0.0
+3.000000e+00|3.0|370370367036|NULL|3|3.0
+error: NOT NULL constraint failed: t0.c0
+changes: 8
+error: NOT NULL constraint failed: t0.c0
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t0.c0
+# id|c0|c1
+15|-662|NULL
+13|0|nu
+11|X'695A899A2D'|-4
+9|0|NULL
+7|0|-2
+5|0x1F|NULL
+3|X'917970'|NULL
+1| pad |-1.67
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|1|0|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table

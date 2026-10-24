@@ -1,0 +1,50 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+changes: 1
+changes: 1
+# printf('%Q', -20.579)|round(-20.579, 4)|-20.579 * -273.1074|-20.579 / -302.90|CAST(-20.579 AS TEXT)|-20.579 + 0.0
+'-20.579'|-20.579|5620.2771846|0.067939914163090143|-20.579|-20.579
+# printf('%lld', 229)|round(229, 4)|229 * 694|229 / -68|CAST(229 AS TEXT)|229 + 0.0
+229|229.0|158926|-3|229|229.0
+# printf('%5s', 9223372036854775807)|round(9223372036854775807, 2)|9223372036854775807 * 9223372036854775807|9223372036854775807 / -510|CAST(9223372036854775807 AS TEXT)|9223372036854775807 + 0.0
+9223372036854775807|9.2233720368547758e+18|8.5070591730234616e+37|-18085043209519168|9223372036854775807|9.2233720368547758e+18
+# id|id|lag(id) OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|NULL
+2|2|1
+3|3|2
+changes: 1
+# id|c1
+1|-446.4886
+# count(*)
+2
+changes: 1
+changes: 1

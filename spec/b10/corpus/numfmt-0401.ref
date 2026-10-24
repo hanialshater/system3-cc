@@ -1,0 +1,53 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2426
+# printf('%Q', -675)|round(-675, 3)|-675 * 1|-675 / 5|CAST(-675 AS TEXT)|-675 + 0.0
+'-675'|-675.0|-675|-135|-675|-675.0
+# printf('%.3s', 5)|round(5, 1)|5 * -4|5 / -719|CAST(5 AS TEXT)|5 + 0.0
+5|5.0|-20|0|5|5.0
+# printf('%%', 294.083)|round(294.083, 4)|294.083 * 4.5e-310|294.083 / -128.196|CAST(294.083 AS TEXT)|294.083 + 0.0
+%|294.083|1.3233735000000034e-307|-2.2940107335642299|294.083|294.083
+# printf('%Q', -561)|round(-561, 1)|-561 * 1|-561 / 0|CAST(-561 AS TEXT)|-561 + 0.0
+'-561'|-561.0|-561|NULL|-561|-561.0
+# printf('%lld', -2)|round(-2, 2)|-2 * 225.91|-2 / 709.30|CAST(-2 AS TEXT)|-2 + 0.0
+-2|-2.0|-451.82|-0.0028196813760045115|-2|-2.0
+# printf('%%', -682)|round(-682, 0)|-682 * 0.1|-682 / 3|CAST(-682 AS TEXT)|-682 + 0.0
+%|-682.0|-68.2|-227|-682|-682.0
+# printf('%c', 701.35)|round(701.35, 0)|701.35 * -1e308|701.35 / -659.2280|CAST(701.35 AS TEXT)|701.35 + 0.0
+7|701.0|-Inf|-1.063895951021498|701.35|701.35
+error: no such column: t1.nope
+changes: 2426
+# id|c1
+2|chi
+1|gamma
+5|MU
+3|nu
+4|Ελλάδα
+# count(*)
+5
+changes: 2426
+changes: 2426
+# printf('%+d', -966)|round(-966, 2)|-966 * -5|-966 / -600.45|CAST(-966 AS TEXT)|-966 + 0.0
+-966|-966.0|4830|1.6087934049462902|-966|-966.0

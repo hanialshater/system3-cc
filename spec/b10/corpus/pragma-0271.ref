@@ -1,0 +1,115 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|'d'|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|'d'|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|'d'|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|'d'|0
+2|c1|BLOB|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c0)
+error: JSON cannot hold BLOB values

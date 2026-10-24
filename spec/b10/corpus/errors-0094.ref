@@ -1,0 +1,126 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# 'a' + 'b'|'a' > 1|x'01' < 1
+0|1|0
+error: wrong number of arguments to function substr()
+# json('{')
+error: malformed JSON
+# id|2|(c0 || c0) IN (c0, 'a%b', NULL) IS NULL
+19|2|1
+18|2|1
+17|2|0
+16|2|1
+15|2|1
+14|2|1
+13|2|1
+12|2|1
+11|2|1
+10|2|1
+9|2|1
+8|2|1
+7|2|1
+6|2|1
+5|2|1
+4|2|1
+3|2|1
+2|2|1
+1|2|1
+# typeof(coalesce((1e308 + 'nu'), 696.898))|x'52'
+real|X'52'
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+4|18
+6|18
+1|18
+17|18
+11|18
+13|18
+3|18
+15|18
+12|18
+14|18
+2|18
+18|18
+5|18
+8|18
+10|18
+7|18
+9|18
+16|18
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+# id
+17
+18
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18

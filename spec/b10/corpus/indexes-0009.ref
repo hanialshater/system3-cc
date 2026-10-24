@@ -1,0 +1,176 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+# count(*)
+12
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+5|NULL
+10|NULL
+12|NULL
+14|NULL
+18|NULL
+17|-809
+16|-694
+8|0
+11|2
+13|2.5
+1|129
+3|527.8429
+6|704.811
+4|1000
+7|eta
+15|omicron
+19|theta
+2|X'50'
+9|X'FE'
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c4
+2|-271
+15|-104
+13|-7
+11|4.500000000000011e-310
+3|1.0e-07
+8|5
+9|42
+16|782.9
+18|123456789012
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+15|-638.2165
+16|3
+6|144
+9|162
+7|omega
+2|señor
+18|日本
+13|X''
+17|X'9285AED1A202'
+3|X'A20C5D44'
+10|X'D603C37C0E02'
+# count(*)
+11
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+12|-765
+8|-695
+7|-363
+16|-68.0698
+14|1.0e-07
+13|1
+5|3.1415926535897931
+9|4
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+5|NULL
+10|NULL
+12|NULL
+14|NULL
+18|NULL
+17|-809
+16|-694
+8|0
+11|2
+13|2.5
+1|129
+3|527.8429
+6|704.811
+4|1000
+7|eta
+15|omicron
+19|theta
+2|X'50'
+9|X'FE'
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+3|-9223372036854775808
+9|-563.78
+11|-363
+5|-7
+8|-1
+7|0
+10|1.0e-07
+17|289
+# count(*)
+14
+changes: 1
+changes: 1
+# id|c0|(c1 - nullif(id BETWEEN id AND id, CASE WHEN c4 THEN 5 ELSE 329 END))
+19|X'1D4CB41DF4'|-1
+18|theta|NULL
+17|289|-810
+16|NULL|-695
+15|X'1471A9075933'|-1
+14|X'8B0F'|NULL
+13|NULL|1.5
+12|NULL|NULL
+11|-363|1
+10|1.0e-07|NULL
+9|-563.78|-1
+8|-1|-1
+7|0|-1
+6|epsilon|703.811
+5|-7|NULL
+4|NULL|999
+3|-9223372036854775808|526.8429
+2|X'5B1C8C90'|-1
+1|NULL|128
+# 'kappa' IS NULL|CASE WHEN 123456789012 IN ('zeta', x'250565', x'473a') THEN NOT CAST(-1 AS BLOB) ELSE -2 END
+0|-2

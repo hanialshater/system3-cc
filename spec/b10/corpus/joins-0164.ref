@@ -1,0 +1,177 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c1|c0
+1|NULL|0|NULL
+2|5|-146|-1
+2|6|-146|NULL
+2|9|-146|X''
+2|11|-146|4
+2|15|-146|780
+2|16|-146|1e3
+3|12|-3|NULL
+3|13|-3|NULL
+4|1|0|0.0
+4|14|0|X'C0'
+5|2|0|-235
+6|NULL|señor|NULL
+7|NULL|-676|NULL
+8|3|X'80'|beta
+8|4|X'80'|omega
+8|8|X'80'|X'00DE'
+8|10|X'80'|-7
+9|NULL|rho|NULL
+10|NULL|X'5E84'|NULL
+11|NULL|Ελλάδα|NULL
+12|NULL|chi|NULL
+13|NULL|690.3|NULL
+14|NULL|-58.2|NULL
+15|NULL|epsilon|NULL
+16|NULL|gamma|NULL
+17|NULL|0|NULL
+18|NULL|-7|NULL
+19|NULL|456|NULL
+20|NULL|0|NULL
+21|NULL|delta|NULL
+error: near "CASE": syntax error
+# id|id|c0|c2
+1|NULL|0.0|NULL
+2|5|-235|upsilon
+2|6|-235|-837
+2|9|-235|X'62'
+2|11|-235|2
+2|15|-235|-627.1
+2|16|-235|NULL
+3|12|beta|a%b
+3|13|beta|NULL
+4|1|omega|nu
+4|14|omega|NULL
+5|2|-1|X'13FD81FA5DA3'
+6|NULL|NULL|NULL
+error: near "(": syntax error
+# id|id|c4|ref
+1|1|NULL|4
+1|2|NULL|5
+1|3|NULL|8
+1|4|NULL|8
+1|5|NULL|2
+1|6|NULL|2
+1|7|NULL|NULL
+1|8|NULL|8
+1|9|NULL|2
+1|10|NULL|8
+1|11|NULL|2
+1|12|NULL|3
+1|13|NULL|3
+1|14|NULL|4
+1|15|NULL|2
+1|16|NULL|2
+2|1|0|4
+2|2|0|5
+2|3|0|8
+2|4|0|8
+2|5|0|2
+2|6|0|2
+2|7|0|NULL
+2|8|0|8
+2|9|0|2
+2|10|0|8
+2|11|0|2
+2|12|0|3
+2|13|0|3
+2|14|0|4
+2|15|0|2
+2|16|0|2
+3|1|NULL|4
+3|2|NULL|5
+3|3|NULL|8
+3|4|NULL|8
+3|5|NULL|2
+3|6|NULL|2
+3|7|NULL|NULL
+3|8|NULL|8
+3|9|NULL|2
+3|10|NULL|8
+3|11|NULL|2
+3|12|NULL|3
+3|13|NULL|3
+3|14|NULL|4
+3|15|NULL|2
+3|16|NULL|2
+# count(*)
+16
+# id|id|c0|c4
+1|1|X'4F14'|NULL
+1|2|X'4F14'|0
+1|3|X'4F14'|NULL
+1|4|X'4F14'|X'DAAB2491E1'
+1|5|X'4F14'|NULL
+1|6|X'4F14'|X'B5698F0DD3'
+1|7|X'4F14'|-259
+1|8|X'4F14'|-739.946
+1|9|X'4F14'|-713
+1|10|X'4F14'|X'0AA094'
+1|11|X'4F14'|1000
+1|12|X'4F14'|X'C76AE4B56FB0'
+1|13|X'4F14'|3
+1|14|X'4F14'|rho
+error: no such column: a.日本
+# id|ref|nullif(CASE WHEN c4 THEN iif(c4, ref, 'upsilon') ELSE c1 END, c4 BETWEEN NULL AND -212 IN (nullif('Lambda', 930), NULL, -55))
+16|2|3
+15|2|88.91
+14|4|NULL
+13|3|3
+12|3|nu
+11|2|2
+10|8|0
+9|2|2
+8|8|8
+7|NULL|NULL
+6|2|1e3
+5|2|0.1
+4|8|1000000000000000.0
+3|8|X''
+2|5|362
+1|4|583
+# typeof(coalesce(CAST(x'1d675f05' AS REAL), x'6b5f59f953a6'))|NOT x'f5df3b30'
+real|1

@@ -1,0 +1,114 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|110
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+110|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|110
+t2|1001
+t2|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+116|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|110
+t2|1001
+t2|1002
+t0|194
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+110|NULL
+194|NULL
+# id|abs((ref IS NULL AND CAST(NULL AS REAL)))|CAST(typeof(x'bb4d') AS BLOB) IN (nullif(NULL IN (c0, NULL, -5.071), CASE WHEN c0 THEN -510 ELSE -0.0 END), -1, 'omega')
+3|0|NULL
+4|0|NULL
+5|0|NULL
+6|0|NULL
+7|0|NULL
+8|0|NULL
+9|0|NULL
+10|NULL|NULL
+116|NULL|NULL
+# NOT NULL IS NULL|(NULL < 30)
+0|NULL

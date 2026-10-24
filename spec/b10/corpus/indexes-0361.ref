@@ -1,0 +1,76 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t1.c2
+error: cannot store BLOB value in INTEGER column t1.c2
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+19
+changes: 1
+changes: 1
+changes: 1
+# id|c4
+2|480.57
+4|123456789012
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+# count(*)
+16
+changes: 1
+changes: 1
+# date('2000-01-01 12:34:56')|time('2000-01-01 12:34:56')|datetime('2000-01-01 12:34:56', '+1 day')|julianday('2000-01-01 12:34:56')|strftime('%s', '2000-01-01 12:34:56')|unixepoch('2000-01-01 12:34:56')|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:34:56|2000-01-02 12:34:56|2451545.0242592595|946730096|946730096|+0001-01-15 00:00:00.000
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+5|5|-420.47|-420.47|-84.094000000000008|-740|307.03|4
+# c1|count(*)|group_concat(id, ';')
+NULL|2|3;14
+5|2|2;12

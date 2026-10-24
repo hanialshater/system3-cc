@@ -1,0 +1,79 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+changes: 2
+# id|bid
+3|3
+134|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+t1|144
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+144|144
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+t1|144
+t0|165
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 5
+changes: 6
+# count(*)|count(c0)
+11|3
+# count(*)
+11
+error: cannot commit - no transaction is active

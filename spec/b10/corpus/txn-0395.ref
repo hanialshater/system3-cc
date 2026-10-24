@@ -1,0 +1,83 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in TEXT column t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in TEXT column t1.c1
+changes: 1
+error: cannot store BLOB value in INTEGER column t1.c4
+changes: 1
+error: cannot store BLOB value in TEXT column t1.c1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t1.c0
+changes: 1
+changes: 1252
+changes: 4
+changes: 11
+# count(*)|count(c0)
+16|12
+# count(*)
+16
+error: cannot commit - no transaction is active
+changes: 6
+changes: 9
+# count(*)|count(c0)
+16|10
+# count(*)
+16
+error: cannot commit - no transaction is active
+changes: 8
+changes: 1248
+# count(*)|count(c0)
+1255|1247
+# count(*)
+1255
+error: cannot commit - no transaction is active
+changes: 2
+changes: 11
+# count(*)|count(c0)
+5|1
+# count(*)
+5
+error: cannot commit - no transaction is active
+changes: 1
+changes: 1248
+# count(*)|count(c0)
+1255|1247
+# count(*)
+1255
+error: cannot commit - no transaction is active
+changes: 5
+changes: 2
+# count(*)|count(c0)
+5|0
+# count(*)
+5
+error: cannot commit - no transaction is active
+changes: 2
+changes: 1247
+# count(*)|count(c0)
+1255|1247
+# count(*)
+1255
+error: cannot commit - no transaction is active
+changes: 1247
+# id|ref
+# count(*)
+3
+changes: 1247
+changes: 1247

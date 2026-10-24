@@ -1,0 +1,53 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t2.c2
+error: cannot store TEXT value in REAL column t2.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+12 hours')|julianday('1999-12-31T23:59:59.999')|strftime('%j %w %W', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-01-01 11:59:59|2451544.4999999884|365 5 52|946684799|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', '+1 day')|julianday('bad')|strftime('%J', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date(1700000000)|time(1700000000)|datetime(1700000000, '+0 seconds')|julianday(1700000000)|strftime('%f', 1700000000)|unixepoch(1700000000)|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', '+1 day')|julianday('bad')|strftime('%j %w %W', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# printf('%q', 4.5e-310)|round(4.5e-310, 1)|4.5e-310 * -0.0|4.5e-310 / -9223372036854775808|CAST(4.5e-310 AS TEXT)|4.5e-310 + 0.0
+4.500000000000011e-310|0.0|0.0|0.0|4.500000000000011e-310|4.500000000000011e-310

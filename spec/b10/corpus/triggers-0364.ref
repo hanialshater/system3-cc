@@ -1,0 +1,170 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+105|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+105|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t1|1
+t1|2
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 3
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+106| pad 
+# id|c0|c1|c2|c3
+3|0|MU|9.2233720368547758e+18|epsilon
+5|2.5!|X'F61C6D5D1E'|0.0|703.56
+7|X'7405'|0|X'029BA928'|-729
+8|425|0|NULL|0
+9|0|X'D571'|-1.0|3
+11|0|psi|1000.0|688.998
+105|NULL|0|NULL|0
+106| pad |0|NULL|0

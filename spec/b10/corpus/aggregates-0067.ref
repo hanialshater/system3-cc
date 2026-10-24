@@ -1,0 +1,159 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c1|count(*)|group_concat(id, ';')
+NULL|5|4;8;10;14;16
+-898.965|1|7
+0|1|2
+176.3969|1|9
+529.736|1|1
+1000000000000000|2|11;17
+a%b|1|13
+beta|2|3;12
+café|1|5
+epsilon|1|19
+pi|2|6;18
+X''|1|15
+X'AF55757A69B5'|1|20
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+11|9|-286.2584073464102|-286.2584073464102|-31.80648970515669|-727.4|X'EB11F3724E'|9
+# c0|count(*)|group_concat(id, ';')
+NULL|3|6;8;23
+-727.4|1|15
+-563|1|12
+-424.9|1|1
+-301.59|1|19
+-122|1|10
+-67|1|22
+4.500000000000011e-310|1|4
+1|2|5;14
+3.1415926535897931|1|3
+1000|1|16
+MU|1|18
+gamma|1|20
+nu|1|2
+rho|1|17
+Ελλάδα|1|21
+X'04333C70F0'|1|7
+X'049B1DD79A'|1|9
+X'AEF88D24BDC0'|1|13
+X'EB11F3724E'|1|11
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+20|20|210|210.0|10.5|1|20|20
+# id|count(*)|group_concat(id)
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+13|1|13
+14|1|14
+15|1|15
+16|1|16
+17|1|17
+18|1|18
+19|1|19
+20|1|20
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+11|11|147|147.0|13.363636363636363|3|23|11
+# id|count(*)|group_concat(id, ';')
+1|1|1
+2|1|2
+3|1|3
+4|1|4
+5|1|5
+6|1|6
+7|1|7
+8|1|8
+9|1|9
+10|1|10
+11|1|11
+12|1|12
+13|1|13
+14|1|14
+15|1|15
+16|1|16
+17|1|17
+18|1|18
+19|1|19
+20|1|20
+21|1|21
+22|1|22
+23|1|23
+# count(*)|count(ref)|sum(ref)|total(ref)|avg(ref)|min(ref)|max(ref)|count(DISTINCT ref)
+23|15|68|68.0|4.5333333333333332|1|8|8
+# ref|count(*)|group_concat(id)
+NULL|8|1,3,5,7,10,13,21,23
+1|3|4,15,22
+2|1|6
+3|1|19
+4|3|11,14,17
+5|1|16
+6|1|8
+7|3|2,12,18
+8|2|9,20
+changes: 3
+changes: 19
+# count(*)|count(c0)
+4|1
+# count(*)
+4
+error: cannot commit - no transaction is active
+# id|id|c1
+1|1|tau
+2|2|-9223372036854775808
+3|3|0
+4|4|X'25EC07C9'
+# 'it''s' BETWEEN (CAST('MU' AS INTEGER) * x'd59caaa924e3' IN (-998, -1e308, 4.5e-310)) AND typeof(NULL)|NULL BETWEEN (CASE WHEN NULL THEN NULL ELSE -713 END IS NOT typeof(-591.19)) AND 'omega'
+1|NULL

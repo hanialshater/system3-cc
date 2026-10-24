@@ -1,0 +1,94 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 4
+changes: 1
+# count(*)|count(c0)
+3|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 3
+changes: 7
+# count(*)|count(c0)
+8|5
+# count(*)
+15
+error: cannot commit - no transaction is active
+changes: 4
+changes: 0
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 2
+changes: 0
+# count(*)|count(c0)
+4|1
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 4
+changes: 18
+# count(*)|count(c0)
+3|0
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 4
+changes: 0
+# count(*)|count(c0)
+4|0
+# count(*)
+4
+error: cannot commit - no transaction is active
+changes: 0
+# id|c1
+# count(*)
+2
+changes: 0
+changes: 0

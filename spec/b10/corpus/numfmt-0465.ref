@@ -1,0 +1,78 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t2.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t2.c1
+# printf('%Q', 2)|round(2, 4)|2 * 570.9181|2 / 3|CAST(2 AS TEXT)|2 + 0.0
+'2'|2.0|1141.8362|0|2|2.0
+# printf('%o', 389)|round(389, 2)|389 * -5|389 / -316|CAST(389 AS TEXT)|389 + 0.0
+605|389.0|-1945|-1|389|389.0
+# printf('%lld', 1e308)|round(1e308, 3)|1e308 * 4|1e308 / 605|CAST(1e308 AS TEXT)|1e308 + 0.0
+9223372036854775807|1.0e+308|Inf|1.6528925619834711e+305|1.0e+308|1.0e+308
+changes: 5
+changes: 20
+# count(*)|count(c0)
+22|15
+# count(*)
+22
+error: cannot commit - no transaction is active

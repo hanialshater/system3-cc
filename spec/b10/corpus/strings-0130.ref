@@ -1,0 +1,61 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('')|upper('')|lower('')|substr('', -3, 3)|instr('', 'MU')|replace('', 'é', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB 'a*'|char(66, 552)|'' || 'MU'|'' < 'MU'|'' = 'MU' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|BȨ|MU|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', -3, 0)|instr('zeta', 'theta')|replace('zeta', 'é', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%é%'|'zeta' GLOB '*[a-m]*'|char(83, 344)|'zeta' || 'theta'|'zeta' < 'theta'|'zeta' = 'theta' COLLATE NOCASE
+4|ZETA|zeta||0|zeta|zeta|zeta|7A657461|'zeta'|122|0|1|SŘ|zetatheta|0|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', 0, 5)|instr('epsilon', '0x1F')|replace('epsilon', '', '_')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE '_'|'epsilon' GLOB 'a*'|char(73, 445)|'epsilon' || '0x1F'|'epsilon' < '0x1F'|'epsilon' = '0x1F' COLLATE NOCASE
+7|EPSILON|epsilon|epsi|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|0|Iƽ|epsilon0x1F|0|0
+# length('x_y')|upper('x_y')|lower('x_y')|substr('x_y', -3, 0)|instr('x_y', 'sigma')|replace('x_y', '', '')|trim('x_y')|ltrim('x_y', 'ab')|hex('x_y')|quote('x_y')|unicode('x_y')|'x_y' LIKE '%é%'|'x_y' GLOB '?'|char(74, 285)|'x_y' || 'sigma'|'x_y' < 'sigma'|'x_y' = 'sigma' COLLATE NOCASE
+3|X_Y|x_y||0|x_y|x_y|x_y|785F79|'x_y'|120|0|0|Jĝ|x_ysigma|0|0
+# length('a%b')|upper('a%b')|lower('a%b')|substr('a%b', 0, 0)|instr('a%b', 'theta')|replace('a%b', 'a', 'XY')|trim('a%b')|ltrim('a%b', 'ab')|hex('a%b')|quote('a%b')|unicode('a%b')|'a%b' LIKE '_'|'a%b' GLOB '*[a-m]*'|char(66, 596)|'a%b' || 'theta'|'a%b' < 'theta'|'a%b' = 'theta' COLLATE NOCASE
+3|A%B|a%b||0|XY%b|a%b|%b|612562|'a%b'|97|0|1|Bɔ|a%btheta|1|0
+# length('phi')|upper('phi')|lower('phi')|substr('phi', 3, 0)|instr('phi', '0x1F')|replace('phi', 'a', '')|trim('phi')|ltrim('phi', 'ab')|hex('phi')|quote('phi')|unicode('phi')|'phi' LIKE '%'|'phi' GLOB '*[a-m]*'|char(89, 949)|'phi' || '0x1F'|'phi' < '0x1F'|'phi' = '0x1F' COLLATE NOCASE
+3|PHI|phi||0|phi|phi|phi|706869|'phi'|112|1|1|Yε|phi0x1F|0|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', -2, 5)|instr('it''s', 'delta')|replace('it''s', 'é', '')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE '%a_'|'it''s' GLOB '*[a-m]*'|char(81, 960)|'it''s' || 'delta'|'it''s' < 'delta'|'it''s' = 'delta' COLLATE NOCASE
+4|IT'S|it's|'s|0|it's|it's|it's|69742773|'it''s'|105|0|1|Qπ|it'sdelta|0|0
+# count(*)|count(ref)|sum(ref)|total(ref)|avg(ref)|min(ref)|max(ref)|count(DISTINCT ref)
+7|7|37|37.0|5.2857142857142856|3|8|4
+# ref|count(*)|group_concat(id, ';')
+3|3|4;5;7
+5|1|3
+7|1|6
+8|2|1;2
+# length('-7')|upper('-7')|lower('-7')|substr('-7', 4, 3)|instr('-7', 'sigma')|replace('-7', 'a', '')|trim('-7')|ltrim('-7', 'ab')|hex('-7')|quote('-7')|unicode('-7')|'-7' LIKE '_'|'-7' GLOB '*'|char(74, 969)|'-7' || 'sigma'|'-7' < 'sigma'|'-7' = 'sigma' COLLATE NOCASE
+2|-7|-7||0|-7|-7|-7|2D37|'-7'|45|0|1|Jω|-7sigma|1|0
+error: unrecognized token: "x'zz'"

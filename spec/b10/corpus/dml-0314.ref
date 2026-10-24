@@ -1,0 +1,95 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+17|psi
+# id|c0|c1|c2
+1|-805|日本|-2.5
+2|0.0|-5|chi
+3|NULL|0|d
+4|-7|señor|X'35'
+6|X'CA'|X'6468E9'|-253.3908
+7|X'46ABB333'|0|-908.98
+8|omicron|0|2
+9|-734|-494|NULL
+11|NULL|0|NULL
+12|NULL|X'4661'|-26
+13|1000000000000000.0|965|X'A442'
+14|X'4691F9FE1B95'|rho|NULL
+16|NULL|0| pad 
+17|psi|0|d
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+10|X'2FB016'
+# id|c0|c1|c2|c3|c4
+1|X'3DC012'|1.0e-07|-308|0|42
+2|日本|X'341E5AC3'|0.0| pad |delta
+3|X'8B03'|5|X'57CFF6D7AF57'|0|NULL
+4|NULL|440.25|-834|642|123456789012
+6|señor|NULL|2|psi|X''
+7|NULL|X'310E542A01'|-870.832|X'ED5486CC062C'|NULL
+8|Lambda|NULL|NULL|0|NULL
+9|1.0e-07|NULL|NULL|日本|X'9888C3DD7EAB'
+10|X'2FB016'|NULL|NULL|0|NULL
+changes: 3
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+6|-3
+# id|c0|c1|c2|c3
+6|-3|NULL|d|NULL
+5|-1.0e+308|NULL|d|NULL
+4|4|NULL|d|NULL
+3|null|it's|NULL|X'EB868EE8AB'
+2|null|X'5C078C34A95C'|X'9853DF'|-14
+changes: 9
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+10|0x1F
+# id|c0|c1|c2|c3|c4
+2|682.4!|X'341E5AC3'|0.0| pad |delta
+3|0|5|X'57CFF6D7AF57'|0|NULL
+4|iota|NULL|NULL|0|NULL
+6|0|NULL|2|psi|X''
+8|0|NULL|NULL|0|NULL
+9|0|NULL|NULL|日本|X'9888C3DD7EAB'
+10|0x1F|NULL|NULL|0|NULL

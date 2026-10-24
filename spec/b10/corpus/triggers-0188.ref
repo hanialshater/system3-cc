@@ -1,0 +1,264 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c3
+error: UNIQUE constraint failed: t2.c2
+changes: 0
+error: UNIQUE constraint failed: t2.c3
+error: UNIQUE constraint failed: t2.c2
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+116|116
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+116|116
+128|128
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+t2|190
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+t2|190
+t2|195
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+t2|190
+t2|195
+t2|152
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|1
+t0|2
+t1|1001
+t1|1002
+t2|110
+t2|190
+t2|195
+t2|152
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+# n|a
+71|190392490709135
+70|117669030460994
+69|72723460248141
+68|44945570212853
+67|27777890035288
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2|REAL|0|'d'|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+gt0|trigger
+gt1|trigger
+gt2|trigger
+log|table
+sqlite_autoindex_t2_1|index
+sqlite_autoindex_t2_2|index
+t0|table
+t1|table
+t2|table
+vt0|view
+vt1|view
+vt2|view

@@ -1,0 +1,86 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('café')|upper('café')|lower('café')|substr('café', 3, 3)|instr('café', 'phi')|replace('café', '', '')|trim('café')|ltrim('café', 'ab')|hex('café')|quote('café')|unicode('café')|'café' LIKE 'A%'|'café' GLOB '*'|char(88, 864)|'café' || 'phi'|'café' < 'phi'|'café' = 'phi' COLLATE NOCASE
+4|CAFé|café|fé|0|café|café|café|636166C3A9|'café'|99|0|1|X͠|caféphi|1|0
+# length('0x1F')|upper('0x1F')|lower('0x1F')|substr('0x1F', -2, 1)|instr('0x1F', 'psi')|replace('0x1F', 'a', 'XY')|trim('0x1F')|ltrim('0x1F', 'ab')|hex('0x1F')|quote('0x1F')|unicode('0x1F')|'0x1F' LIKE 'A%'|'0x1F' GLOB '*[a-m]*'|char(66, 836)|'0x1F' || 'psi'|'0x1F' < 'psi'|'0x1F' = 'psi' COLLATE NOCASE
+4|0X1F|0x1f|1|0|0x1F|0x1F|0x1F|30783146|'0x1F'|48|0|0|B̈́|0x1Fpsi|1|0
+# length('xi')|upper('xi')|lower('xi')|substr('xi', -3, 4)|instr('xi', '')|replace('xi', 'é', '')|trim('xi')|ltrim('xi', 'ab')|hex('xi')|quote('xi')|unicode('xi')|'xi' LIKE '_'|'xi' GLOB '?'|char(84, 523)|'xi' || ''|'xi' < ''|'xi' = '' COLLATE NOCASE
+2|XI|xi|xi|1|xi|xi|xi|7869|'xi'|120|0|0|Tȋ|xi|0|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', 3, 2)|instr('nu', 'omicron')|replace('nu', 'é', '')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE '_'|'nu' GLOB '?'|char(84, 437)|'nu' || 'omicron'|'nu' < 'omicron'|'nu' = 'omicron' COLLATE NOCASE
+2|NU|nu||0|nu|nu|nu|6E75|'nu'|110|0|0|TƵ|nuomicron|1|0
+# length('rho')|upper('rho')|lower('rho')|substr('rho', 3, 4)|instr('rho', 'x_y')|replace('rho', 'a', 'XY')|trim('rho')|ltrim('rho', 'ab')|hex('rho')|quote('rho')|unicode('rho')|'rho' LIKE '%é%'|'rho' GLOB '*'|char(90, 997)|'rho' || 'x_y'|'rho' < 'x_y'|'rho' = 'x_y' COLLATE NOCASE
+3|RHO|rho|o|0|rho|rho|rho|72686F|'rho'|114|0|1|Zϥ|rhox_y|1|0
+# length('sigma')|upper('sigma')|lower('sigma')|substr('sigma', 1, 3)|instr('sigma', 'a%b')|replace('sigma', 'a', '')|trim('sigma')|ltrim('sigma', 'ab')|hex('sigma')|quote('sigma')|unicode('sigma')|'sigma' LIKE 'A%'|'sigma' GLOB '*[a-m]*'|char(80, 553)|'sigma' || 'a%b'|'sigma' < 'a%b'|'sigma' = 'a%b' COLLATE NOCASE
+5|SIGMA|sigma|sig|0|sigm|sigma|sigma|7369676D61|'sigma'|115|0|1|Pȩ|sigmaa%b|0|0
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+10|10
+9|9
+11|11
+12|12
+8|8
+5|5
+3|3
+6|6
+7|7
+4|4
+2|2
+1|1
+# id
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+# c0
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+{"id":1,"v":null}
+{"id":2,"v":"über"}
+error: JSON cannot hold BLOB values

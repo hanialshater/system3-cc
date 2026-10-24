@@ -1,0 +1,141 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|TEXT|0|'d'|0
+4|c3|BLOB|0|NULL|0
+5|c4|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2|TEXT|0|'d'|0
+4|c3|BLOB|0|NULL|0
+5|c4|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+t0|table
+t1|table
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# id|id|CASE WHEN x'9f' IS NULL BETWEEN typeof(-726.591) AND NULL THEN NOT NOT -336 ELSE -416 END
+166|166|-416
+20|20|-416
+19|19|-416
+18|18|-416
+17|17|-416
+16|16|-416
+15|15|-416
+14|14|-416
+13|13|-416
+12|12|-416
+11|11|-416
+10|10|-416
+9|9|-416
+8|8|-416
+7|7|-416
+6|6|-416
+5|5|-416
+4|4|-416
+3|3|-416
+# coalesce(iif(NULL, 755.99, 0.1), CASE WHEN (-198 = x'b3820dc28f') THEN x'' ELSE abs(5) END)|-(iif(-440, 'psi', NULL) IS NULL)
+0.1|0

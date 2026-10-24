@@ -1,0 +1,114 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# count(*)|count(c3)|sum(c3)|total(c3)|avg(c3)|min(c3)|max(c3)|count(DISTINCT c3)
+5|5|1.0e+308|1.0e+308|2.0e+307|-217.0|1.0e+308|5
+# c3|count(*)|group_concat(id, ';')
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+21|17|923.14159265358978|923.14159265358978|54.30244662668175|-4|X'CE74A4FC'|16
+# c1|count(*)|group_concat(id, ';')
+NULL|4|1;10;11;13
+-4|1|16
+0.1|1|8
+2.5|2|6;18
+3.1415926535897931|1|7
+925.9|1|5
+-7|1|4
+phi|1|19
+pi|1|15
+rho|1|20
+xi|1|2
+X''|1|12
+X'07786F93EE'|1|17
+X'473B5CB7'|1|3
+X'B722A8A7C4B3'|1|14
+X'BD2DD0'|1|9
+X'CE74A4FC'|1|21
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+21|14|-500.642|-500.642|-35.76014285714286|-145|X'D5285C0C'|14
+# c2|count(*)|group_concat(id)
+NULL|7|3,5,7,9,10,17,18
+-145|1|8
+-247.07|1|12
+-4|1|11
+-447.98|1|16
+-763.49|1|21
+350.148|1|15
+4.500000000000011e-310|1|20
+756.75|1|4
+epsilon|1|6
+omicron|1|14
+psi|1|13
+X''|1|1
+X'21736B6016'|1|19
+X'D5285C0C'|1|2
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+6|4|-1280.0|-1280.0|-320.0|-670|beta|4
+# c0|count(*)|group_concat(id, ';')
+NULL|2|2;4
+-670|1|6
+-612|1|1
+2|1|3
+beta|1|5
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|BLOB|1|0|0
+3|c2|REAL|0|NULL|0
+4|c3|BLOB|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+12 hours')|julianday('1999-12-31T23:59:59.999')|strftime('%Y-%m-%d %H:%M:%S', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-01-01 11:59:59|2451544.4999999884|1999-12-31 23:59:59|946684799|+0001-01-15 00:00:00.000

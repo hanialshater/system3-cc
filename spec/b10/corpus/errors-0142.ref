@@ -1,0 +1,63 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t0.c4
+error: UNIQUE constraint failed: t1.id
+error: 1st ORDER BY term out of range - should be between 1 and 1
+error: near ";": syntax error
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+9|9
+7|7
+8|8
+4|4
+6|6
+3|3
+2|2
+10|10
+5|5
+1|1
+11|11
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+# id
+# c0
+-24.361
+-14.813
+5.815
+6.324
+9.042
+18.917
+26.405
+43.227

@@ -1,0 +1,84 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+error: NOT NULL constraint failed: t0.c3
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+error: UNIQUE constraint failed: t1.c3
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(coalesce(nullif(123456789012, id), 'rho' IN (ref, 179.97, -4)) IS NOT 2.5)|NOT CAST(NOT c0 AS REAL)
+6|1|1
+5|1|1
+4|1|1
+3|1|1
+2|1|1
+1|1|1
+# -177 IS NULL IN (coalesce(x'8ffda09a', iif(3.141592653589793, x'18bb1f72', 657)), '0x1F', -1e308)|5
+0|5
+# id|NOT coalesce(iif(c0, NULL, -294), (1e308 + id))|abs(CAST('omega' AS NUMERIC)) IN (-(c0), 'rho', 428.3)
+1|0|0
+2|0|0
+3|0|0
+4|0|0
+5|0|0
+6|0|NULL
+7|0|NULL
+8|0|1
+9|0|1
+10|0|1
+11|0|NULL
+12|0|NULL
+# coalesce(-2, x'9119f26f3b6c')|typeof((NOT 2.5 < 'pi'))
+-2|integer
+# id|'kappa'|nullif(coalesce(-2.5 BETWEEN c2 AND '', id), c2)
+1|kappa|1
+2|kappa|0
+3|kappa|0
+4|kappa|4
+5|kappa|5
+6|kappa|0
+7|kappa|0
+8|kappa|8
+9|kappa|0
+10|kappa|0
+11|kappa|0
+12|kappa|12
+# 'naïve'|(nullif(coalesce(622, -985), coalesce('Ελλάδα', 3)) / typeof(2))
+naïve|NULL
+changes: 1
+# id|c0
+5|-754
+3|-279.8
+1|0
+4|0
+6|0
+2|436.2
+# count(*)
+6
+changes: 1
+changes: 1

@@ -1,0 +1,140 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1626
+# id|id|c0|c0
+3|3|-127|-127
+3|14|-127|743
+4|6|123456789012|NULL
+4|11|123456789012|4.500000000000011e-310
+4|13|123456789012|X''
+5|7|X'2639EFBE'|NULL
+5|10|X'2639EFBE'|-287
+5|12|X'2639EFBE'|NULL
+6|8|NULL|-9223372036854775808
+7|1|NULL|818
+8|4|-9223372036854775808|123456789012
+8|9|-9223372036854775808|718
+error: ambiguous column name: c1
+# id|id|c0|id
+3|3|-127|3
+3|14|-127|14
+4|6|123456789012|6
+4|11|123456789012|11
+4|13|123456789012|13
+5|7|X'2639EFBE'|7
+5|10|X'2639EFBE'|10
+5|12|X'2639EFBE'|12
+6|8|NULL|8
+7|1|NULL|1
+8|4|-9223372036854775808|4
+8|9|-9223372036854775808|9
+error: near "(": syntax error
+# id|id|c0|c0
+1|NULL|X'73'|NULL
+2|NULL|3|NULL
+3|3|a%b|-127
+3|14|a%b|743
+4|6|-1.0e+308|NULL
+4|11|-1.0e+308|4.500000000000011e-310
+4|13|-1.0e+308|X''
+5|7|0x1F|NULL
+5|10|0x1F|-287
+5|12|0x1F|NULL
+6|8|NULL|-9223372036854775808
+7|1|NULL|818
+8|4|NULL|123456789012
+8|9|NULL|718
+9|NULL|sigma|NULL
+10|NULL|kappa|NULL
+11|NULL|9223372036854775807|NULL
+12|NULL|-4|NULL
+13|NULL|X'468C6EA885'|NULL
+14|NULL|NULL|NULL
+15|NULL|5|NULL
+16|NULL|NULL|NULL
+17|NULL|-288|NULL
+18|NULL|X'9655B006'|NULL
+# count(*)
+19
+error: UNIQUE constraint failed: t1.c0
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+16|X'A4C2A0651F'
+# id|c0|c1|ref
+2|Lambda|2.5|NULL
+3|-127|-827.6287|3
+4|916|NULL|NULL
+5|X'2639EFBE'|1.0e+308|NULL
+6|-1|NULL|NULL
+8|-9223372036854775808|über|6
+9|718|-9223372036854775808|8
+11|4.500000000000011e-310|2|4
+12|NULL|NULL|5
+14|743|NULL|3
+15|394.5|NULL|NULL
+16|X'A4C2A0651F'|NULL|NULL
+error: near ";": syntax error
+# printf('%-8s|', 4.5e-310)|round(4.5e-310, 2)|4.5e-310 * 706|4.5e-310 / 184|CAST(4.5e-310 AS TEXT)|4.5e-310 + 0.0
+4.500000000000011e-310||0.0|3.1770000000000075e-307|2.4456521739134254e-312|4.500000000000011e-310|4.500000000000011e-310

@@ -1,0 +1,100 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 193
+error: NOT NULL constraint failed: t2.c0
+changes: 6
+# count(*)|count(c0)
+11|11
+# count(*)
+11
+error: cannot commit - no transaction is active
+changes: 3
+changes: 17
+# count(*)|count(c0)
+24|17
+# count(*)
+24
+error: cannot commit - no transaction is active
+changes: 2
+changes: 15
+# count(*)|count(c0)
+9|4
+# count(*)
+9
+error: cannot commit - no transaction is active
+changes: 7
+changes: 3
+# count(*)|count(c0)
+6|0
+# count(*)
+6
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t2.c0
+changes: 2
+# count(*)|count(c0)
+11|11
+# count(*)
+11
+error: cannot commit - no transaction is active
+error: NOT NULL constraint failed: t2.c0
+changes: 5
+# count(*)|count(c0)
+11|11
+# count(*)
+11
+error: cannot commit - no transaction is active
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|VARCHAR(10)|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table

@@ -1,0 +1,90 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+error: JSON cannot hold BLOB values
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12

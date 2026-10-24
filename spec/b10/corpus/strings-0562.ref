@@ -1,0 +1,111 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('Ελλάδα')|upper('Ελλάδα')|lower('Ελλάδα')|substr('Ελλάδα', 2, 4)|instr('Ελλάδα', '0x1F')|replace('Ελλάδα', 'a', '')|trim('Ελλάδα')|ltrim('Ελλάδα', 'ab')|hex('Ελλάδα')|quote('Ελλάδα')|unicode('Ελλάδα')|'Ελλάδα' LIKE '_'|'Ελλάδα' GLOB '*'|char(75, 789)|'Ελλάδα' || '0x1F'|'Ελλάδα' < '0x1F'|'Ελλάδα' = '0x1F' COLLATE NOCASE
+6|Ελλάδα|Ελλάδα|λλάδ|0|Ελλάδα|Ελλάδα|Ελλάδα|CE95CEBBCEBBCEACCEB4CEB1|'Ελλάδα'|917|0|1|K̕|Ελλάδα0x1F|0|0
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', -3, 0)|instr('gamma', 'iota')|replace('gamma', 'e', '_')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%a_'|'gamma' GLOB '*'|char(79, 664)|'gamma' || 'iota'|'gamma' < 'iota'|'gamma' = 'iota' COLLATE NOCASE
+5|GAMMA|gamma||0|gamma|gamma|gamma|67616D6D61|'gamma'|103|0|1|Oʘ|gammaiota|1|0
+# length('Lambda')|upper('Lambda')|lower('Lambda')|substr('Lambda', 1, 1)|instr('Lambda', 'NULL')|replace('Lambda', 'e', '')|trim('Lambda')|ltrim('Lambda', 'ab')|hex('Lambda')|quote('Lambda')|unicode('Lambda')|'Lambda' LIKE '_'|'Lambda' GLOB '*[a-m]*'|char(75, 301)|'Lambda' || 'NULL'|'Lambda' < 'NULL'|'Lambda' = 'NULL' COLLATE NOCASE
+6|LAMBDA|lambda|L|0|Lambda|Lambda|Lambda|4C616D626461|'Lambda'|76|0|1|Kĭ|LambdaNULL|1|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', 4, 1)|instr('nu', 'tau')|replace('nu', 'é', 'XY')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE '%'|'nu' GLOB 'a*'|char(74, 231)|'nu' || 'tau'|'nu' < 'tau'|'nu' = 'tau' COLLATE NOCASE
+2|NU|nu||0|nu|nu|nu|6E75|'nu'|110|1|0|Jç|nutau|1|0
+# length('nu')|upper('nu')|lower('nu')|substr('nu', -1, 3)|instr('nu', 'x_y')|replace('nu', '', '')|trim('nu')|ltrim('nu', 'ab')|hex('nu')|quote('nu')|unicode('nu')|'nu' LIKE 'A%'|'nu' GLOB '?'|char(78, 329)|'nu' || 'x_y'|'nu' < 'x_y'|'nu' = 'x_y' COLLATE NOCASE
+2|NU|nu|u|0|nu|nu|nu|6E75|'nu'|110|0|0|Nŉ|nux_y|1|0
+# length('x_y')|upper('x_y')|lower('x_y')|substr('x_y', 2, 5)|instr('x_y', 'nu')|replace('x_y', 'a', 'XY')|trim('x_y')|ltrim('x_y', 'ab')|hex('x_y')|quote('x_y')|unicode('x_y')|'x_y' LIKE '_'|'x_y' GLOB 'a*'|char(76, 974)|'x_y' || 'nu'|'x_y' < 'nu'|'x_y' = 'nu' COLLATE NOCASE
+3|X_Y|x_y|_y|0|x_y|x_y|x_y|785F79|'x_y'|120|0|0|Lώ|x_ynu|0|0
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+changes: 1
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+16|xi
+# id|c0|c1|ref
+2|naïve|0.1|3
+3|0|phi|4
+4|X'A278'|NULL|NULL
+5|4.500000000000011e-310|X''|2
+6|tau!|2.5|1
+8|integer|NULL|8
+9|3.1415926535897931|-4|NULL
+11|4.500000000000011e-310|NULL|NULL
+12|-131|NULL|6
+14|it's|X'C2'|3
+15|444|X'1FDED8D5'|NULL
+16|xi|NULL|NULL
+# n|a
+64|6557470319842
+63|4052739537881
+62|2504730781961
+61|1548008755920
+60|956722026041
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

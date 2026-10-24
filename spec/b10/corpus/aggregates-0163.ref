@@ -1,0 +1,136 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1994
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+11|11|1.0e+308|1.0e+308|9.0909090909090912e+306|-114|X'A4248B'|11
+# c2|count(*)|group_concat(id)
+-114|1|8
+-190.77|1|6
+-922|1|5
+0.0|1|9
+1.0e+308|1|7
+chi|1|10
+delta|1|1
+omicron|1|2
+phi|1|3
+X'7C467501'|1|11
+X'A4248B'|1|4
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+11|8|551.28|551.28|68.91|-3|X'78D0'|8
+# c1|count(*)|group_concat(id, ';')
+NULL|3|2;7;8
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+11|11|1.0e+308|1.0e+308|9.0909090909090912e+306|-114|X'A4248B'|11
+# c2|count(*)|group_concat(id)
+# id|id|id|c2
+1|1|1|delta
+2|1|2|delta
+2|2|2|omicron
+3|1|3|delta
+3|2|3|omicron
+3|3|3|phi
+4|1|4|delta
+4|2|4|omicron
+4|3|4|phi
+4|4|4|X'A4248B'
+5|1|5|delta
+5|2|5|omicron
+5|3|5|phi
+5|4|5|X'A4248B'
+5|5|5|-922
+6|1|6|delta
+6|2|6|omicron
+6|3|6|phi
+6|4|6|X'A4248B'
+6|5|6|-922
+6|6|6|-190.77
+7|1|7|delta
+7|2|7|omicron
+7|3|7|phi
+7|4|7|X'A4248B'
+7|5|7|-922
+7|6|7|-190.77
+7|7|7|1.0e+308
+8|1|8|delta
+8|2|8|omicron
+8|3|8|phi
+8|4|8|X'A4248B'
+8|5|8|-922
+8|6|8|-190.77
+8|7|8|1.0e+308
+8|8|8|-114
+9|1|9|delta
+9|2|9|omicron
+9|3|9|phi
+9|4|9|X'A4248B'
+9|5|9|-922
+9|6|9|-190.77
+9|7|9|1.0e+308
+9|8|9|-114
+9|9|9|0.0
+10|1|10|delta
+10|2|10|omicron
+10|3|10|phi
+10|4|10|X'A4248B'
+10|5|10|-922
+10|6|10|-190.77
+10|7|10|1.0e+308
+10|8|10|-114
+10|9|10|0.0
+# count(*)
+2013

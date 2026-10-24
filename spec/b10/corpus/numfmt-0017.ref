@@ -1,0 +1,95 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+error: NOT NULL constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+# printf('%Q', 2.5)|round(2.5, 3)|2.5 * 765|2.5 / -472|CAST(2.5 AS TEXT)|2.5 + 0.0
+'2.5'|2.5|1912.5|-0.0052966101694915252|2.5|2.5
+# printf('%5.2f', 319.01)|round(319.01, 4)|319.01 * -180|319.01 / -5|CAST(319.01 AS TEXT)|319.01 + 0.0
+319.01|319.01|-57421.799999999996|-63.802|319.01|319.01
+# printf('%+d', 887)|round(887, 0)|887 * 9223372036854775807|887 / 556|CAST(887 AS TEXT)|887 + 0.0
++887|887.0|8.1811309966901861e+21|1|887|887.0
+# printf('%g', 701.3752)|round(701.3752, 4)|701.3752 * 936.977|701.3752 / 222.5496|CAST(701.3752 AS TEXT)|701.3752 + 0.0
+701.375|701.3752|657172.4307704|3.1515455431058963|701.3752|701.3752
+# printf('%.3s', -950)|round(-950, 4)|-950 * 4|-950 / 257.5|CAST(-950 AS TEXT)|-950 + 0.0
+-95|-950.0|-3800|-3.6893203883495147|-950|-950.0
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+21|21|9.2243720368547758e+18|9.2243720368547758e+18|4.3925581127879885e+17|-850|X'FFC9'|18
+# c1|count(*)|group_concat(id, ';')
+-850|1|20
+-612|1|2
+-261.24|1|13
+0|4|3;14;15;19
+232|1|4
+562.021|1|7
+766|1|9
+985|1|10
+1000000000000000|1|17
+9223372036854775807|1|1
+epsilon|1|21
+tau|1|18
+xi|1|16
+X'06B245'|1|6
+X'30BB7A'|1|11
+X'38607CDB'|1|5
+X'59ED6E6839'|1|8
+X'FFC9'|1|12
+changes: 1
+# id|c2
+4|NULL
+8|NULL
+13|NULL
+14|NULL
+1|-497
+7|-5
+12|310
+20|478
+18|537
+15|123456789012
+5|1000000000000000
+3|Lambda
+21|a%b
+11|epsilon
+17|eta
+6|gamma
+16|xi
+19|X'3B3F04AFD0'
+2|X'6C'
+9|X'8FEF55'
+10|X'B297549089'
+# count(*)
+17
+changes: 1
+changes: 1

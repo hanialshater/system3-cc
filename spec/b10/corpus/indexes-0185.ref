@@ -1,0 +1,93 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+17|17
+18|18
+19|19
+20|20
+# count(*)
+20
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+# count(*)
+3
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+# count(*)
+3
+changes: 1
+changes: 1
+# length('iota')|upper('iota')|lower('iota')|substr('iota', 4, 3)|instr('iota', 'epsilon')|replace('iota', 'a', 'XY')|trim('iota')|ltrim('iota', 'ab')|hex('iota')|quote('iota')|unicode('iota')|'iota' LIKE '%a_'|'iota' GLOB '*[a-m]*'|char(70, 767)|'iota' || 'epsilon'|'iota' < 'epsilon'|'iota' = 'epsilon' COLLATE NOCASE
+4|IOTA|iota|a|0|iotXY|iota|iota|696F7461|'iota'|105|0|1|F˿|iotaepsilon|0|0
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18
+error: NOT NULL constraint failed: t2.c0
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+10|-1.0e+308
+# id|c0|c1|c2|c3
+10|-1.0e+308|NULL|0|NULL
+9|-3|NULL|0|NULL
+5|3|epsilon|X''|X'0649B06826BA'
+3|5|NULL|chi|X'46B8'
+2|-784.9|NULL|0|NULL
+1|0|NULL|0|0.0

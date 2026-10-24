@@ -1,0 +1,99 @@
+changes: 0
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c0|rank() OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|omicron|1
+2|0|2
+3|X'B8B326ED98AA'|3
+4|theta|4
+5|-768.153|5
+6|kappa|6
+7|NULL|1
+8|X'2463'|7
+9|-482|8
+10|upsilon|9
+11|gamma|10
+12|NULL|2
+13|NULL|3
+14|4|11
+15|403.63|12
+16|NULL|4
+17|X''|13
+18|X'92AD83DB'|14
+19|NULL|5
+20|-1.0e+308|15
+21|0x1F|16
+22|-750|17
+23|2|18
+# id|c0|lag(c0) OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|295|NULL
+2|NULL|NULL
+3|X''|295
+# id|c0|group_concat(id, '.') OVER (ORDER BY id)
+1|295|1
+2|NULL|1.2
+3|X''|1.2.3
+# id|id|percent_rank() OVER (ORDER BY id)
+1|1|0.0
+2|2|0.5
+3|3|1.0
+# id|id|sum(id) OVER (ORDER BY id)
+1|1|1
+2|2|3
+3|3|6
+4|4|10
+5|5|15
+6|6|21
+7|7|28
+8|8|36
+9|9|45
+10|10|55
+11|11|66
+12|12|78
+13|13|91
+14|14|105
+15|15|120
+16|16|136
+17|17|153
+18|18|171
+19|19|190
+20|20|210
+21|21|231
+22|22|253
+23|23|276
+# id|c0|dense_rank() OVER (ORDER BY id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+1|295|1
+2|NULL|2
+3|X''|3
+changes: 1
+# id|c1
+# count(*)
+3
+changes: 1
+changes: 1

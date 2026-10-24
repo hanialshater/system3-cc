@@ -1,0 +1,82 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+4|236
+6|9223372036854775807
+7|X''
+3|X'B93030987A'
+9|X'DC9472B9'
+# count(*)
+8
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+7|-974
+1|-928
+8|-534
+# count(*)
+6
+changes: 1
+changes: 1
+# id|id|row_number() OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+8|8|8
+9|9|9
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+5|7
+1|7
+4|7
+3|7
+2|7
+6|7
+7|7
+# id
+1
+2
+3
+4
+5
+6
+7
+# id
+1
+2
+3
+4
+# c0
+387
+X'021167A3F5C5'
+X'1451F03C47'
+X'2CC0CBC3370E'
+X'A96E'
+X'E74DD7BFCF'

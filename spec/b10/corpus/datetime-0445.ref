@@ -1,0 +1,120 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', 'unixepoch')|julianday('2024-02-29')|strftime('%J', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|NULL|2460369.5|2460369.5|1709164800|+0001-01-15 00:00:00.000
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', '-1 month')|julianday('2024-02-29')|strftime('%s', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-01-29 00:00:00|2460369.5|1709164800|1709164800|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', 'start of month')|julianday('bad')|strftime('%s', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', 'start of month')|julianday('2038-01-19 03:14:07')|strftime('%Y-%m-%d %H:%M:%S', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-01 00:00:00|2465442.6348032407|2038-01-19 03:14:07|2147483647|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+0 seconds')|julianday('1999-12-31T23:59:59.999')|strftime('%f', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|1999-12-31 23:59:59|2451544.4999999884|59.999|946684799|+0001-01-15 00:00:00.000
+# count(*)|count(c0)|sum(c0)|total(c0)|avg(c0)|min(c0)|max(c0)|count(DISTINCT c0)
+15|12|-535.23|-535.23|-44.6025|-533.73|X'45'|12
+# c0|count(*)|group_concat(id)
+NULL|3|1,8,9
+-533.73|1|6
+-4|1|2
+2.5|1|7
+0x1F|1|10
+gamma|1|13
+señor|1|3
+tau|1|12
+x_y|1|4
+日本|1|5
+X''|1|11
+X'29'|1|15
+X'45'|1|14
+changes: 1
+# id|c1
+4|NULL
+5|NULL
+15|NULL
+18|NULL
+2|-271.383
+13|-912.538
+16|-9223372036854775808
+17|-9223372036854775808
+8|-942
+7|42
+19|715
+9|870.1429
+10|a%b
+21|a%b
+1|iota
+11|nu
+14|señor
+12|xi
+20|Ελλάδα
+3|X''
+6|X'9B'
+# count(*)
+17
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+3|3
+4|4
+2|2
+1|1
+# id
+# id
+1
+2
+3
+4
+# c2
+0.1
+119
+341.6294
+519
+554.7466
+957
+1.0e-07
+naïve
+sigma
+zeta
+X''
+X'8723B36C40'

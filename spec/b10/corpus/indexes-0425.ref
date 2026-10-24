@@ -1,0 +1,136 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+error: no query solution
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+10
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+1|NULL
+3|NULL
+4|NULL
+9|NULL
+11|NULL
+12|NULL
+14|NULL
+15|NULL
+18|-865
+7|-419
+13|-7
+16|4.500000000000011e-310
+6|1.0e-07
+5|2.5
+10|it's
+2|tau
+17|X'AC92D66BC0'
+8|X'D4'
+# count(*)
+10
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+18|18
+17|18
+16|18
+15|18
+14|18
+13|18
+12|18
+11|18
+10|18
+9|18
+8|18
+7|18
+6|18
+5|18
+4|18
+3|18
+2|18
+1|18
+# id
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+# c2
+4.500000000000011e-310
+1.0e-07
+2.5
+it's
+tau
+X'AC92D66BC0'
+X'D4'
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+10|NULL
+# id|c0|c1|c2|c3
+1|NULL|0x1F|NULL|NULL
+4|1.0e-07|d|NULL|NULL
+5|X'0D'|X'05B89A97B449'|NULL|beta
+7|NULL|gamma|X'FD0C2EBB8F3A'|X'7EF71133'
+9|NULL|-4|psi|97
+10|NULL|d|NULL|NULL

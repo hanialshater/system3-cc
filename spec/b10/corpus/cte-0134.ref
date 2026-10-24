@@ -1,0 +1,117 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2497
+# n|a
+55|86267571272
+54|53316291173
+53|32951280099
+52|20365011074
+51|12586269025
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+47|1836311903
+46|1134903170
+45|701408733
+44|433494437
+43|267914296
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+6|5
+5|3
+4|2
+3|1
+2|1
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+43|267914296
+42|165580141
+41|102334155
+40|63245986
+39|39088169
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+9|21
+8|13
+7|8
+6|5
+5|3
+# count(*)|max(x)|group_concat(x)
+4|8|8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# length('gamma')|upper('gamma')|lower('gamma')|substr('gamma', 1, 3)|instr('gamma', 'sigma')|replace('gamma', 'a', 'XY')|trim('gamma')|ltrim('gamma', 'ab')|hex('gamma')|quote('gamma')|unicode('gamma')|'gamma' LIKE '%'|'gamma' GLOB '?'|char(85, 788)|'gamma' || 'sigma'|'gamma' < 'sigma'|'gamma' = 'sigma' COLLATE NOCASE
+5|GAMMA|gamma|gam|0|gXYmmXY|gamma|gamma|67616D6D61|'gamma'|103|1|0|U̔|gammasigma|1|0
+# count(*)|count(id)|sum(id)|total(id)|avg(id)|min(id)|max(id)|count(DISTINCT id)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# id|count(*)|group_concat(id, ';')

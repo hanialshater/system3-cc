@@ -1,0 +1,194 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+15|3.1415926535897931
+# id|c0|c1|c2|c3|c4
+15|3.1415926535897931|0|NULL|NULL|NULL
+14|1000000000000000.0|0|NULL|321|NULL
+12|NULL|-4|-7|33|NULL
+10|NULL|-277|NULL|49|X'5DB0A6'
+8|-4|eta|3|743|X'0F'
+7|-168.5917|0|NULL|NULL|NULL
+6|0.0!|0|4.500000000000011e-310|NULL|MU
+4|NULL|4|phi|NULL|0
+2|X'E895'|phi|X''|kappa|sigma
+changes: 1
+changes: 3
+changes: 1
+error: cannot store BLOB value in TEXT column t1.c0
+# id|c0
+16|NULL
+# id|c0|c1|c2|c3|ref
+16|NULL|NULL|NULL|NULL|NULL
+15|-7|Lambda|X''|282|NULL
+14| pad |-2.5|2.5|-252|8
+13|café|nu|NULL|-124|3
+11|rho|omicron|gamma|454|6
+10|omicron|it's|1|223|2
+9|alpha|alpha|2|0|6
+7|sigma|42|1000000000000000.0|-254|6
+6|>�H�!|omega|NULL|-26|7
+5|sigma|-7|-888|-268|2
+3|eta|zeta|-35|340|6
+2|beta|chi|386.904|105|8
+1|zeta|MU|NULL|214|2
+error: UNIQUE constraint failed: t0.c0
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+24|5
+# id|c0|c1
+1|X''|123456789012
+2|0.1|-631
+3|NULL|NULL
+5|57!|X'8D3E4BAFDCFB'
+6|theta|0
+7|X'E04C5D9D'|NULL
+9|X'042E50CF7ACB'|NULL
+10|1|NULL
+11|naïve|X'8F53418A4B'
+13|603|3.1415926535897931
+14|0|768.6444
+15|NULL|-4
+17|tau|NULL
+18|470|0
+19|1.0e-07|kappa
+21|eta|X'D898'
+22|-9223372036854775808|NULL
+23|NULL|X'356B29D54309'
+24|5|NULL
+error: UNIQUE constraint failed: t0.c0
+changes: 7
+changes: 1
+changes: 1
+# id|c0
+24|0x1F
+# id|c0|c1
+24|0x1F|NULL
+23|NULL|X'356B29D54309'
+22|-9223372036854775808|NULL
+19|1.0e-07|kappa
+17|tau|NULL
+14|0|768.6444
+13|603|3.1415926535897931
+11|naïve|X'8F53418A4B'
+10|1|NULL
+7|X'E04C5D9D'|NULL
+5|57!|X'8D3E4BAFDCFB'
+4|NULL|NULL
+2|0.1|-631
+1|X''|123456789012
+changes: 0
+changes: 7
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+# id|c0
+25|-601
+# id|c0|c1
+1|X'A1474728'|NULL
+2|0.1|-631
+5|57!|X'8D3E4BAFDCFB'
+11|naïve|X'8F53418A4B'
+14|0|768.6444
+17|tau|NULL
+23|NULL|X'356B29D54309'
+24|0x1F|NULL
+25|-601|NULL
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+26|NULL
+# id|c0|c1
+1|X'A1474728'|NULL
+2|0.1|-631
+4|24.074|NULL
+5|57!|X'8D3E4BAFDCFB'
+7|NULL|NULL
+11|naïve|X'8F53418A4B'
+14|0|768.6444
+17|tau|NULL
+23|NULL|X'356B29D54309'
+25|-601|NULL
+26|NULL|NULL
+changes: 11
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+error: cannot store BLOB value in TEXT column t1.c0
+# id|c0|c1|c2|c3|ref
+16|NULL|NULL|NULL|NULL|NULL
+15|-4|Lambda|X''|282|NULL
+14|-4|-2.5|2.5|-252|8
+11|-4|omicron|gamma|454|6
+10|-4|it's|1|223|2
+7|-4|42|1000000000000000.0|-254|6
+6|NULL|NULL|NULL|NULL|NULL
+3|-4|zeta|-35|340|6
+2|-4|chi|386.904|105|8
+# length('NULL')|upper('NULL')|lower('NULL')|substr('NULL', -3, 0)|instr('NULL', 'delta')|replace('NULL', 'é', '')|trim('NULL')|ltrim('NULL', 'ab')|hex('NULL')|quote('NULL')|unicode('NULL')|'NULL' LIKE '%é%'|'NULL' GLOB '*[a-m]*'|char(78, 540)|'NULL' || 'delta'|'NULL' < 'delta'|'NULL' = 'delta' COLLATE NOCASE
+4|NULL|null||0|NULL|NULL|NULL|4E554C4C|'NULL'|78|0|0|NȜ|NULLdelta|1|0

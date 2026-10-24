@@ -1,0 +1,72 @@
+changes: 0
+error: cannot store BLOB value in TEXT column t0.c0
+error: cannot store BLOB value in TEXT column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1946
+changes: 8
+changes: 13
+# count(*)|count(c0)
+21|11
+# count(*)
+21
+error: cannot commit - no transaction is active
+changes: 7
+changes: 18
+# count(*)|count(c0)
+21|11
+# count(*)
+21
+error: cannot commit - no transaction is active
+changes: 4
+changes: 1951
+# count(*)|count(c0)
+1957|1953
+# count(*)
+1957
+error: cannot commit - no transaction is active
+changes: 1951
+# id|c2
+# count(*)
+19
+changes: 1951
+changes: 1951

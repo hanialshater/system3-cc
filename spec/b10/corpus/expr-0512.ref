@@ -1,0 +1,210 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|NULL|id
+1|NULL|1
+2|NULL|2
+3|NULL|3
+4|NULL|4
+5|NULL|5
+6|NULL|6
+7|NULL|7
+8|NULL|8
+9|NULL|9
+10|NULL|10
+11|NULL|11
+12|NULL|12
+13|NULL|13
+14|NULL|14
+15|NULL|15
+16|NULL|16
+# 'omicron' IS NULL|iif(iif(CASE WHEN -2 THEN -2 ELSE 1.0e15 END, nullif(NULL, NULL), 646), CASE WHEN NOT -507 THEN 'alpha' ELSE '日本' END, -899)
+0|-899
+# id|abs(c1 IN (-('señor'), 2, x'7daf0dc58a'))|iif(iif(-(779.626), c4, 798), coalesce(4.5e-310, 0), x'6690')
+1|0|4.500000000000011e-310
+2|0|X'6690'
+3|0|X'6690'
+4|0|X'6690'
+5|NULL|4.500000000000011e-310
+6|0|4.500000000000011e-310
+7|0|4.500000000000011e-310
+8|0|4.500000000000011e-310
+9|0|4.500000000000011e-310
+10|0|X'6690'
+11|0|X'6690'
+12|0|X'6690'
+13|0|X'6690'
+14|0|X'6690'
+15|0|X'6690'
+16|0|X'6690'
+# CASE WHEN -(NULL) THEN 3 ELSE 254 END|NULL IS NULL
+254|1
+# id|-(id IN (c1, 'naïve', -3) IN ((c0 < id), -788, -4))|abs(c4 IS NULL) IN (c0, 430, x'7b69f5e7cba7')
+1|0|0
+2|0|0
+3|-1|0
+4|0|0
+5|NULL|0
+6|-1|0
+7|-1|0
+8|-1|0
+9|-1|0
+10|-1|0
+11|0|0
+12|0|0
+13|-1|0
+14|-1|0
+15|-1|0
+16|NULL|NULL
+# CASE WHEN 3.141592653589793 THEN NULL ELSE NOT CAST(NULL AS TEXT) END|577.61
+NULL|577.61
+# id|c2 IS NULL|c2 BETWEEN -(2) AND c2 BETWEEN nullif(c2, c2) AND id
+1|0|NULL
+2|1|NULL
+3|1|NULL
+4|1|NULL
+5|0|NULL
+6|0|NULL
+7|0|NULL
+8|0|NULL
+9|0|NULL
+# 0|'MU'
+0|MU
+# id|-(nullif(('zeta' < c4), coalesce(c4, c3)))|CASE WHEN c2 THEN typeof(id) BETWEEN abs(c4) AND iif(123456789012, NULL, -20.0) ELSE CAST((c4 << c3) AS BLOB) END
+1|0|X'3331'
+2|NULL|NULL
+3|-1|X'30'
+4|NULL|NULL
+5|0|NULL
+6|0|NULL
+7|0|X'3432'
+8|0|NULL
+9|0|X'30'
+10|-1|NULL
+11|NULL|NULL
+12|0|X'30'
+13|NULL|NULL
+14|0|NULL
+15|0|X'30'
+16|NULL|NULL
+# 123456789012|coalesce(-763, nullif(930.14, 'omega'))
+123456789012|-763
+# id|50.4|-(CAST(x'' AS NUMERIC))
+1|50.4|0
+2|50.4|0
+3|50.4|0
+4|50.4|0
+5|50.4|0
+6|50.4|0
+7|50.4|0
+8|50.4|0
+9|50.4|0
+10|50.4|0
+11|50.4|0
+12|50.4|0
+13|50.4|0
+14|50.4|0
+15|50.4|0
+16|50.4|0
+17|50.4|0
+18|50.4|0
+19|50.4|0
+20|50.4|0
+21|50.4|0
+22|50.4|0
+23|50.4|0
+# x'21520df5'|NULL
+X'21520DF5'|NULL
+# id|typeof(coalesce((x'd3e8' * c0), id))|typeof(iif(CASE WHEN c2 THEN 68.268 ELSE 'upsilon' END, c3, x'9b'))
+1|integer|blob
+2|integer|blob
+3|integer|blob
+4|integer|blob
+5|integer|blob
+6|integer|integer
+7|integer|blob
+8|real|blob
+9|integer|blob
+10|integer|blob
+11|integer|real
+12|integer|integer
+13|real|blob
+14|integer|blob
+15|integer|blob
+16|real|blob
+17|integer|blob
+18|integer|blob
+19|integer|blob
+20|integer|real
+21|real|text
+22|real|integer
+23|integer|blob
+# x'614c2f39'|typeof(abs(abs(x'8378df')))
+X'614C2F39'|real
+# date('bad')|time('bad')|datetime('bad', '-1 month')|julianday('bad')|strftime('%J', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1||0|'d'|0
+3|c2|VARCHAR(10)|0|NULL|0
+4|c3|BLOB|0|NULL|0
+5|c4||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table

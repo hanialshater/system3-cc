@@ -1,0 +1,72 @@
+changes: 0
+changes: 1
+error: cannot store BLOB value in TEXT column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t0.c1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t2.c4
+# printf('%e', -2.5)|round(-2.5, 2)|-2.5 * -586|-2.5 / 154|CAST(-2.5 AS TEXT)|-2.5 + 0.0
+-2.500000e+00|-2.5|1465.0|-0.016233766233766232|-2.5|-2.5
+# printf('%%', 477.1758)|round(477.1758, 3)|477.1758 * -1e308|477.1758 / -775|CAST(477.1758 AS TEXT)|477.1758 + 0.0
+%|477.176|-Inf|-0.61571070967741937|477.1758|477.1758
+# printf('%Q', -5)|round(-5, 0)|-5 * -2|-5 / 234|CAST(-5 AS TEXT)|-5 + 0.0
+'-5'|-5.0|10|0|-5|-5.0
+# printf('%lld', -223)|round(-223, 4)|-223 * 213|-223 / 1|CAST(-223 AS TEXT)|-223 + 0.0
+-223|-223.0|-47499|-223|-223|-223.0
+changes: 8
+changes: 6
+# count(*)|count(c0)
+11|3
+# count(*)
+11
+error: cannot commit - no transaction is active
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+[1,2,3,4,5,6,7,8,9,10,11]|{"1":"MU","2":"gamma","3":"NULL","4":"1e3","5":"xi","6":"x_y","7":"zeta","8":"a%b","9":"a%b","10":null,"11":"Ελλάδα"}
+# json_object('id', id, 'v', c4)
+{"id":1,"v":-320}
+{"id":2,"v":-120}
+{"id":3,"v":418}
+{"id":4,"v":490}

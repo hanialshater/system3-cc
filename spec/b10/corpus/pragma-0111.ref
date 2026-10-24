@@ -1,0 +1,155 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|1|0|0
+2|c1||1|0|0
+3|c2|BLOB|1|0|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|'d'|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|1|0|0
+2|c1||1|0|0
+3|c2|BLOB|1|0|0
+4|c3|INT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|'d'|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|REAL|0|'d'|0
+3|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+t2|table
+# id|id|c1|c3
+1|2|delta|x_y
+1|3|delta|868.34
+1|4|delta|xi
+1|5|delta|-691
+1|6|delta|-406
+1|7|delta|X'76DA7027'
+1|8|delta|0
+1|9|delta|0
+1|10|delta|0
+1|11|delta|X'6543A9'
+1|12|delta|0
+1|13|delta|X'99F3D4'
+1|14|delta|0
+1|15|delta|X'3183'
+1|16|delta|0
+1|17|delta|9223372036854775807
+1|18|delta|847.04
+2|3|epsilon|868.34
+2|4|epsilon|xi
+2|5|epsilon|-691
+2|6|epsilon|-406
+2|7|epsilon|X'76DA7027'
+2|8|epsilon|0
+2|9|epsilon|0
+2|10|epsilon|0
+2|11|epsilon|X'6543A9'
+2|12|epsilon|0
+2|13|epsilon|X'99F3D4'
+2|14|epsilon|0
+# count(*)
+22
+# id|NULL|abs(c2)
+1|NULL|1
+2|NULL|144.435
+3|NULL|164
+# -(x'79e0')|CAST(typeof(typeof('alpha')) AS INTEGER)
+0|0

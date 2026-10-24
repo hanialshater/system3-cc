@@ -1,0 +1,177 @@
+changes: 0
+changes: 1
+error: NOT NULL constraint failed: t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+error: NOT NULL constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t1.c2
+error: cannot store BLOB value in TEXT column t1.c0
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+changes: 1
+error: UNIQUE constraint failed: t2.c2
+# id|id|c0|c0
+1|2|-5|gamma
+1|3|-5|eta
+1|4|-5|-7
+1|5|-5|Ελλάδα
+1|6|-5|phi
+1|7|-5|epsilon
+1|8|-5|alpha
+1|9|-5|a%b
+1|10|-5|nu
+2|3|NULL|eta
+2|4|NULL|-7
+2|5|NULL|Ελλάδα
+2|6|NULL|phi
+2|7|NULL|epsilon
+2|8|NULL|alpha
+2|9|NULL|a%b
+2|10|NULL|nu
+3|4|-2|-7
+3|5|-2|Ελλάδα
+3|6|-2|phi
+3|7|-2|epsilon
+3|8|-2|alpha
+3|9|-2|a%b
+3|10|-2|nu
+4|5|5|Ελλάδα
+4|6|5|phi
+4|7|5|epsilon
+4|8|5|alpha
+4|9|5|a%b
+4|10|5|nu
+5|6|-257|phi
+5|7|-257|epsilon
+5|8|-257|alpha
+5|9|-257|a%b
+# count(*)
+19
+# id|id|c2|c0
+1|2|-27.598|gamma
+1|3|-27.598|eta
+1|4|-27.598|-7
+1|5|-27.598|Ελλάδα
+1|6|-27.598|phi
+1|7|-27.598|epsilon
+1|8|-27.598|alpha
+1|9|-27.598|a%b
+1|10|-27.598|nu
+2|3|-1.149|eta
+2|4|-1.149|-7
+2|5|-1.149|Ελλάδα
+2|6|-1.149|phi
+2|7|-1.149|epsilon
+2|8|-1.149|alpha
+error: no such column: a.
+# id|id|id|c1
+1|1|1|señor
+2|1|2|señor
+2|2|2|X'DF7AD9E5AAC5'
+3|1|3|señor
+3|2|3|X'DF7AD9E5AAC5'
+3|3|3|143
+4|1|4|señor
+4|2|4|X'DF7AD9E5AAC5'
+4|3|4|143
+4|4|4|NULL
+5|1|5|señor
+5|2|5|X'DF7AD9E5AAC5'
+5|3|5|143
+5|4|5|NULL
+5|5|5|X'9DEF34ED'
+6|1|6|señor
+6|2|6|X'DF7AD9E5AAC5'
+6|3|6|143
+error: near "(": syntax error
+# id|id|c1|c0
+1|1|-78|0x1F
+1|2|-78|gamma
+1|3|-78|eta
+1|4|-78|-7
+1|5|-78|Ελλάδα
+# count(*)
+19
+# n|a
+48|2971215073
+47|1836311903
+46|1134903170
+45|701408733
+44|433494437
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+changes: 4
+changes: 7
+# count(*)|count(c0)
+10|6
+# count(*)
+10
+error: cannot commit - no transaction is active
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), id)
+[4,1,9,8,7,3,2,10,6,5]|{"4":4,"1":1,"9":9,"8":8,"7":7,"3":3,"2":2,"10":10,"6":6,"5":5}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":"señor"}
+error: JSON cannot hold BLOB values

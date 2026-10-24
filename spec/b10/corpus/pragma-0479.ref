@@ -1,0 +1,94 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|REAL|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+4|c3|VARCHAR(10)|0|NULL|0
+5|c4||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1|REAL|0|NULL|0
+3|c2|INTEGER|0|NULL|0
+4|c3|VARCHAR(10)|0|NULL|0
+5|c4||0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2||0|NULL|0
+4|c3|TEXT|0|'d'|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2||0|NULL|0
+4|c3|TEXT|0|'d'|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+error: unrecognized token: "x'zz'"
+# id|abs(coalesce(2 IN (c4, 'NULL', 'a%b'), c2))|CAST(c4 AS NUMERIC) IS NULL BETWEEN NOT -660 IN (c1, -811, -782.6712) AND -2 IN (c4, 2, -708.3) IS NULL
+1|0|0
+2|0|0
+3|0|0
+# NULL|nullif(CASE WHEN -284 THEN x'4bf214b4bfe6' ELSE -680.8070 END, CASE WHEN x'7c5cc451' THEN 5 ELSE x'a93d81e8df' END) BETWEEN NULL AND abs(CAST(-487 AS BLOB))
+NULL|0
+# count(*)|count(c4)|sum(c4)|total(c4)|avg(c4)|min(c4)|max(c4)|count(DISTINCT c4)
+3|3|858.107|858.107|286.03566666666666|-47.893|café|3
+# c4|count(*)|group_concat(id)
+-47.893|1|2
+906|1|3
+café|1|1

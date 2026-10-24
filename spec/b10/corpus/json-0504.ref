@@ -1,0 +1,220 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 0
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+error: cannot store BLOB value in TEXT column t1.c3
+changes: 0
+error: cannot store BLOB value in TEXT column t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+[13,12,15,7,14,2,5,11,16,1,17,6,10,4,8,3,9]|{"13":"","12":"0x1F","15":"a%b","7":"beta","14":"chi","2":"epsilon","5":"iota","11":"kappa","16":"phi","1":"psi","17":"sigma","6":"tau","10":"upsilon","4":"xi","8":"zeta","3":"Ελλάδα","9":"日本"}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":464}
+{"id":2,"v":303}
+{"id":3,"v":432}
+{"id":4,"v":-286}
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":"-267"}
+{"id":2,"v":"-3"}
+{"id":3,"v":"0"}
+{"id":4,"v":"-20"}
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c3)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]|{"1":"993","2":"naïve","3":"theta","4":"beta","5":"café","6":"NULL","7":"nu","8":"x_y","9":" pad ","10":"x_y","11":"Ελλάδα","12":"phi","13":"1e3","14":"nu","15":"MU","16":"über","17":"naïve"}
+# json_object('id', id, 'v', c2)
+{"id":1,"v":-20.869}
+{"id":2,"v":29.482}
+{"id":3,"v":-4.0}
+{"id":4,"v":-41.18}
+# json_valid('{"a":}')|json('{"a":}')|json_type('{"a":}')|json_array_length('{"a":}')|json_extract('{"a":}', '$.a', '$[1]', '$.b[2].c')|'{"a":}' -> '$.b'|'{"a":}' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('{"a":}', '$.z', 1)|json_insert('{"a":}', '$.a', 2)|json_remove('{"a":}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), ref)
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]|{"1":5,"2":3,"3":5,"4":2,"5":3,"6":7,"7":3,"8":null,"9":5,"10":7,"11":4,"12":null,"13":7,"14":5,"15":3,"16":6,"17":null}
+# json_object('id', id, 'v', c1)
+{"id":1,"v":464}
+{"id":2,"v":303}
+{"id":3,"v":432}
+{"id":4,"v":-286}
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+6|6
+7|7
+9|9
+11|11
+12|12
+13|13
+22|17
+4|4
+1|1
+2|2
+21|17
+5|5
+20|17
+16|16
+3|3
+19|17
+14|14
+17|17
+8|8
+18|17
+15|15
+10|10
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+# id
+NULL
+NULL
+1
+2
+2
+3
+3
+3
+3
+3
+4
+4
+5
+5
+5
+5
+5
+6
+6
+7
+7
+7
+7
+8
+# id|c0|nullif(nullif(c1, CAST(2.5 AS REAL)), CAST(c1 AS TEXT))
+1|X'F0E8'|NULL
+2|gamma|NULL
+3|NULL|NULL
+4|NULL|NULL
+5|NULL|NULL
+6|5|NULL
+7|983.56|NULL
+8|4.765|NULL
+9|omega|NULL
+10|360|X'C25B'
+11|NULL|NULL
+12|zeta|NULL
+13|upsilon|NULL
+14|X'29'|NULL
+15|NULL|X'A90DA788E4'
+16|-464.0|NULL
+17|X''|NULL
+18|-445|X'72BD'
+19|X'F3A7'|NULL
+20|-809.5702|NULL
+21|123456789012|NULL
+22|X''|NULL
+# -(nullif(coalesce(-0.0, -3), 834.38 IN (5, 'phi', x'd2414c61')))|nullif(-(-0.0 BETWEEN x'062089de360f' AND 3), 487.5097 IS NULL)
+NULL|NULL
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', -2, 2)|instr('zeta', 'nu')|replace('zeta', 'é', 'XY')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '_'|'zeta' GLOB '*'|char(83, 218)|'zeta' || 'nu'|'zeta' < 'nu'|'zeta' = 'nu' COLLATE NOCASE
+4|ZETA|zeta|ta|0|zeta|zeta|zeta|7A657461|'zeta'|122|0|1|SÚ|zetanu|0|0

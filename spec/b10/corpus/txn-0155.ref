@@ -1,0 +1,64 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 6
+changes: 6
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+changes: 2
+changes: 0
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+changes: 2
+changes: 0
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+changes: 7
+changes: 6
+# count(*)|count(c0)
+14|6
+# count(*)
+14
+error: cannot commit - no transaction is active
+changes: 6
+changes: 6
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|188
+changes: 2
+# id|bid
+188|188
+# id|id|row_number() OVER (PARTITION BY id IS NULL ORDER BY id GROUPS BETWEEN CURRENT ROW AND 1 FOLLOWING)
+188|188|1

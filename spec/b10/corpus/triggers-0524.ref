@@ -1,0 +1,179 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|173
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|173
+t0|144
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|173
+t0|144
+t0|161
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|173
+t0|144
+t0|161
+t1|110
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t0|173
+t0|144
+t0|161
+t1|110
+t1|149
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+error: integer overflow
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+150|NULL
+# id|c0|c1|c2|c3|c4
+2|-301|NULL|NULL|0.0|d
+3|NULL|9223372036854775807|beta|X'4FBD4998FF'|-5
+5|NULL|X'2DA292F81254'|NULL|420.0|NULL
+6|alpha|-2.5|NULL|0.0|100.5493
+7|upsilon|NULL|NULL|日本|621.5613
+9|NULL|-176.6|2|0x1F|-991
+10|X'91'|NULL|869|0.0|0
+11|NULL|-167|NULL|X'AE1CA3992032'|2.5
+13|NULL|NULL|phi|0.0|1.0e-07
+14|NULL|psi|tau|a%b|X'3D5293'
+15|kappa|0|naïve|0.1|NULL
+17|-757.829|-641.948|NULL|971.0816|0
+18|NULL|-7|NULL|X'C83E01'|MU
+19|42|NULL|-243|X'5522A6'|NULL
+21|5|X'57BBBC17'|NULL|omicron|5
+22|0x1F|NULL|epsilon|450.0|483.844
+23|NULL|X'AC00CC2C92FD'|0|-523.0|-906
+25|gamma|897.83|1.0e+308|661.0|X'A2D0854E37B0'
+110|NULL|NULL|NULL|0.0|d
+149|NULL|NULL|NULL|0.0|d
+150|NULL|NULL|NULL|0.0|d
+# CAST('9e999' AS REAL)|1 / 0|1 % 0|9223372036854775807 + 1
+Inf|NULL|NULL|9.2233720368547758e+18

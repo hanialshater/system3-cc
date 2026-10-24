@@ -1,0 +1,89 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('日本')|upper('日本')|lower('日本')|substr('日本', -3, 4)|instr('日本', 'iota')|replace('日本', '', '_')|trim('日本')|ltrim('日本', 'ab')|hex('日本')|quote('日本')|unicode('日本')|'日本' LIKE 'a%'|'日本' GLOB '?'|char(88, 801)|'日本' || 'iota'|'日本' < 'iota'|'日本' = 'iota' COLLATE NOCASE
+2|日本|日本|日本|0|日本|日本|日本|E697A5E69CAC|'日本'|26085|0|0|X̡|日本iota|0|0
+# length('theta')|upper('theta')|lower('theta')|substr('theta', 2, 2)|instr('theta', 'rho')|replace('theta', 'a', 'XY')|trim('theta')|ltrim('theta', 'ab')|hex('theta')|quote('theta')|unicode('theta')|'theta' LIKE '%a_'|'theta' GLOB '*'|char(74, 997)|'theta' || 'rho'|'theta' < 'rho'|'theta' = 'rho' COLLATE NOCASE
+5|THETA|theta|he|0|thetXY|theta|theta|7468657461|'theta'|116|0|1|Jϥ|thetarho|0|0
+# length('upsilon')|upper('upsilon')|lower('upsilon')|substr('upsilon', 2, 4)|instr('upsilon', 'xi')|replace('upsilon', '', '')|trim('upsilon')|ltrim('upsilon', 'ab')|hex('upsilon')|quote('upsilon')|unicode('upsilon')|'upsilon' LIKE '%a_'|'upsilon' GLOB '*'|char(85, 582)|'upsilon' || 'xi'|'upsilon' < 'xi'|'upsilon' = 'xi' COLLATE NOCASE
+7|UPSILON|upsilon|psil|0|upsilon|upsilon|upsilon|757073696C6F6E|'upsilon'|117|0|1|UɆ|upsilonxi|1|0
+# length('upsilon')|upper('upsilon')|lower('upsilon')|substr('upsilon', 2, 2)|instr('upsilon', '-7')|replace('upsilon', 'a', 'XY')|trim('upsilon')|ltrim('upsilon', 'ab')|hex('upsilon')|quote('upsilon')|unicode('upsilon')|'upsilon' LIKE '%a_'|'upsilon' GLOB '*'|char(78, 648)|'upsilon' || '-7'|'upsilon' < '-7'|'upsilon' = '-7' COLLATE NOCASE
+7|UPSILON|upsilon|ps|0|upsilon|upsilon|upsilon|757073696C6F6E|'upsilon'|117|0|1|Nʈ|upsilon-7|0|0
+# length('café')|upper('café')|lower('café')|substr('café', 0, 0)|instr('café', 'pi')|replace('café', '', '_')|trim('café')|ltrim('café', 'ab')|hex('café')|quote('café')|unicode('café')|'café' LIKE '%é%'|'café' GLOB 'a*'|char(75, 559)|'café' || 'pi'|'café' < 'pi'|'café' = 'pi' COLLATE NOCASE
+4|CAFé|café||0|café|café|café|636166C3A9|'café'|99|1|0|Kȯ|cafépi|1|0
+# length('')|upper('')|lower('')|substr('', -1, 5)|instr('', 'tau')|replace('', 'a', '_')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%é%'|'' GLOB '*[a-m]*'|char(72, 903)|'' || 'tau'|'' < 'tau'|'' = 'tau' COLLATE NOCASE
+0||||0|||||''|NULL|0|0|H·|tau|1|0
+# length('0x1F')|upper('0x1F')|lower('0x1F')|substr('0x1F', 1, 4)|instr('0x1F', 'it''s')|replace('0x1F', 'é', '_')|trim('0x1F')|ltrim('0x1F', 'ab')|hex('0x1F')|quote('0x1F')|unicode('0x1F')|'0x1F' LIKE 'A%'|'0x1F' GLOB 'a*'|char(87, 333)|'0x1F' || 'it''s'|'0x1F' < 'it''s'|'0x1F' = 'it''s' COLLATE NOCASE
+4|0X1F|0x1f|0x1F|0|0x1F|0x1F|0x1F|30783146|'0x1F'|48|0|0|Wō|0x1Fit's|1|0
+# n|a
+50|7778742049
+49|4807526976
+48|2971215073
+47|1836311903
+46|1134903170
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+error: NOT NULL constraint failed: t1.c0
+changes: 3
+# count(*)|count(c0)
+6|6
+# count(*)
+6
+error: cannot commit - no transaction is active

@@ -1,0 +1,79 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1324
+changes: 7
+changes: 4
+# count(*)|count(c0)
+7|0
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 3
+changes: 3
+# count(*)|count(c0)
+4|1
+# count(*)
+7
+error: cannot commit - no transaction is active
+changes: 4
+changes: 2
+# count(*)|count(c0)
+5|1
+# count(*)
+5
+error: cannot commit - no transaction is active
+changes: 4
+changes: 2
+# count(*)|count(c0)
+3|0
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 3
+changes: 0
+# count(*)|count(c0)
+3|0
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 6
+changes: 1337
+# count(*)|count(c0)
+5|0
+# count(*)
+5
+error: cannot commit - no transaction is active
+# printf('%q', 471.7840)|round(471.7840, 4)|471.7840 * 648|471.7840 / 137.313|CAST(471.7840 AS TEXT)|471.7840 + 0.0
+471.784|471.784|305716.032|3.4358290912003966|471.784|471.784
+changes: 1337
+# id|c0
+# count(*)
+0
+changes: 1337
+changes: 1337

@@ -1,0 +1,176 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in INTEGER column t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+12|12
+11|11
+9|9
+8|8
+7|7
+3|3
+10|10
+4|4
+6|6
+1|1
+2|2
+13|13
+5|5
+# id
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# c4
+-9223372036854775808
+-753.8
+-154.839
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+5|5
+13|13
+2|2
+1|1
+6|6
+4|4
+10|10
+3|3
+7|7
+8|8
+9|9
+11|11
+12|12
+# id
+# id
+# id
+4
+5
+6
+7
+8
+10
+11
+12
+13
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+17|18
+7|18
+12|18
+14|18
+15|18
+11|18
+10|18
+5|18
+9|18
+8|18
+2|18
+13|18
+4|18
+1|18
+3|18
+6|18
+18|18
+16|18
+# id
+# id
+# id
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+5|5
+2|2
+4|4
+11|11
+1|1
+3|3
+6|6
+9|9
+13|13
+12|12
+7|7
+10|10
+8|8
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# c4
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'start of month')|julianday(2451545.0)|strftime('%Y-%m-%d %H:%M:%S', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-01 00:00:00|2451545.0|2000-01-01 12:00:00|946728000|+0001-01-15 00:00:00.000
+# id|CAST(id IS NULL AS BLOB) BETWEEN c0 AND (-(c2) IS typeof(-1))|x'c314d3443594' IN (c1, NULL, NULL) BETWEEN nullif(3, 571) AND CAST(c4 AS REAL) BETWEEN c4 AND c2
+1|0|NULL
+2|0|NULL
+3|0|NULL
+4|0|NULL
+5|0|NULL
+6|0|NULL
+7|0|NULL
+8|0|NULL
+9|0|NULL
+10|0|NULL
+11|0|NULL
+12|0|NULL
+13|0|NULL
+# x'3a79143922'|'MU'
+X'3A79143922'|MU

@@ -1,0 +1,64 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2815
+error: table t2 already exists
+error: 1st ORDER BY term out of range - should be between 1 and 1
+error: no such savepoint: nope
+# n|a
+45|701408733
+44|433494437
+43|267914296
+42|165580141
+41|102334155
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# printf('%w', -0.0)|round(-0.0, 3)|-0.0 * 323|-0.0 / 786|CAST(-0.0 AS TEXT)|-0.0 + 0.0
+0.0|0.0|0.0|0.0|0.0|0.0

@@ -1,0 +1,113 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c2|c0
+1|5|-933|480.4
+2|3|-2.5|X'FD'
+2|9|-2.5|NULL
+2|11|-2.5|X'03F98FC07139'
+4|2|X'3A6C3C8D'|-591
+4|10|X'3A6C3C8D'|-3
+6|7|NULL|über
+6|8|NULL|0
+7|4|X''|NULL
+error: ambiguous column name: c3
+# id|id|id|c0
+1|1|1|X'C1FE'
+1|2|1|-591
+1|3|1|X'FD'
+1|4|1|NULL
+1|5|1|480.4
+1|6|1|598.899
+1|7|1|über
+1|8|1|0
+1|9|1|NULL
+1|10|1|-3
+1|11|1|X'03F98FC07139'
+2|1|2|X'C1FE'
+2|2|2|-591
+2|3|2|X'FD'
+2|4|2|NULL
+2|5|2|480.4
+2|6|2|598.899
+2|7|2|über
+2|8|2|0
+2|9|2|NULL
+2|10|2|-3
+2|11|2|X'03F98FC07139'
+3|1|3|X'C1FE'
+3|2|3|-591
+3|3|3|X'FD'
+error: near "(": syntax error
+# id|id|c0|c0
+1|1|X'C1FE'|X'C1FE'
+1|2|X'C1FE'|-591
+1|3|X'C1FE'|X'FD'
+1|4|X'C1FE'|NULL
+1|5|X'C1FE'|480.4
+1|6|X'C1FE'|598.899
+1|7|X'C1FE'|über
+1|8|X'C1FE'|0
+1|9|X'C1FE'|NULL
+1|10|X'C1FE'|-3
+1|11|X'C1FE'|X'03F98FC07139'
+2|1|-591|X'C1FE'
+2|2|-591|-591
+2|3|-591|X'FD'
+2|4|-591|NULL
+2|5|-591|480.4
+2|6|-591|598.899
+2|7|-591|über
+2|8|-591|0
+2|9|-591|NULL
+2|10|-591|-3
+2|11|-591|X'03F98FC07139'
+3|1|X'FD'|X'C1FE'
+3|2|X'FD'|-591
+3|3|X'FD'|X'FD'
+# count(*)
+11
+# id|id|ref|c1
+1|5|NULL|X'B0C07B85'
+2|3|4|-2
+2|9|4|265
+2|11|4|X'EBBA7FDD'
+3|NULL|2|NULL
+4|2|7|-997.0
+4|10|7|-1.0e+308
+5|NULL|1|NULL
+6|7|NULL|0
+6|8|NULL|über
+7|4|6|0
+8|NULL|6|NULL
+9|NULL|2|NULL
+10|NULL|4|NULL
+11|NULL|2|NULL
+# count(*)
+11
+changes: 7
+changes: 4
+# count(*)|count(c0)
+11|3
+# count(*)
+11
+error: cannot commit - no transaction is active

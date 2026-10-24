@@ -1,0 +1,93 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|id|c4
+3|1|3|-433
+6|3|6|4
+8|2|8|-183
+error: near "x'87'": syntax error
+# id|id|c2|c3
+1|NULL|NULL|NULL
+2|NULL|NULL|NULL
+3|1|NULL|-9.365
+4|NULL|NULL|NULL
+5|NULL|602|NULL
+6|3|4.500000000000011e-310|46.681
+7|NULL|a%b|NULL
+8|2|NULL|-5.551
+9|NULL|phi|NULL
+10|NULL|NULL|NULL
+11|NULL|NULL|NULL
+12|NULL|-3|NULL
+13|NULL|-555.7942|NULL
+14|NULL|0|NULL
+15|NULL|-3|NULL
+16|NULL| pad |NULL
+17|NULL|-2|NULL
+18|NULL|beta|NULL
+19|NULL|2|NULL
+20|NULL|theta|NULL
+error: near "(": syntax error
+# id|id|id|c0
+1|NULL|1|NULL
+2|NULL|2|NULL
+3|1|3|NULL
+error: near "(": syntax error
+# id|id|c1|c1
+1|1|17.179|17.179
+1|2|17.179|38.623
+1|3|17.179|NULL
+2|1|38.623|17.179
+2|2|38.623|38.623
+2|3|38.623|NULL
+3|1|NULL|17.179
+3|2|NULL|38.623
+3|3|NULL|NULL
+error: near "(": syntax error
+# id|(nullif(abs(c0), CAST(c2 AS REAL)) AND c2)|CASE WHEN c2 THEN CASE WHEN typeof('alpha') THEN coalesce(id, id) ELSE c2 END ELSE -5 END
+1|NULL|-5
+2|0|-5
+3|NULL|-5
+4|NULL|-5
+5|NULL|602
+6|0|4.500000000000011e-310
+7|0|-5
+8|0|-5
+9|0|-5
+10|0|-5
+11|NULL|-5
+12|1|-3
+13|NULL|-555.7942
+14|0|-5
+15|NULL|-3
+16|0|-5
+17|1|-2
+18|0|-5
+19|NULL|2
+20|0|-5
+# NOT iif(abs(x'0d27b9fe'), NULL, -129)|84
+0|84
+# printf('%e', 1)|round(1, 4)|1 * -4|1 / 4|CAST(1 AS TEXT)|1 + 0.0
+1.000000e+00|1.0|-4|0|1|1.0

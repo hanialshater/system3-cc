@@ -1,0 +1,115 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+error: UNIQUE constraint failed: t0.c0
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c4
+4|NULL
+3|-738.252
+7|-1
+6|0.0
+2|eta
+8|omega
+5|X'9D79DD'
+1|X'FD0C46'
+# count(*)
+7
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+15|15
+16|16
+17|17
+error: no query solution
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+15
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+12|X'6FF023CA30'
+11|X'C108'
+3|X'C230'
+4|X'D7'
+8|X'F3678B6884'
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c4
+# count(*)
+7
+changes: 1
+changes: 1
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+12 hours')|julianday('2038-01-19 03:14:07')|strftime('%Y-%m-%d %H:%M:%S', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-19 15:14:07|2465442.6348032407|2038-01-19 03:14:07|2147483647|+0001-01-15 00:00:00.000
+# length(' pad ')|upper(' pad ')|lower(' pad ')|substr(' pad ', 3, 2)|instr(' pad ', 'it''s')|replace(' pad ', 'e', 'XY')|trim(' pad ')|ltrim(' pad ', 'ab')|hex(' pad ')|quote(' pad ')|unicode(' pad ')|' pad ' LIKE '_'|' pad ' GLOB '*[a-m]*'|char(73, 701)|' pad ' || 'it''s'|' pad ' < 'it''s'|' pad ' = 'it''s' COLLATE NOCASE
+5| PAD | pad |ad|0| pad |pad| pad |2070616420|' pad '|32|0|1|Iʽ| pad it's|1|0

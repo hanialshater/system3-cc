@@ -1,0 +1,116 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 20
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+21|188
+# id|c0|c1|c2|c3|c4
+2|-278.1028|NULL|NULL|NULL|NULL
+3|epsilon!|X''|NULL|X'AFBE397B8C'|661
+4|-3.1415926535897931|851|-201.63|3.1415926535897931|alpha
+6|NULL|X'26CE18FB54'|xi|NULL|-5
+7|0|3|NULL|0.0|4
+8|0|3|298.0|日本|NULL
+10|-4.500000000000011e-310|2|-5.0|4.500000000000011e-310|NULL
+11|NULL|-798|X'A86B69232A87'|NULL|chi
+12|-1.0e+308|-883.5286|-5.0|1.0e+308|omega
+14|NULL|9223372036854775807|zeta|NULL|-253
+15|0|428.2721|NULL|0|1
+16|-65|42|X''|65|-5
+18|NULL|X'807F23FD3816'|NULL|NULL|epsilon
+19|0|NULL|NULL|it's|9223372036854775807
+20|NULL|NULL|467.0|NULL|0x1F
+21|188|NULL|NULL|NULL|NULL
+changes: 25
+changes: 9
+changes: 1
+changes: 1
+# id|c0
+25|日本
+# id|c0|c1
+1|X'0F69985AA5'|NULL
+2|548.734|it's
+3|137|NULL
+5|548.734|X'E67C'
+6|548.734|125.974
+8|548.734|331
+9|548.734|café
+11|548.734|2.5
+12|548.734| pad 
+14|548.734|-1
+15|548.734|NULL
+17|548.734|NULL
+18|548.734|X'2FB981'
+20|548.734|X'6FE7A8BD70A5'
+21|548.734|alpha
+23|548.734|NULL
+24|548.734|-476
+25|日本|NULL
+changes: 16
+changes: 5
+changes: 1
+changes: 1
+# id|c0
+22|2.5
+# id|c0|c1|c2|c3|c4
+1|13|NULL|NULL|NULL|NULL
+2|NULL|NULL|NULL|NULL|NULL
+3|NULL|X''|NULL|X'AFBE397B8C'|661
+6|NULL|X'26CE18FB54'|xi|NULL|-5
+8|NULL|3|298.0|日本|NULL
+11|NULL|-798|X'A86B69232A87'|NULL|chi
+12|NULL|-883.5286|-5.0|1.0e+308|omega
+14|NULL|9223372036854775807|zeta|NULL|-253
+15|NULL|428.2721|NULL|0|1
+18|NULL|X'807F23FD3816'|NULL|NULL|epsilon
+20|NULL|NULL|467.0|NULL|0x1F
+21|NULL|NULL|NULL|NULL|NULL
+22|2.5|NULL|NULL|NULL|NULL
+error: UNIQUE constraint failed: t1.id

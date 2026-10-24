@@ -1,0 +1,96 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store REAL value in INTEGER column t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c2
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|'d'|0
+2|c1|BLOB|0|NULL|0
+3|c2|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1|INTEGER|1|0|0
+3|c2|ANY|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|'d'|0
+2|c1|BLOB|0|NULL|0
+3|c2|REAL|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+changes: 7
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+12|830.27
+# id|c0|c1|c2
+12|830.27|NULL|NULL
+11|3|282.2|42.0
+10|3|-613|X'997D70772786'
+9|3|876.302|NULL
+7|3|200|4.0
+6|X'273FDA0FAA'|NULL|X'439A64300DBF'
+5|3|-906|NULL
+4|-360|NULL|NULL
+3|3|877|nu
+2|X'9129085B595D'|X'82321F30090E'|NULL
+1|X'9AB8AB42E6E6'|NULL|NULL

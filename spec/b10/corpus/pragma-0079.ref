@@ -1,0 +1,140 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2||0|NULL|0
+4|c3|TEXT|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|ANY|0|NULL|0
+2|c1|ANY|0|NULL|0
+3|c2|ANY|0|NULL|0
+4|c3|TEXT|0|NULL|0
+5|c4|ANY|1|0|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|ANY|0|NULL|0
+2|c1|ANY|0|NULL|0
+3|c2|ANY|0|NULL|0
+4|c3|TEXT|0|NULL|0
+5|c4|ANY|1|0|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+3|c2||0|NULL|0
+4|c3|TEXT|0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|ANY|0|NULL|0
+2|c1|ANY|0|NULL|0
+3|c2|ANY|0|NULL|0
+4|c3|TEXT|0|NULL|0
+5|c4|ANY|1|0|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|ANY|0|NULL|0
+2|c1|ANY|0|NULL|0
+3|c2|ANY|0|NULL|0
+4|c3|TEXT|0|NULL|0
+5|c4|ANY|1|0|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+t0|table
+t1|table
+changes: 16
+changes: 6
+changes: 1
+changes: 1
+# id|c0
+16|-21
+# id|c0|c1|c2|c3|c4|ref
+2|0|phi|-1| pad |-1.0e+308|NULL
+3|NULL|X'4A2BA1DCAD'|724.0506| pad |X'89'|4
+5|0|-5|X''|iota|328|5
+6|0|X'AD3C'|1000000000000000.0|Lambda|X'7B7608B9'|NULL
+8|0|-1|X'6736875D'|NULL|1|8
+9|-984.96|NULL|NULL|NULL|0|NULL
+11|0|-603.73|2|gamma|-4|4
+12|0|NULL|181|naïve| pad |NULL
+14|0|Ελλάδα|249|nu|X'F6378D12D8'|NULL
+15|0|-74|X'6213'|omicron|X'F9E7A3D3C1'|8
+16|-21|NULL|NULL|NULL|0|NULL

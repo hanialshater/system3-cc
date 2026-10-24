@@ -1,0 +1,104 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+10|2.5
+# id|c0|c1|c2|c3|c4
+2|4|NULL|-830|upsilon|-1.0e+308
+3|!|X'015963583D'|gamma|café|0.0
+4|X'35'|señor|chi|X'66DC28B35A'|X'E9EE60693A'
+9|-250|NULL|NULL|NULL|NULL
+10|2.5|NULL|NULL|NULL|NULL
+changes: 5
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+5|586.8
+# id|c0|c1|ref
+2|nu|558|2
+3|-1.0e+308!|X'C7'|2
+4|-975.5|NULL|NULL
+5|586.8|NULL|NULL
+error: UNIQUE constraint failed: t2.c0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+6|xi
+# id|c0|c1|ref
+1|4.500000000000011e-310|NULL|NULL
+2|nu|558|2
+3|3!|X'C7'|2
+5|586.8|NULL|NULL
+6|xi|NULL|NULL
+changes: 5
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+10|0.1
+# id|c0|c1|c2|c3|c4
+10|0.1|NULL|NULL|NULL|NULL
+9|112|NULL|NULL|NULL|NULL
+7|rho|NULL|NULL|NULL|NULL
+4|112|señor|chi|X'66DC28B35A'|X'E9EE60693A'
+3|697.81!|X'015963583D'|gamma|café|0.0
+2|112|NULL|-830|upsilon|-1.0e+308
+changes: 6
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+10|-1
+# id|c0|c1|c2|c3|c4
+2|NULL|NULL|-830|upsilon|-1.0e+308
+3|NULL|X'015963583D'|gamma|café|0.0
+4|NULL|NULL|NULL|NULL|NULL
+5|-1|NULL|NULL|NULL|NULL
+7|NULL|NULL|NULL|NULL|NULL
+9|NULL|NULL|NULL|NULL|NULL
+10|-1|NULL|NULL|NULL|NULL
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+10|日本
+# id|c0|c1|c2
+10|日本|NULL|NULL
+9|NULL|NULL|NULL
+6|NULL|NULL|840
+5|107.7276!|-559|X'241EB360BD24'
+3| pad |-838|X'CADF37'
+2|2|472.0607|tau
+1|-249|1.0e+308|-251
+# id|c0|rank() OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|-249|1
+2|2|2
+3| pad |3
+5|107.7276!|4
+6|NULL|1
+9|NULL|2
+10|日本|5
+# 'a' + 'b'|'a' > 1|x'01' < 1
+0|1|0

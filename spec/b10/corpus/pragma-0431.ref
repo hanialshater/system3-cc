@@ -1,0 +1,156 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|INT|0|'d'|0
+3|c2|INTEGER|0|'d'|0
+4|c3|BLOB|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|1|0|0
+2|c1|INT|1|0|0
+3|c2||0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|1|0|0
+2|c1|INT|1|0|0
+3|c2||0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|NULL|0
+2|c1|INT|0|'d'|0
+3|c2|INTEGER|0|'d'|0
+4|c3|BLOB|0|NULL|0
+5|c4|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|NUMERIC|0|'d'|0
+3|c2|REAL|0|NULL|0
+4|c3|VARCHAR(10)|0|NULL|0
+5|c4|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|REAL|0|NULL|0
+2|c1|NUMERIC|0|'d'|0
+3|c2|REAL|0|NULL|0
+4|c3|VARCHAR(10)|0|NULL|0
+5|c4|TEXT|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|NUMERIC|1|0|0
+2|c1|INT|1|0|0
+3|c2||0|NULL|0
+4|c3|NUMERIC|0|NULL|0
+5|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# printf('%5.2f', -5)|round(-5, 2)|-5 * -9223372036854775808|-5 / 1e-7|CAST(-5 AS TEXT)|-5 + 0.0
+-5.00|-5.0|4.6116860184273879e+19|-50000000.0|-5|-5.0

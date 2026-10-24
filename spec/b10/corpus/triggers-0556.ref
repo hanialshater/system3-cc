@@ -1,0 +1,206 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 0
+changes: 0
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1001
+t2|1002
+changes: 2
+# id|bid
+3|3
+4|NULL
+5|NULL
+179|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1001
+t2|1002
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+162|162
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1001
+t2|1002
+t1|1001
+t1|1002
+t0|1001
+t0|1002
+changes: 2
+# id|bid
+3|3
+4|NULL
+5|NULL
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t2|1001
+t2|1002
+t1|1001
+t1|1002
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|NULL
+5|NULL
+128|NULL
+179|NULL
+changes: 0
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t2|1001
+t2|1002
+t1|1001
+t1|1002
+t0|1001
+t0|1002
+changes: 0
+# id|bid
+3|3
+4|NULL
+5|NULL
+6|NULL
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+3|1
+4|1
+5|1
+6|1
+7|1
+8|1
+9|1
+10|1
+11|1
+12|1
+13|1
+14|1
+15|1
+16|1
+17|1
+18|1
+100|1
+177|2
+# id
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+100
+177
+# id
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+100
+177
+# id
+3
+4
+5
+6
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|VARCHAR(10)|0|NULL|0
+2|c1|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t0_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+gt0|trigger
+gt1|trigger
+gt2|trigger
+log|table
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+vt0|view
+vt1|view
+vt2|view

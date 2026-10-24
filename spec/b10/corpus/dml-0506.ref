@@ -1,0 +1,151 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+8|X''
+# id|c0|c1
+1|-862!|NULL
+3|phi|NULL
+5|über|-1
+7|-1|124.713
+8|X''|NULL
+changes: 5
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+9|-3
+# id|c0|c1
+2|X'D682C9E5'|NULL
+3|NULL|NULL
+4|X'13663778EEB8'|NULL
+5|NULL|-1
+8|NULL|NULL
+9|-3|NULL
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+10|NULL
+# id|c0|c1
+2|naïve!|NULL
+3|NULL|NULL
+4|199|NULL
+5|NULL|-1
+9|-3|NULL
+10|NULL|NULL
+changes: 0
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+10|NULL
+# id|c0|c1
+1|-754|NULL
+2|498.667|NULL
+3|NULL|NULL
+4|199|NULL
+9|-3|NULL
+10|NULL|NULL
+changes: 0
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+18|-104.0
+# id|c0|c1|c2
+1|NULL|5|-447.62
+2|-2.5|-344.6|X'F6F1B36F7C'
+3|1.0e+308|NULL|eta
+4|0.0|NULL|d
+5|NULL|1|X'70D3ECDAE4F9'
+6|NULL|214|-477
+7|0.0|NULL|d
+9|632.32|-4|NULL
+10|X'5BF588'|MU|437.811
+11|928.6991|NULL|über
+13|NULL|NULL|NULL
+14|X'8F'|X'92BCA349230A'|X'DE55B86384BA'
+15|-2.5|Ελλάδα|pi
+17|4.0|0.0|-942.29
+18|-104.0|NULL|d
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|TEXT|0|NULL|0
+2|c1|BLOB|0|NULL|0
+3|c2||0|NULL|0
+4|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t1|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+changes: 15
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+19|9.2233720368547758e+18
+# id|c0|c1|c2
+1|Ελλάδα|NULL|d
+2|1.0|-344.6|X'F6F1B36F7C'
+3|5.0|NULL|d
+4|1.0|NULL|d
+5|1.0|1|X'70D3ECDAE4F9'
+7|1.0|NULL|d
+9|NULL|-4|NULL
+10|1.0|MU|437.811
+13|NULL|NULL|NULL
+14|1.0|X'92BCA349230A'|X'DE55B86384BA'
+15|1.0|Ελλάδα|pi
+17|1.0|0.0|-942.29
+18|1.0|NULL|d
+19|9.2233720368547758e+18|NULL|d

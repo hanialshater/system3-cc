@@ -1,0 +1,86 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+# id|c3|lead(c3, 2, 'none') OVER (ORDER BY id)
+1|kappa|0
+2|0|rho
+3|0|
+4|rho|none
+5||none
+# id|c1|dense_rank() OVER (ORDER BY id)
+1|163.1|1
+2|NULL|2
+3|9.2233720368547758e+18|3
+4|X'95FE0356FAB1'|4
+5|NULL|5
+# id|c0|ntile(3) OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|303|1
+2|59|1
+3|41|1
+4|-224|1
+5|-432|1
+6|-291|1
+7|-385|1
+8|373|1
+9|-27|1
+10|-51|2
+11|9|2
+12|333|2
+13|-406|2
+14|-342|2
+15|-214|2
+16|-70|2
+17|-33|2
+18|366|3
+19|-117|3
+20|299|3
+21|-460|3
+22|3|3
+23|-177|3
+24|462|3
+25|-391|3
+# id|c0|percent_rank() OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|MU|0.0
+2|0|0.25
+3|-328.02|0.5
+4|4.500000000000011e-310|0.75
+5|0|1.0
+error: NOT NULL constraint failed: t0.c0
+changes: 2
+# count(*)|count(c0)
+5|5
+# count(*)
+5
+error: cannot commit - no transaction is active
+# printf('%Q', -2)|round(-2, 3)|-2 * 136.9670|-2 / 2|CAST(-2 AS TEXT)|-2 + 0.0
+'-2'|-2.0|-273.934|-1|-2|-2.0

@@ -1,0 +1,125 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|last_value(id) OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|1
+2|2|2
+3|3|3
+4|4|4
+5|5|5
+6|6|6
+7|7|7
+8|8|8
+9|9|9
+10|10|10
+11|11|11
+12|12|12
+13|13|13
+14|14|14
+15|15|15
+16|16|16
+17|17|17
+18|18|18
+19|19|19
+20|20|20
+# id|c0|nth_value(c0, 2) OVER (PARTITION BY c0 IS NULL ORDER BY id)
+1|日本|NULL
+2|X''|X''
+3|pi|X''
+4|-645|X''
+5|NULL|NULL
+6|X'43B1F0'|X''
+7|NULL|NULL
+8|414|X''
+9|X'691117C2'|X''
+10|NULL|NULL
+11|380.406|X''
+12|0.1|X''
+13|5|X''
+14|-641|X''
+15|0x1F|X''
+16|X'485429132611'|X''
+17|1.0e-07|X''
+18|-701.7|X''
+19|4.500000000000011e-310|X''
+20|X'B8C4DFA5'|X''
+# id|id|group_concat(id, '.') OVER (PARTITION BY id IS NULL ORDER BY id ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING)
+1|1|1.2.3.4.5.6.7
+2|2|1.2.3.4.5.6.7
+3|3|2.3.4.5.6.7
+4|4|3.4.5.6.7
+5|5|4.5.6.7
+6|6|5.6.7
+7|7|6.7
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1||0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t2_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+sqlite_autoindex_t1_2|index
+sqlite_autoindex_t1_3|index
+sqlite_autoindex_t2_1|index
+t0|table
+t1|table
+t2|table
+# n|a
+69|72723460248141
+68|44945570212853
+67|27777890035288
+66|17167680177565
+65|10610209857723
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# length('eta')|upper('eta')|lower('eta')|substr('eta', -3, 1)|instr('eta', 'epsilon')|replace('eta', 'é', '')|trim('eta')|ltrim('eta', 'ab')|hex('eta')|quote('eta')|unicode('eta')|'eta' LIKE '%a_'|'eta' GLOB '*[a-m]*'|char(74, 751)|'eta' || 'epsilon'|'eta' < 'epsilon'|'eta' = 'epsilon' COLLATE NOCASE
+3|ETA|eta|e|0|eta|eta|eta|657461|'eta'|101|0|1|J˯|etaepsilon|0|0

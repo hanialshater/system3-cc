@@ -1,0 +1,116 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+4|upsilon
+11|xi
+5|über
+15|日本
+7|X''
+17|X''
+16|X'0DCFE2F6'
+19|X'20'
+20|X'4B'
+3|X'5B4E24'
+13|X'B86128ED8F93'
+10|X'CA9B3371D1'
+8|X'E14BDAF66E8A'
+# count(*)
+17
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+6|NULL
+9|NULL
+12|NULL
+18|-286.021
+2|0.0
+14|10.0
+1|psi
+4|upsilon
+11|xi
+5|über
+15|日本
+7|X''
+17|X''
+16|X'0DCFE2F6'
+19|X'20'
+20|X'4B'
+3|X'5B4E24'
+13|X'B86128ED8F93'
+10|X'CA9B3371D1'
+8|X'E14BDAF66E8A'
+# count(*)
+17
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+# count(*)
+17
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+12|-947
+15|-462
+3|-297.5106
+5|2
+1|3.1415926535897931
+8|4
+2|375
+# count(*)
+17
+changes: 1
+changes: 1
+# id|iif(c2, coalesce(CAST(c0 AS REAL), CASE WHEN c0 THEN c1 ELSE 9223372036854775807 END), -9223372036854775808)|NOT id
+1|-9223372036854775808|0
+2|-9223372036854775808|0
+3|-9223372036854775808|0
+4|-9223372036854775808|0
+5|-9223372036854775808|0
+6|-9223372036854775808|0
+7|-9223372036854775808|0
+8|-9223372036854775808|0
+9|-9223372036854775808|0
+10|-9223372036854775808|0
+11|-9223372036854775808|0
+12|-9223372036854775808|0
+13|-9223372036854775808|0
+14|0.0|0
+15|-9223372036854775808|0
+16|-9223372036854775808|0
+17|-9223372036854775808|0
+18|1.0e+308|0
+19|-9223372036854775808|0
+20|-9223372036854775808|0
+# -(x'37e8')|123456789012
+-7|123456789012

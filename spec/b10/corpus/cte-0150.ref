@@ -1,0 +1,162 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t2.c0
+# n|a
+57|225851433717
+56|139583862445
+55|86267571272
+54|53316291173
+53|32951280099
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+63|4052739537881
+62|2504730781961
+61|1548008755920
+60|956722026041
+59|591286729879
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+48|2971215073
+47|1836311903
+46|1134903170
+45|701408733
+44|433494437
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# id|id|c2|c1
+1|1|1000000000000000.0|2
+2|1|20.873|2
+2|2|20.873|sigma
+3|1|7.359|2
+3|2|7.359|sigma
+3|3|7.359|1000000000000000.0
+4|1|-0.347|2
+4|2|-0.347|sigma
+4|3|-0.347|1000000000000000.0
+4|4|-0.347|X'14F1'
+5|1|-37.664|2
+5|2|-37.664|sigma
+5|3|-37.664|1000000000000000.0
+5|4|-37.664|X'14F1'
+5|5|-37.664|theta
+6|1|867.0|2
+6|2|867.0|sigma
+6|3|867.0|1000000000000000.0
+6|4|867.0|X'14F1'
+6|5|867.0|theta
+6|6|867.0|-4
+7|1|-1.467|2
+# count(*)
+14
+# id|id|c0|c1
+1|2|nu|sigma
+1|3|nu|1000000000000000.0
+1|4|nu|X'14F1'
+1|5|nu|theta
+1|6|nu|-4
+2|3|0x1F|1000000000000000.0
+2|4|0x1F|X'14F1'
+2|5|0x1F|theta
+2|6|0x1F|-4
+3|4|alpha|X'14F1'
+3|5|alpha|theta
+3|6|alpha|-4
+4|5|upsilon|theta
+4|6|upsilon|-4
+5|6|chi|-4
+error: near "(": syntax error
+# n|a
+6|5
+5|3
+4|2
+3|1
+2|1
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

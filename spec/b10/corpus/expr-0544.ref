@@ -1,0 +1,285 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|c1
+1|1|-480.6
+2|2|X'C9B92282'
+3|3|365
+4|4|X'DCB0B3'
+5|5|delta
+6|6|theta
+7|7|825.8
+8|8|X'2696B8E96E'
+9|9|alpha
+10|10|-531
+11|11|144
+12|12|Lambda
+13|13|2.5
+14|14|it's
+15|15|-3
+16|16|señor
+17|17|X'463E68D8'
+18|18|NULL
+19|19|NULL
+20|20|0.1
+21|21|331
+22|22|NULL
+23|23|X'121A2633'
+# typeof(iif((-3 & NULL), CAST(-1e308 AS INTEGER), 'theta'))|-395
+text|-395
+# id|x'009081d15f78'|199
+1|X'009081D15F78'|199
+2|X'009081D15F78'|199
+3|X'009081D15F78'|199
+4|X'009081D15F78'|199
+5|X'009081D15F78'|199
+6|X'009081D15F78'|199
+7|X'009081D15F78'|199
+8|X'009081D15F78'|199
+9|X'009081D15F78'|199
+10|X'009081D15F78'|199
+11|X'009081D15F78'|199
+12|X'009081D15F78'|199
+13|X'009081D15F78'|199
+14|X'009081D15F78'|199
+15|X'009081D15F78'|199
+16|X'009081D15F78'|199
+17|X'009081D15F78'|199
+18|X'009081D15F78'|199
+19|X'009081D15F78'|199
+20|X'009081D15F78'|199
+21|X'009081D15F78'|199
+22|X'009081D15F78'|199
+23|X'009081D15F78'|199
+# iif(x'0b2bce' IS NULL, coalesce(abs(2), -254.8386), x'1a0179')|abs(typeof('naïve' BETWEEN 923.4 AND x''))
+X'1A0179'|0.0
+# id|coalesce(abs(c1), coalesce(c0, id)) IS NULL|c4
+1|0|X'46639AC3E7'
+2|0|MU
+3|0|4.500000000000011e-310
+4|0|-357.54
+5|0|phi
+6|0|1
+7|0|644
+8|0|pi
+9|0|NULL
+10|0|4.500000000000011e-310
+11|0|NULL
+12|0|X'4365A6BA30'
+13|0|-478
+14|0|über
+15|0|42
+16|0|NULL
+17|0|rho
+18|0|omicron
+19|0|-867.222
+20|0|NULL
+21|0|NULL
+22|0|beta
+23|0|X'F2EF'
+# coalesce(-('') IS NULL, ('señor' = NOT x'bd'))|-328
+0|-328
+# id|-(coalesce(c2, iif(c0, c2, 'alpha')))|-(NULL)
+20|0|NULL
+19|708|NULL
+18|642|NULL
+17|-5|NULL
+16|0|NULL
+15|-4.500000000000011e-310|NULL
+14|0|NULL
+13|0|NULL
+12|356|NULL
+11|-58.86|NULL
+10|0|NULL
+9|0|NULL
+8|0|NULL
+7|-0.1|NULL
+6|0|NULL
+5|NULL|NULL
+4|0|NULL
+3|0|NULL
+2|NULL|NULL
+1|0|NULL
+# CASE WHEN NOT NULL BETWEEN CAST(-1 AS BLOB) AND abs(-882) THEN NOT 1 ELSE abs(typeof('')) END|iif('phi', iif(NULL BETWEEN x'ad' AND ' pad ', nullif(NULL, NULL), NULL), x'75')
+0.0|X'75'
+# id|nullif(coalesce(NOT NULL, nullif(x'9f866213', x'91df58')), NOT c0)|iif(843 BETWEEN c0 AND 1 IS NULL, x'8c70', 2)
+1|X'9F866213'|2
+2|X'9F866213'|2
+3|X'9F866213'|2
+4|X'9F866213'|2
+5|X'9F866213'|2
+6|X'9F866213'|2
+7|X'9F866213'|2
+8|X'9F866213'|2
+9|X'9F866213'|2
+10|X'9F866213'|2
+11|X'9F866213'|2
+12|X'9F866213'|2
+13|X'9F866213'|2
+14|X'9F866213'|2
+15|X'9F866213'|2
+16|X'9F866213'|2
+17|X'9F866213'|2
+18|X'9F866213'|2
+19|X'9F866213'|2
+20|X'9F866213'|2
+# typeof((x'2a65' IS NOT typeof(1.0e15)))|nullif(CAST('café' AS NUMERIC) BETWEEN (377 OR 123456789012) AND CASE WHEN x'd4' THEN 931 ELSE NULL END, NULL)
+integer|0
+# id|id|NOT NULL
+1|1|NULL
+2|2|NULL
+3|3|NULL
+4|4|NULL
+5|5|NULL
+6|6|NULL
+7|7|NULL
+8|8|NULL
+9|9|NULL
+10|10|NULL
+11|11|NULL
+12|12|NULL
+13|13|NULL
+14|14|NULL
+15|15|NULL
+16|16|NULL
+17|17|NULL
+18|18|NULL
+19|19|NULL
+20|20|NULL
+# abs(NULL)|CAST(CASE WHEN NULL THEN 335.2 ELSE x'a25f' END AS BLOB) BETWEEN abs(995) IS NULL AND nullif('a%b', x'') BETWEEN 'NULL' BETWEEN x'' AND 801.501 AND CASE WHEN 828.8 THEN 0 ELSE x'ff6d4430' END
+NULL|1
+# id|-3 IN (x'', -624, -509.283)|109.19
+1|0|109.19
+2|0|109.19
+3|0|109.19
+4|0|109.19
+5|0|109.19
+6|0|109.19
+7|0|109.19
+8|0|109.19
+9|0|109.19
+10|0|109.19
+11|0|109.19
+12|0|109.19
+13|0|109.19
+14|0|109.19
+15|0|109.19
+16|0|109.19
+17|0|109.19
+18|0|109.19
+19|0|109.19
+20|0|109.19
+21|0|109.19
+22|0|109.19
+23|0|109.19
+# nullif(CASE WHEN NULL THEN 'tau' ELSE NULL END, typeof(NULL)) IS NULL|coalesce(iif((x'e5d7d70147' IS -521), ('psi' * ' pad '), 'naïve'), 947 IN (NULL, 0, x'd5') BETWEEN typeof(NULL) AND 5 BETWEEN x'bb8eb02468' AND 3.141592653589793)
+1|naïve
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1
+t1|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+8|22
+17|22
+20|22
+23|22
+103|22
+15|22
+11|22
+14|22
+5|22
+4|22
+19|22
+3|22
+6|22
+9|22
+12|22
+13|22
+18|22
+22|22
+7|22
+16|22
+10|22
+21|22
+# id
+# id
+23
+103
+# c1
+NULL
+NULL
+NULL
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":"phi"}
+{"id":2,"v":"-1"}
+{"id":3,"v":"38.2769"}
+{"id":4,"v":"0"}

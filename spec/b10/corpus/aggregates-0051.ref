@@ -1,0 +1,97 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+24|19|1.0e+308|1.0e+308|5.2631578947368423e+306|-1|X'F1'|18
+# c1|count(*)|group_concat(id, ';')
+NULL|5|1;4;7;15;23
+-1|1|13
+-465|1|8
+-90|1|14
+-9223372036854775808|1|17
+0.1|2|10;11
+1.0e+308|1|19
+1000000000000000.0|1|2
+2|1|12
+3|1|24
+371|1|18
+4|1|6
+9223372036854775807|1|5
+964|1|16
+omicron|1|21
+tau|1|20
+X''|1|9
+X'CDA23281D5'|1|3
+X'F1'|1|22
+# count(*)|count(c2)|sum(c2)|total(c2)|avg(c2)|min(c2)|max(c2)|count(DISTINCT c2)
+7|7|9.2233720368547779e+18|9.2233720368547779e+18|1.3176245766935396e+18|0.0|nu|6
+# c2|count(*)|group_concat(id)
+0.0|1|6
+1e3|2|2,7
+34|1|1
+624.606|1|5
+9223372036854775807|1|3
+nu|1|4
+# count(*)|count(c1)|sum(c1)|total(c1)|avg(c1)|min(c1)|max(c1)|count(DISTINCT c1)
+0|0|NULL|0.0|NULL|NULL|NULL|0
+# c1|count(*)|group_concat(id)
+0|2|1,3
+171.043|1|7
+eta|1|5
+upsilon|1|2
+X'0D01468C'|1|4
+X'BBBE3A'|1|6
+changes: 7
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+8|1.0e+308
+# id|c0|c1|c2|c3|ref
+8|1.0e+308|0|d|NULL|NULL
+7|7|171.043|1e3|NULL|NULL
+5|-793!|eta|624.606|17.3|NULL
+4|3.1415926535897931|0|d|NULL|NULL
+2|2|upsilon|1e3|828|8
+1|1|0|34|-73.1129|NULL
+# printf('%q', -1)|round(-1, 2)|-1 * 1.0e15|-1 / -408|CAST(-1 AS TEXT)|-1 + 0.0
+-1|-1.0|-1000000000000000.0|0|-1|-1.0
+changes: 2
+changes: 22
+# count(*)|count(c0)
+24|18
+# count(*)
+24
+error: cannot commit - no transaction is active

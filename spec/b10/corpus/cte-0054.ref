@@ -1,0 +1,123 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+error: UNIQUE constraint failed: t1.c1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1962
+# n|a
+46|1134903170
+45|701408733
+44|433494437
+43|267914296
+42|165580141
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+21|6765
+20|4181
+19|2584
+18|1597
+17|987
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+50|7778742049
+49|4807526976
+48|2971215073
+47|1836311903
+46|1134903170
+# count(*)|max(x)|group_concat(x)
+3|4|4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+81|23416728348467685
+80|14472334024676221
+79|8944394323791464
+78|5527939700884757
+77|3416454622906707
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# printf('%+d', 333)|round(333, 4)|333 * 893.0236|333 / 315.91|CAST(333 AS TEXT)|333 + 0.0
++333|333.0|297376.8588|1.0540976860498241|333|333.0
+changes: 1
+changes: 3
+# count(*)|count(c0)
+5|1
+# count(*)
+8
+error: cannot commit - no transaction is active

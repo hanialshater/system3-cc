@@ -1,0 +1,64 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('naïve')|upper('naïve')|lower('naïve')|substr('naïve', 3, 5)|instr('naïve', 'iota')|replace('naïve', 'a', '_')|trim('naïve')|ltrim('naïve', 'ab')|hex('naïve')|quote('naïve')|unicode('naïve')|'naïve' LIKE '%'|'naïve' GLOB '*'|char(65, 678)|'naïve' || 'iota'|'naïve' < 'iota'|'naïve' = 'iota' COLLATE NOCASE
+5|NAïVE|naïve|ïve|0|n_ïve|naïve|naïve|6E61C3AF7665|'naïve'|110|1|1|Aʦ|naïveiota|0|0
+# length('NULL')|upper('NULL')|lower('NULL')|substr('NULL', 4, 4)|instr('NULL', 'alpha')|replace('NULL', 'é', '')|trim('NULL')|ltrim('NULL', 'ab')|hex('NULL')|quote('NULL')|unicode('NULL')|'NULL' LIKE '%'|'NULL' GLOB 'a*'|char(75, 638)|'NULL' || 'alpha'|'NULL' < 'alpha'|'NULL' = 'alpha' COLLATE NOCASE
+4|NULL|null|L|0|NULL|NULL|NULL|4E554C4C|'NULL'|78|1|0|Kɾ|NULLalpha|1|0
+# length('café')|upper('café')|lower('café')|substr('café', -1, 3)|instr('café', 'MU')|replace('café', 'a', 'XY')|trim('café')|ltrim('café', 'ab')|hex('café')|quote('café')|unicode('café')|'café' LIKE '%a_'|'café' GLOB '?'|char(65, 915)|'café' || 'MU'|'café' < 'MU'|'café' = 'MU' COLLATE NOCASE
+4|CAFé|café|é|0|cXYfé|café|café|636166C3A9|'café'|99|0|0|AΓ|caféMU|0|0
+# length('iota')|upper('iota')|lower('iota')|substr('iota', -1, 4)|instr('iota', 'beta')|replace('iota', '', '_')|trim('iota')|ltrim('iota', 'ab')|hex('iota')|quote('iota')|unicode('iota')|'iota' LIKE '%'|'iota' GLOB 'a*'|char(79, 901)|'iota' || 'beta'|'iota' < 'beta'|'iota' = 'beta' COLLATE NOCASE
+4|IOTA|iota|a|0|iota|iota|iota|696F7461|'iota'|105|1|0|O΅|iotabeta|0|0
+# length('señor')|upper('señor')|lower('señor')|substr('señor', 4, 2)|instr('señor', 'café')|replace('señor', '', '')|trim('señor')|ltrim('señor', 'ab')|hex('señor')|quote('señor')|unicode('señor')|'señor' LIKE 'a%'|'señor' GLOB '?'|char(84, 419)|'señor' || 'café'|'señor' < 'café'|'señor' = 'café' COLLATE NOCASE
+5|SEñOR|señor|or|0|señor|señor|señor|7365C3B16F72|'señor'|115|0|0|Tƣ|señorcafé|0|0
+# length('it''s')|upper('it''s')|lower('it''s')|substr('it''s', -3, 4)|instr('it''s', 'naïve')|replace('it''s', 'e', '_')|trim('it''s')|ltrim('it''s', 'ab')|hex('it''s')|quote('it''s')|unicode('it''s')|'it''s' LIKE 'a%'|'it''s' GLOB '?'|char(75, 737)|'it''s' || 'naïve'|'it''s' < 'naïve'|'it''s' = 'naïve' COLLATE NOCASE
+4|IT'S|it's|t's|0|it's|it's|it's|69742773|'it''s'|105|0|0|Kˡ|it'snaïve|1|0
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c2)
+error: JSON cannot hold BLOB values

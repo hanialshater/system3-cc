@@ -1,0 +1,176 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# n|a
+49|4807526976
+48|2971215073
+47|1836311903
+46|1134903170
+45|701408733
+# count(*)|max(x)|group_concat(x)
+17|52|7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+43|267914296
+42|165580141
+41|102334155
+40|63245986
+39|39088169
+# count(*)|max(x)|group_concat(x)
+1|1|1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+57|225851433717
+56|139583862445
+55|86267571272
+54|53316291173
+53|32951280099
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# n|a
+5|3
+4|2
+3|1
+2|1
+1|0
+# count(*)|max(x)|group_concat(x)
+9|16|6,3,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+changes: 12
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+12|iota
+# id|c0|c1|c2|c3|ref
+12|iota|NULL|NULL|NULL|NULL
+11|MU|-90|MU|2|5
+10|0.1|señor|0.1|0|7
+9|1.0e+308|señor|1.0e+308|NULL|6
+7|-644.174|1|-644.174|NULL|2
+6|-1.0e+308|日本|-1.0e+308|X'6130AB00'|7
+5|0!|0.0|123456789012|NULL|4
+4|X'E9334C4D71'|NULL|NULL|NULL|NULL
+3|-669|4.500000000000011e-310|-669|-912.94|7
+2|X'A7'|-426|X'A7'|-846|7
+1|NULL|señor|NULL|X'03FE525BFC7A'|8
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t0|109
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|NULL
+9|9
+10|10
+11|11
+12|12
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|11
+6|11
+7|11
+3|11
+5|11
+10|11
+9|11
+11|11
+12|11
+2|11
+4|11
+# id
+3
+5
+6
+7
+9
+10
+# id
+# c3
+NULL
+2
+4
+5
+6
+7
+8
+-846
+-912.94
+0
+2
+X'03FE525BFC7A'
+X'6130AB00'

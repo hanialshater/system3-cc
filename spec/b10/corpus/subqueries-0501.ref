@@ -1,0 +1,290 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|13
+2|13
+3|13
+4|13
+5|13
+6|13
+7|13
+8|13
+9|13
+10|13
+11|13
+12|13
+13|13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+11
+12
+13
+# c0
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+13|13
+11|13
+7|13
+6|13
+4|13
+2|13
+8|13
+9|13
+3|13
+5|13
+12|13
+10|13
+1|13
+# id
+1
+2
+4
+6
+7
+8
+10
+11
+13
+# id
+# c4
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t0.id)
+3|3
+5|5
+11|11
+10|10
+1|1
+12|12
+17|13
+14|13
+6|6
+7|7
+2|2
+16|13
+4|4
+9|9
+13|13
+15|13
+8|8
+# id
+14
+15
+16
+17
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+# c4
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+4|13
+9|13
+7|13
+8|13
+5|13
+6|13
+2|13
+3|13
+12|13
+10|13
+13|13
+11|13
+1|13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+# c2
+-894
+-616.128
+-480.0
+3
+288
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+9|13
+13|13
+3|13
+6|13
+11|13
+4|13
+5|13
+12|13
+8|13
+7|13
+1|13
+2|13
+10|13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+# c2
+NULL
+NULL
+NULL
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+2|13
+4|13
+6|13
+7|13
+11|13
+13|13
+8|13
+9|13
+3|13
+5|13
+12|13
+10|13
+1|13
+# id
+1
+3
+5
+7
+12
+13
+# id
+# id
+4
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|13
+2|13
+3|13
+4|13
+5|13
+6|13
+7|13
+8|13
+9|13
+10|13
+11|13
+12|13
+13|13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+# c2
+-616.128
+-480.0
+288
+X''
+X'8E460F11FEE3'
+X'954425B539A2'

@@ -1,0 +1,86 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c0
+changes: 0
+# id|c3
+6| pad 
+7|a%b
+2|it's
+10|it's
+4|rho
+1|theta
+8|theta
+3|upsilon
+9|x_y
+5|日本
+error: no query solution
+changes: 0
+changes: 0
+changes: 0
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+# count(*)
+5
+changes: 0
+changes: 0
+changes: 0
+# id|c2
+# count(*)
+9
+changes: 0
+changes: 0
+changes: 0
+# id|c1
+1|NULL
+2|NULL
+5|498
+4|gamma
+3|X'61F79224'
+# count(*)
+3
+changes: 0
+changes: 0
+changes: 0
+# id|c0
+5|X'7BAA'
+# count(*)
+5
+changes: 0
+changes: 0
+changes: 0
+# id|c0
+1|-173.5
+2|-2.5
+3|3
+4|181.023
+5|X'7BAA'
+# count(*)
+5
+changes: 0
+changes: 0
+changes: 5
+changes: 0
+# count(*)|count(c0)
+5|0
+# count(*)
+5
+error: cannot commit - no transaction is active

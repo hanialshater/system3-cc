@@ -1,0 +1,79 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('naïve')|upper('naïve')|lower('naïve')|substr('naïve', 1, 0)|instr('naïve', ' pad ')|replace('naïve', 'é', 'XY')|trim('naïve')|ltrim('naïve', 'ab')|hex('naïve')|quote('naïve')|unicode('naïve')|'naïve' LIKE '%'|'naïve' GLOB '*[a-m]*'|char(90, 572)|'naïve' || ' pad '|'naïve' < ' pad '|'naïve' = ' pad ' COLLATE NOCASE
+5|NAïVE|naïve||0|naïve|naïve|naïve|6E61C3AF7665|'naïve'|110|1|1|Zȼ|naïve pad |0|0
+# length('MU')|upper('MU')|lower('MU')|substr('MU', 1, 1)|instr('MU', 'iota')|replace('MU', 'a', '_')|trim('MU')|ltrim('MU', 'ab')|hex('MU')|quote('MU')|unicode('MU')|'MU' LIKE 'a%'|'MU' GLOB '?'|char(74, 872)|'MU' || 'iota'|'MU' < 'iota'|'MU' = 'iota' COLLATE NOCASE
+2|MU|mu|M|0|MU|MU|MU|4D55|'MU'|77|0|0|Jͨ|MUiota|1|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', 3, 3)|instr('epsilon', 'upsilon')|replace('epsilon', 'é', '')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE 'a%'|'epsilon' GLOB '*[a-m]*'|char(77, 666)|'epsilon' || 'upsilon'|'epsilon' < 'upsilon'|'epsilon' = 'upsilon' COLLATE NOCASE
+7|EPSILON|epsilon|sil|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|1|Mʚ|epsilonupsilon|1|0
+# length('Ελλάδα')|upper('Ελλάδα')|lower('Ελλάδα')|substr('Ελλάδα', -1, 4)|instr('Ελλάδα', 'it''s')|replace('Ελλάδα', 'e', '_')|trim('Ελλάδα')|ltrim('Ελλάδα', 'ab')|hex('Ελλάδα')|quote('Ελλάδα')|unicode('Ελλάδα')|'Ελλάδα' LIKE '%'|'Ελλάδα' GLOB '?'|char(77, 219)|'Ελλάδα' || 'it''s'|'Ελλάδα' < 'it''s'|'Ελλάδα' = 'it''s' COLLATE NOCASE
+6|Ελλάδα|Ελλάδα|α|0|Ελλάδα|Ελλάδα|Ελλάδα|CE95CEBBCEBBCEACCEB4CEB1|'Ελλάδα'|917|1|0|MÛ|Ελλάδαit's|0|0
+changes: 8
+changes: 4
+# count(*)|count(c0)
+13|5
+# count(*)
+13
+error: cannot commit - no transaction is active
+# id|id|x'b350'
+13|13|X'B350'
+12|12|X'B350'
+11|11|X'B350'
+10|10|X'B350'
+9|9|X'B350'
+8|8|X'B350'
+7|7|X'B350'
+6|6|X'B350'
+5|5|X'B350'
+4|4|X'B350'
+3|3|X'B350'
+2|2|X'B350'
+1|1|X'B350'
+# typeof('epsilon')|(CASE WHEN 'MU' THEN -315 ELSE -18 END BETWEEN CAST(-597 AS INTEGER) AND CAST(NULL AS NUMERIC) AND -(-5) IN (abs('tau'), NULL, -5))
+text|NULL
+changes: 4
+# id|c0
+2|-157.8376
+7|0.0
+10|2
+11|2.5
+3|360.765
+8|537
+1|123456789012
+9|alpha
+6|epsilon
+14|X'03A67A68D1'
+12|X'280AF36F2AAA'
+15|X'6271A7085C54'
+# count(*)
+12
+changes: 4
+changes: 4

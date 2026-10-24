@@ -1,0 +1,210 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t1.c3
+changes: 1
+error: UNIQUE constraint failed: t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|(c1 = nullif(CASE WHEN c0 THEN c3 ELSE c1 END, CAST(c1 AS NUMERIC)))|c2
+1|NULL|theta
+2|NULL|X'9B58'
+3|0|X'88C7593345'
+4|1|NULL
+5|NULL|-840
+6|NULL|1.0e-07
+7|0|X'A5'
+8|NULL|X'0C4C8480'
+9|NULL|X'FC'
+10|1|NULL
+11|1|-942.69
+12|0|-728
+13|NULL|X'7D27D7759C00'
+14|0|0.1
+15|1|NULL
+16|NULL|2
+17|NULL|-2.5
+18|NULL|1000000000000000.0
+19|NULL|X'3DE52AFB'
+20|0|NULL
+# -(coalesce(x'', x'16603b068d')) BETWEEN nullif(-2.5, coalesce(782, -662.6847)) AND NULL|iif(abs('kappa') IN (-879, 'pi', x'e23d7b'), NOT 579 IS NULL, -1e308)
+NULL|-1.0e+308
+# id|-934|-(-(nullif(816, '日本')))
+21|-934|816
+20|-934|816
+19|-934|816
+18|-934|816
+17|-934|816
+16|-934|816
+15|-934|816
+14|-934|816
+13|-934|816
+12|-934|816
+11|-934|816
+10|-934|816
+9|-934|816
+8|-934|816
+7|-934|816
+6|-934|816
+5|-934|816
+4|-934|816
+3|-934|816
+2|-934|816
+1|-934|816
+# abs(iif(-228.746, x'109c05bca2', 'tau') IS NULL)|coalesce(CAST(typeof(3.141592653589793) AS INTEGER), -(x'9bd88759f223' IN (-72, x'', 'gamma')))
+0|0
+# id|NULL|c0
+20|NULL|1.0e-07
+19|NULL|X'959DD01CA6'
+18|NULL|eta
+17|NULL|-9223372036854775808
+16|NULL|378.56
+15|NULL|X''
+14|NULL|1e3
+13|NULL|señor
+12|NULL|-962.958
+11|NULL|X'6D9E5D'
+10|NULL|señor
+9|NULL|-7
+8|NULL|upsilon
+7|NULL|332
+6|NULL|0
+5|NULL|X'D5111B00'
+4|NULL|0
+3|NULL|-3
+2|NULL|-5
+1|NULL|rho
+# -(iif(-5 BETWEEN -958 AND x'54ba', abs(x'd16630af23'), 'upsilon'))|typeof(x'46')
+0.0|blob
+# id|711 BETWEEN 4.5e-310 IN (c2, 0.1, 'alpha') IS NULL AND iif(CAST(NULL AS BLOB), abs(566), x'b7c5a71cefe5')|id BETWEEN abs(typeof(c1)) AND iif(c0, id IN (NULL, 4.5e-310, 921), -451.2)
+1|1|0
+2|1|0
+3|1|NULL
+4|1|0
+5|1|NULL
+6|1|0
+7|1|0
+8|1|0
+9|1|NULL
+10|1|NULL
+# NOT CAST(NULL AS BLOB)|'zeta'
+NULL|zeta
+# id|1e-7|c0
+21|1.0e-07|-857
+20|1.0e-07|NULL
+19|1.0e-07|1.0e+308
+18|1.0e-07|X'BBA5'
+17|1.0e-07|-4
+16|1.0e-07|NULL
+15|1.0e-07|x_y
+14|1.0e-07|NULL
+13|1.0e-07|9223372036854775807
+12|1.0e-07|X''
+11|1.0e-07|Ελλάδα
+10|1.0e-07|X'2719BEFA'
+9|1.0e-07|nu
+8|1.0e-07|-3
+7|1.0e-07|-2
+6|1.0e-07|NULL
+5|1.0e-07|X'DD84AC'
+4|1.0e-07|3
+3|1.0e-07|NULL
+2|1.0e-07|a%b
+1|1.0e-07|486.5
+# nullif(coalesce(CASE WHEN 1e-7 THEN 122 ELSE 303.2855 END, CASE WHEN NULL THEN NULL ELSE 417.9 END), -1)|'delta'
+122|delta
+# id|'señor' BETWEEN CAST(iif(503, c2, 601) AS NUMERIC) AND c3|coalesce(CAST((id | c1) AS REAL), 'kappa')
+1|0|1.0
+2|0|-2.0
+3|0|kappa
+4|NULL|-228.0
+5|0|5.0
+6|0|6.0
+7|1|7.0
+8|0|8.0
+9|1|-325.0
+10|0|10.0
+11|0|kappa
+12|0|12.0
+13|0|-3.0
+14|NULL|14.0
+15|NULL|-161.0
+16|0|572.0
+17|NULL|17.0
+18|0|219.0
+19|0|19.0
+20|0|372.0
+21|0|23.0
+# typeof('MU') IN (NULL, x'e5ba3eb2f536', -2.5) IS NULL|CASE WHEN -(3.141592653589793) THEN CAST(766.591 AS REAL) ELSE 5 END IN (typeof(CASE WHEN 520 THEN 'x_y' ELSE 1e308 END), -5, 0.1)
+1|0
+# date('2024-02-29')|time('2024-02-29')|datetime('2024-02-29', 'start of month')|julianday('2024-02-29')|strftime('%j %w %W', '2024-02-29')|unixepoch('2024-02-29')|timediff('2024-03-01', '2023-01-15')
+2024-02-29|00:00:00|2024-02-01 00:00:00|2460369.5|060 4 09|1709164800|+0001-01-15 00:00:00.000
+# json_valid('[1,"two",3.0,true,false,null,{"k":"v"}]')|json('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_type('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_array_length('[1,"two",3.0,true,false,null,{"k":"v"}]')|json_extract('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', '$[1]', '$.b[2].c')|'[1,"two",3.0,true,false,null,{"k":"v"}]' -> '$.b'|'[1,"two",3.0,true,false,null,{"k":"v"}]' ->> '$.n.m.o'
+1|[1,"two",3.0,true,false,null,{"k":"v"}]|array|7|[null,"two",null]|NULL|NULL
+# key|value|type
+0|1|integer
+1|two|text
+2|3.0|real
+3|1|true
+4|0|false
+5|NULL|null
+6|{"k":"v"}|object
+# json_set('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.z', 1)|json_insert('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a', 2)|json_remove('[1,"two",3.0,true,false,null,{"k":"v"}]', '$.a')|json_patch('{"a":1}', '{"b":2}')
+[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|[1,"two",3.0,true,false,null,{"k":"v"}]|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c1)
+{"id":1,"v":null}
+error: JSON cannot hold BLOB values
+# length('')|upper('')|lower('')|substr('', 1, 4)|instr('', 'chi')|replace('', '', '')|trim('')|ltrim('', 'ab')|hex('')|quote('')|unicode('')|'' LIKE '%'|'' GLOB '?'|char(90, 440)|'' || 'chi'|'' < 'chi'|'' = 'chi' COLLATE NOCASE
+0||||0|||||''|NULL|1|0|ZƸ|chi|1|0

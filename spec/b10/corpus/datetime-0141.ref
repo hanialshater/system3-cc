@@ -1,0 +1,77 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', 'unixepoch')|julianday('1999-12-31T23:59:59.999')|strftime('%j %w %W', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|NULL|2451544.4999999884|365 5 52|946684799|+0001-01-15 00:00:00.000
+# date(1700000000)|time(1700000000)|datetime(1700000000, 'start of month')|julianday(1700000000)|strftime('%J', 1700000000)|unixepoch(1700000000)|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', '+1 year')|julianday('1970-01-01')|strftime('%f', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|1971-01-01 00:00:00|2440587.5|00.000|0|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', 'weekday 0')|julianday('bad')|strftime('%f', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+0 seconds')|julianday('2038-01-19 03:14:07')|strftime('%s', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-19 03:14:07|2465442.6348032407|2147483647|2147483647|+0001-01-15 00:00:00.000
+# length(' pad ')|upper(' pad ')|lower(' pad ')|substr(' pad ', -3, 2)|instr(' pad ', '日本')|replace(' pad ', 'a', '')|trim(' pad ')|ltrim(' pad ', 'ab')|hex(' pad ')|quote(' pad ')|unicode(' pad ')|' pad ' LIKE 'A%'|' pad ' GLOB 'a*'|char(89, 682)|' pad ' || '日本'|' pad ' < '日本'|' pad ' = '日本' COLLATE NOCASE
+5| PAD | pad |ad|0| pd |pad| pad |2070616420|' pad '|32|0|0|Yʪ| pad 日本|1|0

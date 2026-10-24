@@ -1,0 +1,86 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t0.c0
+changes: 1
+error: cannot store BLOB value in REAL column t0.c0
+error: cannot store BLOB value in REAL column t0.c0
+error: UNIQUE constraint failed: t0.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store REAL value in INTEGER column t0.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|ref
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|c3
+# count(*)
+16
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+9|-48.343
+8|-42.702
+10|-39.581
+11|-33.609
+16|-15.06
+15|-9.389
+2|-4.511
+12|12.45
+3|12.609
+4|21.565
+6|38.625
+13|44.4
+5|44.95
+7|45.666
+14|47.646
+# count(*)
+15
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c0
+changes: 0
+# count(*)|count(c0)
+3|3
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 16
+changes: 4
+error: cannot store TEXT value in REAL column t0.c0
+changes: 1
+# id|c0
+16|-353.274
+# id|c0|c1|c2|c3|c4
+1|1.0|NULL|NULL|0|NULL
+2|-2.0|3.1415926535897931|NULL|114|X'E9083F65'
+3|0.0|NULL|X'F3'|489|X'DB41DB53'
+5|-5.0|335|psi|-462|42
+6|-6.0|3|X'5A1E0B'|-242|-465.8
+7|0.0|0|日本|381|X'A8E0611854'
+9|0.0|pi|X'81A75D38BBFE'|-3|x_y
+10|0.0||rho|196|82.412
+11|-11.0|-110.7|omicron|235|195
+13|0.0|NULL|nu|455|987
+14|0.0|zeta|509.9|212|-1
+15|0.0|X'CA85B0'|2|263|9223372036854775807
+16|-353.274|NULL|NULL|0|NULL

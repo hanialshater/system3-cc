@@ -1,0 +1,100 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 1
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t1.c0
+# id|c0|c1|c2|c3|c4|ref
+4|X''|NULL|d|NULL|0|NULL
+3|-474.073|-697|771|2|X'9B440C13B1'|6
+2|!|NULL|NULL|X'CBE1'|0|4
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+7|-2.5
+# id|c0|c1|c2|c3|c4|ref
+2|!|NULL|NULL|X'CBE1'|0|4
+3|iota|NULL|d|NULL|0|NULL
+4|X''|NULL|d|NULL|0|NULL
+6|X'BE62AE4D20D3'|NULL|d|NULL|0|NULL
+7|-2.5|NULL|d|NULL|0|NULL
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+# id|c0
+8|-494.995
+# id|c0|c1|c2|c3|c4|ref
+8|-494.995|NULL|d|NULL|0|NULL
+7|-2.5|NULL|d|NULL|0|NULL
+6|X'BE62AE4D20D3'|NULL|d|NULL|0|NULL
+5|697.9|NULL|d|NULL|0|NULL
+4|-4.0!|NULL|d|NULL|0|NULL
+3|iota|NULL|d|NULL|0|NULL
+2|!|NULL|NULL|X'CBE1'|0|4
+changes: 0
+changes: 4
+error: NOT NULL constraint failed: t1.c0
+changes: 1
+# id|c0
+8|alpha
+# id|c0|c1|c2|c3|c4|ref
+3|iota|NULL|d|NULL|0|NULL
+5|697.9|NULL|d|NULL|0|NULL
+7|0.0|NULL|d|NULL|0|NULL
+8|alpha|NULL|d|NULL|0|NULL
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t1.c0
+# id|c0|c1|c2|c3|c4|ref
+1|311.0|NULL|d|NULL|0|NULL
+2|896.0|NULL|d|NULL|0|NULL
+3|iota|NULL|d|NULL|0|NULL
+5|697.9|NULL|d|NULL|0|NULL
+7|0.0|NULL|d|NULL|0|NULL
+changes: 0
+changes: 2
+error: NOT NULL constraint failed: t1.c0
+changes: 1
+# id|c0
+error: NOT NULL constraint failed: t1.c0
+# id|c0|c1|c2|c3|c4|ref
+2|896.0|NULL|d|NULL|0|NULL
+3|iota|NULL|d|NULL|0|NULL
+4|0.0|NULL|d|NULL|0|NULL
+7|0.0|NULL|d|NULL|0|NULL
+# id|c2|nth_value(c2, 2) OVER (ORDER BY id)
+2|d|NULL
+3|d|d
+4|d|d
+7|d|d

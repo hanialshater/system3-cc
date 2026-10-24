@@ -1,0 +1,64 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c1
+changes: 1911
+changes: 5
+changes: 0
+# count(*)|count(c0)
+6|1
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 6
+changes: 4
+# count(*)|count(c0)
+6|0
+# count(*)
+6
+error: cannot commit - no transaction is active
+changes: 7
+changes: 1927
+# count(*)|count(c0)
+1931|1923
+# count(*)
+1931
+error: cannot commit - no transaction is active
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INTEGER|0|NULL|0
+2|c1||0|NULL|0
+3|c2|VARCHAR(10)|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table

@@ -1,0 +1,129 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t1.c3
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%g', 330)|round(330, 0)|330 * -549|330 / -588|CAST(330 AS TEXT)|330 + 0.0
+330|330.0|-181170|0|330|330.0
+# printf('%e', -3)|round(-3, 2)|-3 * 256|-3 / 821|CAST(-3 AS TEXT)|-3 + 0.0
+-3.000000e+00|-3.0|-768|0|-3|-3.0
+# printf('%e', -730.46)|round(-730.46, 3)|-730.46 * 215|-730.46 / 0|CAST(-730.46 AS TEXT)|-730.46 + 0.0
+-7.304600e+02|-730.46|-157048.9|NULL|-730.46|-730.46
+# printf('%Q', -548.717)|round(-548.717, 3)|-548.717 * 1|-548.717 / 815.5|CAST(-548.717 AS TEXT)|-548.717 + 0.0
+'-548.717'|-548.717|-548.717|-0.67285959534028206|-548.717|-548.717
+# printf('%d', 123456789012)|round(123456789012, 1)|123456789012 * 5|123456789012 / 62.5604|CAST(123456789012 AS TEXT)|123456789012 + 0.0
+123456789012|123456789012.0|617283945060|1973401528.9544184|123456789012|123456789012.0
+# n|a
+78|5527939700884757
+77|3416454622906707
+76|2111485077978050
+75|1304969544928657
+74|806515533049393
+# count(*)|max(x)|group_concat(x)
+2|2|2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+1|1
+2|2
+3|3
+4|4
+5|5
+# id
+1
+2
+3
+4
+5
+# id
+1
+2
+3
+4
+5
+# c0
+
+ pad 
+0x1F
+4
+482
+601
+alpha
+beta
+chi
+delta
+gamma
+gamma
+it's
+kappa
+nu
+señor
+sigma
+sigma
+xi
+zeta
+über
+# id|c2|typeof(iif(x'57b8784651', c2, -3)) IS NULL
+19|18.316|0
+18|9.473|0
+17|42.818|0
+16|-29.364|0
+15|-9.333|0
+14|37.558|0
+13|-32.412|0
+12|-48.52|0
+11|47.759|0
+10|-41.427|0
+9|43.525|0
+8|-48.874|0
+7|3.0|0
+6|28.692|0
+5|10.524|0
+4|-8.452|0
+3|-39.553|0
+2|-44.424|0
+1|17.952|0
+# (('eta' - -883) OR nullif(NULL, x'11d4')) IN (coalesce('a%b' BETWEEN 3.141592653589793 AND x'd15c6332f6', -(-1)), -150, -3)|x'227fde4d29'
+1|X'227FDE4D29'

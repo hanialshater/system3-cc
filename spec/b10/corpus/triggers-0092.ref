@@ -1,0 +1,211 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in INTEGER column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: UNIQUE constraint failed: t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in REAL column t2.c4
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+180|180
+changes: 2
+changes: 2
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t2|1
+t2|2
+t1|1001
+t1|1002
+t0|158
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+changes: 2
+changes: 1
+changes: 0
+changes: 0
+# x|y
+t2|1
+t2|2
+t1|1001
+t1|1002
+t0|158
+changes: 0
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|NULL
+8|NULL
+9|NULL
+10|NULL
+11|NULL
+12|NULL
+# id|c0|row_number() OVER (ORDER BY id)
+3|3.215|1
+4|-23.709|2
+5|-29.691|3
+6|28.053|4
+7|-5.836|5
+8|-1.214|6
+9|-35.921|7
+10|40.274|8
+11|-41.424|9
+12|-2.164|10
+13|40.879|11
+14|48.655|12
+15|42.985|13
+16|38.846|14
+17|41.808|15
+18|-15.958|16
+19|46.038|17
+20|16.589|18
+21|-13.596|19
+171|NULL|20
+198|NULL|21
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t2.id)
+171|4
+198|5
+15|4
+11|4
+14|4
+17|4
+19|4
+20|4
+10|4
+12|4
+8|4
+5|3
+6|4
+9|4
+18|4
+21|4
+16|4
+4|2
+3|1
+7|4
+13|4
+# id
+3
+4
+6
+# id
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+171
+198
+# c3
+-328
+-265
+-261
+-226
+-223
+-211
+-203
+-181
+-136
+-128

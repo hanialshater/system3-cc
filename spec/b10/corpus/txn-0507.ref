@@ -1,0 +1,88 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 0
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 6
+changes: 12
+# count(*)|count(c0)
+16|8
+# count(*)
+16
+error: cannot commit - no transaction is active
+changes: 4
+changes: 13
+# count(*)|count(c0)
+15|10
+# count(*)
+15
+error: cannot commit - no transaction is active
+changes: 5
+changes: 12
+# count(*)|count(c0)
+3|0
+# count(*)
+15
+error: cannot commit - no transaction is active
+changes: 6
+changes: 13
+# count(*)|count(c0)
+3|0
+# count(*)
+3
+error: cannot commit - no transaction is active
+changes: 1
+changes: 8
+# count(*)|count(c0)
+7|5
+# count(*)
+7
+error: cannot commit - no transaction is active
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0||0|NULL|0
+2|c1||0|NULL|0
+3|c2|BLOB|0|NULL|0
+4|c3|BLOB|0|NULL|0
+5|c4|NUMERIC|0|NULL|0
+6|ref|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+0|0|t0|ref|id|NO ACTION|NO ACTION|NONE
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t0_2|index
+t0|table
+t1|table

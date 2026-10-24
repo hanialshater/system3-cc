@@ -1,0 +1,73 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%w', 253.8)|round(253.8, 1)|253.8 * 1e-7|253.8 / -5|CAST(253.8 AS TEXT)|253.8 + 0.0
+253.8|253.8|2.538e-05|-50.760000000000005|253.8|253.8
+# printf('%q', 730)|round(730, 0)|730 * 257.7|730 / -0.0|CAST(730 AS TEXT)|730 + 0.0
+730|730.0|188121.0|NULL|730|730.0
+# printf('%.3s', 0.1)|round(0.1, 1)|0.1 * 534.20|0.1 / -922.82|CAST(0.1 AS TEXT)|0.1 + 0.0
+0.1|0.1|53.420000000000009|-0.00010836349450597083|0.1|0.1
+# printf('%.3s', -3)|round(-3, 1)|-3 * 4|-3 / 123456789012|CAST(-3 AS TEXT)|-3 + 0.0
+-3|-3.0|-12|0|-3|-3.0
+# json_valid('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_type('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_array_length('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}')|json_extract('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', '$[1]', '$.b[2].c')|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' -> '$.b'|'{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}' ->> '$.n.m.o'
+1|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|object|0|[1,null,"x"]|[1,2,{"c":"x"}]|NULL
+# key|value|type
+a|1|integer
+b|[1,2,{"c":"x"}]|array
+d|NULL|null
+e|1500.0|real
+# json_set('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.z', 1)|json_insert('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a', 2)|json_remove('{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3,"z":1}|{"a":1,"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"b":[1,2,{"c":"x"}],"d":null,"e":1.5e3}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c0)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}
+{"id":4,"v":4}
+changes: 8
+changes: 15
+# count(*)|count(c0)
+23|11
+# count(*)
+23
+error: cannot commit - no transaction is active
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, 'weekday 0')|julianday(2451545.0)|strftime('%f', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-02 12:00:00|2451545.0|00.000|946728000|+0001-01-15 00:00:00.000

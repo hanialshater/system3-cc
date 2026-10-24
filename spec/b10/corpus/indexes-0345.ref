@@ -1,0 +1,126 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t2.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+10|10
+11|11
+12|12
+13|13
+14|14
+error: no query solution
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+10
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+1|613.3
+7|1.0e+308
+9| pad 
+6|gamma
+4|omega
+3|X'01'
+# count(*)
+9
+changes: 1
+changes: 1
+changes: 1
+# id|c2
+# count(*)
+2
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+14
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+5|-189.53
+14|-4
+# count(*)
+10
+changes: 1
+changes: 1
+changes: 1
+# id|c0
+# count(*)
+4
+changes: 1
+changes: 1
+# n|a
+86|259695496911122585
+85|160500643816367088
+84|99194853094755497
+83|61305790721611591
+82|37889062373143906
+# count(*)|max(x)|group_concat(x)
+6|16|5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9
+changes: 0
+changes: 3
+changes: 1
+changes: 1
+# id|c0
+9|950.5793
+# id|c0|c1|c2|ref
+2|-29!|X'87EAE66EEAF9'|alpha|3
+3|X'01'|日本|X'9A84E336F3DE'|1
+4|Lambda|0|NULL|NULL
+6|gamma|gamma|NULL|6
+7|1.0e+308|0|-1.0e+308|NULL
+8|3|431.2365|omega|1
+9|950.5793|0|NULL|NULL

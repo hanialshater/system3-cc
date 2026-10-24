@@ -1,0 +1,50 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t1.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# printf('%.3s', -9223372036854775808)|round(-9223372036854775808, 0)|-9223372036854775808 * -709|-9223372036854775808 / 1.0e15|CAST(-9223372036854775808 AS TEXT)|-9223372036854775808 + 0.0
+-92|-9.2233720368547758e+18|6.5393707741300361e+21|-9223.3720368547765|-9223372036854775808|-9.2233720368547758e+18
+# printf('%%', -0.0)|round(-0.0, 0)|-0.0 * 5|-0.0 / -388|CAST(-0.0 AS TEXT)|-0.0 + 0.0
+%|0.0|0.0|0.0|0.0|0.0
+# printf('%!.15g', -455)|round(-455, 0)|-455 * 873|-455 / 966.4984|CAST(-455 AS TEXT)|-455 + 0.0
+-455.0|-455.0|-397215|-0.47077160189815115|-455|-455.0
+# printf('%08.3f', -5)|round(-5, 0)|-5 * -3|-5 / -380.919|CAST(-5 AS TEXT)|-5 + 0.0
+-005.000|-5.0|15|0.013126150178909427|-5|-5.0
+# printf('%,d', -792.4)|round(-792.4, 4)|-792.4 * -923|-792.4 / -649.1730|CAST(-792.4 AS TEXT)|-792.4 + 0.0
+-792|-792.4|731385.2|1.2206299399389684|-792.4|-792.4
+# printf('%-8s|', -1)|round(-1, 4)|-1 * -5|-1 / 1.0e15|CAST(-1 AS TEXT)|-1 + 0.0
+-1      ||-1.0|5|-1.0e-15|-1|-1.0
+# length('Lambda')|upper('Lambda')|lower('Lambda')|substr('Lambda', 1, 4)|instr('Lambda', 'alpha')|replace('Lambda', 'a', '_')|trim('Lambda')|ltrim('Lambda', 'ab')|hex('Lambda')|quote('Lambda')|unicode('Lambda')|'Lambda' LIKE '%é%'|'Lambda' GLOB '*[a-m]*'|char(88, 585)|'Lambda' || 'alpha'|'Lambda' < 'alpha'|'Lambda' = 'alpha' COLLATE NOCASE
+6|LAMBDA|lambda|Lamb|0|L_mbd_|Lambda|Lambda|4C616D626461|'Lambda'|76|0|1|Xɉ|Lambdaalpha|1|0

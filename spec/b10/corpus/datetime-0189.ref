@@ -1,0 +1,98 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1757
+# date(2451545.0)|time(2451545.0)|datetime(2451545.0, '+0 seconds')|julianday(2451545.0)|strftime('%Y-%m-%d %H:%M:%S', 2451545.0)|unixepoch(2451545.0)|timediff('2024-03-01', '2023-01-15')
+2000-01-01|12:00:00|2000-01-01 12:00:00|2451545.0|2000-01-01 12:00:00|946728000|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', 'weekday 0')|julianday('bad')|strftime('%f', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# date('1970-01-01')|time('1970-01-01')|datetime('1970-01-01', 'start of month')|julianday('1970-01-01')|strftime('%J', '1970-01-01')|unixepoch('1970-01-01')|timediff('2024-03-01', '2023-01-15')
+1970-01-01|00:00:00|1970-01-01 00:00:00|2440587.5|2440587.5|0|+0001-01-15 00:00:00.000
+# date('2038-01-19 03:14:07')|time('2038-01-19 03:14:07')|datetime('2038-01-19 03:14:07', '+0 seconds')|julianday('2038-01-19 03:14:07')|strftime('%j %w %W', '2038-01-19 03:14:07')|unixepoch('2038-01-19 03:14:07')|timediff('2024-03-01', '2023-01-15')
+2038-01-19|03:14:07|2038-01-19 03:14:07|2465442.6348032407|019 2 03|2147483647|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '+1 year')|julianday('1999-12-31T23:59:59.999')|strftime('%J', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|2000-12-31 23:59:59|2451544.4999999884|2451544.499999988|946684799|+0001-01-15 00:00:00.000
+# date('1999-12-31T23:59:59.999')|time('1999-12-31T23:59:59.999')|datetime('1999-12-31T23:59:59.999', '-1 month')|julianday('1999-12-31T23:59:59.999')|strftime('%J', '1999-12-31T23:59:59.999')|unixepoch('1999-12-31T23:59:59.999')|timediff('2024-03-01', '2023-01-15')
+1999-12-31|23:59:59|1999-12-01 23:59:59|2451544.4999999884|2451544.499999988|946684799|+0001-01-15 00:00:00.000
+# date('bad')|time('bad')|datetime('bad', '+1 day')|julianday('bad')|strftime('%s', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|BLOB|0|NULL|0
+2|c1|INTEGER|0|NULL|0
+3|c2||0|'d'|0
+# seq|name|unique|origin|partial
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+t2|table
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 0, 4)|instr('zeta', 'upsilon')|replace('zeta', '', 'XY')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE '%'|'zeta' GLOB '*'|char(79, 371)|'zeta' || 'upsilon'|'zeta' < 'upsilon'|'zeta' = 'upsilon' COLLATE NOCASE
+4|ZETA|zeta|zet|0|zeta|zeta|zeta|7A657461|'zeta'|122|1|1|Oų|zetaupsilon|0|0

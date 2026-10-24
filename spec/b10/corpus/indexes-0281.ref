@@ -1,0 +1,73 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|c1
+# count(*)
+3
+changes: 1
+changes: 1
+changes: 1
+# id|id
+1|1
+2|2
+3|3
+4|4
+# count(*)
+4
+changes: 1
+changes: 1
+changes: 1
+# id|id
+# count(*)
+11
+changes: 1
+changes: 1
+# cid|name|type|notnull|dflt_value|pk
+0|id|INTEGER|0|NULL|1
+1|c0|INT|0|'d'|0
+2|c1|INTEGER|0|NULL|0
+3|c2|TEXT|0|NULL|0
+4|c3||0|'d'|0
+5|c4|INTEGER|0|NULL|0
+# seq|name|unique|origin|partial
+0|sqlite_autoindex_t1_1|1|u|0
+# id|seq|table|from|to|on_update|on_delete|match
+# integrity_check
+ok
+# name|type
+sqlite_autoindex_t0_1|index
+sqlite_autoindex_t0_2|index
+sqlite_autoindex_t1_1|index
+t0|table
+t1|table
+changes: 2
+changes: 4
+changes: 1
+changes: 1
+# id|c0
+12|X'AD'
+# id|c0|c1|c2|c3|c4
+2|X'D9AF26'|NULL|-5|-1.0e+308|X'2F'
+3|0|X'D01E2E'|512|X'1EF7'|-217.9893
+4|42|NULL|NULL|d|NULL
+5|��W�˲!|-488|1.0e-07|NULL|0.1
+6|1|naïve|5||X'5C37D345DF'
+8|-4|18|kappa|-960|X'67918CFD'
+9|a%b|X'D4'|0.0|-1.0e+308|NULL
+11|42|42|-585|NULL|X'F018EBAD8F'
+12|X'AD'|NULL|NULL|d|NULL

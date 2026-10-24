@@ -1,0 +1,101 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|id|nth_value(id, 2) OVER (ORDER BY id)
+1|1|NULL
+2|2|2
+3|3|2
+4|4|2
+5|5|2
+6|6|2
+# id|c0|dense_rank() OVER (ORDER BY id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+1|-7|1
+2|omicron|2
+3|-849.7|3
+4|NULL|4
+5|0.0|5
+6|NULL|6
+7|-9223372036854775808|7
+8|MU|8
+9||9
+10|NULL|10
+11|5|11
+# id|c1|last_value(c1) OVER (PARTITION BY c1 IS NULL ORDER BY id)
+1|café|café
+2|X'20EBCE459751'|X'20EBCE459751'
+3|upsilon|upsilon
+4|X'FA4F5D5FE7'|X'FA4F5D5FE7'
+5|X'04'|X'04'
+6|-1|-1
+# id|c2|rank() OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)
+1|beta|1
+2|NULL|2
+3|café|3
+4|4.500000000000011e-310|4
+5|X'6B318C'|5
+6|X'86'|6
+# id|id|nth_value(id, 2) OVER (PARTITION BY id IS NULL ORDER BY id)
+1|1|NULL
+2|2|2
+3|3|2
+4|4|2
+5|5|2
+6|6|2
+7|7|2
+8|8|2
+9|9|2
+10|10|2
+11|11|2
+# id|c1|nth_value(c1, 2) OVER (ORDER BY id ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
+1|X'B18F639B9D'|NULL
+2|-9223372036854775808|-9223372036854775808
+3|99|99
+4|-996|-996
+5|-975.9826|-975.9826
+6|NULL|NULL
+7|593.2121|593.2121
+8|xi|xi
+9|3|3
+10|Ελλάδα|Ελλάδα
+11|NULL|NULL
+# id|c1|first_value(c1) OVER (ORDER BY id)
+1|X'B18F639B9D'|X'B18F639B9D'
+2|-9223372036854775808|X'B18F639B9D'
+3|99|X'B18F639B9D'
+4|-996|X'B18F639B9D'
+5|-975.9826|X'B18F639B9D'
+6|NULL|X'B18F639B9D'
+7|593.2121|X'B18F639B9D'
+8|xi|X'B18F639B9D'
+9|3|X'B18F639B9D'
+10|Ελλάδα|X'B18F639B9D'
+11|NULL|X'B18F639B9D'
+# json_valid('not json')|json('not json')|json_type('not json')|json_array_length('not json')|json_extract('not json', '$.a', '$[1]', '$.b[2].c')|'not json' -> '$.b'|'not json' ->> '$.n.m.o'
+error: malformed JSON
+# key|value|type
+error: malformed JSON
+# json_set('not json', '$.z', 1)|json_insert('not json', '$.a', 2)|json_remove('not json', '$.a')|json_patch('{"a":1}', '{"b":2}')
+error: malformed JSON
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c2)
+error: JSON cannot hold BLOB values
+# json_object('id', id, 'v', c0)
+{"id":1,"v":"-7"}
+{"id":2,"v":"omicron"}
+{"id":3,"v":"-849.7"}
+{"id":4,"v":null}

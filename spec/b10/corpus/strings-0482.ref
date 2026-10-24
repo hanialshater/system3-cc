@@ -1,0 +1,46 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: NOT NULL constraint failed: t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('upsilon')|upper('upsilon')|lower('upsilon')|substr('upsilon', 1, 1)|instr('upsilon', 'kappa')|replace('upsilon', 'é', '_')|trim('upsilon')|ltrim('upsilon', 'ab')|hex('upsilon')|quote('upsilon')|unicode('upsilon')|'upsilon' LIKE 'a%'|'upsilon' GLOB '?'|char(72, 617)|'upsilon' || 'kappa'|'upsilon' < 'kappa'|'upsilon' = 'kappa' COLLATE NOCASE
+7|UPSILON|upsilon|u|0|upsilon|upsilon|upsilon|757073696C6F6E|'upsilon'|117|0|0|Hɩ|upsilonkappa|0|0
+# length('sigma')|upper('sigma')|lower('sigma')|substr('sigma', 3, 4)|instr('sigma', '')|replace('sigma', '', '')|trim('sigma')|ltrim('sigma', 'ab')|hex('sigma')|quote('sigma')|unicode('sigma')|'sigma' LIKE '%a_'|'sigma' GLOB '*'|char(87, 335)|'sigma' || ''|'sigma' < ''|'sigma' = '' COLLATE NOCASE
+5|SIGMA|sigma|gma|1|sigma|sigma|sigma|7369676D61|'sigma'|115|0|1|Wŏ|sigma|0|0
+# length('beta')|upper('beta')|lower('beta')|substr('beta', -2, 4)|instr('beta', 'a%b')|replace('beta', 'a', 'XY')|trim('beta')|ltrim('beta', 'ab')|hex('beta')|quote('beta')|unicode('beta')|'beta' LIKE '%a_'|'beta' GLOB 'a*'|char(81, 789)|'beta' || 'a%b'|'beta' < 'a%b'|'beta' = 'a%b' COLLATE NOCASE
+4|BETA|beta|ta|0|betXY|beta|eta|62657461|'beta'|98|0|0|Q̕|betaa%b|0|0
+# length('xi')|upper('xi')|lower('xi')|substr('xi', -2, 4)|instr('xi', '日本')|replace('xi', 'e', '')|trim('xi')|ltrim('xi', 'ab')|hex('xi')|quote('xi')|unicode('xi')|'xi' LIKE '_'|'xi' GLOB 'a*'|char(81, 996)|'xi' || '日本'|'xi' < '日本'|'xi' = '日本' COLLATE NOCASE
+2|XI|xi|xi|0|xi|xi|xi|7869|'xi'|120|0|0|QϤ|xi日本|1|0
+# length('epsilon')|upper('epsilon')|lower('epsilon')|substr('epsilon', -3, 5)|instr('epsilon', 'omicron')|replace('epsilon', 'a', '_')|trim('epsilon')|ltrim('epsilon', 'ab')|hex('epsilon')|quote('epsilon')|unicode('epsilon')|'epsilon' LIKE '%a_'|'epsilon' GLOB 'a*'|char(79, 544)|'epsilon' || 'omicron'|'epsilon' < 'omicron'|'epsilon' = 'omicron' COLLATE NOCASE
+7|EPSILON|epsilon|lon|0|epsilon|epsilon|epsilon|657073696C6F6E|'epsilon'|101|0|0|OȠ|epsilonomicron|1|0
+# json_valid('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_type('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_array_length('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}')|json_extract('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', '$[1]', '$.b[2].c')|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' -> '$.b'|'{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}' ->> '$.n.m.o'
+1|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|object|0|[null,null,null]|NULL|-1
+# key|value|type
+n|{"m":{"o":-1}}|object
+name|café|text
+tags|["a","b"]|array
+# json_set('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.z', 1)|json_insert('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a', 2)|json_remove('{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}', '$.a')|json_patch('{"a":1}', '{"b":2}')
+{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"z":1}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}},"a":2}|{"name":"café","tags":["a","b"],"n":{"m":{"o":-1}}}|{"a":1,"b":2}
+# json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
+[1,2,3]|{"1":-29.958,"2":-8.19,"3":-16.123}
+# json_object('id', id, 'v', id)
+{"id":1,"v":1}
+{"id":2,"v":2}
+{"id":3,"v":3}

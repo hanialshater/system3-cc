@@ -1,0 +1,92 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store TEXT value in REAL column t0.c1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+error: cannot store BLOB value in TEXT column t0.c2
+changes: 1
+error: cannot store BLOB value in REAL column t0.c0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 8
+changes: 9
+# count(*)|count(c0)
+3|0
+# count(*)
+12
+error: cannot commit - no transaction is active
+changes: 3
+changes: 19
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+changes: 2
+changes: 0
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+changes: 1
+changes: 6
+# count(*)|count(c0)
+12|10
+# count(*)
+12
+error: cannot commit - no transaction is active
+changes: 6
+changes: 5
+# count(*)|count(c0)
+12|6
+# count(*)
+12
+error: cannot commit - no transaction is active
+changes: 2
+changes: 10
+# count(*)|count(c0)
+2|0
+# count(*)
+2
+error: cannot commit - no transaction is active
+# date('bad')|time('bad')|datetime('bad', '+1 day')|julianday('bad')|strftime('%j %w %W', 'bad')|unixepoch('bad')|timediff('2024-03-01', '2023-01-15')
+NULL|NULL|NULL|NULL|NULL|NULL|+0001-01-15 00:00:00.000
+# id|c0|iif(c0, coalesce(c0 IS NULL, id), x'18ae4658a1')
+1|NULL|X'18AE4658A1'
+2|NULL|X'18AE4658A1'
+# -('rho')|CAST(9223372036854775807 AS TEXT)
+0|9223372036854775807

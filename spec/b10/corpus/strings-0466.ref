@@ -1,0 +1,57 @@
+changes: 0
+error: cannot store BLOB value in INTEGER column t0.c2
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# length('sigma')|upper('sigma')|lower('sigma')|substr('sigma', 3, 5)|instr('sigma', ' pad ')|replace('sigma', '', '')|trim('sigma')|ltrim('sigma', 'ab')|hex('sigma')|quote('sigma')|unicode('sigma')|'sigma' LIKE '%é%'|'sigma' GLOB '*'|char(87, 708)|'sigma' || ' pad '|'sigma' < ' pad '|'sigma' = ' pad ' COLLATE NOCASE
+5|SIGMA|sigma|gma|0|sigma|sigma|sigma|7369676D61|'sigma'|115|0|1|W˄|sigma pad |0|0
+# length('-7')|upper('-7')|lower('-7')|substr('-7', 1, 3)|instr('-7', 'eta')|replace('-7', 'a', '')|trim('-7')|ltrim('-7', 'ab')|hex('-7')|quote('-7')|unicode('-7')|'-7' LIKE '%'|'-7' GLOB 'a*'|char(66, 346)|'-7' || 'eta'|'-7' < 'eta'|'-7' = 'eta' COLLATE NOCASE
+2|-7|-7|-7|0|-7|-7|-7|2D37|'-7'|45|1|0|BŚ|-7eta|1|0
+# length('zeta')|upper('zeta')|lower('zeta')|substr('zeta', 2, 2)|instr('zeta', 'kappa')|replace('zeta', '', '_')|trim('zeta')|ltrim('zeta', 'ab')|hex('zeta')|quote('zeta')|unicode('zeta')|'zeta' LIKE 'a%'|'zeta' GLOB '*[a-m]*'|char(74, 211)|'zeta' || 'kappa'|'zeta' < 'kappa'|'zeta' = 'kappa' COLLATE NOCASE
+4|ZETA|zeta|et|0|zeta|zeta|zeta|7A657461|'zeta'|122|0|1|JÓ|zetakappa|0|0
+# n|a
+41|102334155
+40|63245986
+39|39088169
+38|24157817
+37|14930352
+# count(*)|max(x)|group_concat(x)
+20|52|9,28,14,7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1
+# x|y
+1|1
+1|4
+1|9
+2|1
+2|4
+2|9
+3|1
+3|4
+3|9

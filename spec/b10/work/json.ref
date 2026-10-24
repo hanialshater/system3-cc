@@ -1,0 +1,8 @@
+changes: 0
+changes: 4176
+# sum(json_extract(j, '$.c'))|count(j ->> '$.e')
+14041737.360000001|4176
+# length(json_group_array(json_object('a', a, 'b', b)))
+107470
+# count(*)
+589

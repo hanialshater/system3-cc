@@ -1,0 +1,93 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 4
+changes: 15
+# count(*)|count(c0)
+21|13
+# count(*)
+21
+error: cannot commit - no transaction is active
+changes: 3
+changes: 3
+# count(*)|count(c0)
+7|0
+# count(*)
+10
+error: cannot commit - no transaction is active
+changes: 3
+changes: 6
+# count(*)|count(c0)
+4|0
+# count(*)
+10
+error: cannot commit - no transaction is active
+changes: 3
+changes: 8
+# count(*)|count(c0)
+10|2
+# count(*)
+10
+error: cannot commit - no transaction is active
+changes: 1
+changes: 12
+# count(*)|count(c0)
+9|8
+# count(*)
+21
+error: cannot commit - no transaction is active
+changes: 2
+changes: 5
+# count(*)|count(c0)
+5|1
+# count(*)
+10
+error: cannot commit - no transaction is active

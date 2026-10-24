@@ -1,0 +1,107 @@
+changes: 0
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+changes: 1
+# id|CASE WHEN x'a5d7' THEN NULL ELSE 'x_y' END IN (nullif(c1, id), NULL, 'eta') BETWEEN abs(ref IS NULL) AND c1|(-(NULL) BETWEEN CAST(123456789012 AS TEXT) AND -(id) << CASE WHEN (-623 << ref) THEN nullif(ref, id) ELSE NOT id END)
+1|NULL|NULL
+2|NULL|NULL
+3|NULL|NULL
+4|NULL|NULL
+5|NULL|NULL
+6|NULL|NULL
+7|NULL|NULL
+8|NULL|NULL
+9|NULL|NULL
+# -555|-(coalesce(x'', CASE WHEN x'2eef48e7' THEN NULL ELSE -816 END))
+-555|0
+# id|iif(nullif('eta', NULL IS NULL), 'delta', x'd11d2d0271')|CAST(id AS BLOB)
+1|X'D11D2D0271'|X'31'
+2|X'D11D2D0271'|X'32'
+3|X'D11D2D0271'|X'33'
+# typeof(x'75e59cf9')|typeof(x'4e4e')
+blob|blob
+# id|c0 IN (x'c613dec406', 1.0e15, 2)|CASE WHEN nullif(737.21 IS NULL, coalesce(c3, c1)) THEN NOT c3 BETWEEN 4 AND c4 ELSE typeof(abs('1e3')) END
+3|0|real
+2|0|real
+1|0|real
+# x'02c832' IS NULL|iif(NULL, x'' BETWEEN x'9d86f9' AND x'' BETWEEN typeof(x'6c') AND (NULL / 'iota'), NULL)
+0|NULL
+# id|NOT nullif(c1, typeof(c0))|iif(-(NULL) IN (-4 IS NULL, NULL, NULL), nullif(abs(-301.5), 103.3), 817.270)
+9|NULL|817.27
+8|1|817.27
+7|0|817.27
+6|NULL|817.27
+5|1|817.27
+4|1|817.27
+3|0|817.27
+2|0|817.27
+1|1|817.27
+# ' pad '|coalesce(coalesce(NULL IN (-718, NULL, NULL), (NULL - 'señor')), CASE WHEN coalesce(2, x'7452') THEN typeof(5) ELSE 'MU' IN ('delta', -129, -1) END)
+ pad |integer
+# id|(SELECT count(*) FROM t1 WHERE t1.id <= t1.id)
+1|9
+2|9
+3|9
+4|9
+5|9
+6|9
+7|9
+8|9
+9|9
+# id
+1
+2
+3
+4
+5
+6
+7
+8
+9
+# id
+9
+# ref
+NULL
+1
+1
+2
+3
+4
+4
+4
+4
+5
+6
+7
+7
+7
+8
+9
+changes: 1
+changes: 1
+changes: 1
+changes: 2
+changes: 2
+# x|y
+t1|1001
+t1|1002
+changes: 2
+# id|bid
+3|3
+4|4
+5|5
+6|6
+7|7
+8|8
+9|9
+155|155
