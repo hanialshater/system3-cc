@@ -514,7 +514,14 @@
           (emit (if (t/unsigned? ity) "  movl %eax, %edi" "  movslq %eax, %rdi")))
       :else (do (gen-expr x) (emit "  movq %rax, %rdi")))))
 
-(declare addr-operand fixed-addr?)
+(declare addr-operand fixed-addr? into-lines)
+
+(defn index-into-rdi-direct
+  "Compute a long index whose code needs only %rax straight into %rdi (leaving %rax alone); false if not possible."
+  [x]
+  (if-let [lines (into-lines x "%rdi")]
+    (do (doseq [l lines] (emit l)) true)
+    false))
 
 (defn cheap-index?
   "Index expressions that index-into-rdi loads without touching %rax."
@@ -660,10 +667,13 @@
                              b)]
                      (if (or (cheap-index? idx) (not= "%rax" (:base b)))
                        (index-into-rdi idx)
-                       (do (push!) (index-into-rdi idx) (pop! "%rax")))
+                       (when-not (index-into-rdi-direct idx)
+                         (push!) (index-into-rdi idx) (pop! "%rax")))
                      (-> b (assoc :index "%rdi" :scale scale) (update :disp (fnil + 0) extra)))
                    :else
-                   (do (gen-expr p) (push!) (index-into-rdi idx) (pop! "%rax")
+                   (do (gen-expr p)
+                       (when-not (index-into-rdi-direct idx)
+                         (push!) (index-into-rdi idx) (pop! "%rax"))
                        {:base "%rax" :index "%rdi" :scale scale :disp extra})))
                (and (= :var (:op e)) (vreg (:var e)) (= 8 (t/type-size (:type e))))
                {:base ((vreg (:var e)) 0)}
@@ -719,7 +729,8 @@
     "imull" "imulq" "negl" "negq" "notl" "notq" "shll" "shlq" "shrl" "shrq" "sarl" "sarq"})
 
 (def reg-names
-  {"%r10" ["%r10" "%r10d" "%r10w" "%r10b"] "%r11" ["%r11" "%r11d" "%r11w" "%r11b"]})
+  {"%r10" ["%r10" "%r10d" "%r10w" "%r10b"] "%r11" ["%r11" "%r11d" "%r11w" "%r11b"]
+   "%rdi" ["%rdi" "%edi" "%di" "%dil"]})
 
 (defn into-lines
   "Code computing rax-only expression n into register r (a key of reg-names)
@@ -733,7 +744,7 @@
                        (let [t (str/trim l)
                              op (first (str/split t #" " 2))]
                          (and (contains? into-ok-ops op)
-                              (not (re-find #"%ah|%r1[01]" t))
+                              (not (re-find (if (= r "%rdi") #"%ah|%(rdi|edi|di|dil)\b" #"%ah|%r1[01]") t))
                               (or (not (#{"imull" "imulq"} op)) (str/includes? t ",")))))
                      lines)]
       (when ok
@@ -1719,8 +1730,28 @@
                   (recur (+ k w))))))
           true)))))
 
+(defn strip-store-casts
+  "For a store of sz bytes to a memory integer lvalue whose value is unused: integer casts
+   on the stored value that keep its low sz bytes are dropped."
+  [lhs rhs]
+  (let [ty (:type lhs) sz (t/type-size ty)
+        ok? (fn [t] (and (or (t/integer? t) (t/ptr? t)) (not= :bool (:kind t)) (>= (t/type-size t) sz)))]
+    (if (and (t/integer? ty) (not= :bool (:kind ty)) (#{1 2 4} sz)
+             (not (and (= :var (:op lhs)) (vreg (:var lhs)))))
+      (loop [r rhs]
+        (if (and (= :cast (:op r)) (ok? (:type r)) (ok? (:type (:expr r))))
+          (recur (:expr r))
+          r))
+      rhs)))
+
+(declare gen-assign-nv*)
+
 (defn gen-assign-nv
   "Assignment whose value is not used."
+  [n]
+  (gen-assign-nv* (update n :rhs #(strip-store-casts (:lhs n) %))))
+
+(defn gen-assign-nv*
   [n]
   (let [{:keys [lhs rhs]} n
         ty (:type lhs)
