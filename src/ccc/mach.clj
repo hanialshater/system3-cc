@@ -1080,6 +1080,58 @@
     [(persistent! items) @changed]))
 
 ;; ---------------------------------------------------------------------------
+;; Callee-saved -> caller-saved renaming: a callee-saved register never live
+;; across a call is renamed to a caller-saved register the body never touches
+;; (so it need not be saved and restored).
+
+(def rename-candidates [11 10 9 8 6 7 1 2])
+
+(defn rename-reg [it R C]
+  (let [a (:a it)
+        a2 (mapv (fn [o] (case (:t o)
+                           :r (if (= R (:f o)) (assoc o :f C) o)
+                           :m (cond-> o (= R (:b o)) (assoc :b C) (= R (:x o)) (assoc :x C))
+                           o))
+                 a)]
+    (if (= a a2) it (reanalyse (assoc it :a a2)))))
+
+(defn callee-to-caller
+  [items]
+  (let [ins (filterv #(= :ins (:k %)) items)]
+    (if (some #(= :barrier (:c %)) ins)
+      [items false]
+      (let [bl (build-blocks items)
+            lo (liveness items bl)
+            ;; registers live after some call
+            across (volatile! 0)
+            _ (dotimes [b (:n bl)]
+                (loop [i (dec ((:ends bl) b)) live (aget ^longs lo b)]
+                  (when (>= i ((:starts bl) b))
+                    (let [it (items i)]
+                      (if (= :ins (:k it))
+                        (do (when (= :call (:c it)) (vswap! across bit-or live))
+                            (recur (dec i) (bit-or (bit-and live (bit-not (long (:d it)))) (long (:u it)))))
+                        (recur (dec i) live))))))
+            ;; registers touched by non-call instructions (explicitly or implicitly)
+            touched (reduce (fn [^long m it] (if (= :call (:c it)) m (bit-or m (long (:u it)) (long (:d it))))) 0 ins)
+            ;; registers named in call operands (call *%r)
+            touched (reduce (fn [^long m it] (if (= :call (:c it))
+                                                (bit-or m (bit-and (long (:u it)) (bit-not call-use-mask)))
+                                                m)) touched ins)]
+        (loop [Rs [3 12 13 14 15] items items touched touched changed false]
+          (if (empty? Rs)
+            [items changed]
+            (let [R (first Rs)]
+              (if (and (bit-test touched R) (not (bit-test @across R)))
+                (if-let [C (some #(when-not (bit-test touched %) %) rename-candidates)]
+                  (recur (rest Rs)
+                         (mapv #(if (= :ins (:k %)) (rename-reg % R C) %) items)
+                         (bit-or touched (bit C)) true)
+                  (recur (rest Rs) items touched changed))
+                (recur (rest Rs) items touched changed)))))))))
+
+
+;; ---------------------------------------------------------------------------
 
 (def ^:private off-passes (or (System/getenv "CCC_AO_OFF") ""))
 (defn- off? [p] (str/includes? off-passes p))
@@ -1127,7 +1179,8 @@
             items (filterv #(not (and (= :dir (:k %)) (nil? (:text %)))) items)]
         (if (and (or c1 c2 c3 c4 c5 c6 c7 c8) (< iter max-iter))
           (recur items (inc iter))
-          (let [sb (StringBuilder.)]
+          (let [sb (StringBuilder.)
+                items (if (off? "RENAME") items (first (callee-to-caller items)))]
             (doseq [it items]
               (.append sb ^String (render it))
               (.append sb "\n"))
