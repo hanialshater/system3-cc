@@ -2676,7 +2676,7 @@
             (emit "  leave")
             (emit "  ret")
             (emitf "  .size " name ", .-" name))
-          (if (System/getenv "CCC_NOFRAME") (str out) (frame/rsp-frame (str out))))))))
+          (if (System/getenv "CCC_NOFRAME") (str out) (frame/finalize (str out))))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Data

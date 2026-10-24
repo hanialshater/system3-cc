@@ -863,6 +863,223 @@
             [(persistent! out) true]))))))
 
 ;; ---------------------------------------------------------------------------
+;; Passes added by w-sceptic: lea folding, load folding, known-width extension removal, imul strength reduction
+
+(defn live-after-array
+  "long[count items]: registers live after each item (only meaningful for :ins items)."
+  ^longs [items bl live-out]
+  (let [la (long-array (count items))]
+    (dotimes [b (:n bl)]
+      (loop [i (dec ((:ends bl) b)) live (aget ^longs live-out b)]
+        (when (>= i ((:starts bl) b))
+          (aset la i (long live))
+          (let [it (items i)]
+            (recur (dec i) (if (= :ins (:k it))
+                             (bit-or (bit-and live (bit-not (long (:d it)))) (long (:u it)))
+                             live))))))
+    la))
+
+(defn- plain-disp [o]
+  (let [d (:d o)]
+    (cond (= "" d) 0 (re-matches #"-?\d+" d) (parse-long d) :else nil)))
+
+(defn fold-lea
+  "leaq M, %A ; ... ; op (%A...) with A dead afterwards (or redefined by op)  =>  the address M folded into op."
+  [items bl live-out]
+  (let [la (live-after-array items bl live-out)
+        items (transient items) changed (volatile! false)]
+    (dotimes [b (:n bl)]
+      (let [s ((:starts bl) b) e ((:ends bl) b)]
+        (loop [m s]
+          (when (< m e)
+            (let [it (items m)]
+              (when (and (= :ins (:k it)) (= :lea (:c it)) (= 64 (:w it)))
+                (let [M ((:a it) 0) dst ((:a it) 1) A (:f dst)
+                      d1 (plain-disp M)]
+                  (when (and d1 (not (:rip M)) (not (#{4 5} A))
+                             (not= A (:b M)) (not= A (:x M)))
+                    (let [regs (bit-or (if (:b M) (bit (:b M)) 0) (if (:x M) (bit (:x M)) 0))
+                          ab (bit A)]
+                      (loop [j (inc m) steps 0]
+                        (when (and (< j e) (< steps 8))
+                          (let [it2 (items j)]
+                            (cond
+                              (not= :ins (:k it2)) (when (and (= :dir (:k it2)) (nil? (:text it2))) (recur (inc j) steps))
+                              (= :barrier (:c it2)) nil
+                              (zero? (bit-and (long (:u it2)) ab))
+                              (when (zero? (bit-and (long (:d it2)) (bit-or regs ab)))
+                                (recur (inc j) (inc steps)))
+                              :else
+                              ;; first reader of A
+                              (let [a2 (:a it2) n2 (count a2)
+                                    mentions (filter (fn [o] (case (:t o) :r (= A (:f o)) :m (or (= A (:b o)) (= A (:x o))) false)) a2)
+                                    mo (first (filter #(and (= :m (:t %)) (= A (:b %)) (not= A (:x %))) a2))]
+                                (when (and mo (not (:rip mo))
+                                           (= 1 (count (filter mem? a2)))
+                                           (let [others (remove #(identical? % mo) mentions)]
+                                             (or (empty? others)
+                                                 (and (= 1 (count others))
+                                                      (identical? (first others) (peek a2))
+                                                      (reg? (peek a2)) (>= (long (:w (peek a2))) 32)
+                                                      (#{:move :ext :movx :lea :sse2gpr} (:c it2))
+                                                      (not (and (= :move (:c it2)) (= 1 n2))))))
+                                           (or (not (and (:x mo) (:x M))))
+                                           ;; A dead after the use, or redefined by it
+                                           (or (zero? (bit-and (aget la j) ab))
+                                               (and (= 1 (count (filter #(and (reg? %) (= A (:f %))) a2)))
+                                                    (not (zero? (bit-and (long (:d it2)) ab))))))
+                                  (when-let [d2 (plain-disp mo)]
+                                    (let [nd (+ (long d1) (long d2))
+                                          nb* (:b M)
+                                          nx (or (:x mo) (:x M))
+                                          nsc (if (:x mo) (:sc mo) (:sc M))
+                                          nmo {:t :m :d (if (zero? nd) "" (str nd)) :b nb* :x nx :sc nsc
+                                               :slot (when (and (= RBP nb*) (nil? nx)) nd)}
+                                          na (mapv #(if (identical? % mo) nmo %) a2)]
+                                      (when (and (<= -2147483648 nd 2147483647)
+                                                 (or nb* nx))
+                                        (assoc! items j (reanalyse (assoc it2 :a na)))
+                                        (assoc! items m nop-item)
+                                        (vreset! changed true)))))))))))))))
+            (recur (inc m))))))
+    [(persistent! items) @changed]))
+
+(defn fold-load
+  "movq/movl M, %T ; op %T, %X  with T dead afterwards  =>  op M, %X  (nothing touching memory or M's registers in between)."
+  [items bl live-out]
+  (let [la (live-after-array items bl live-out)
+        items (transient items) changed (volatile! false)]
+    (dotimes [b (:n bl)]
+      (let [s ((:starts bl) b) e ((:ends bl) b)]
+        (loop [m s]
+          (when (< m e)
+            (let [it (items m)]
+              (when (and (= :ins (:k it)) (= :move (:c it)) (#{"movq" "movl"} (:op it)) (= 2 (count (:a it))))
+                (let [M ((:a it) 0) T ((:a it) 1)]
+                  (when (and (mem? M) (reg? T) (not (#{4 5} (:f T))) (= (:w T) (:w it)))
+                    (let [tf (:f T) tb (bit tf) w (:w T)
+                          regs (bit-or (mem-regs M) tb)]
+                      (loop [j (inc m) steps 0]
+                        (when (and (< j e) (< steps 6))
+                          (let [it2 (items j)]
+                            (cond
+                              (not= :ins (:k it2)) (when (and (= :dir (:k it2)) (nil? (:text it2))) (recur (inc j) steps))
+                              (not (zero? (bit-and (long (:u it2)) tb)))
+                              (let [a2 (:a it2) c2 (:c it2)
+                                    ok (and (not (:mw it2)) (not= :barrier c2)
+                                            (zero? (bit-and (aget la j) tb))
+                                            (= w (:w it2)) (= 2 (count a2)) (not (some mem? a2))
+                                            (case c2
+                                              :alu (and (#{"add" "sub" "and" "or" "xor"} (subs (:op it2) 0 (dec (count (:op it2)))))
+                                                        (reg? (a2 0)) (= tb (bit (:f (a2 0)))) (reg? (a2 1)) (not= tf (:f (a2 1))))
+                                              :cmp (let [p0 (reg? (a2 0)) p1 (reg? (a2 1))
+                                                         t0 (and p0 (= tf (:f (a2 0)))) t1 (and p1 (= tf (:f (a2 1))))]
+                                                     (and (not (and t0 t1)) (or t0 t1)
+                                                          (if t0 (or p1 (= :i (:t (a2 1)))) (or p0 (= :i (:t (a2 0)))))))
+                                              :imul (and (reg? (a2 0)) (= tf (:f (a2 0))) (reg? (a2 1)) (not= tf (:f (a2 1))))
+                                              false))]
+                                (when ok
+                                  (let [na (mapv (fn [o] (if (and (reg? o) (= tf (:f o))) M o)) a2)]
+                                    (assoc! items j (reanalyse (assoc it2 :a na)))
+                                    (assoc! items m nop-item)
+                                    (vreset! changed true))))
+                              (and (not (:mw it2)) (not (some mem? (:a it2)))
+                                   (not (#{:barrier :call :rep :push :pop :x87 :ijmp :jmp :jcc} (:c it2)))
+                                   (zero? (bit-and (long (:d it2)) regs)))
+                              (recur (inc j) (inc steps))
+                              :else nil)))))))))
+            (recur (inc m))))))
+    [(persistent! items) @changed]))
+
+(defn- bitlen ^long [^long v] (- 64 (Long/numberOfLeadingZeros v)))
+
+(defn ext-elim
+  "Forward known-width tracking: delete zero/sign extensions of values already known to fit."
+  [items bl]
+  (let [items (transient items) changed (volatile! false)
+        kb (long-array 16)]
+    (dotimes [b (:n bl)]
+      (java.util.Arrays/fill kb 64)
+      (loop [i ((:starts bl) b)]
+        (when (< i ((:ends bl) b))
+          (let [it (items i)]
+            (when (= :ins (:k it))
+              (let [c (:c it) a (:a it) n (count a) op ^String (:op it)
+                    src (when (pos? n) (a 0)) dst (when (pos? n) (a (dec n)))
+                    same (and (= 2 n) (reg? src) (reg? dst) (= (:f src) (:f dst)))
+                    kill? (or (and same (= op "movzbl") (= 8 (:w src)) (<= (aget kb (:f src)) 8))
+                              (and same (= op "movzwl") (= 16 (:w src)) (<= (aget kb (:f src)) 16))
+                              (and same (= op "movl") (= 32 (:w src)) (<= (aget kb (:f src)) 32))
+                              (and same (= op "movslq") (= 32 (:w src)) (<= (aget kb (:f src)) 31))
+                              (and (= c :cltq) (= op "cltq") (<= (aget kb 0) 31)))]
+                (if kill?
+                  (do (assoc! items i nop-item) (vreset! changed true))
+                  (let [old-dst (when (and dst (reg? dst)) (aget kb (:f dst)))
+                        old-src (when (and src (reg? src)) (aget kb (:f src)))
+                        d (long (:d it))
+                        _ (dotimes [f 16] (when (bit-test d f) (aset kb f 64)))
+                        newbits
+                        (when (and dst (reg? dst) (>= (long (:w dst)) 32) (= (long (:d it)) (bit-or (bit (:f dst)) (bit-and (long (:d it)) flags-bit))))
+                          (let [w (long (:w dst))
+                                imm (fn [o] (when (= :i (:t o)) (parse-long (subs (:s o) 1))))]
+                            (case c
+                              :ext (cond (#{"movzbl" "movzbq"} op) 8 (#{"movzwl" "movzwq"} op) 16 (= w 32) 32 :else nil)
+                              :move (cond
+                                      (= op "movl") (cond (= :i (:t src)) (if-let [v (imm src)] (if (>= v 0) (min 32 (bitlen v)) 32) 32)
+                                                          (reg? src) (min 32 old-src)
+                                                          :else 32)
+                                      (#{"movq" "movabsq"} op) (cond (= :i (:t src)) (if-let [v (imm src)] (if (>= v 0) (bitlen v) 64) 64)
+                                                                     (reg? src) old-src
+                                                                     :else nil)
+                                      :else nil)
+                              :alu (cond
+                                     (and (#{"andl" "andq"} op) (= :i (:t src)) (imm src) (>= (long (imm src)) 0))
+                                     (min (bitlen (imm src)) old-dst (if (= w 32) 32 64))
+                                     (and (#{"andl" "andq"} op) (reg? src))
+                                     (min old-dst old-src (if (= w 32) 32 64))
+                                     (= w 32) 32
+                                     :else nil)
+                              :shift (cond
+                                       (and (#{"shrl" "shrq"} op) (= 2 n) (= :i (:t src)) (imm src))
+                                       (max 0 (- (min old-dst (if (= w 32) 32 64)) (long (imm src))))
+                                       (= w 32) 32
+                                       :else nil)
+                              (:rot :neg :not :incdec :imul :lea :sse2gpr :cmov :movx :aluc)
+                              (when (= w 32) 32)
+                              nil)))]
+                    (when newbits (aset kb (:f dst) (long newbits)))))))
+            (recur (inc i))))))
+    [(persistent! items) @changed]))
+
+(defn imul-strength
+  "imul by 2^k / 3 / 5 / 9 (flags dead afterwards) becomes shl / lea."
+  [items bl live-out]
+  (let [la (live-after-array items bl live-out)
+        items (transient items) changed (volatile! false)]
+    (dotimes [b (:n bl)]
+      (loop [i ((:starts bl) b)]
+        (when (< i ((:ends bl) b))
+          (let [it (items i)]
+            (when (and (= :ins (:k it)) (= :imul (:c it)) (= 3 (count (:a it))))
+              (let [[ci R D] (:a it) w (:w it)]
+                (when (and (= :i (:t ci)) (reg? R) (reg? D) (= w (:w R)) (= w (:w D)) (>= w 32)
+                           (zero? (bit-and (aget la i) flags-bit)))
+                  (when-let [c (parse-long (subs (:s ci) 1))]
+                    (let [q? (= w 64)
+                          rn (reg-name (:f R) 64) dn (reg-name (:f D) w)
+                          k (when (and (> c 1) (zero? (bit-and c (dec c)))) (dec (bitlen c)))
+                          txt (cond
+                                (and k (= (:f R) (:f D))) (str "  " (if q? "shlq" "shll") " $" k ", " dn)
+                                (#{2 4 8} c) (str "  " (if q? "leaq" "leal") " (," rn "," c "), " dn)
+                                (#{3 5 9} c) (str "  " (if q? "leaq" "leal") " (" rn "," rn "," (dec c) "), " dn)
+                                :else nil)]
+                      (when txt
+                        (assoc! items i (parse-line txt))
+                        (vreset! changed true)))))))
+            (recur (inc i))))))
+    [(persistent! items) @changed]))
+
+;; ---------------------------------------------------------------------------
 
 (def ^:private off-passes (or (System/getenv "CCC_AO_OFF") ""))
 (defn- off? [p] (str/includes? off-passes p))
@@ -901,9 +1118,14 @@
             [items c3] (if (off? "RT") [items false] (retarget items bl lo))
             lo (liveness items bl)
             [items c4] (if (off? "DCE") [items false] (dce items bl lo))
+            lo (liveness items bl)
+            [items c5] (if (off? "LEA") [items false] (fold-lea items bl lo))
+            [items c6] (if (off? "LOAD") [items false] (fold-load items bl lo))
+            [items c7] (if (off? "EXT") [items false] (ext-elim items bl))
+            [items c8] (if (off? "IMUL") [items false] (imul-strength items bl lo))
             ;; compact
             items (filterv #(not (and (= :dir (:k %)) (nil? (:text %)))) items)]
-        (if (and (or c1 c2 c3 c4) (< iter max-iter))
+        (if (and (or c1 c2 c3 c4 c5 c6 c7 c8) (< iter max-iter))
           (recur items (inc iter))
           (let [sb (StringBuilder.)]
             (doseq [it items]

@@ -49,3 +49,7 @@ Rules for all parts:
 - `src/ccc/frame.clj` is step 6, run at the end of the finisher on each function's text. It converts
   only when every rbp/rsp use is understood and the stack depth is consistent at every jump.
   Off: `CCC_NOFRAME`.
+- Round 2 merge (architect): w-sceptic also wrote a frame finaliser. Step 6 is now `frame/finalize`
+  in ns ccc.frame: w-sceptic's converter (`finalize*`: rsp frame, red zone, small epilogues copied to
+  early returns) runs first; when it leaves a function unchanged, w-lean's converter (`rsp-frame`, now
+  in ns ccc.frame-rsp) is tried. Codegen calls only `frame/finalize`. Off: `CCC_NOFRAME` (both).
