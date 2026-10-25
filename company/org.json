@@ -1,5 +1,5 @@
 {
- "note": "The org contract (system3-meta docs/product/STARTER.md \u00a73): the org of B10, the run that made the compiler an optimising one and kept it correct. Models are tiers.",
+ "note": "The org contract (system3-meta docs/product/STARTER.md §3): the org of B10, the run that made the compiler an optimising one and kept it correct. Models are tiers.",
  "roles": [
   {
    "id": "founder",
@@ -11,7 +11,7 @@
    "roomName": "Owner's office",
    "roomKind": "office",
    "floor": 1,
-   "floorName": "Floor 1 \u00b7 Leadership"
+   "floorName": "Floor 1 · Leadership"
   },
   {
    "id": "referee",
@@ -24,7 +24,7 @@
    "roomName": "Referee",
    "roomKind": "meeting",
    "floor": 1,
-   "floorName": "Floor 1 \u00b7 Leadership"
+   "floorName": "Floor 1 · Leadership"
   },
   {
    "id": "architect",
@@ -38,7 +38,7 @@
    "roomName": "Compiler floor",
    "roomKind": "floor",
    "floor": 2,
-   "floorName": "Floor 2 \u00b7 Compiler"
+   "floorName": "Floor 2 · Compiler"
   },
   {
    "id": "w-measure",
@@ -52,7 +52,7 @@
    "roomName": "Compiler floor",
    "roomKind": "floor",
    "floor": 2,
-   "floorName": "Floor 2 \u00b7 Compiler"
+   "floorName": "Floor 2 · Compiler"
   },
   {
    "id": "w-bold",
@@ -66,7 +66,7 @@
    "roomName": "Compiler floor",
    "roomKind": "floor",
    "floor": 2,
-   "floorName": "Floor 2 \u00b7 Compiler"
+   "floorName": "Floor 2 · Compiler"
   },
   {
    "id": "w-sceptic",
@@ -80,7 +80,9 @@
    "roomName": "Compiler floor",
    "roomKind": "floor",
    "floor": 2,
-   "floorName": "Floor 2 \u00b7 Compiler"
+   "floorName": "Floor 2 · Compiler",
+   "parked": true,
+   "parkedReason": "PRINCIPLES.md P7 (2026-10-25)"
   },
   {
    "id": "w-lean",
@@ -94,7 +96,7 @@
    "roomName": "Compiler floor",
    "roomKind": "floor",
    "floor": 2,
-   "floorName": "Floor 2 \u00b7 Compiler"
+   "floorName": "Floor 2 · Compiler"
   }
  ]
 }

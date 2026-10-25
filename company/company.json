@@ -48,5 +48,63 @@
    "url": "https://github.com/hanialshater/system3-cc",
    "kind": "repo"
   }
- ]
+ ],
+ "orgReasons": [
+  "too-big-for-one-context",
+  "independent-checking"
+ ],
+ "baseline": "B8-B10 ran one strong agent (V); it is kept as an arm: V won on cost twice, the org won on correctness (B10's hidden gate)",
+ "flows": [
+  {
+   "id": "round",
+   "steps": [
+    {
+     "role": "worker",
+     "kind": "maker"
+    },
+    {
+     "role": "referee",
+     "kind": "check"
+    },
+    {
+     "role": "architect",
+     "kind": "check"
+    }
+   ]
+  }
+ ],
+ "owns": [
+  {
+   "role": "architect",
+   "paths": [
+    "docs/INTERFACES.md"
+   ]
+  },
+  {
+   "role": "referee",
+   "paths": [
+    "referee/"
+   ]
+  }
+ ],
+ "referee": {
+  "cmd": "node referee/judge.mjs fast --dir=.",
+  "heldOut": "hidden W1-W5 tests and SQLite workloads, held by Meta (referees/)"
+ },
+ "costTarget": {
+  "unit": "0.01 of the instruction ratio",
+  "usd": 10
+ },
+ "principles": "system3-meta PRINCIPLES.md",
+ "stopRule": "work over 2× its cost target pauses for the owner (PRINCIPLES.md P8)",
+ "members": [
+  "architect",
+  "w-measure",
+  "w-bold",
+  "w-lean"
+ ],
+ "parkedMembers": [
+  "w-sceptic"
+ ],
+ "parkedReason": "PRINCIPLES.md P7 (B13: 8 members cost $128 a point against 4 members' $55); kept members by kept credit and points per dollar; see docs/decisions/2026-10-25-principles.md"
 }

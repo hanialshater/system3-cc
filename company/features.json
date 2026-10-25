@@ -1,0 +1,43 @@
+{
+ "features": [
+  {
+   "id": "compiler",
+   "title": "C compiler in Clojure",
+   "status": "live",
+   "since": "2026-10-23",
+   "owner": "architect",
+   "summary": "Compiles Lua 5.4.7 and SQLite correctly"
+  },
+  {
+   "id": "optimiser",
+   "title": "Optimiser",
+   "status": "live",
+   "since": "2026-10-24",
+   "owner": "architect",
+   "summary": "1.256x gcc -O2's instructions, every gate passing"
+  },
+  {
+   "id": "referee",
+   "title": "The referee",
+   "status": "live",
+   "since": "2026-10-25",
+   "owner": "referee",
+   "summary": "Correctness gates plus instruction counts against gcc -O2"
+  },
+  {
+   "id": "demo-site",
+   "title": "Demo site",
+   "status": "live",
+   "since": "2026-10-25",
+   "owner": "architect",
+   "summary": "Benchmarks, Lua and the referee's fast check, built from real runs"
+  },
+  {
+   "id": "within-1-10",
+   "title": "Within 1.10x of gcc -O2",
+   "status": "planned",
+   "owner": "architect",
+   "summary": "C6"
+  }
+ ]
+}
