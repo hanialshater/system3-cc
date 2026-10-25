@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C compiler in Clojure</title>
+<meta name="description" content="A C compiler written in Clojure by AI agents: it compiles Lua and SQLite correctly, and its code runs within about 1.26x of gcc -O2's instruction count.">
+<style>
+:root { --bg:#f6f6f3; --panel:#ffffff; --ink:#1b1c1f; --muted:#646a73; --line:#e3e3de; --accent:#c2410c; --ref:#64748b; --good:#1f8a5b; --bad:#c9423a; --code:#f1f1ec; --bar:#e8e8e3; color-scheme:light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#101113; --panel:#17181b; --ink:#e7e8ea; --muted:#9097a1; --line:#2a2c31; --accent:#fb8a4a; --ref:#94a3b8; --good:#45c08a; --bad:#ff6f66; --code:#1e2024; --bar:#26282d; color-scheme:dark; } }
+:root[data-theme="dark"] { --bg:#101113; --panel:#17181b; --ink:#e7e8ea; --muted:#9097a1; --line:#2a2c31; --accent:#fb8a4a; --ref:#94a3b8; --good:#45c08a; --bad:#ff6f66; --code:#1e2024; --bar:#26282d; color-scheme:dark; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+.wrap { max-width:1120px; margin:0 auto; padding:28px 16px 60px; }
+header { display:flex; align-items:center; gap:12px; justify-content:space-between; }
+.brand { display:flex; align-items:center; gap:10px; font-weight:700; }
+.logo { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#c2410c,#b4235a); color:#fff; display:grid; place-items:center; font:700 13px ui-monospace,monospace; }
+nav a { color:var(--muted); text-decoration:none; margin-left:16px; font-size:14px; } nav a:hover { color:var(--ink); }
+.theme { display:grid; place-items:center; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:8px; width:32px; height:30px; cursor:pointer; margin-left:12px; }
+h1 { font-size:clamp(28px,5vw,44px); line-height:1.1; margin:44px 0 12px; letter-spacing:-.02em; }
+.lede { font-size:18px; color:var(--muted); max-width:780px; }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:28px 0 8px; }
+.tile { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.tile .k { color:var(--muted); font-size:13px; } .tile .v { font-size:30px; font-weight:700; letter-spacing:-.01em; } .tile .s { color:var(--muted); font-size:12.5px; }
+h2 { font-size:22px; margin:52px 0 6px; } .sub { color:var(--muted); margin:0 0 16px; max-width:820px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.bars { display:grid; gap:9px; } .brow { display:grid; grid-template-columns:110px minmax(0,1fr) 150px; gap:10px; align-items:center; font-size:14px; }
+.track { position:relative; height:12px; background:var(--bar); border-radius:6px; } .track i { position:absolute; left:0; top:0; bottom:0; border-radius:6px; background:var(--accent); } .track b { position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--ref); }
+.val { text-align:right; font-variant-numeric:tabular-nums; }
+.legend { display:flex; gap:16px; font-size:12.5px; color:var(--muted); margin-top:10px; } .legend span::before { content:""; display:inline-block; width:12px; height:8px; border-radius:3px; margin-right:6px; vertical-align:middle; } .legend .o::before { background:var(--accent); } .legend .r::before { width:2px; height:12px; background:var(--ref); }
+.try { display:grid; grid-template-columns:200px minmax(0,1fr); gap:14px; align-items:start; }
+.list { display:flex; flex-direction:column; gap:4px; position:sticky; top:12px; }
+.list button { text-align:left; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:9px; padding:8px 10px; cursor:pointer; font:inherit; font-size:14px; display:flex; justify-content:space-between; gap:8px; }
+.list button.on { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+pre { margin:0; padding:10px 12px; font:12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space:pre; overflow:auto; max-height:420px; }
+.pane { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:10px; }
+.pane .lbl { font-size:11.5px; color:var(--muted); padding:8px 12px; text-transform:uppercase; letter-spacing:.04em; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:8px; background:var(--code); }
+.try > *, .two > *, .pane { min-width:0; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ok { color:var(--good); font-weight:600; } .no { color:var(--bad); font-weight:600; }
+table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:14px; }
+th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); } th { color:var(--muted); font-weight:600; font-size:12.5px; } td.n { text-align:right; font-variant-numeric:tabular-nums; }
+.crew { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; }
+.crew div { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 14px; } .crew b { display:block; } .crew span { color:var(--muted); font-size:13.5px; }
+.chip { display:inline-block; font-size:11.5px; padding:1px 7px; border-radius:999px; background:var(--code); color:var(--muted); margin-left:6px; }
+.steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; } .steps div { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 14px; } .steps b { display:block; margin-bottom:2px; } .steps span { color:var(--muted); font-size:13.5px; }
+footer { margin-top:56px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+a { color:var(--accent); }
+@media (max-width:760px) { #lt th:nth-child(4), #lt td:nth-child(4) { display:none; } .try { grid-template-columns:1fr; } .list { position:static; flex-direction:row; flex-wrap:wrap; } .two { grid-template-columns:1fr; } .brow { grid-template-columns:80px minmax(0,1fr) 110px; } nav a { display:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand"><span class="logo">CC</span>C compiler in Clojure</div><div style="display:flex;align-items:center"><nav><a href="#sqlite">SQLite</a><a href="#programs">Programs</a><a href="#lua">Lua</a><a href="#story">How</a><a href="https://github.com/hanialshater/system3-cc">GitHub</a></nav><button class="theme" id="theme" onclick="cycle()" aria-label="theme"></button></div></header>
+
+<h1>A C compiler in Clojure that builds SQLite and Lua, correctly</h1>
+<p class="lede">It reads C and writes x86-64 assembly. It compiles real programs: SQLite (about 270,000 lines of C) and the Lua 5.4.7 interpreter. Correctness comes first: a change that miscompiles anything is reverted, whatever it gains. The numbers below come from real runs, not from us.</p>
+<div class="tiles" id="tiles"></div>
+
+<h2 id="sqlite">SQLite, compiled by this compiler</h2>
+<p class="sub">The referee builds SQLite with this compiler, runs a corpus of SQL scripts against gcc's build, and counts the instructions each workload executes (callgrind, exact) against gcc -O2's. Lower is better; gcc -O2 is the tick at 1.0×.</p>
+<div class="card"><div class="bars" id="wl"></div><div class="legend"><span class="o">this compiler</span><span class="r">gcc -O2 = 1.0×</span></div></div>
+
+<h2 id="programs">Programs, side by side with gcc -O2</h2>
+<p class="sub">Small benchmark programs, compiled by this compiler and by gcc -O2. Both must print the same thing. Then the instructions each executes are counted, and one function's assembly is shown from both.</p>
+<div class="try"><div class="list" id="plist"></div><div id="prog"></div></div>
+
+<h2 id="lua">Lua 5.4.7, built by this compiler</h2>
+<p class="sub" id="luaSub"></p>
+<table id="lt"></table>
+
+<h2 id="story">How it was made</h2>
+<p class="sub">Three runs, each designed and predicted in writing before it ran (the write-ups are in the repository).</p>
+<div class="steps" id="steps"></div>
+<h3 style="margin:22px 0 8px">The org of the last run</h3>
+<div class="crew" id="crewList"></div>
+
+<footer>MIT licensed · Lua (MIT, Lua.org, PUC-Rio) and SQLite (public domain) are compiled from their own sources · built <span id="built"></span> from <span id="commit"></span> · part of the <a href="https://github.com/hanialshater/system3-city">System 3 city</a></footer>
+</div>
+<script>
+const D = /*DATA*/null;
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const $ = (id) => document.getElementById(id);
+const M = (n) => (n == null ? "—" : n >= 1e9 ? `${(n / 1e9).toFixed(2)} B` : `${(n / 1e6).toFixed(1)} M`);
+const ICON = { auto: '<svg viewBox="0 0 16 16" width="15" height="15"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>', light: '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6 13 13M3 13l1.4-1.4M11.6 4.4 13 3"/></svg>', dark: '<svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 10.5A6 6 0 0 1 5.5 3a6 6 0 1 0 7.5 7.5z" fill="currentColor"/></svg>' }, ORDER = ["auto", "light", "dark"];
+const get = () => { try { return localStorage.getItem("theme") || "auto"; } catch { return "auto"; } };
+function apply(t) { if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t); $("theme").innerHTML = ICON[t]; $("theme").title = `theme: ${t}`; }
+function cycle() { const t = ORDER[(ORDER.indexOf(get()) + 1) % 3]; try { localStorage.setItem("theme", t); } catch {} apply(t); }
+apply(get());
+
+const R = D.referee, okProgs = D.programs.filter((p) => p.same).length;
+$("tiles").innerHTML = [
+  ["SQLite's speed vs gcc -O2", `${D.hidden.ratio.toFixed(3)}×`, `instructions, hidden workloads (from ${D.hidden.start}× at the start)`],
+  ["SQL scripts right", R ? `${R.corpusPass}/${R.corpusAll}` : "—", "SQLite built by this compiler, against gcc's build"],
+  ["Programs below", `${okProgs}/${D.programs.length}`, "print exactly what gcc -O2's build prints"],
+  ["Lua's benchmarks", D.lua ? `${D.lua.scripts.filter((s) => s.same).length}/${D.lua.scripts.length}` : "—", "run right on Lua built by this compiler"],
+].map(([k, v, s]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+
+if (R?.workloads?.length) { const max = Math.max(1.6, ...R.workloads.map((w) => w.ratio)) * 1.02; $("wl").innerHTML = R.workloads.map((w) => `<div class="brow" title="${esc(w.name)}: ${w.ours.toLocaleString()} instructions; gcc -O2: ${w.gcc.toLocaleString()}"><div>${esc(w.name)}</div><div class="track"><i style="width:${(100 * w.ratio / max).toFixed(1)}%"></i><b style="left:${(100 / max).toFixed(1)}%"></b></div><div class="val">${w.ratio.toFixed(3)}× <span style="color:var(--muted)">${M(w.ours)}</span></div></div>`).join("") + `<div class="brow" style="font-weight:600"><div>all (geomean)</div><div></div><div class="val">${R.ratio?.toFixed(3) ?? "—"}×</div></div>`; }
+else $("wl").innerHTML = `<p class="sub">The referee's fast check was not run when this page was built.</p>`;
+
+let cur = D.programs[0]?.name;
+function drawProg() {
+  $("plist").innerHTML = D.programs.map((p) => `<button class="${p.name === cur ? "on" : ""}" onclick="cur='${p.name}';drawProg()"><span>${esc(p.name)}</span><span><span style="color:var(--muted)">${p.ours && p.gcc ? (p.ours / p.gcc).toFixed(2) + "×" : "?"}</span> <span class="${p.same ? "ok" : "no"}">${p.same ? "✓" : "✗"}</span></span></button>`).join("");
+  const p = D.programs.find((x) => x.name === cur);
+  $("prog").innerHTML = `<div class="pane"><div class="lbl"><span>${esc(p.name)}.c · ${p.lines} lines</span><span class="${p.same ? "ok" : "no"}">${p.same ? "✓ same output as gcc -O2" : "✗ output differs"}</span></div><pre>${esc(p.source)}</pre></div>
+  <div class="pane"><div class="lbl"><span>instructions executed</span></div><div style="padding:12px"><div class="bars"><div class="brow"><div>this compiler</div><div class="track"><i style="width:${(100 * p.ours / Math.max(p.ours, p.gcc)).toFixed(1)}%"></i></div><div class="val">${M(p.ours)}</div></div><div class="brow"><div>gcc -O2</div><div class="track"><i style="width:${(100 * p.gcc / Math.max(p.ours, p.gcc)).toFixed(1)}%;background:var(--ref)"></i></div><div class="val">${M(p.gcc)}</div></div></div></div></div>
+  <div class="pane"><div class="lbl"><span>output</span></div><pre>${esc(p.output)}</pre></div>
+  <div class="two"><div class="pane"><div class="lbl"><span>${esc(p.fn)}(): this compiler</span><span>${p.oursAsmLines ?? "—"} lines</span></div><pre>${esc(p.oursAsm ?? "(not found)")}</pre></div><div class="pane"><div class="lbl"><span>${esc(p.fn)}(): gcc -O2</span><span>${p.gccAsmLines ?? "—"} lines</span></div><pre>${esc(p.gccAsm ?? "(inlined by gcc)")}</pre></div></div>`;
+}
+drawProg();
+
+if (D.lua) { $("luaSub").textContent = `The Lua interpreter's 33 C files, compiled by this compiler and linked by gcc, running Lua's own benchmark scripts. Each must print exactly its expected output.`;
+  $("lt").innerHTML = `<tr><th>script</th><th>result</th><th class="n">seconds</th><th>output (start)</th></tr>` + D.lua.scripts.map((s) => `<tr><td><code>${esc(s.name)}</code></td><td class="${s.same ? "ok" : "no"}">${s.same ? "✓ as expected" : "✗ differs"}</td><td class="n">${s.sec.toFixed(2)}</td><td><code>${esc(s.output.split("\n")[0].slice(0, 70))}</code></td></tr>`).join(""); }
+else $("luaSub").textContent = "Lua was not built when this page was built.";
+
+const ST = { B8: "one agent wrote the compiler in waves: expressions, then control flow, pointers, structs, the C library's headers, and finally Lua", B9: "it was made to compile 1.85× faster, keeping every test passing", B10: "an org of five (an architect and four workers) made the code it generates faster: from 1.79× to 1.26× gcc -O2's instructions, with no miscompile" };
+$("steps").innerHTML = D.lines.map((l) => `<div><b>${esc(l.id)} · $${Math.round(l.spent)}</b><span>${esc(ST[l.id] ?? l.title)}</span></div>`).join("");
+$("crewList").innerHTML = D.org.map((o) => `<div><b>${esc(o.title)}<span class="chip">${esc(o.model ?? "")}</span></b><span>${esc(o.focus ?? "")}</span></div>`).join("");
+$("built").textContent = new Date(D.built).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); $("commit").textContent = D.commit;
+</script>
+</body>
+</html>
