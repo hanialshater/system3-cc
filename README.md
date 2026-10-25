@@ -1,5 +1,7 @@
 # C compiler in Clojure
 
+**Demo site:** https://system3-cc.vercel.app (built from real runs; `site/README.md`).
+
 A C compiler written in Clojure by a company of AI agents in the
 [System 3 city](https://github.com/hanialshater/system3-city). It compiles real programs: Lua 5.4.7 and SQLite
 (`sqlite3.c`, about 270,000 lines) to x86-64 assembly. It is judged by a referee that checks correctness first, then
