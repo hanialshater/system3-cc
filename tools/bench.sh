@@ -1,6 +1,6 @@
 #!/bin/bash
 # Compile and time the benchmark programs (median of 3 runs each).
-cd /tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V
+cd "$(dirname "$(readlink -f "$0")")/.."
 B=.work/bench
 mkdir -p $B
 : > $B/list
@@ -8,7 +8,7 @@ for f in spec/bench/*.c; do
   n=$(basename $f .c)
   echo "$PWD/$f $PWD/$B/$n.s" >> $B/list
 done
-/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run -m ccc.main -I spec/include --batch $B/list
+"$(dirname "$(readlink -f "$0")")/clj-run" -m ccc.main -I spec/include --batch $B/list
 for f in spec/bench/*.c; do
   n=$(basename $f .c)
   gcc $B/$n.s -o $B/$n || { echo "$n: asm fail"; continue; }

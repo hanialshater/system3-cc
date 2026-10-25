@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Compile and time the benchmark programs. Usage: bench.py [runs] [names...]"""
 import subprocess, sys, os, time, resource
-V = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V'
-CLJ = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run'
+V = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+CLJ = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'clj-run')
 B = V + '/.work/bench'
 os.makedirs(B, exist_ok=True)
 runs = int(sys.argv[1]) if len(sys.argv) > 1 else 3

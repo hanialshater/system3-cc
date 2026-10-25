@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run the visible W7 Lua tests (or the given ones) with .work/lua7/lua, each in a fresh copy.
-V=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V
+V="$(dirname "$(readlink -f "$0")")/.."
 L=$V/.work/lua7/lua
 T=$V/.work/w7t
 tests="$@"

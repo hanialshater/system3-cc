@@ -1,0 +1,18 @@
+{
+ "note": "Copy to judge.json (not committed) and fill in absolute paths. b8: a folder holding the W1-W7 test material (this repository's root works for fast mode: visible/ and spec/; full mode also needs run-hidden-w7.mjs and the hidden W1-W7 set) and a writable .tmp. clj: tools/clj-run. material, visCorpus, visWork: spec/b10 and its corpus/ and work/. hidCorpus, hidWork: the hidden SQL corpus and workloads, held by the referee's owner outside this repository. startResults, startVisible: the start's pass sets (beside this file).",
+ "b8": "/abs/path/to/system3-cc",
+ "clj": "/abs/path/to/system3-cc/tools/clj-run",
+ "material": "/abs/path/to/system3-cc/spec/b10",
+ "visCorpus": "/abs/path/to/system3-cc/spec/b10/corpus",
+ "visWork": "/abs/path/to/system3-cc/spec/b10/work",
+ "hidCorpus": "/held/by/the/referee/hidden/corpus",
+ "hidWork": "/held/by/the/referee/hidden/work",
+ "startResults": "/abs/path/to/system3-cc/referee/start-W7.json",
+ "startVisible": "/abs/path/to/system3-cc/referee/start-visible.json",
+ "startRuntime": 0.698,
+ "startLua": {
+  "pass": 22,
+  "total": 22,
+  "pct": 100
+ }
+}

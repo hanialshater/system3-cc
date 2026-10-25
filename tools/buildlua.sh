@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build Lua 5.4.7 with our compiler into .work/lua7 (lua binary at .work/lua7/lua).
-V=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V
-CLJ=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run
+V="$(dirname "$(readlink -f "$0")")/.."
+CLJ="$(dirname "$(readlink -f "$0")")/clj-run"
 O=$V/.work/lua7
 mkdir -p $O
 rm -f $O/*.s $O/lua

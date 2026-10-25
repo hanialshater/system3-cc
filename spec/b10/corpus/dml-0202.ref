@@ -88,7 +88,7 @@ error: cannot store BLOB value in TEXT column t1.c0
 10|omicron|it's|1|223|2
 9|alpha|alpha|2|0|6
 7|sigma|42|1000000000000000.0|-254|6
-6|>ï¿½Hï¿½!|omega|NULL|-26|7
+6|>ÑHƒ!|omega|NULL|-26|7
 5|sigma|-7|-888|-268|2
 3|eta|zeta|-35|340|6
 2|beta|chi|386.904|105|8

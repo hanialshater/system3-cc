@@ -35,7 +35,7 @@ changes: 1
 12|NULL
 # id|c0|c1|c2|c3
 1|0|Ã¼ber|NULL|NULL
-3|Gï¿½!|2|NULL|-93.4018
+3|Gó!|2|NULL|-93.4018
 5|0|390| pad |NULL
 7|0|X'D836F1'|NULL|-3
 8|X'4DE9FE'|NULL|NULL|NULL
@@ -56,7 +56,7 @@ changes: 1
 8|X'4DE9FE'|NULL|NULL|NULL
 7|0|X'D836F1'|NULL|-3
 4|NULL|NULL|NULL|NULL
-3|Gï¿½!|2|NULL|-93.4018
+3|Gó!|2|NULL|-93.4018
 1|0|Ã¼ber|NULL|NULL
 changes: 3
 changes: 8

@@ -8,3 +8,7 @@ callgrind.out*
 cg*.out
 sqlrun
 .b10-leftover/
+lib/
+.work/
+referee/judge.json
+.tmp/

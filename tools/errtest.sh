@@ -1,7 +1,7 @@
 #!/bin/bash
 # Checks batch-mode error handling.
-V=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V
-CLJ=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run
+V="$(dirname "$(readlink -f "$0")")/.."
+CLJ="$(dirname "$(readlink -f "$0")")/clj-run"
 E=$V/.work/err
 rm -rf "$E"; mkdir -p "$E"
 printf 'int main() { return 1 +; }\n' > "$E/bad.c"

@@ -2,7 +2,7 @@
 """Instruction counts (cachegrind) of the W7 runtime programs at reduced sizes.
 Usage: luaicount.py [lua-binary ...]"""
 import subprocess, sys, os, re, math
-V = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V'
+V = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 W = V + '/.work/luaic'
 os.makedirs(W, exist_ok=True)
 scale = {'bintrees': ('local N = 12', 'local N = 10'), 'fannkuch': ('local N = 9', 'local N = 8'),

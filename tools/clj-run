@@ -1,0 +1,9 @@
+#!/bin/sh
+# The one way to run Clojure here (the referee's toolchain): Clojure 1.12.6 + spec.alpha 0.5.238 +
+# core.specs.alpha 0.4.74, then this repository's src. CLJ_LIB is the folder with the three jars
+# (default ../lib beside this script; ../run.sh --fetch-jars downloads them).
+#   tools/clj-run -m ccc.main in.c -o out.s
+LIB="${CLJ_LIB:-$(dirname "$(readlink -f "$0")")/../lib}"
+unset CLASSPATH
+exec java -Xss64m -Xmx2g -XX:+UseSerialGC \
+  -cp "$LIB/clojure-1.12.6.jar:$LIB/spec.alpha-0.5.238.jar:$LIB/core.specs.alpha-0.4.74.jar:$(dirname "$(readlink -f "$0")")/../src" clojure.main "$@"

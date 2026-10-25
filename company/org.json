@@ -1,0 +1,100 @@
+{
+ "note": "The org contract (system3-meta docs/product/STARTER.md \u00a73): the org of B10, the run that made the compiler an optimising one and kept it correct. Models are tiers.",
+ "roles": [
+  {
+   "id": "founder",
+   "name": "Founder",
+   "title": "Owner",
+   "reportsTo": null,
+   "level": 0,
+   "room": "office",
+   "roomName": "Owner's office",
+   "roomKind": "office",
+   "floor": 1,
+   "floorName": "Floor 1 \u00b7 Leadership"
+  },
+  {
+   "id": "referee",
+   "name": "Referee",
+   "title": "Referee (hidden C tests, Lua's tests, SQLite workloads under callgrind)",
+   "reportsTo": "founder",
+   "team": "evaluation",
+   "level": 1,
+   "room": "referee",
+   "roomName": "Referee",
+   "roomKind": "meeting",
+   "floor": 1,
+   "floorName": "Floor 1 \u00b7 Leadership"
+  },
+  {
+   "id": "architect",
+   "title": "Architect",
+   "focus": "the interfaces between passes (IR, AST, types); merge conflicts; each round's intent from the profile",
+   "reportsTo": "founder",
+   "team": "compiler",
+   "level": 1,
+   "model": "opus",
+   "room": "eng",
+   "roomName": "Compiler floor",
+   "roomKind": "floor",
+   "floor": 2,
+   "floorName": "Floor 2 \u00b7 Compiler"
+  },
+  {
+   "id": "w-measure",
+   "title": "Codegen engineer (measure first)",
+   "focus": "register-clean argument and assignment codegen; parser changes",
+   "reportsTo": "architect",
+   "team": "compiler",
+   "level": 2,
+   "model": "opus",
+   "room": "eng",
+   "roomName": "Compiler floor",
+   "roomKind": "floor",
+   "floor": 2,
+   "floorName": "Floor 2 \u00b7 Compiler"
+  },
+  {
+   "id": "w-bold",
+   "title": "Optimiser engineer (bold)",
+   "focus": "the machine-level optimiser (mach.clj): slot promotion, register renaming",
+   "reportsTo": "architect",
+   "team": "compiler",
+   "level": 2,
+   "model": "opus",
+   "room": "eng",
+   "roomName": "Compiler floor",
+   "roomKind": "floor",
+   "floor": 2,
+   "floorName": "Floor 2 \u00b7 Compiler"
+  },
+  {
+   "id": "w-sceptic",
+   "title": "Peephole and frame engineer (sceptic)",
+   "focus": "lea and load folding, extension removal, strength reduction; rsp frames, red zone",
+   "reportsTo": "architect",
+   "team": "compiler",
+   "level": 2,
+   "model": "sonnet",
+   "room": "eng",
+   "roomName": "Compiler floor",
+   "roomKind": "floor",
+   "floor": 2,
+   "floorName": "Floor 2 \u00b7 Compiler"
+  },
+  {
+   "id": "w-lean",
+   "title": "Inliner engineer (lean)",
+   "focus": "the inliner and small-frame layout",
+   "reportsTo": "architect",
+   "team": "compiler",
+   "level": 2,
+   "model": "sonnet",
+   "room": "eng",
+   "roomName": "Compiler floor",
+   "roomKind": "floor",
+   "floor": 2,
+   "floorName": "Floor 2 \u00b7 Compiler"
+  }
+ ]
+}

@@ -2,8 +2,8 @@
 """Find the first output line where a generated test diverges.
 Usage: bisect_gen.py <test.c> <expected>"""
 import subprocess, sys, os
-V = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V'
-CLJ = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run'
+V = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+CLJ = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'clj-run')
 src, exp = sys.argv[1], sys.argv[2]
 lines = open(src).read().split('\n')
 expected = open(exp).read().split('\n')

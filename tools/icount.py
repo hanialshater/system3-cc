@@ -2,8 +2,8 @@
 """Deterministic instruction counts (valgrind/cachegrind) on scaled-down copies of
 the benchmarks. Usage: icount.py [names...]"""
 import subprocess, sys, os, re
-V = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V'
-CLJ = '/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run'
+V = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+CLJ = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'clj-run')
 B = V + '/.work/icount'
 os.makedirs(B, exist_ok=True)
 SCALE = {'fib': {'N': '27'}, 'sieve': {'N': '1000000', 'ROUNDS': '1'}, 'matmul': {'N': '120'},

@@ -145,5 +145,5 @@ error: malformed JSON
 error: JSON cannot hold BLOB values
 # json_object('id', id, 'v', c1)
 {"id":1,"v":-442.583}
-{"id":2,"v":ï¿½>}
+{"id":2,"v":Ä>}
 error: JSON cannot hold BLOB values

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Usage: tools/runtests.sh <test-dir> [filter-regex]
 # Compiles all tests in batch mode, then assembles, runs, compares.
-V=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/V
-CLJ=/tmp/claude-0/-home-user/aa2da695-733d-5610-822b-d0f420a6080f/scratchpad/b8-runs/toolchain/clj-run
+V="$(dirname "$(readlink -f "$0")")/.."
+CLJ="$(dirname "$(readlink -f "$0")")/clj-run"
 DIR=$(cd "$1" && pwd)
 FILTER=${2:-.}
 W=$V/.work/$(basename "$DIR")

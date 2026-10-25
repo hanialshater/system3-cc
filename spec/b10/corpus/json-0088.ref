@@ -72,7 +72,7 @@ error: malformed JSON
 # json_group_array(id)|json_group_object(CAST(id AS TEXT), c1)
 error: JSON cannot hold BLOB values
 # json_object('id', id, 'v', c0)
-{"id":1,"v":"ï¿½"}
+{"id":1,"v":"ø"}
 {"id":2,"v":"delta"}
 {"id":3,"v":"MU"}
 {"id":4,"v":null}

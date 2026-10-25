@@ -1,0 +1,40 @@
+{
+ "id": "cc",
+ "name": "C compiler in Clojure",
+ "owner": "founder",
+ "archetype": "dynamic workflow",
+ "mission": "A C compiler written in Clojure that compiles real programs (Lua, SQLite) correctly, compiles them fast and generates code that runs as fast as gcc -O2's.",
+ "measure": "geometric mean, over the hidden SQLite workloads, of instructions executed (callgrind) against gcc -O2's build; every correctness gate must pass (referee/README.md)",
+ "budget": {
+  "unit": "USD",
+  "lines": [
+   {
+    "id": "B8",
+    "title": "B8: a C compiler in Clojure, waves W1-W7 (the compiler's origin: arm V)",
+    "approved": null,
+    "spent": 40.74,
+    "source": "docs/BENCH8.md (V, W1-W5; W7 extra)",
+    "approvedBy": null,
+    "live": false
+   },
+   {
+    "id": "B9",
+    "title": "B9: compile fast (the start of B10: arm V)",
+    "approved": 70,
+    "spent": 18.0,
+    "source": "docs/BENCH9.md (V $18.00)",
+    "approvedBy": null,
+    "live": false
+   },
+   {
+    "id": "B10",
+    "title": "B10: an optimising compiler (arm O, the org)",
+    "approved": 150,
+    "spent": 132.0,
+    "source": "docs/BENCH10.md (O $132.00)",
+    "approvedBy": null,
+    "live": false
+   }
+  ]
+ }
+}
