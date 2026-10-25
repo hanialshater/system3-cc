@@ -51,7 +51,7 @@ The HQ shows its activity from the git history (`src/git-events.mjs` in system3-
 
 ## Licence
 
-Not chosen yet (the owner's decision). Until one is, all rights are reserved.
+MIT (`LICENSE`).
 Third-party sources keep their own licences:
 - Lua (`spec/w7/lua`, MIT, Lua.org, PUC-Rio; see the notice at the end of `lua.h`);
 - SQLite (`spec/b10/sqlite3.c`, public domain).
