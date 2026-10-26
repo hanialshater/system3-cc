@@ -22,7 +22,7 @@ reduced motion). This file keeps what is particular to C compiler in Clojure. Th
 
 ## The logo
 
-`company/logo.svg`: a lambda forging a hot curly brace on an anvil. Original: no compiler's or Clojure's mark.
+`company/logo.svg`: a hammer forging a hot curly brace on an anvil (round 8 of the city: the lambda went, since a λ reads as a borrowed language mark). Original: no compiler's or Clojure's mark, and no λ.
 
 ## Its HQ pages and products
 
