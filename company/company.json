@@ -1,6 +1,7 @@
 {
  "id": "cc",
  "name": "C compiler in Clojure",
+ "logo": "logo.svg",
  "owner": "founder",
  "archetype": "dynamic workflow",
  "mission": "A C compiler written in Clojure that compiles real programs (Lua, SQLite) correctly, compiles them fast and generates code that runs as fast as gcc -O2's.",
