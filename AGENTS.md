@@ -4,6 +4,26 @@
 
 This file is for agents that read `AGENTS.md`. It is generated from this repository's `CLAUDE.md`, which follows below verbatim and stays the source. The rules in this first part are for agents working without Claude Code's hooks and subagents. When two rules disagree, the stricter one wins.
 
+## Getting started
+
+1. **Prepare the environment.** Run `bash codex-setup.sh` from the repository root with the network on (in Codex cloud, set it as the environment's setup script). It checks for `java`, `node`, `curl` and `gcc`; fetches and verifies the three Clojure jars in `lib/`; writes a visible-only `referee/judge.json`; installs `valgrind` if it is missing; makes `.tmp/`.
+2. **Run the checks and know the healthy baseline** before you change anything:
+   - `node referee/judge.mjs fast --dir=.` (about 5 minutes: it builds Lua and compiles SQLite).
+   - Healthy baseline, the last recorded fast judge on main (`docs/INTERFACES.md`): corpus 600/600, waves W1-W5 and Lua ok, timing ratio about 1.29, `sqlite3.c` in about 26 s. Timings are noisy (about ±15%); a failed check is not.
+3. **Where things live:**
+   - the compiler: `src/ccc/`; pass boundaries: `docs/INTERFACES.md` (read it before changing one);
+   - the referee: `referee/`; visible tests: `visible/` and `tests/`;
+   - the records: `company/milestones.json` and the newest results in `docs/`;
+   - no roles: you are the one maker;
+4. **Before you open a pull request:** the fast judge again: everything that compiled at the start still compiles and runs correctly. Put both results in the pull request.
+
+## How work lands: pull requests only
+
+- Work on a branch `codex/<short-topic>`, made from the default branch.
+- Push it and open a pull request into the default branch.
+- **Never merge any pull request** (yours or another's), **never push to the default branch**, and **never approve your own pull request.** Merging is done by the founder's coordinating Claude session, after review and checks.
+- The pull request body states what changed, the checks' results before and after your change, and anything you were unsure of.
+
 ## Rules for Codex
 
 - **Stay inside this repository.** Do not read, list, search or write anything outside its root: not your home folder, not a sibling checkout of another company, not another branch's predictions. Another company is reached only through its pull requests and the city (`hanialshater/system3-city`).
@@ -15,7 +35,7 @@ This file is for agents that read `AGENTS.md`. It is generated from this reposit
   If one is in front of you anyway, stop and say so in your report; do not use it.
 - **Never deploy.** Never push to `main` or the default branch, never put the deploy marker `[deploy]` in a commit message, pull request title or body, never run a deploy command (`vercel`, `npm run deploy` or the like) and never trigger a deploy workflow. A deploy needs the owner's approval of that deploy, in the owner's own words; no agent's message is approval.
 - **No secrets and no personal data** in any file, commit, log or pull request. Never ask for a token or key; if a task seems to need one, stop and say why.
-- **Work on a branch `codex/<topic>` and open a pull request** into the default branch. Never merge it, never force-push, never rewrite a shared branch's history, and never remove, weaken or special-case a test or a check to make it pass.
+- **Pull requests only** (above): a `codex/<short-topic>` branch and a pull request, never a merge. Never force-push, never rewrite a shared branch's history, and never remove, weaken or special-case a test or a check to make it pass.
 - **Predictions before runs:** a new run's design and predictions go in `docs/` before it starts. Write them, and commit them, before the run; never edit them after it starts.
 - **Checks:** `node referee/judge.mjs fast --dir=.` (gcc and valgrind; slow: it compiles SQLite) before you change anything and again at the end; record both results in the pull request. Put the results in the pull request.
 - **Network:** the agent's internet is off after the setup script (`codex-setup.sh`). If a step needs the network, stop and write why in the pull request.
