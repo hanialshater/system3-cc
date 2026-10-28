@@ -13,7 +13,10 @@ Score: the geometric mean, over the hidden SQLite workloads, of the instructions
 **Running it.**
 - `node referee/judge.mjs fast --dir=.` runs the visible half: `spec/b10/corpus`, `spec/b10/work`, `visible/` and
   Lua. Members run it as often as they like.
-- `full` needs the hidden sets. The referee's owner holds them outside this repository.
+- `full` needs the hidden sets, and runs only on the evaluation steward's runner. It reads `hidCorpus`, `hidWork` and
+  `b8` (the folder with `run-hidden-w7.mjs` and the hidden W1-W7 set) from the JSON file that the `REFEREE_HIDDEN`
+  environment variable names, and refuses to run without it or with a hidden path inside the tree it judges. A
+  maker's `judge.json` holds no hidden path (Codex hardening M1, 2026-10-27).
 - Setup: copy `judge.example.json` to `judge.json` (ignored by git) and fill in the paths. Then
   `visible-check.mjs` (the C and Lua visible check) and the start's pass sets (`start-*.json`) are found beside it.
 
